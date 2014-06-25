@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="./raphael-min.js"></script>
+    <script src="./jquery-1.11.1.min.js"></script>
+    <script>
+        $(function(){
+            $('#panel td').click(function(){
+                $(this).toggleClass('on');
+            });
+            $('.pat-num').click(function(){
+                setPattern(pattern[this.value|0]);
+            });
+            $('#clear').click(function(){
+                setPattern([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            });
+
+            $('#recog').click(function(){
+                getPattern();
+            });
+
+            var pattern = [
+                [1, 1 ,1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1],
+                [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+                [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
+                [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+                [1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1],
+                [1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+                [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+                [1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+                [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+                [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1]
+            ];
+            function setPattern(pattern){
+                $('#panel td').each(function(index){
+                    if( pattern[index] )
+                        $(this).addClass('on');
+                    else
+                        $(this).removeClass('on');
+                });
+            }
+            function getPattern(pattern){
+                var arr = [];
+                $('#panel td').each(function(index){
+                    arr[index] = $(this).hasClass('on') * 1;
+                });
+                console.log(arr);
+                return arr;
+            }
+
+        });
+    </script>
+    <style>
+        #panel {
+            table-layout:fixed;
+            border-collapse: collapse;
+            empty-cells: show;
+        }
+        #panel td {
+            border:1px solid #666;
+            width:40px;
+            height:40px;
+        }
+        #panel td.on {
+            background-color:red;
+        }
+        #recog {
+            margin-top:10px;
+            width:130px;
+            font-size:large;
+            font-weight:bold;
+        }
+        #pat-input,#pat-output {
+            float:left;
+            margin-left:30px;
+        }
+
+        #num-panel {
+            margin:0.5em 0 0.5em 30px;
+        }
+
+        #pat-output {
+            margin-left:30px;
+            border:5px solid #000;
+            font-size:130px;
+            padding:0 50px;
+            color:red;
+            line-height:240px;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+    <div style="overflow:hidden;">
+        <div id="num-panel">
+            <input type="button" class="pat-num" value="0">
+            <input type="button" class="pat-num" value="1">
+            <input type="button" class="pat-num" value="2">
+            <input type="button" class="pat-num" value="3">
+            <input type="button" class="pat-num" value="4">
+            <input type="button" class="pat-num" value="5">
+            <input type="button" class="pat-num" value="6">
+            <input type="button" class="pat-num" value="7">
+            <input type="button" class="pat-num" value="8">
+            <input type="button" class="pat-num" value="9">
+            <input type="button" id="clear" value="CLEAR">
+        </div>
+        <div id="pat-input">
+            <table id="panel">
+                <tr> <td></td> <td></td> <td></td> </tr>
+                <tr> <td></td> <td></td> <td></td> </tr>
+                <tr> <td></td> <td></td> <td></td> </tr>
+                <tr> <td></td> <td></td> <td></td> </tr>
+                <tr> <td></td> <td></td> <td></td> </tr>
+            </table>
+            <button id="recog">recognize</button>
+        </div>
+        <div id="pat-output">
+            0
+        </div>
+    </div>
+</body>
+</html>
