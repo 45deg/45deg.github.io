@@ -148,11 +148,14 @@ http://elm-lang.org/edit/examples/Reactive/Position.elm
 
 ## デモ:二重振り子(今回のメイン)
 [Demo](./double_pendulum.html)
+[Source Code](https://github.com/45deg/45deg.github.io/blob/master/rogysemi6th-slide/double_pendulum.elm)
+
 ---
 
 ## Elm Debugger
 * 時間にフックすることで時間操作が可能になる
 * 多分フル活用すればめっちゃ便利だと思う
+* http://debug.elm-lang.org/
 
 ---
 
