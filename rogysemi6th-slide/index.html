@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        body {
+            font-family: 'Droid Serif';
+        }
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+        blockquote {
+            font-family: 'Times New Roman';
+            font-size: 200%;
+        }
+        img {
+            width: 90%;
+        }
+        .remark-code,
+        .remark-inline-code {
+            font-family: Ricty;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        var slideshow = remark.create({
+            sourceUrl: 'slides.md'
+        });
+    </script>
+</body>
+
+</html>
+<script>
+    (function() {
+        var t = 0;
+        setInterval(function() {
+            document.getElementById('hoge').innerHTML = ++t * 10;
+        }, 1000);
+    })();
+</script>
