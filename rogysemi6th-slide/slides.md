@@ -99,6 +99,8 @@ let answer = square_of_sum - sum_of_squares
 
 ![map](map.png)
 
+[4]
+
 ---
 
 ## 例: 「X」キーが押されたら画面にXと表示する
@@ -172,6 +174,7 @@ http://elm-lang.org/edit/examples/Reactive/Position.elm
  * 制御システムのフローチャートをそのままプログラムに落とし込める
 
 ![robot](robot.png)
+
 [1]
 
 ---
@@ -195,7 +198,7 @@ http://elm-lang.org/edit/examples/Reactive/Position.elm
 ---
 
 ## 参考文献
- 1. Paul Hudak, et al. Arrows, Robots, and Functional Reactive Programming http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.65.2568&rep=rep1&type=pdf
+ 1. Paul Hudak, et al. Arrows, Robots, and Functional Reactive Programming http://www.cs.nott.ac.uk/~nhn/Publications/afp2002.pdf
  2. Elm lang http://elm-lang.org/
  3. やさしいFunctional reactive programming（概要編） http://maoe.hatenadiary.jp/entry/20100109/1263059731
  4. ReactiveX http://reactivex.io/
