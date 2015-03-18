@@ -25,7 +25,7 @@ window.onload = function() {
         share(shit.value + "はクソ、時代は" + mainstream.value + "。",
               url);
 
-        location.replace("/?" + shit.value + ":" + mainstream.value);
+        location.replace(url);
     };
 
 
