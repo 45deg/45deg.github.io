@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daienjo</title>
+    <script src="https://code.createjs.com/easeljs-0.8.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="./bundle.js"></script>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>🔥大炎上シミュレータ🔥</h1>
+    <div id="wrapper">
+        <canvas id="main" width="1300" height="770"></canvas>
+    </div>
+    <div id="controller">
+        <form id="online" onsubmit="return false">
+            <p>
+                <label for="phe">ρ<sub>empty</sub>
+                </label>
+                <input type="number" id="phe" max="1" min="0" step="0.01" value="0.6">
+            </p>
+            <p>
+                <label for="pht">ρ<sub>tree</sub>
+                </label> 1 - ρ<sub>empty</sub> - ρ<sub>fire</sub>
+            </p>
+            <p>
+                <label for="phf">ρ<sub>fire</sub>
+                </label>
+                <input type="number" id="phf" max="1" min="0" step="0.00001" value="0.001">
+            </p>
+            <p>
+                <label for="cpt">Counts/tick</label>
+                <input type="number" id="cpt" min="1" value="1">
+            </p>
+            <p>
+                <label for="limit">Tick Times<br>(0 := ∞)</label>
+                <input type="number" id="limit" min="0" value="0">
+            </p>
+            <p style="text-align:center;">
+                <button id="go">Go</button> <button id="special">相転移見るマン</button>
+            </p>
+        </form>
+    </div>
+</body>
+
+</html>
