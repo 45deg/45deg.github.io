@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ex3 Counter</title>
+        <style>
+#count { font-size:3em; }
+#left { font-size:1.5em; width:200px; float:left; text-align:center; }
+#right { margin-left:200px; }
+button { font-size:1.2em; }
+textarea { font-family: monospace; font-size:1em; }
+        </style>
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script>
+$(function(){
+    function count(str){
+        var opExp = /^(.+?,)?\s*(AND|ADD|LDA|STA|BUN|BSA|ISZ|CLA|CLE|CME|CIR|CIL|SPA|SNA|SZA|INP|OUT|SKI|IOF|SIO|PIO|IMK)/
+            return str.split('\n').map(function(line){
+                return (opExp.test(line)) ? 1 : 0;
+            }).reduce(function(acc, x){ return acc + x; })
+    }
+
+    $('#source').submit(function(event){
+        event.preventDefault();
+
+        var limit = count($('#code').val());
+        var cnt = 0;
+        var timer = setInterval(function(){
+            if(++cnt <= limit)
+                $('#count').html(cnt);
+            else
+                clearInterval(timer);
+        }, 10);
+
+    });
+});
+        </script>
+    </head>
+    <body>
+        <div id="left">
+            Count
+            <div id="count">0</div>
+        </div>
+        <div id="right">
+            <form id="source">
+                <p><textarea id="code" cols="80" rows="30"></textarea></p>
+                <p><button type="submit">COUNT</button></p>
+            </form>
+        </div>
+    </body>
+</html>
