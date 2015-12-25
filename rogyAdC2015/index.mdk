@@ -367,7 +367,7 @@ $ ana(-)_{F^{\times}_A} $ は $ { F^{\times}_A } $ -余代数における anamor
 > ${\tilde F}(A)$ a datatype of $F$-branching trees, where every node is annotated by values of type A. 
 
 つまり、例えば 関手$F(X)$ が木を構成するならば、${\tilde F}(A)$は木の全てのノードに型 A の値が付加されたデータ構造になります。
-次の章に登場する histomorphism では、このAの部分に途中の計算結果を格納することによって、その結果を後から再利用することが可能にしています。
+次の章に登場する histomorphism では、このAの部分に途中の計算結果を格納することによって、その結果を後から再利用することを可能にしています。
 以下、${\tilde F}(A)$が表すデータ構造を*${\tilde F}$-tree*と表現します。
 
 特に $A = 1$ である場合、つまり付加する情報がない場合 ${\tilde F}(1) = \mu F$ となり $F(X)$ によって構成されるデータ構造と同型になります。
