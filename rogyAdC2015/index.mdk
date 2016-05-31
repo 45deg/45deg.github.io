@@ -41,7 +41,7 @@ $A + B$
 $f : A \to B$
   ~ Aを受け取ってBを返す関数を表します。
 $\langle f, g\rangle$
-  ~ 任意の型 $X$ に対し、$f : X \to B, g : X \to B$ となるとき、$\langle f, g \rangle : X \to A \times B$ となる関数が一意に定義できます。これを *f* と *g* の積 (product of morphism) といいます。Haskellで実装すると、`proj f g x = (f x, g x)`となります。
+  ~ 任意の型 $X$ に対し、$f : X \to A, g : X \to B$ となるとき、$\langle f, g \rangle : X \to A \times B$ となる関数が一意に定義できます。これを *f* と *g* の積 (product of morphism) といいます。Haskellで実装すると、`proj f g x = (f x, g x)`となります。
 $id_A$
   ~ 型 A に関する恒等写像を表します。つまり、型 A の全ての値 x に対して $id_A(x) = x$ です。
 
