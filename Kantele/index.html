@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=">
+    <title>kantele</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://knsv.github.io/mermaid/css/mermaid.css">
+    <style>
+      .editor {
+        width:100%;
+        height: 100%;
+      }
+      .container {
+        position: absolute;
+        top:0; bottom:0; left:0; right: 0;
+      }
+      .header-pain {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding-top:5px;
+        height:45px;
+        padding-left:10px;
+        background-color: #000;
+      }
+      .main-pain {
+        position: absolute;
+        bottom: 0;
+        top: 40px;
+        right: 400px;
+        left: 0;
+      }
+      .sub-pain {
+        position: absolute;
+        top: 40px;
+        bottom: 0;
+        width: 400px;
+        right: 0;
+        overflow:auto;
+        background-color: #CFCFCF;
+      }
+      .sub-pain h2 {
+        margin: 0.1em;
+        font-weight: normal;
+      }
+      .sub-pain pre {
+        font-size:20px;
+      }
+
+      .header-pain select {
+        border:1px solid #FFF;
+        background-color:#000;
+        color:#FFF;
+        font-size:18px;
+      }
+      .header-pain button {
+        font-size:18px;
+        background-color:#3377ff;
+        color:#FFF;
+        border:none;
+        padding:0 1em;
+      }
+      .header-pain h1 {
+        display: inline;
+        margin:0;
+        padding:0;
+        font-size:18px;
+        color:#CCC;
+      }
+      .header-pain a {
+        color:#CCC;
+      }
+    </style>
+    <script src="bin/app.bundle.js"></script>
+    <script src="https://cdn.rawgit.com/knsv/mermaid/0.5.8/dist/mermaid.min.js"></script>
+    <!-- Issue: webpack can't bundle mermaid -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-pain">
+        <h1>Music Programming on Lisp  </h1>
+        <select>
+          <option value="">Example ...</option>
+        </select>
+        <button>Run</button>
+        <a href="https://github.com/45deg/kantele/blob/master/spec.md" target="_blank">API Reference</a>
+        <a href="https://github.com/45deg/kantele" target="_blank">Github</a>
+      </div>
+      <div class="main-pain">
+        <div id="source" class="editor"></div>
+      </div>
+      <div class="sub-pain">
+        <h2>Oscilloscope</h2>
+          <canvas id="oscillo" width="400" height="200"></canvas>
+        <h2>Output</h2>
+        <div id="result-field"></div>
+      </div>
+    </div>
+  </body>
+</html>

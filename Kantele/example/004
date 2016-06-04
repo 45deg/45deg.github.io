@@ -1,0 +1,5 @@
+(gain 3.0 
+  (filter 'lowpass 500 0.4 
+    (sound "voice.ogg")
+  )
+)

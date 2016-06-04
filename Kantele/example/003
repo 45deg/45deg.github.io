@@ -1,0 +1,7 @@
+(feedback p 
+ (delay 0.4
+  (list (sound "voice.ogg")
+        (gain 0.3 p)
+  )
+ )
+)

@@ -1,0 +1,7 @@
+(sequence (list
+           (wave 'sine 0.3 261)
+           (wave 'sine 0.3 293)
+           (wave 'sine 0.3 329)
+           (wave 'sine 0.3 349)
+           (wave 'sine 0.3 391)
+          ))

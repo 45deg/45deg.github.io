@@ -1,0 +1,3 @@
+(delay 0.2 (wave 'sine 10 440)
+ (gain 0.01 
+  (wave 'sine -1 2.8)))

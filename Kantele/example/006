@@ -1,0 +1,18 @@
+(define (map proc lst)
+    (if (null? lst)
+        lst
+        (cons (proc (car lst)) (map proc (cdr lst)))
+    )
+)
+(define (random-seq n)
+    (if (<= n 0)
+        '()
+        (cons (js/Math/random) (random-seq (- n 1)))
+    )
+)
+
+(sequence
+    (map (lambda (x) (wave 'square 0.1 (+ (* x 200) 400)))
+         (random-seq 50)
+    )
+)

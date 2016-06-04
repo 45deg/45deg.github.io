@@ -1,0 +1,26 @@
+[
+  {
+    "title": "sine wave",
+    "file": "001"
+  },
+  {
+    "title": "FM amp",
+    "file": "002"
+  },
+  {
+    "title": "Echo",
+    "file": "003"
+  },
+  {
+    "title": "LowPass",
+    "file": "004"
+  },
+  {
+    "title": "Fibonacci",
+    "file": "005"
+  },
+  {
+    "title": "Random Sequence",
+    "file": "006"
+  }
+]
