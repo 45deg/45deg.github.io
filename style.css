@@ -5,32 +5,37 @@
 }
 
 body {
-  background-color:#f7f7f7;
+  background-color: #E1E6EE;
 }
 
 main {
   padding:1em 1em 0 2em;
   margin-left: 20%;
   height:100%;
-  color: #725d5c;
+  color: #453C37;
 }
 
 header {
-  border-right:10px solid #865b65;
-  background-color:#b17c88;
+  border-right: 25px solid #666B6F;
+  background-color: #AABFCF;
   position:fixed;
-  width:20%;
+  width:18%;
   height:100%;
 }
 
 h1 {
-  color:#f7f7f7;
   text-align:center;
   margin-top:1.5em;
 }
 
+h1 #logo {
+  fill: #FFF;
+  transform: rotate(-45deg);
+}
+
 main h2 {
   margin:0.5em 0;
+  text-transform: uppercase;
 }
 
 main li {
@@ -39,7 +44,7 @@ main li {
 }
 
 a {
-  color: #5a576a;
+  color:#6C6058;
 }
 
 a:hover {
