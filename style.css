@@ -30,6 +30,7 @@ h1 {
 
 h1 #logo {
   fill: #FFF;
+  shape-rendering: crispEdges;
   transform: rotate(-45deg);
 }
 
