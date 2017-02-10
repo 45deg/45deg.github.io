@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rotate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+      body { height: 100000px; }
+      form {
+        position:fixed;
+        left:0px;
+        right:0px;
+        text-align: center;
+      }
+      form input, button, h1 {
+        font-size:3em;
+        font-family: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+      }
+      #form {
+        display:none;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="rotate.html" method="get" id="form">
+      <h1>Input Image URL</h1>
+      <p><input type="url" placeholder="Image URL ..." name="img"></p>
+      <p><button type="submit">OK</button></p>
+    </form>
+  </body>
+  <script>
+  (function(){
+    var match = location.search.match(/img=(.+)/);
+    if(match) {
+      var image = document.createElement('img');
+      image.src = decodeURIComponent(match[1]);
+      image.style.position = 'fixed';
+      image.style.width = '80%';
+      image.style.top = '50%';
+      image.style.left = '50%';
+      image.style.transform = 'translate(-50%, -50%)';
+      window.addEventListener("scroll", function(){
+        image.style.transform = "translate(-50%, -50%) rotate(" + (window.pageYOffset / 5) + "deg)";
+      });
+      document.body.appendChild(image);
+    } else {
+      document.getElementById('form').style.display = 'block';
+    }
+  })();
+  </script>
+</html>
