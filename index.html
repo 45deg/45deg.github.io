@@ -5,60 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>45deg</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://hackcss.com/hack.css">
 </head>
-<body>
+<body class="hack">
+  <div class="main container">
     <header>
-        <h1>
-          <svg width="95" height="95" id="logo">
-            <!-- 4 -->
-            <rect x="0"  y="0"  width="15" height="40" />
-            <rect x="0"  y="40" width="30" height="15" />
-            <rect x="30" y="0"  width="15" height="95" />
-            <!-- 5 -->
-            <rect x="50" y="0"  width="15" height="40" />
-            <rect x="80" y="55" width="15" height="40" />
-            <rect x="80" y="55" width="15" height="40" />
-            <rect x="50" y="40" width="45" height="15" />
-            <rect x="50" y="0"  width="45" height="15" />
-            <rect x="50" y="80" width="45" height="15" />
-          </svg>
-        </h1>
+        <h1>45deg</h1>
     </header>
     <main role="main">
+        <h2>About</h2>
+          <p>主にrogyで作ったものなどをおいてます。</p>
         <h2>Works</h2>
         <ul>
             <li>
-                <a href="./daienjo">大炎上シミュレータ</a>
+                <strong><a href="./daienjo">大炎上シミュレータ</a></strong>
                 森林の燃焼モデル(パーコレーション)を用いて相転移を観察するために作りました。
             </li>
             <li>
-                <a href="./neural-network">ニューラルネットワークの可視化</a>
-                BPNNの可視化です
+                <strong><a href="./neural-network">ニューラルネットワークの可視化</a></strong>
+                BPNNの可視化です。
             </li>
             <li>
-                <a href="./neural-network_v2">ニューラルネットワークの可視化 (ConvnetJS版)</a>
+                <strong><a href="./neural-network_v2">ニューラルネットワークの可視化 (ConvnetJS版)</a></strong>
                 上のプログラムを<a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
             </li>
             <li>
-                <a href="./misc/toritsu.html">倒立振子</a>
+                <strong><a href="./misc/toritsu.html">倒立振子</a></strong>
                 PID制御のシミュレーション <a href="https://sites.google.com/site/ssrailab/home/fuzzyhakuso">ファジイはダメ</a>
             </li>
 
             <li>
-                <a href="./misc/mandel.html">マンデルブロ集合</a>
+                <strong><a href="./misc/mandel.html">マンデルブロ集合</a></strong>
             </li>
             <li>
-                <a href="./rogyAdC2015">dynamorphism の紹介</a>
+                <strong><a href="./rogyAdC2015">dynamorphism の紹介</a></strong>
                 <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a> のために書いたものです。関数型プログラミングで動的計画法を行う手法について説明しています。
             </li>
             <li>
-              <a href="./Kantele">Kantele</a> <a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>
-              研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong>
-
+                <strong><a href="./Kantele">Kantele</a></strong> (<a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>)
+                研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong>
             </li>
             <li>
-              <a href="http://45deg.github.io/vixiv/#!/cs.*">vixiv</a> arXivに投稿された最新の論文を日ごとに表示します。分野の細かい指定も可能です。
+                <strong><a href="http://45deg.github.io/vixiv/#!/cs.*">vixiv</a></strong> arXivに投稿された最新の論文を日ごとに表示します。分野の細かい指定も可能です。
             </li>
         </ul>
 
@@ -87,7 +75,7 @@
               <a href="https://gist.github.com/45deg/85db7736ef388b00b23cdcc0d93efd7f">某SNSサイトの screen_name をランダムに変更するRubyスクリプト (要Mechanize gem)</a>
             </li>
         </ul>
-
     </main>
+  </div>
 </body>
 </html>
