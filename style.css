@@ -10,24 +10,37 @@ body {
   line-height: 1.4;
 }
 
+@media screen and (min-width:800px) {
+  main {
+    margin-left: 20%;
+  }
+  header {
+    position:fixed;
+    width:18%;
+    height:100%;
+    border-right: 25px solid #666B6F;
+    border-bottom:none;
+  }
+  h1 svg {
+    width: 95px;
+    height: 95px;
+  }
+}
+
 main {
   padding:1em 1em 0 2em;
-  margin-left: 20%;
   height:100%;
   color: #453C37;
 }
 
 header {
-  border-right: 25px solid #666B6F;
   background-color: #AABFCF;
-  position:fixed;
-  width:18%;
-  height:100%;
+  border-bottom: 25px solid #666B6F;
 }
 
 h1 {
   text-align:center;
-  margin-top:1.5em;
+  padding-top:30px;
 }
 
 h1 #logo {
