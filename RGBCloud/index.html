@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>RGBCloud</title>
+  <script src="js/three.min.js"></script>
+  <script src="js/TrackballControls.js"></script>
+  <script src="js/main.js"></script>
+  <style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+  #preview-container {
+    position: absolute;
+    color: #FFF;
+    border:1px solid #FFF;
+    z-index: 114514;
+    margin:10px;
+    text-align:center;
+  }
+
+  #preview-container p {
+    margin:0.5em;
+  }
+
+  #visualizer {
+    position: absolute;
+    width: 100%;
+  }
+
+  #toggle-button {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size:28px;
+    border:1px solid #FFF;
+    padding:12px;
+    color:#FFF;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<div id="preview-container">
+  <p>Drag and drop an image to this window.</p>
+  <canvas id="preview" height="0" width="0"></canvas>
+</div>
+
+<div id="visualizer">
+
+</div>
+
+<button id="toggle-button">Toggle Colour</button>
+
+<script id="vs" type="x-shader/x-vertex">
+attribute vec3 color;
+attribute float size;
+
+varying vec3 vColor;
+void main() {
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  vColor = color;
+
+  gl_PointSize = size;
+  gl_Position = projectionMatrix * mvPosition;
+}
+</script>
+<script id="fs" type="x-shader/x-fragment">
+varying vec3 vColor;
+
+void main() {
+  gl_FragColor = vec4(vColor, 1.0);
+}
+</script>
+
+</body>
+</html>
