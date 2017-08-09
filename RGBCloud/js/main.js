@@ -120,7 +120,7 @@ function renderHistogram(histogram, min, max){
     vertexShader: document.getElementById('vs').textContent,
     fragmentShader: document.getElementById('fs').textContent,
     transparent: true,
-    depthWrite: false,
+    depthWrite: true,
   });
 
 	points = new THREE.Points( geometry, material );
