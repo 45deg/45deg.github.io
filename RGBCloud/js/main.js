@@ -20,7 +20,7 @@ function initFileReader(){
         canvas.height = height;
         context.drawImage(image, 0, 0);
 
-        var ratio = 200 / Math.min(width, height);
+        var ratio = 200 / Math.max(width, height);
         preview.width = width * ratio;
         preview.height = height * ratio;
         preview.getContext('2d').drawImage(image, 0, 0, width * ratio, height * ratio);
