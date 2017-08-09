@@ -1,9 +1,9 @@
-function initDropZone(){
-  window.addEventListener('drop', function(evt){
+function initFileReader(){
+  document.getElementById('image').addEventListener('change', function(evt){
     evt.stopPropagation();
     evt.preventDefault();
 
-    var files = evt.dataTransfer.files; // FileList object.
+    var files = evt.target.files; // FileList object.
     var file = files[0];
     if (!file.type.match('image.*')) return;
 
@@ -29,12 +29,6 @@ function initDropZone(){
       });
     };
     reader.readAsDataURL(file);
-  }, false);
-
-  window.addEventListener('dragover', function(evt){
-    evt.stopPropagation();
-    evt.preventDefault();
-    evt.dataTransfer.dropEffect = 'copy';
   }, false);
 }
 
@@ -159,7 +153,7 @@ function toggleColor(){
 }
 
 window.addEventListener('load', function(){
-  initDropZone();
+  initFileReader();
   initVisualizer();
 
   document.getElementById('toggle-button').addEventListener('click', function(){
