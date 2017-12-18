@@ -748,18 +748,19 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var FunObject = function () {
-	  function FunObject(args, rest, body) {
+	  function FunObject(args, rest, body, env) {
 	    _classCallCheck(this, FunObject);
 
 	    this.args = args;
 	    this.rest = rest;
 	    this.body = body;
+	    this.env = env;
 	  }
 
 	  _createClass(FunObject, [{
 	    key: 'call',
-	    value: function call(args, env) {
-	      var subEnv = new _env2.default(env);
+	    value: function call(args) {
+	      var subEnv = new _env2.default(this.env);
 
 	      if (this.rest === null) {
 	        // not have a rest
@@ -835,7 +836,7 @@
 	      return (0, _escapeId2.default)(arg.value);
 	    });
 	    var restId = rest.value !== null ? (0, _escapeId2.default)(rest.value.value[1].value) : null;
-	    env.set((0, _escapeId2.default)(id.value), new FunObject(argIds, restId, body));
+	    env.set((0, _escapeId2.default)(id.value), new FunObject(argIds, restId, body, env));
 	  } else {
 	    throw 'Invalid syntax';
 	  }
@@ -870,8 +871,9 @@
 	          return func.apply(env, args);
 	        } else if (func instanceof FunObject) {
 	          // in-scheme function
-	          return func.call(args, env);
+	          return func.call(args);
 	        } else {
+	          debugger;
 	          throw 'Calling non-function';
 	        }
 	      } else {
@@ -882,7 +884,7 @@
 	}
 
 	var special = {};
-	special['lambda'] = function (tail) {
+	special['lambda'] = function (tail, env) {
 	  var _tail = _slicedToArray(tail, 2);
 
 	  var arg = _tail[0];
@@ -890,7 +892,7 @@
 
 	  if (arg.value.type === 'arg1') {
 	    // single arguments
-	    return new FunObject([], (0, _escapeId2.default)(arg.value.value), body);
+	    return new FunObject([], (0, _escapeId2.default)(arg.value.value), body, env);
 	  } else {
 	    var argList = arg.value.value[0].value;
 	    var argIds = argList.map(function (arg) {
@@ -898,7 +900,7 @@
 	    });
 	    var argType = arg.value.type;
 	    var restId = argType === 'arg2' ? (0, _escapeId2.default)(arg.value.value[2].value) : null;
-	    return new FunObject(argIds, restId, body);
+	    return new FunObject(argIds, restId, body, env);
 	  }
 	};
 	special['quote'] = special["'"] = function (tail) {
@@ -955,7 +957,7 @@
 	  }
 
 	  if (id.value !== null) {
-	    subEnv.set((0, _escapeId2.default)(id.value.value), new FunObject(bindNames, null, body));
+	    subEnv.set((0, _escapeId2.default)(id.value.value), new FunObject(bindNames, null, body, subEnv));
 	  }
 	  return evalBody(body, subEnv);
 	};
