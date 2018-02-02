@@ -6,6 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>45deg</title>
     <link rel="stylesheet" href="./hack.css">
+    <style>
+    .work { padding:0 10px; margin-bottom:1rem; }
+    .work .work-header a { border:none; }
+    .work .work-header img { border:1px solid #CCC; }
+    .work .work-content { width:250px; }
+    .work .work-content h3 { margin:0; }
+    .work .work-content h3::before { content: "» "; }
+    .work .work-content p { margin: 0.5em; color: #666; }
+
+    @media screen and (max-width: 768px) {
+        .work .work-header { float:left; }
+        .work .work-content { float:left; margin:1rem; }
+    }
+    </style>
 </head>
 <body class="hack">
   <div class="main container">
@@ -16,42 +30,70 @@
         <h2>About</h2>
           <p>主にrogyで作ったものなどをおいてます。</p>
         <h2>Works</h2>
-        <ul>
-            <li>
-                <strong><a href="./daienjo">大炎上シミュレータ</a></strong>
-                森林の燃焼モデル(パーコレーション)を用いて相転移を観察するために作りました。
-            </li>
-            <li>
-                <strong><a href="./neural-network">ニューラルネットワークの可視化</a></strong>
-                BPNNの可視化です。
-            </li>
-            <li>
-                <strong><a href="./neural-network_v2">ニューラルネットワークの可視化 (ConvnetJS版)</a></strong>
-                上のプログラムを<a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
-            </li>
-            <li>
-                <strong><a href="./misc/toritsu.html">倒立振子</a></strong>
-                PID制御のシミュレーション <a href="https://sites.google.com/site/ssrailab/home/fuzzyhakuso">ファジイはダメ</a>
-            </li>
-
-            <li>
-                <strong><a href="./misc/mandel.html">マンデルブロ集合</a></strong>
-            </li>
-            <li>
-                <strong><a href="./rogyAdC2015">dynamorphism の紹介</a></strong>
-                <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a> のために書いたものです。関数型プログラミングで動的計画法を行う手法について説明しています。
-            </li>
-            <li>
-                <strong><a href="./Kantele">Kantele</a></strong> (<a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>)
-                研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong>
-            </li>
-            <li>
-                <strong><a href="http://45deg.github.io/vixiv/#!/cs.*">vixiv</a></strong> arXivに投稿された最新の論文を日ごとに表示します。分野の細かい指定も可能です。
-            </li>
-            <li>
-                <strong><a href="./RGBCloud">RGBCloud</a></strong> 画像に含まれる色の分布を3Dで表示する。RGBとHSL色空間で表示切り替えが可能。スマホでも動くはず。
-            </li>
-        </ul>
+        <div class="grid">
+            <div class="work">
+                <header class="work-header"><a href="./daienjo"><img src="./images/i1.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>大炎上シミュレータ</h3>
+                    <p>森林の燃焼モデル(パーコレーション)を用いて相転移を観察するために作りました。</p>
+                </div>
+            </div>
+            <div class="work">
+                <header class="work-header"><a href="./neural-network"><img src="./images/i2.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>ニューラルネットワークの可視化</h3>
+                    <p>BPNNの可視化です。</p>
+                </div>
+            </div>  
+            <div class="work">
+                <header class="work-header"><a href="./neural-network_v2"><img src="./images/i3.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>ニューラルネットワークの可視化 (ConvnetJS版)</h3>
+                    <p><a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。</p>
+                </div>
+            </div>  
+            <div class="work">
+                <header class="work-header"><a href="./misc/toritsu.html"><img src="./images/i4.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>倒立振子</h3>
+                    <p>PID制御のシミュレーション <a href="https://sites.google.com/site/ssrailab/home/fuzzyhakuso">ファジイはダメ</a></p>
+                </div>
+            </div> 
+            <div class="work">
+                <header class="work-header"><a href="./misc/mandel.html"><img src="./images/i5.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>マンデルブロ集合</h3>
+                </div>
+            </div> 
+            <div class="work">
+                <header class="work-header"><a href="./rogyAdC2015"><img src="./images/i6.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>dynamorphism の紹介</h3>
+                    <p><a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a> のために書いたものです。関数型プログラミングで動的計画法を行う手法について説明しています。</p>
+                </div>
+            </div>
+            <div class="work">
+                <header class="work-header"><a href="./Kantele"><img src="./images/i7.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>Kantele</h3>
+                    <p><a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a> 研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong></p>
+                </div>
+            </div> 
+            <div class="work">
+                <header class="work-header"><a href="http://45deg.github.io/vixiv/#!/cs.*"><img src="./images/i8.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>vixiv</h3>
+                    <p>arXivに投稿された最新の論文を日ごとに表示します。分野の細かい指定も可能です。 <a href="http://zkro.hateblo.jp/entry/2017/02/10/124019">blog</a></p>
+                </div>
+            </div> 
+            <div class="work">
+                <header class="work-header"><a href="./RGBCloud"><img src="./images/i9.png" width="250"></a></header>
+                <div class="work-content">
+                    <h3>RGBCloud</h3>
+                    <p>画像に含まれる色の分布を3Dで表示する。RGBとHSL色空間で表示切り替えが可能。スマホでも動くはず。</p>
+                </div>
+            </div> 
+        </div>
 
         <h2>Slides</h2>
         <ul>
