@@ -1,0 +1,8 @@
+{
+  "short_name": "HoverDictCN",
+  "name": "Chinese-English interactive dictionary",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
