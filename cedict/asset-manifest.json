@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/cedict/static/css/main.24108b7f.chunk.css",
-    "main.js": "/cedict/static/js/main.44aaed23.chunk.js",
+    "main.css": "/cedict/static/css/main.9e762a53.chunk.css",
+    "main.js": "/cedict/static/js/main.02cc88be.chunk.js",
     "runtime~main.js": "/cedict/static/js/runtime~main.efc6218b.js",
     "static/css/2.a6e4997c.chunk.css": "/cedict/static/css/2.a6e4997c.chunk.css",
-    "static/js/2.d7b76cc9.chunk.js": "/cedict/static/js/2.d7b76cc9.chunk.js",
+    "static/js/2.cd0219fe.chunk.js": "/cedict/static/js/2.cd0219fe.chunk.js",
     "index.html": "/cedict/index.html",
-    "precache-manifest.83a485d6ec4f52be5096c39af0a6fb7c.js": "/cedict/precache-manifest.83a485d6ec4f52be5096c39af0a6fb7c.js",
+    "precache-manifest.e3c785e6177fc17354ae2afe2fa5ec48.js": "/cedict/precache-manifest.e3c785e6177fc17354ae2afe2fa5ec48.js",
     "service-worker.js": "/cedict/service-worker.js"
   }
 }
