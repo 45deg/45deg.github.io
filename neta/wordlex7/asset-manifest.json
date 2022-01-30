@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://45deg.github.io/neta/wordlex7/static/css/main.214dff33.css",
-    "main.js": "https://45deg.github.io/neta/wordlex7/static/js/main.3cb13e7a.js",
+    "main.js": "https://45deg.github.io/neta/wordlex7/static/js/main.5fd7d034.js",
     "static/js/787.3500bfec.chunk.js": "https://45deg.github.io/neta/wordlex7/static/js/787.3500bfec.chunk.js",
     "index.html": "https://45deg.github.io/neta/wordlex7/index.html",
     "main.214dff33.css.map": "https://45deg.github.io/neta/wordlex7/static/css/main.214dff33.css.map",
-    "main.3cb13e7a.js.map": "https://45deg.github.io/neta/wordlex7/static/js/main.3cb13e7a.js.map",
+    "main.5fd7d034.js.map": "https://45deg.github.io/neta/wordlex7/static/js/main.5fd7d034.js.map",
     "787.3500bfec.chunk.js.map": "https://45deg.github.io/neta/wordlex7/static/js/787.3500bfec.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.214dff33.css",
-    "static/js/main.3cb13e7a.js"
+    "static/js/main.5fd7d034.js"
   ]
 }
