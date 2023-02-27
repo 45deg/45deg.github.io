@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Safetensors metadata viewer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Safetensors metadata viewer</h1>
+
+        <p>Please select a file or drag and drop a file:</p>
+
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="fileInput">
+        </div>
+
+        <pre id="result" class="mt-4"></pre>
+    </div>
+
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const resultPre = document.getElementById('result');
+
+        // Handle file selection from file input
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        // Handle file drag and drop
+        window.addEventListener('dragover', handleDragOver, false);
+        window.addEventListener('drop', handleFileSelect, false);
+
+        function getUint64(dataview, byteOffset, littleEndian) {
+            // split 64-bit number into two 32-bit (4-byte) parts
+            const left = dataview.getUint32(byteOffset, littleEndian);
+            const right = dataview.getUint32(byteOffset + 4, littleEndian);
+
+            // combine the two 32-bit values
+            const combined = littleEndian ? left + 2 ** 32 * right : 2 ** 32 * left + right;
+
+            if (!Number.isSafeInteger(combined))
+                console.warn(combined, 'exceeds MAX_SAFE_INTEGER. Precision may be lost');
+
+            return combined;
+        }
+
+        function handleFileSelect(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            const files = evt.dataTransfer ? evt.dataTransfer.files : evt.target.files;
+            const file = files[0];
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const buffer = event.target.result;
+                const uint64View = new DataView(buffer, 0, 8);
+                const n = getUint64(uint64View, 0, true);
+                const jsonBytes = buffer.slice(8, 8 + n);
+                const jsonString = new TextDecoder('utf-8').decode(jsonBytes);
+                const json = JSON.parse(jsonString)['__metadata__'];
+                const prettifiedJson = JSON.stringify(json, null, 2);
+                resultPre.textContent = prettifiedJson;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function handleDragOver(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy';
+        }
+
+    </script>
+</body>
+
+</html>
