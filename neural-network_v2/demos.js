@@ -251,7 +251,7 @@ Demos[1] = (function () {
             grid: { rows: 2, columns: 1, pattern: 'independent' },
             plot_bgcolor: '#f0f8ff',
             margin: {
-                r: 0
+                r: 0, b: 50, t: 50
             },
         };
         Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout);
@@ -437,7 +437,7 @@ Demos[2] = (function () {
             grid: { rows: 2, columns: 1, pattern: 'independent' },
             plot_bgcolor: '#f0f8ff',
             margin: {
-                r: 0,
+                r: 0, b: 50, t: 50
             },
         };
         Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout, { responsive: true });
@@ -591,10 +591,7 @@ Demos[3] = (function () {
             grid: { rows: 2, columns: 1, pattern: 'independent' },
             plot_bgcolor: '#f0f8ff',
             margin: {
-                l: 50,
-                r: 0,
-                t: 50,
-                b: 50
+                r: 0, b: 50, t: 50
             },
         };
         Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout);
