@@ -25,6 +25,11 @@ $(document).ready(function () {
     console.log(demo);
   });
 
+  //$('#plotly-chart').hide();
+  $('#showmeasure').click(function () {
+    $('#plotly-chart').toggle();
+  });
+
   $('#init').click(function () {
     LayerEditor.applyToNetwork();
   });

@@ -1,3 +1,11 @@
+function average(arr) {
+    if (arr.length === 0) {
+        return 0;
+    }
+    var sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    return sum / arr.length;
+}
+
 var DemoBase = (function () {
     /*
      * Base Class of Demo
@@ -66,6 +74,8 @@ var DemoBase = (function () {
         this.step = 0;
         this.counter = 0;
         this.error = [];
+        this.epoch = 0;
+        this.index = 0;
         this.timer = setInterval(this.tick.bind(this), 15);
     };
 
@@ -82,29 +92,39 @@ var DemoBase = (function () {
         if (this.speed <= 1) {
             if (this.speed === 0 && this.counter++ % 50 !== 0) return;
             i = this.step % pattern.length;
+            if (i === 0) {
+                if (this.step > 0) {
+                    this.onEpoch();
+                }
+                this.resultData = new Array(pattern.length);
+            }
             var result = this.trainer.train(pattern[i][0], pattern[i][1]);
             this.error[i] = result.loss;
+            this.resultData[i] = [pattern[i][0], pattern[i][1], this.network.getPrediction()];
             this.controller.applyNetwork();
             this.step++;
             if (this.ecStep <= this.step ||
                 (this.ecError >= 0 && i === pattern.length - 1 &&
-                    this.ecError > Math.max.apply(null, this.error))) {
+                    this.ecError > average(this.error))) {
                 this.finishTraining();
             }
         } else {
             var epoch = Math.pow(2, this.speed - 1);
             OUTER: for (var n = 0; n < epoch; ++n) {
+                this.resultData = new Array(pattern.length);
                 for (i = 0; i < pattern.length; ++i) {
                     var result = this.trainer.train(pattern[i][0], pattern[i][1]);
                     this.error[i] = result.loss;
+                    this.resultData[i] = [pattern[i][0], pattern[i][1], this.network.getPrediction()];
                     this.step++;
                     if (this.ecStep <= this.step ||
                         (this.ecError >= 0 && i === pattern.length - 1 &&
-                            this.ecError > Math.max.apply(null, this.error))) {
+                            this.ecError > average(this.error))) {
                         this.finishTraining();
                         break OUTER;
                     }
                 }
+                this.onEpoch();
             }
             var stubpat = pattern[this.counter++ % pattern.length];
             this.trainer.net.forward(stubpat[0]);
@@ -113,7 +133,7 @@ var DemoBase = (function () {
 
         this.onTick();
         $('#step-output').html(this.step);
-        $('#error-output').html(Math.max.apply(null, this.error));
+        $('#error-output').html(average(this.error));
     };
 
     DB.prototype.pauseTraining = function () {
@@ -137,6 +157,7 @@ var DemoBase = (function () {
     DB.prototype.beforeTraining = function () { };
     DB.prototype.afterTraining = function () { };
     DB.prototype.onTick = function () { };
+    DB.prototype.onEpoch = function () { };
 
     DB.prototype.disableParams = function () {
         $('.param input:not([name=speed])').attr('disabled', 'disabled');
@@ -168,7 +189,7 @@ Demos[1] = (function () {
     function XOR(hlayer) {
         var defaultLayer = [
             { type: 'input', out_sx: 1, out_sy: 1, out_depth: 3 },
-            { type: 'fc', num_neurons: 5, activation: 'relu' },
+            { type: 'fc', num_neurons: 5, activation: 'tanh' },
             { type: 'softmax', num_classes: 2 }
         ];
         hlayer = hlayer || defaultLayer;
@@ -202,6 +223,51 @@ Demos[1] = (function () {
 
     XOR.prototype = Object.create(DemoBase.prototype);
     XOR.prototype.constructor = DemoBase;
+
+    XOR.prototype.beforeTraining = function () {
+        Plotly.purge('plotly-chart');
+        const traceAccuracy = {
+            x: [],
+            y: [],
+            mode: 'lines',
+            type: 'scatter',
+            showlegend: false
+        };
+        const traceLoss = {
+            x: [],
+            y: [],
+            xaxis: 'x2',
+            yaxis: 'y2',
+            mode: 'lines',
+            showlegend: false,
+            type: 'scatter'
+        };
+        const layout = {
+            title: 'Train accuracy and loss',
+            xaxis: { title: 'Epochs' },
+            yaxis: { title: 'Accuracy', range: [0, 1] },
+            xaxis2: { title: 'Epochs', anchor: 'y2' },
+            yaxis2: { title: 'Loss', anchor: 'x2', range: [0, 1] },
+            grid: { rows: 2, columns: 1, pattern: 'independent' },
+            plot_bgcolor: '#f0f8ff',
+            margin: {
+                r: 0
+            },
+        };
+        Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout);
+    }
+
+    XOR.prototype.onEpoch = function () {
+        var accuracy = 0;
+        this.resultData.forEach(function (r) {
+            if (r[1] === r[2]) accuracy++;
+        });
+        accuracy /= this.dataset.length;
+        Plotly.extendTraces('plotly-chart', {
+            x: [[this.step], [this.step]],
+            y: [[accuracy], [average(this.error)]]
+        }, [0, 1]);
+    };
 
     return XOR;
 })();
@@ -344,11 +410,55 @@ Demos[2] = (function () {
         this.curve = this.plotFunction(function (x) {
             return 1;
         }, 0, 1, 20);
+
+        Plotly.purge('plotly-chart');
+        const traceAccuracy = {
+            x: [],
+            y: [],
+            mode: 'lines',
+            type: 'scatter',
+            showlegend: false
+        };
+        const traceLoss = {
+            x: [],
+            y: [],
+            xaxis: 'x2',
+            yaxis: 'y2',
+            mode: 'lines',
+            showlegend: false,
+            type: 'scatter'
+        };
+        const layout = {
+            title: 'MSE and loss',
+            xaxis: { title: 'Epochs' },
+            yaxis: { title: 'MSE' },
+            xaxis2: { title: 'Epochs', anchor: 'y2' },
+            yaxis2: { title: 'Loss', anchor: 'x2', range: [0, 1] },
+            grid: { rows: 2, columns: 1, pattern: 'independent' },
+            plot_bgcolor: '#f0f8ff',
+            margin: {
+                r: 0,
+            },
+        };
+        Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout, { responsive: true });
     };
 
     Approx.prototype.deinit = function () {
         this.plot.remove();
         DemoBase.prototype.deinit.call(this);
+    };
+
+    Approx.prototype.onEpoch = function () {
+        var mse = 0;
+        this.resultData.forEach(function (r) {
+            var actual = demo.trainer.net.forward(r[0]).w[0];
+            mse += Math.pow(r[1][0] - actual, 2);
+        });
+        mse /= this.dataset.length;
+        Plotly.extendTraces('plotly-chart', {
+            x: [[this.step], [this.step]],
+            y: [[mse], [average(this.error)]]
+        }, [0, 1]);
     };
 
     return Approx;
@@ -453,6 +563,54 @@ Demos[3] = (function () {
         [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0],
         [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]
     ];
+
+    Recognition.prototype.beforeTraining = function () {
+        Plotly.purge('plotly-chart');
+        const traceAccuracy = {
+            x: [],
+            y: [],
+            mode: 'lines',
+            type: 'scatter',
+            showlegend: false
+        };
+        const traceLoss = {
+            x: [],
+            y: [],
+            xaxis: 'x2',
+            yaxis: 'y2',
+            mode: 'lines',
+            showlegend: false,
+            type: 'scatter'
+        };
+        const layout = {
+            title: 'Train accuracy and loss',
+            xaxis: { title: 'Epochs' },
+            yaxis: { title: 'Accuracy', range: [0, 1] },
+            xaxis2: { title: 'Epochs', anchor: 'y2' },
+            yaxis2: { title: 'Loss', anchor: 'x2' },
+            grid: { rows: 2, columns: 1, pattern: 'independent' },
+            plot_bgcolor: '#f0f8ff',
+            margin: {
+                l: 50,
+                r: 0,
+                t: 50,
+                b: 50
+            },
+        };
+        Plotly.newPlot('plotly-chart', [traceAccuracy, traceLoss], layout);
+    }
+
+    Recognition.prototype.onEpoch = function () {
+        var accuracy = 0;
+        this.resultData.forEach(function (r) {
+            if (r[1] === r[2]) accuracy++;
+        });
+        accuracy /= this.dataset.length;
+        Plotly.extendTraces('plotly-chart', {
+            x: [[this.step], [this.step]],
+            y: [[accuracy], [average(this.error)]]
+        }, [0, 1]);
+    };
 
     return Recognition;
 })();

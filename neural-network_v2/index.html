@@ -13,33 +13,18 @@
   <script src="./layer.js"></script>
   <script src="./demos.js"></script>
   <script src="./main.js"></script>
+  <script src="./plotly-2.27.1.min.js"></script>
 </head>
 
 <body>
   <div class="container">
-    <h1>JavaScript Neural Network Demo using <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a></h1>
-    <div class="col-md-3">
-      <form action="#">
-        <fieldset>
-          <legend>Demo</legend>
-          <p><select id="demos">
-            <option value="1">3-in XOR</option>
-            <option value="2">Function Approximation</option>
-            <option value="3">Pattern Recognition</option>
-          </select></p>
-        </fieldset>
-        <fieldset>
-          <legend>Metrics</legend>
-          <div id="loss"></div>
-          <div id="accuracy"></div>
-          <p>Contact me via <a href="https://github.com/45deg/45deg.github.io/issues">Github Issues</a></p>
-        </fieldset>
-      </form>
-    </div>
+    <h1>JavaScript Neural Network Demo using <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>
+    </h1>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div id="network"></div>
       <div id="demo1" class="demofield">
+        <h2>INPUT</h2>
         <table id="xor-table">
           <tr>
             <th>Test</th>
@@ -123,6 +108,7 @@
         </table>
       </div>
       <div id="demo2" class="demofield">
+        <h2>PLOT</h2>
         <div id="plot"></div>
         <p>
           Form:
@@ -136,6 +122,7 @@
         </p>
       </div>
       <div id="demo3" class="demofield">
+        <h2>INPUT</h2>
         <div id="num-panel" class="btn-group">
           <input type="button" class="pat-num btn btn-default" value="0">
           <input type="button" class="pat-num btn btn-default" value="1">
@@ -149,7 +136,7 @@
           <input type="button" class="pat-num btn btn-default" value="9">
           <input type="button" id="clear" value="CLEAR" class="btn btn-default">
         </div>
-        <div>
+        <div style="overflow:auto">
           <div id="pat-input">
             <table id="panel">
               <tr>
@@ -184,52 +171,73 @@
           </div>
         </div>
       </div>
+      <div></div>
+      <h2>Learning Details</h2>
+      <div id="plotly-chart"></div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div id="controller">
         <form action="#">
-          <p>
-            <input type="button" value="train" id="train" class="btn btn-primary">
-            <input type="button" value="initialize" id="init" class="btn btn-default">
-          </p>
-          <p class="param">
+
+          <fieldset>
+            <legend>Demo</legend>
+            <p><select id="demos">
+                <option value="1">3-in XOR</option>
+                <option value="2">Function Approximation</option>
+                <option value="3">Pattern Recognition</option>
+              </select></p>
+          </fieldset>
+          <fieldset>
+            <legend>Control</legend>
+            <p>
+              <input type="button" value="train" id="train" class="btn btn-primary">
+              <input type="button" value="initialize" id="init" class="btn btn-default">
+            </p>
+            <p class="param">
               Speed: slow
               <input type="radio" name="speed" value="0">
               <input type="radio" name="speed" value="1" checked="checked">
               <input type="radio" name="speed" value="2">
               <input type="radio" name="speed" value="3"> fast
             </p>
-          <p id="output" class="panel panel-default">
-            step: <span id="step-output">0</span>
-            <br> max error: <span id="error-output">0</span>
-          </p>
+            <p id="output" class="panel panel-default">
+              step: <span id="step-output">0</span>
+              <br> train loss: <span id="error-output">0</span>
+            </p>
+          </fieldset>
           <fieldset>
             <legend>Layers</legend>
             <div class="panel panel-default">
-            <table id="layereditor" class="table">
-              <thead><tr><th>type</th><th>num</th><th><span class="glyphicon glyphicon-plus" id="add"></span></th></tr></thead>
-              <tbody>
-              </tbody>
-            </table>
+              <table id="layereditor" class="table">
+                <thead>
+                  <tr>
+                    <th>type</th>
+                    <th>num</th>
+                    <th><span class="glyphicon glyphicon-plus" id="add"></span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </div>
           </fieldset>
           <fieldset>
             <legend>Trainer</legend>
-              <p>
+            <p>
               <label for="trainer">Trainer </label>
               <select id="trainer">
                 <option value="sgd">SGD+Momentum</option>
                 <option value="adadelta" selected>Adadelta</option>
                 <option value="adagrad">Adagrad</option>
               </select>
-             </p>
-              <p>
-                <label for="trainerparam">Parameter(JSON)</label>
+            </p>
+            <p>
+              <label for="trainerparam">Parameter(JSON)</label>
               <textarea placeholder="parameter" id="trainerparam"></textarea>
-              </p>
-              <p>
-                <input type="button" id="trainerapply" value="Apply" class="btn btn-sm btn-default">
-              </p>
+            </p>
+            <p>
+              <input type="button" id="trainerapply" value="Apply" class="btn btn-sm btn-default">
+            </p>
           </fieldset>
           <fieldset>
             <legend>End condition</legend>
