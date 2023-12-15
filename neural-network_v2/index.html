@@ -18,7 +18,7 @@
 <body>
   <div class="container">
     <h1>JavaScript Neural Network Demo using <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a></h1>
-    <div class="col-md-2">
+    <div class="col-md-3">
       <form action="#">
         <fieldset>
           <legend>Demo</legend>
@@ -29,18 +29,15 @@
           </select></p>
         </fieldset>
         <fieldset>
-          <legend>TODO</legend>
-          <ul>
-            <li>More demos</li>
-            <li>Usage</li>
-            <li>Plot the log</li>
-          </ul>
+          <legend>Metrics</legend>
+          <div id="loss"></div>
+          <div id="accuracy"></div>
           <p>Contact me via <a href="https://github.com/45deg/45deg.github.io/issues">Github Issues</a></p>
         </fieldset>
       </form>
     </div>
 
-    <div class="col-md-7">
+    <div class="col-md-6">
       <div id="network"></div>
       <div id="demo1" class="demofield">
         <table id="xor-table">
