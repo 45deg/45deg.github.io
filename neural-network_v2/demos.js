@@ -124,8 +124,8 @@ var DemoBase = (function () {
                         break OUTER;
                     }
                 }
-                this.onEpoch();
             }
+            this.onEpoch();
             var stubpat = pattern[this.counter++ % pattern.length];
             this.trainer.net.forward(stubpat[0]);
             this.controller.applyNetwork();
