@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MNIST VIZ</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+    
+    .loading {
+      position: absolute;
+      z-index: 999;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #000000;
+      color: #ffffff;
+      text-align: center;
+      padding: 1em;
+      font-size: 2em;
+    }
+
+    .tip {
+      position: absolute;
+      z-index: 999;
+      top: 1em;
+      left: 1em;
+      padding: 0.5em;
+      font-size: 1em;
+      /* purple opacity tooltip with shadow */
+      background-color: rgba(128, 0, 128, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+
+  </style>
+  <script type="module" crossorigin src="/mnist-viz/assets/index-CNRvkdKq.js"></script>
+</head>
+
+<body>
+  <div class="tip">Visualization of 786-dimensional MNIST data mapped by <a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a></div>
+  <div class="loading">Loading<br><span class="progress">0.00</span>%</div>
+</body>
+
+</html>
