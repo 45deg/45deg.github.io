@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ナワトルテキスト補助</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col h-full bg-gray-100">
+    <header class="bg-blue-600 text-white p-6">
+        <h1 class="text-xl font-bold">ナワトルテキスト補助</h1>
+
+        キーボード入力: a` や a^ は ā に変換されます。
+    </header>
+
+    <main class="flex-grow p-4 md:p-6">
+        <textarea 
+            id="accentInput" 
+            class="w-full h-full p-6 text-2xl md:text-3xl border-2 border-gray-300 rounded-xl resize-none shadow-lg"
+            placeholder="ここに入力してください"
+        ></textarea>
+    </main>
+
+    <footer class="bg-gray-200 p-4 md:p-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
+                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ā">ā</button>
+                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ē">ē</button>
+                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ī">ī</button>
+                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ō">ō</button>
+                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ū">ū</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.getElementById('accentInput');
+            const accentButtons = document.querySelectorAll('.accent-btn');
+            
+            // LocalStorageから保存されたテキストを読み込む
+            const savedText = localStorage.getItem('accentText');
+            if (savedText) {
+                textarea.value = savedText;
+            }
+
+            textarea.addEventListener('input', handleInput);
+            textarea.addEventListener('keydown', handleTabKey);
+
+            // タッチデバイスでのボタンのダブルタップによるズームを防止
+            accentButtons.forEach(button => {
+                button.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    const accent = this.getAttribute('data-accent');
+                    insertAccent(accent);
+                });
+                button.addEventListener('click', function(e) {
+                    const accent = this.getAttribute('data-accent');
+                    insertAccent(accent);
+                });
+            });
+
+            function handleInput(e) {
+                const cursorPos = this.selectionStart;
+                let text = this.value;
+                const accentMap = {
+                    'a`': 'ā', 'e`': 'ē', 'i`': 'ī', 'o`': 'ō', 'u`': 'ū',
+                    'A`': 'Ā', 'E`': 'Ē', 'I`': 'Ī', 'O`': 'Ō', 'U`': 'Ū'
+                };
+
+                let replacementMade = false;
+
+                if (cursorPos >= 2) {
+                    const lastTwoChars = text.substring(cursorPos - 2, cursorPos);
+                    const replacement = accentMap[lastTwoChars];
+                    
+                    if (replacement) {
+                        text = text.substring(0, cursorPos - 2) + 
+                               replacement + 
+                               text.substring(cursorPos);
+                        replacementMade = true;
+                    }
+                }
+
+                this.value = text;
+                localStorage.setItem('accentText', text);
+
+                if (replacementMade) {
+                    this.setSelectionRange(cursorPos - 1, cursorPos - 1);
+                } else {
+                    this.setSelectionRange(cursorPos, cursorPos);
+                }
+            }
+
+            function handleTabKey(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 1;
+                    handleInput.call(this);
+                }
+            }
+
+            function insertAccent(accent) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const text = textarea.value;
+
+                textarea.value = text.slice(0, start) + accent + text.slice(end);
+                textarea.selectionStart = textarea.selectionEnd = start + 1;
+                textarea.focus();
+                localStorage.setItem('accentText', textarea.value);
+            }
+        });
+    </script>
+</body>
+</html>
+
