@@ -24,22 +24,18 @@
         ></textarea>
     </main>
 
-    <footer class="bg-gray-200 p-4 md:p-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
-                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ā">ā</button>
-                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ē">ē</button>
-                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ī">ī</button>
-                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ō">ō</button>
-                <button class="accent-btn h-16 md:h-20 text-2xl md:text-3xl bg-blue-500 text-white rounded-xl hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ū">ū</button>
-            </div>
-        </div>
-    </footer>
-
+    <div class="fixed bottom-6 md:bottom-10 flex gap-4 justify-center w-full button-container">
+        <button class="accent-btn h-12 w-12 text-2xl bg-blue-500 text-white rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ā">ā</button>
+        <button class="accent-btn h-12 w-12 text-2xl bg-blue-500 text-white rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ē">ē</button>
+        <button class="accent-btn h-12 w-12 text-2xl bg-blue-500 text-white rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ī">ī</button>
+        <button class="accent-btn h-12 w-12 text-2xl bg-blue-500 text-white rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ō">ō</button>
+        <button class="accent-btn h-12 w-12 text-2xl bg-blue-500 text-white rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors shadow-md" data-accent="ū">ū</button>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const textarea = document.getElementById('accentInput');
             const accentButtons = document.querySelectorAll('.accent-btn');
+            const buttonContainer = document.querySelector('.button-container');
             
             // LocalStorageから保存されたテキストを読み込む
             const savedText = localStorage.getItem('accentText');
@@ -117,6 +113,17 @@
                 textarea.selectionStart = textarea.selectionEnd = start + 1;
                 textarea.focus();
                 localStorage.setItem('accentText', textarea.value);
+            }
+
+            window.visualViewport.addEventListener('scroll', viewportHandler);
+            window.visualViewport.addEventListener('resize', viewportHandler);
+                function viewportHandler() {
+                const visualViewport = window.visualViewport
+                const offsetTop =
+                    visualViewport.offsetTop +
+                    visualViewport.height -
+                    document.documentElement.clientHeight
+                buttonContainer.style.transform =  `translateY(${offsetTop}px)`
             }
         });
     </script>
