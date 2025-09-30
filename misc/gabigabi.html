@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPEGガビガビ化ツール</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        }
+        .canvas-container {
+            background-image:
+                linear-gradient(45deg, #2d3748 25%, transparent 25%),
+                linear-gradient(-45deg, #2d3748 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #2d3748 75%),
+                linear-gradient(-45deg, transparent 75%, #2d3748 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: #1a202c;
+        }
+        /* スライダーのつまみとトラックのスタイル */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #4a5568;
+            border: 4px solid #f7fafc;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -8px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #4a5568;
+            border: 4px solid #f7fafc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 8px;
+            background: #2d3748;
+            border-radius: 4px;
+        }
+        input[type="range"]::-moz-range-track {
+            height: 8px;
+            background: #2d3748;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-5xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8">
+        <!-- ヘッダー -->
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-100">JPEGガビガビ化ツール</h1>
+            <p class="text-gray-400 mt-2">画像をアップロードして、意図的にJPEG圧縮を繰り返し、ユニークな質感を作り出そう。</p>
+        </header>
+
+        <!-- コントロールパネル -->
+        <div class="bg-gray-700/50 p-6 rounded-xl mb-6 flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-grow w-full">
+                <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-300">1. 画像を選択</label>
+                <input type="file" id="imageUpload" accept="image/jpeg, image/png" class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 transition cursor-pointer">
+            </div>
+            <div class="flex-grow w-full">
+                <label for="glitchLevel" class="block mb-2 text-sm font-medium text-gray-300">2. ガビガビ度: <span id="glitchLevelValue" class="font-bold text-indigo-400">15</span></label>
+                <input type="range" id="glitchLevel" min="1" max="20" value="15" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                <div class="flex items-center mt-4">
+                    <input id="torture" name="torture" type="checkbox" class="h-4 w-4 rounded border-gray-500 bg-gray-600 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-gray-800">
+                    <label for="torture" class="ml-3 block text-sm font-medium text-gray-300">Tortureオプション 🔥</label>
+                </div>
+            </div>
+            <button id="processBtn" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                <span id="btnText">3. ガビガビにする</span>
+                <svg id="spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 画像表示エリア -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <h2 class="text-lg font-semibold text-center mb-2 text-gray-300">元画像</h2>
+                <div class="aspect-w-1 aspect-h-1 canvas-container rounded-lg overflow-hidden flex items-center justify-center">
+                    <canvas id="originalCanvas" class="max-w-full max-h-full"></canvas>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-lg font-semibold text-center mb-2 text-gray-300">ガビガビ画像</h2>
+                 <div class="aspect-w-1 aspect-h-1 canvas-container rounded-lg overflow-hidden flex items-center justify-center">
+                    <canvas id="resultCanvas" class="max-w-full max-h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ダウンロード -->
+        <div class="text-center">
+             <a id="downloadLink" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-lg opacity-50 pointer-events-none">
+                画像をダウンロード
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUpload = document.getElementById('imageUpload');
+            const glitchLevel = document.getElementById('glitchLevel');
+            const glitchLevelValue = document.getElementById('glitchLevelValue');
+            const tortureCheckbox = document.getElementById('torture');
+            const processBtn = document.getElementById('processBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            const originalCanvas = document.getElementById('originalCanvas');
+            const resultCanvas = document.getElementById('resultCanvas');
+            const downloadLink = document.getElementById('downloadLink');
+
+            const originalCtx = originalCanvas.getContext('2d');
+            const resultCtx = resultCanvas.getContext('2d');
+            
+            let originalImage = null;
+
+            // スライダーの値表示を更新
+            glitchLevel.addEventListener('input', () => {
+                glitchLevelValue.textContent = glitchLevel.value;
+            });
+
+            // 画像アップロード時の処理
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        originalImage = img;
+                        drawImageToCanvas(originalCanvas, originalCtx, img);
+                        // 結果キャンバスも初期状態として元画像を表示
+                        drawImageToCanvas(resultCanvas, resultCtx, img);
+                        processBtn.disabled = false;
+                        downloadLink.classList.add('opacity-50', 'pointer-events-none');
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            function drawImageToCanvas(canvas, ctx, img) {
+                // 画像サイズをコンテナに合わせるのではなく、元のサイズに設定
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            }
+
+            // 「ガビガビにする」ボタンの処理
+            processBtn.addEventListener('click', async () => {
+                if (!originalImage) {
+                    console.error('先に画像をアップロードしてください。');
+                    return;
+                }
+
+                setLoading(true);
+
+                // 元の画像を結果キャンバスに再描画してから処理開始
+                drawImageToCanvas(resultCanvas, resultCtx, originalImage);
+
+                const level = parseInt(glitchLevel.value, 10);
+                const isTortureEnabled = tortureCheckbox.checked;
+                const iterations = level;
+                const quality = Math.max(0, 1.0 - (level * 0.05));
+
+                // 非同期で圧縮を繰り返す
+                for (let i = 0; i < iterations; i++) {
+                    await recompress(resultCanvas, quality, isTortureEnabled);
+                }
+
+                // ダウンロードリンクを有効化
+                downloadLink.href = resultCanvas.toDataURL('image/jpeg', 1.0);
+                downloadLink.download = `gabigabi-image-${Date.now()}.jpg`;
+                downloadLink.classList.remove('opacity-50', 'pointer-events-none');
+                
+                setLoading(false);
+            });
+
+            // 再圧縮処理（非同期）
+            function recompress(canvas, quality, isTortureEnabled) {
+                return new Promise((resolve) => {
+                    const originalWidth = canvas.width;
+                    const originalHeight = canvas.height;
+                    let sourceCanvas = canvas;
+
+                    if (isTortureEnabled) {
+                        // 50%から90%のランダムな縮小率を決定
+                        const scale = Math.random() * 0.4 + 0.5; 
+                        const scaledWidth = Math.round(originalWidth * scale);
+                        const scaledHeight = Math.round(originalHeight * scale);
+
+                        const tempCanvas = document.createElement('canvas');
+                        const tempCtx = tempCanvas.getContext('2d');
+                        tempCanvas.width = scaledWidth;
+                        tempCanvas.height = scaledHeight;
+
+                        // 一時的なキャンバスに縮小して描画
+                        tempCtx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight);
+                        sourceCanvas = tempCanvas;
+                    }
+                    
+                    // JPEG圧縮を適用（元のキャンバス or 一時的なキャンバス）
+                    const dataUrl = sourceCanvas.toDataURL('image/jpeg', quality);
+                    const img = new Image();
+
+                    img.onload = () => {
+                        const targetCtx = canvas.getContext('2d');
+                        targetCtx.clearRect(0, 0, originalWidth, originalHeight);
+                        // 元のサイズに拡大して描画し直す
+                        targetCtx.drawImage(img, 0, 0, originalWidth, originalHeight); 
+                        requestAnimationFrame(() => resolve());
+                    };
+
+                    img.onerror = () => {
+                       // 圧縮に失敗した場合も次に進む
+                       resolve();
+                    }
+                    img.src = dataUrl;
+                });
+            }
+
+
+            // ローディング状態の切り替え
+            function setLoading(isLoading) {
+                processBtn.disabled = isLoading;
+                if (isLoading) {
+                    btnText.classList.add('hidden');
+                    spinner.classList.remove('hidden');
+                } else {
+                    btnText.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                }
+            }
+            
+            // 初期状態では処理ボタンを無効化
+            processBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
+
