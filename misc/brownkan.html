@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブラウン管テレビ風 画像エフェクター (WebGL版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        }
+
+        /* --- CRTの筐体（フレーム）関連のスタイル --- */
+        .crt-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2.5%; /* ブラウン管の丸みを表現 */
+            background-color: #111;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5), inset 0 0 50px rgba(0,0,0,0.8);
+            transform: scale(1.0);
+            transition: transform 0.2s;
+            padding: 2%; /* 内側に少し余白を持たせる */
+        }
+        
+        #canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated; /* シャープさを保つ */
+            border-radius: 1.5%;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-4xl mx-auto text-center">
+        <header class="mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-400 tracking-wider">ブラウン管テレビ風 画像エフェクター</h1>
+            <p class="text-gray-400 mt-2">画像をアップロードして、懐かしのCRTエフェクトをかけよう！ (WebGL版)</p>
+        </header>
+
+        <main class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-700">
+            <!-- 画像アップロードエリア -->
+            <div id="upload-area" class="flex flex-col items-center justify-center">
+                <label for="imageLoader" class="cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
+                    <span>画像を選択</span>
+                </label>
+                <input type="file" id="imageLoader" class="hidden" accept="image/*">
+                <p class="mt-4 text-gray-500">PNG, JPG, GIFなどの画像ファイルに対応しています。</p>
+            </div>
+
+            <!-- 結果表示エリア -->
+            <div id="result-area" class="hidden">
+                <div class="crt-container w-full max-w-3xl mx-auto">
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <!-- パラメータ調整スライダー -->
+                <div id="controls" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 mt-8 max-w-3xl mx-auto text-left">
+                    <div>
+                        <label for="distortion" class="block mb-1 text-sm font-medium text-gray-300">画面の歪み</label>
+                        <input id="distortion" type="range" min="0.0" max="0.5" step="0.01" value="0.25" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="scanline" class="block mb-1 text-sm font-medium text-gray-300">走査線の強さ</label>
+                        <input id="scanline" type="range" min="0.0" max="0.5" step="0.01" value="0.2" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="vignette" class="block mb-1 text-sm font-medium text-gray-300">周辺減光</label>
+                        <input id="vignette" type="range" min="0.0" max="1.5" step="0.05" value="0.9" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="noise" class="block mb-1 text-sm font-medium text-gray-300">ノイズの量</label>
+                        <input id="noise" type="range" min="0.0" max="0.2" step="0.01" value="0.03" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="chromatic" class="block mb-1 text-sm font-medium text-gray-300">色収差</label>
+                        <input id="chromatic" type="range" min="0.0" max="0.02" step="0.001" value="0.003" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button id="downloadBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
+                        ダウンロード
+                    </button>
+                    <button id="resetBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
+                        別の画像を試す
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- === Vertex Shader === -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec2 a_position;
+        attribute vec2 a_texCoord;
+        varying vec2 v_texCoord;
+        void main() {
+           gl_Position = vec4(a_position * vec2(1, -1), 0, 1);
+           v_texCoord = a_texCoord;
+        }
+    </script>
+    
+    <!-- === Fragment Shader (CRT Effect) === -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        uniform sampler2D u_image;
+        uniform vec2 u_resolution;
+        uniform float u_time;
+        varying vec2 v_texCoord;
+
+        // --- パラメータをUniform変数で受け取る ---
+        uniform float u_distortionPower;
+        uniform float u_scanlineIntensity;
+        uniform float u_vignetteAmount;
+        uniform float u_noiseAmount;
+        uniform float u_chromaticAberrationAmount;
+
+        // 画面の歪み（バレルディストーション）を適用する関数
+        vec2 barrelDistortion(vec2 coord, float power) {
+            vec2 cc = coord - 0.5;
+            float dist = dot(cc, cc);
+            return coord + cc * dist * power;
+        }
+
+        // ノイズ生成用の乱数関数
+        float random(vec2 st) {
+            return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+        }
+
+        void main() {
+            // --- エフェクトの強さを調整するパラメータ ---
+            float scanlineFrequencyFactor = 800.0; // 走査線の密度 (固定値)
+            float vignetteSoftness = 0.6; // 周辺減光の柔らかさ (固定値)
+
+            // 1. バレルディストーション（画面の歪み）
+            vec2 distortedCoord = barrelDistortion(v_texCoord, u_distortionPower);
+
+            // 2. 色収差 (より顕著な効果になるように変更)
+            vec2 texCoordFromCenter = v_texCoord - 0.5;
+            vec2 rOffset = u_chromaticAberrationAmount * texCoordFromCenter;
+            
+            float r = texture2D(u_image, distortedCoord - rOffset).r;
+            float g = texture2D(u_image, distortedCoord).g;
+            float b = texture2D(u_image, distortedCoord + rOffset).b;
+            vec4 color = vec4(r, g, b, 1.0);
+
+            // 歪みによって画面外になった領域は黒く描画
+            if (distortedCoord.x < 0.0 || distortedCoord.x > 1.0 || distortedCoord.y < 0.0 || distortedCoord.y > 1.0) {
+                color = vec4(0.0, 0.0, 0.0, 1.0);
+            } else {
+                // 3. 走査線
+                float scanline = sin(distortedCoord.y * scanlineFrequencyFactor) * u_scanlineIntensity;
+                color.rgb -= scanline;
+
+                // 4. 周辺減光 (ビネット効果)
+                float vignette = smoothstep(0.0, vignetteSoftness, length(v_texCoord - 0.5)) * u_vignetteAmount;
+                color.rgb -= vignette;
+
+                // 5. 動的なノイズとちらつき
+                color.rgb += (random(v_texCoord + mod(u_time, 10.0)) - 0.5) * u_noiseAmount;
+            }
+
+            gl_FragColor = color;
+        }
+    </script>
+    
+    <!-- === Main JavaScript === -->
+    <script>
+        const imageLoader = document.getElementById('imageLoader');
+        const uploadArea = document.getElementById('upload-area');
+        const resultArea = document.getElementById('result-area');
+        const canvas = document.getElementById('canvas');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // スライダー要素を取得
+        const distortionSlider = document.getElementById('distortion');
+        const scanlineSlider = document.getElementById('scanline');
+        const vignetteSlider = document.getElementById('vignette');
+        const noiseSlider = document.getElementById('noise');
+        const chromaticSlider = document.getElementById('chromatic');
+
+        let gl;
+        let program;
+        let texture;
+        let positionBuffer, texCoordBuffer;
+        let resolutionLocation, timeLocation;
+        // uniform変数の場所を保持する変数を追加
+        let distortionLocation, scanlineIntensityLocation, vignetteAmountLocation, noiseAmountLocation, chromaticAberrationAmountLocation;
+        let animationFrameId;
+
+        imageLoader.addEventListener('change', handleImage, false);
+
+        function handleImage(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                    }
+                    setupWebGL(img);
+                    uploadArea.classList.add('hidden');
+                    resultArea.classList.remove('hidden');
+                }
+                img.src = event.target.result;
+            }
+            if (e.target.files[0]) {
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        }
+
+        function setupWebGL(image) {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+            if (!gl) {
+                alert('WebGL is not supported by your browser.');
+                return;
+            }
+
+            // シェーダーをコンパイルしてプログラムを作成
+            const vertexShaderSource = document.getElementById('vertex-shader').text;
+            const fragmentShaderSource = document.getElementById('fragment-shader').text;
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+            program = createProgram(gl, vertexShader, fragmentShader);
+
+            // attribute/uniform変数の場所を取得
+            const positionLocation = gl.getAttribLocation(program, "a_position");
+            const texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
+            resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+            timeLocation = gl.getUniformLocation(program, "u_time");
+            
+            // 追加したuniform変数の場所を取得
+            distortionLocation = gl.getUniformLocation(program, "u_distortionPower");
+            scanlineIntensityLocation = gl.getUniformLocation(program, "u_scanlineIntensity");
+            vignetteAmountLocation = gl.getUniformLocation(program, "u_vignetteAmount");
+            noiseAmountLocation = gl.getUniformLocation(program, "u_noiseAmount");
+            chromaticAberrationAmountLocation = gl.getUniformLocation(program, "u_chromaticAberrationAmount");
+
+            // 頂点バッファを作成（画面全体を覆う四角形）
+            positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            setRectangle(gl, -1, -1, 2, 2);
+
+            texCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                0.0,  0.0, 1.0,  0.0, 0.0,  1.0,
+                0.0,  1.0, 1.0,  0.0, 1.0,  1.0,
+            ]), gl.STATIC_DRAW);
+
+            // テクスチャを作成
+            texture = createAndSetupTexture(gl);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+            // attributeを有効化
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            gl.enableVertexAttribArray(texCoordLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+            gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+            render(0);
+        }
+
+        function render(time) {
+            time *= 0.001; // convert to seconds
+
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.useProgram(program);
+            
+            // uniform変数をシェーダーに送る
+            gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+            gl.uniform1f(timeLocation, time);
+
+            // スライダーの値をuniform変数としてシェーダーに送る
+            gl.uniform1f(distortionLocation, parseFloat(distortionSlider.value));
+            gl.uniform1f(scanlineIntensityLocation, parseFloat(scanlineSlider.value));
+            gl.uniform1f(vignetteAmountLocation, parseFloat(vignetteSlider.value));
+            gl.uniform1f(noiseAmountLocation, parseFloat(noiseSlider.value));
+            gl.uniform1f(chromaticAberrationAmountLocation, parseFloat(chromaticSlider.value));
+
+            // 描画
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+            animationFrameId = requestAnimationFrame(render);
+        }
+
+        // --- WebGL Helper Functions ---
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function createProgram(gl, vertexShader, fragmentShader) {
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Unable to initialize the shader program: ' + gl.getProgramInfoLog(program));
+                return null;
+            }
+            return program;
+        }
+        
+        function setRectangle(gl, x, y, width, height) {
+            const x1 = x; const x2 = x + width;
+            const y1 = y; const y2 = y + height;
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                x1, y1, x2, y1, x1, y2,
+                x1, y2, x2, y1, x2, y2,
+            ]), gl.STATIC_DRAW);
+        }
+        
+        function createAndSetupTexture(gl) {
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+            return texture;
+        }
+        
+        // --- Button Event Listeners ---
+        downloadBtn.addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'crt_effect_image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            imageLoader.value = '';
+            uploadArea.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
+
+
