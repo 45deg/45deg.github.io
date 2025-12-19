@@ -1,0 +1,38 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    スクリーンショットのモダンなUIに調和するよう、
+    視認性が高く洗練されたブルーからパープルのグラデーションを採用しています。
+    配色は <stop> タグの stop-color 属性で変更可能です。
+  -->
+  <defs>
+    <linearGradient id="timer-gradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4F46E5" /> <!-- インディゴ -->
+      <stop offset="100%" stop-color="#9333EA" /> <!-- パープル -->
+    </linearGradient>
+  </defs>
+  
+  <!-- タイマー本体 -->
+  <path 
+    fill-rule="evenodd" 
+    clip-rule="evenodd" 
+    d="M16 3C16.8284 3 17.5 3.67157 17.5 4.5V5.04561C22.6105 5.52932 26.6046 9.69747 26.9649 14.9084C26.9877 15.2384 27 15.5791 27 15.9286C27 22.0425 22.0751 27 16 27C9.92487 27 5 22.0425 5 15.9286C5 15.5791 5.01235 15.2384 5.03513 14.9084C5.39538 9.69747 9.38948 5.52932 14.5 5.04561V4.5C14.5 3.67157 15.1716 3 16 3ZM16 7.14286C11.0294 7.14286 7 11.0769 7 15.9286C7 20.7803 11.0294 24.7143 16 24.7143C20.9706 24.7143 25 20.7803 25 15.9286C25 11.0769 20.9706 7.14286 16 7.14286Z" 
+    fill="url(#timer-gradient)"
+  />
+  
+  <!-- 針 -->
+  <path 
+    d="M16 11V16H19.5" 
+    stroke="url(#timer-gradient)" 
+    stroke-width="2.5" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+  
+  <!-- 上部のボタン装飾（オプション） -->
+  <path 
+    d="M23 6L25 4" 
+    stroke="url(#timer-gradient)" 
+    stroke-width="2" 
+    stroke-linecap="round"
+  />
+</svg>
