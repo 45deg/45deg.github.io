@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%" role="img" aria-label="PDF TOC Tools Logo">
+  <defs>
+    <!-- Background Gradient (PDF Red theme based on Tailwind CSS) -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#be123c" />
+    </linearGradient>
+
+    <!-- Drop Shadow for depth -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- App Icon Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+
+  <!-- Foreground Elements -->
+  <g filter="url(#shadow)">
+    <!-- Tree Hierarchy Branches (Visualizing Outline Depth) -->
+    <g stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" fill="none">
+      <!-- Connection: Level 1 -> Level 2 -->
+      <path d="M 240 168 L 240 240 L 256 240" />
+      <!-- Connection: Level 2 -> Level 3 -->
+      <path d="M 288 264 L 288 336 L 304 336" />
+    </g>
+
+    <!-- Bookmark Ribbon (PDF/Document metaphor) -->
+    <path d="M 112 120 L 152 120 L 152 392 L 132 360 L 112 392 Z" fill="#ffffff" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" />
+
+    <!-- Table of Contents (TOC) Items -->
+    <!-- Level 1 (Root) -->
+    <rect x="216" y="120" width="192" height="48" rx="24" fill="#ffffff" />
+    <!-- Level 2 -->
+    <rect x="264" y="216" width="144" height="48" rx="24" fill="#ffffff" />
+    <!-- Level 3 -->
+    <rect x="312" y="312" width="96" height="48" rx="24" fill="#ffffff" />
+  </g>
+</svg>
