@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
     <title>Jinja2 Template Renderer (Pyodide)</title>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js" integrity="sha256-qXBd/EfAdjOA2FGrGAG+b3YBn2tn5A6bhz+LSgYD96k=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js" integrity="sha384-sa6uixo5T2AshTFl3QRZOXvvEFbSIqG9u/ZkaIJKa0JflYM9sd0ZkW8GWITluEQH" crossorigin="anonymous"></script>
@@ -14,27 +13,82 @@
         textarea {
             font-family: monospace;
         }
+
         #error {
             white-space: pre;
+            color: #a00000;
+            background: #fff0f0;
+            padding: 0.75rem;
+            border-radius: 4px;
+        }
+
+        #spin {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        #ui {
+            display: none;
+            gap: 1rem;
+        }
+
+        #ui.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        #sample-btn {
+            font-size: 0.8rem;
+            padding: 0.35rem 0.7rem;
+        }
+
+        @media (max-width: 800px) {
+            #ui.active {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
     <script>
         let pyodide;
+
         async function main() {
             pyodide = await loadPyodide();
             await pyodide.loadPackage("micropip"); // install pip
             const micropip = pyodide.pyimport("micropip");
             await micropip.install(['jinja2', 'pyyaml']); // instsall jinja2
-            document.querySelector('#spin').classList.add('d-none');
-            document.querySelector('#ui').classList.remove('d-none');
-            
+
+            document.querySelector('#spin').hidden = true;
+            document.querySelector('#ui').classList.add('active');
+
             document.querySelector('#template').oninput = _.debounce(compile, 200);
             document.querySelector('#data').oninput = _.debounce(compile, 200);
+            document.querySelector('#sample-btn').disabled = false;
+            document.querySelector('#sample-btn').addEventListener('click', async () => {
+                document.querySelector('#template').value = `Hello {{ user.name }}!
+{% if user.admin -%}
+You are an admin user.
+{%- endif %}
+
+Items:
+{% for item in items -%}
+- {{ loop.index }}. {{ item }}
+{% endfor %}`;
+                document.querySelector('#data').value = `user:
+  name: Alice
+  admin: true
+items:
+  - Apple
+  - Banana
+  - Cherry`;
+                await compile();
+            });
         }
-        async function compile(){
+
+        async function compile() {
             window.template = document.querySelector('#template').value;
             window.data = document.querySelector('#data').value;
             window.error = null;
+
             let result = await pyodide.runPythonAsync(`
             import yaml
             from jinja2 import Environment, BaseLoader, exceptions
@@ -56,12 +110,13 @@
 
             render(js.template, js.data)
             `);
-            console.log('hi');
-            if(error) {
-                document.querySelector('#error').classList.remove('d-none')
-                document.querySelector('#error').innerHTML = _.escape(error);
+
+            const errorEl = document.querySelector('#error');
+            if (error) {
+                errorEl.hidden = false;
+                errorEl.textContent = error;
             } else {
-                document.querySelector('#error').classList.add('d-none');
+                errorEl.hidden = true;
                 document.querySelector('#result').value = result;
             }
         }
@@ -69,28 +124,29 @@
 </head>
 
 <body>
-    <div class="container">
+    <main>
         <h1>Jinja2 Template Renderer</h1>
-        <div class="d-flex justify-content-center m-5" id="spin">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        <div class="row d-none" id="ui">
-            <div class="col">
+        <p><button id="sample-btn" disabled>Example</button></p>
+
+        <section id="spin">
+            <p>Loading Pyodide...</p>
+        </section>
+
+        <section id="ui">
+            <article>
                 <h2>Template</h2>
-                <textarea rows="10" class="form-control" id="template"></textarea>
+                <textarea rows="10" id="template"></textarea>
 
                 <h2>Data (YAML)</h2>
-                <textarea rows="10" class="form-control" id="data">{}</textarea>
-            </div>
-            <div class="col">
+                <textarea rows="10" id="data">{}</textarea>
+            </article>
+            <article>
                 <h2>Result</h2>
-                <div class="alert alert-danger d-none" role="alert" id="error"></div>
-                <textarea rows="15" class="form-control" readonly id="result"></textarea>
-            </div>
-        </div>
-    </div>
+                <pre id="error" hidden></pre>
+                <textarea rows="15" readonly id="result"></textarea>
+            </article>
+        </section>
+    </main>
     <script>main()</script>
 </body>
 
