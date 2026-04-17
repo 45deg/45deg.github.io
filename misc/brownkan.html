@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ブラウン管テレビ風 画像エフェクター (WebGL版)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <title>ブラウン管テレビ風 画像エフェクター</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js" integrity="sha512-nNOFtIS+H0lwgdUDaPn/g1ssw3uN9AkEM7zy2wLaTQeLQNeNiitUcLpEpDIh3Z4T22MdeTNru/SQbNM4ig2rng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="./brownkan.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-        }
-
         /* --- CRTの筐体（フレーム）関連のスタイル --- */
         .crt-container {
             position: relative;
@@ -32,7 +26,6 @@
             image-rendering: pixelated; /* シャープさを保つ */
             border-radius: 1.5%;
         }
-
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
@@ -40,7 +33,7 @@
     <div class="w-full max-w-4xl mx-auto text-center">
         <header class="mb-8">
             <h1 class="text-4xl md:text-5xl font-bold text-cyan-400 tracking-wider">ブラウン管テレビ風 画像エフェクター</h1>
-            <p class="text-gray-400 mt-2">画像をアップロードして、懐かしのCRTエフェクトをかけよう！ (WebGL版)</p>
+            <p class="text-gray-400 mt-2">画像をアップロードして、懐かしのCRTエフェクトをかけよう！</p>
         </header>
 
         <main class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-700">
@@ -62,8 +55,12 @@
                 <!-- パラメータ調整スライダー -->
                 <div id="controls" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 mt-8 max-w-3xl mx-auto text-left">
                     <div>
-                        <label for="distortion" class="block mb-1 text-sm font-medium text-gray-300">画面の歪み</label>
+                        <label for="distortion" class="block mb-1 text-sm font-medium text-gray-300">バレル歪み</label>
                         <input id="distortion" type="range" min="0.0" max="0.5" step="0.01" value="0.25" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div>
+                        <label for="lineDistortion" class="block mb-1 text-sm font-medium text-gray-300">ライン歪み (振幅+幅)</label>
+                        <input id="lineDistortion" type="range" min="0.0" max="0.05" step="0.001" value="0.003" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
                     </div>
                     <div>
                         <label for="scanline" class="block mb-1 text-sm font-medium text-gray-300">走査線の強さ</label>
@@ -81,16 +78,24 @@
                         <label for="chromatic" class="block mb-1 text-sm font-medium text-gray-300">色収差</label>
                         <input id="chromatic" type="range" min="0.0" max="0.02" step="0.001" value="0.003" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
                     </div>
+                    <div>
+                        <label for="flicker" class="block mb-1 text-sm font-medium text-gray-300">ちらつき</label>
+                        <input id="flicker" type="range" min="0.0" max="1.0" step="0.01" value="0.2" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    </div>
                 </div>
 
                 <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button id="downloadBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
-                        ダウンロード
+                        PNGを保存
+                    </button>
+                    <button id="gifBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
+                        6秒GIFループを保存
                     </button>
                     <button id="resetBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 shadow-lg">
                         別の画像を試す
                     </button>
                 </div>
+                <p id="gifStatus" class="mt-3 text-sm text-gray-400 min-h-[1.25rem]"></p>
             </div>
         </main>
     </div>
@@ -120,6 +125,9 @@
         uniform float u_vignetteAmount;
         uniform float u_noiseAmount;
         uniform float u_chromaticAberrationAmount;
+        uniform float u_lineDistortionAmount;
+        uniform float u_flickerAmount;
+        uniform float u_lineLoopSeconds;
 
         // 画面の歪み（バレルディストーション）を適用する関数
         vec2 barrelDistortion(vec2 coord, float power) {
@@ -133,6 +141,39 @@
             return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
         }
 
+        float circularDistance(float a, float b) {
+            float d = abs(a - b);
+            return min(d, 1.0 - d);
+        }
+
+        // CRTの水平同期ズレに近い「ライン単位の横シフト」を3本の帯で循環させる
+        vec2 scanlineDistortion(vec2 coord, float amount, float time) {
+            float normalized = clamp(amount / 0.08, 0.0, 1.0);
+            float amplitude = amount * 0.4;
+            float bandWidth = mix(0.0025, 0.02, normalized);
+            float cycle = max(u_lineLoopSeconds, 0.001);
+            float flow = fract(time / cycle);
+            float bandOffset = 0.0;
+
+            for (int i = 0; i < 3; i++) {
+                float idx = float(i);
+                float centerJitter = (random(vec2(idx * 17.0, floor(time / cycle))) - 0.5) * 0.08;
+                float center = fract((idx / 3.0) + flow + centerJitter);
+                float d = circularDistance(coord.y, center);
+                float profile = exp(-(d * d) / max(bandWidth * bandWidth, 0.00001));
+                float direction = (mod(idx, 2.0) < 0.5) ? -1.0 : 1.0;
+                float strength = mix(0.65, 1.0, random(vec2(idx * 23.0, floor(time / cycle) + 0.37)));
+                bandOffset += profile * direction * strength;
+            }
+
+            float lineIndex = floor(coord.y * u_resolution.y);
+            float microJitter = (random(vec2(lineIndex * 0.071, floor(time * 90.0))) - 0.5) * 0.12;
+            float slowWobble = sin((flow * 6.2831853) + coord.y * 1.8) * 0.08;
+            float shift = (bandOffset + microJitter + slowWobble) * amplitude;
+            coord.x += shift;
+            return coord;
+        }
+
         void main() {
             // --- エフェクトの強さを調整するパラメータ ---
             float scanlineFrequencyFactor = 800.0; // 走査線の密度 (固定値)
@@ -140,6 +181,7 @@
 
             // 1. バレルディストーション（画面の歪み）
             vec2 distortedCoord = barrelDistortion(v_texCoord, u_distortionPower);
+            distortedCoord = scanlineDistortion(distortedCoord, u_lineDistortionAmount, u_time);
 
             // 2. 色収差 (より顕著な効果になるように変更)
             vec2 texCoordFromCenter = v_texCoord - 0.5;
@@ -164,7 +206,14 @@
 
                 // 5. 動的なノイズとちらつき
                 color.rgb += (random(v_texCoord + mod(u_time, 10.0)) - 0.5) * u_noiseAmount;
+                float flickerWave = (sin(u_time * 37.0) + sin(u_time * 11.0)) * 0.5;
+                float flickerNoise = random(vec2(floor(u_time * 120.0), 0.37)) - 0.5;
+                float flickerScale = u_flickerAmount * 1.8;
+                float flicker = 1.0 + (flickerWave * 0.03 + flickerNoise * 0.06) * flickerScale;
+                color.rgb *= flicker;
             }
+
+            color.rgb = clamp(color.rgb, 0.0, 1.0);
 
             gl_FragColor = color;
         }
@@ -177,14 +226,18 @@
         const resultArea = document.getElementById('result-area');
         const canvas = document.getElementById('canvas');
         const downloadBtn = document.getElementById('downloadBtn');
+        const gifBtn = document.getElementById('gifBtn');
+        const gifStatus = document.getElementById('gifStatus');
         const resetBtn = document.getElementById('resetBtn');
 
         // スライダー要素を取得
         const distortionSlider = document.getElementById('distortion');
+        const lineDistortionSlider = document.getElementById('lineDistortion');
         const scanlineSlider = document.getElementById('scanline');
         const vignetteSlider = document.getElementById('vignette');
         const noiseSlider = document.getElementById('noise');
         const chromaticSlider = document.getElementById('chromatic');
+        const flickerSlider = document.getElementById('flicker');
 
         let gl;
         let program;
@@ -193,7 +246,16 @@
         let resolutionLocation, timeLocation;
         // uniform変数の場所を保持する変数を追加
         let distortionLocation, scanlineIntensityLocation, vignetteAmountLocation, noiseAmountLocation, chromaticAberrationAmountLocation;
+        let lineDistortionLocation, flickerAmountLocation, lineLoopSecondsLocation;
         let animationFrameId;
+        let renderStartTime = 0;
+        let currentTimeSeconds = 0;
+        let isGifRendering = false;
+        const LINE_DISTORTION_LOOP_SECONDS = 6.0;
+        const GIF_LOOP_DURATION_MS = Math.round(LINE_DISTORTION_LOOP_SECONDS * 1000);
+        const GIF_FRAME_DELAY_MS = 50;
+        const gifWorkerCdnUrl = 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js';
+        let cachedGifWorkerUrl = null;
 
         imageLoader.addEventListener('change', handleImage, false);
 
@@ -244,6 +306,9 @@
             vignetteAmountLocation = gl.getUniformLocation(program, "u_vignetteAmount");
             noiseAmountLocation = gl.getUniformLocation(program, "u_noiseAmount");
             chromaticAberrationAmountLocation = gl.getUniformLocation(program, "u_chromaticAberrationAmount");
+            lineDistortionLocation = gl.getUniformLocation(program, "u_lineDistortionAmount");
+            flickerAmountLocation = gl.getUniformLocation(program, "u_flickerAmount");
+            lineLoopSecondsLocation = gl.getUniformLocation(program, "u_lineLoopSeconds");
 
             // 頂点バッファを作成（画面全体を覆う四角形）
             positionBuffer = gl.createBuffer();
@@ -270,11 +335,14 @@
             gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
             gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-            render(0);
+            currentTimeSeconds = 0;
+            drawFrame(0);
+            renderStartTime = performance.now() * 0.001;
+            animationFrameId = requestAnimationFrame(render);
         }
 
-        function render(time) {
-            time *= 0.001; // convert to seconds
+        function drawFrame(timeSeconds) {
+            currentTimeSeconds = timeSeconds;
 
             gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
             gl.clearColor(0, 0, 0, 0);
@@ -283,19 +351,163 @@
             
             // uniform変数をシェーダーに送る
             gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
-            gl.uniform1f(timeLocation, time);
+            gl.uniform1f(timeLocation, timeSeconds);
 
             // スライダーの値をuniform変数としてシェーダーに送る
             gl.uniform1f(distortionLocation, parseFloat(distortionSlider.value));
+            gl.uniform1f(lineDistortionLocation, parseFloat(lineDistortionSlider.value));
             gl.uniform1f(scanlineIntensityLocation, parseFloat(scanlineSlider.value));
             gl.uniform1f(vignetteAmountLocation, parseFloat(vignetteSlider.value));
             gl.uniform1f(noiseAmountLocation, parseFloat(noiseSlider.value));
             gl.uniform1f(chromaticAberrationAmountLocation, parseFloat(chromaticSlider.value));
+            gl.uniform1f(flickerAmountLocation, parseFloat(flickerSlider.value));
+            gl.uniform1f(lineLoopSecondsLocation, LINE_DISTORTION_LOOP_SECONDS);
 
             // 描画
             gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        function render(timeMs) {
+            const elapsedSeconds = timeMs * 0.001 - renderStartTime;
+            drawFrame(elapsedSeconds);
 
             animationFrameId = requestAnimationFrame(render);
+        }
+
+        function pauseAnimation() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+        }
+
+        function resumeAnimation() {
+            renderStartTime = performance.now() * 0.001 - currentTimeSeconds;
+            animationFrameId = requestAnimationFrame(render);
+        }
+
+        function setGifButtonState(disabled, label) {
+            gifBtn.disabled = disabled;
+            if (disabled) {
+                gifBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            } else {
+                gifBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+            if (label !== undefined) {
+                gifStatus.textContent = label;
+            }
+        }
+
+        async function resolveGifWorkerScriptUrl() {
+            if (cachedGifWorkerUrl) {
+                return cachedGifWorkerUrl;
+            }
+
+            try {
+                const response = await fetch(gifWorkerCdnUrl, { mode: 'cors', cache: 'force-cache' });
+                if (!response.ok) {
+                    throw new Error(`worker script fetch failed: ${response.status}`);
+                }
+
+                const workerSource = await response.text();
+                const workerBlob = new Blob([workerSource], { type: 'text/javascript' });
+                const workerBlobUrl = URL.createObjectURL(workerBlob);
+
+                try {
+                    const workerProbe = new Worker(workerBlobUrl);
+                    workerProbe.terminate();
+                } catch (probeError) {
+                    URL.revokeObjectURL(workerBlobUrl);
+                    throw probeError;
+                }
+
+                cachedGifWorkerUrl = workerBlobUrl;
+                return cachedGifWorkerUrl;
+            } catch (blobPathError) {
+                console.warn('Blob worker setup failed. Falling back to CDN worker URL.', blobPathError);
+
+                try {
+                    const directProbe = new Worker(gifWorkerCdnUrl);
+                    directProbe.terminate();
+                    return gifWorkerCdnUrl;
+                } catch (directError) {
+                    const message = directError && directError.message ? directError.message : String(directError);
+                    throw new Error('worker setup failed: ' + message);
+                }
+            }
+        }
+
+        function finalizeGifRendering(statusText) {
+            isGifRendering = false;
+            setGifButtonState(false, statusText);
+            resumeAnimation();
+        }
+
+        async function exportGifLoop() {
+            if (!gl || isGifRendering) {
+                return;
+            }
+
+            isGifRendering = true;
+            pauseAnimation();
+            setGifButtonState(true, '6秒GIFを生成中... 0%');
+
+            let workerScriptUrl;
+            try {
+                workerScriptUrl = await resolveGifWorkerScriptUrl();
+            } catch (error) {
+                console.error('GIF worker error:', error);
+                finalizeGifRendering('GIF worker の準備に失敗しました。通信状態を確認してください。');
+                return;
+            }
+
+            const frameCount = Math.max(1, Math.round(GIF_LOOP_DURATION_MS / GIF_FRAME_DELAY_MS));
+            const loopStartTime = Math.floor(currentTimeSeconds / LINE_DISTORTION_LOOP_SECONDS) * LINE_DISTORTION_LOOP_SECONDS;
+
+            const gif = new GIF({
+                workers: 2,
+                quality: 10,
+                width: canvas.width,
+                height: canvas.height,
+                workerScript: workerScriptUrl,
+            });
+
+            for (let i = 0; i < frameCount; i++) {
+                const frameTime = loopStartTime + (i * GIF_FRAME_DELAY_MS) / 1000;
+                drawFrame(frameTime);
+                gif.addFrame(canvas, { copy: true, delay: GIF_FRAME_DELAY_MS });
+            }
+
+            gif.on('progress', function(progress) {
+                const percent = Math.round(progress * 100);
+                setGifButtonState(true, `6秒GIFを生成中... ${percent}%`);
+            });
+
+            gif.on('finished', function(blob) {
+                const link = document.createElement('a');
+                link.download = 'crt_effect_loop.gif';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+
+                finalizeGifRendering('GIFの保存が完了しました。');
+            });
+
+            gif.on('abort', function() {
+                finalizeGifRendering('GIF生成が中止されました。');
+            });
+
+            gif.on('error', function(error) {
+                console.error('GIF render error:', error);
+                finalizeGifRendering('GIF生成中にエラーが発生しました。');
+            });
+
+            try {
+                gif.render();
+            } catch (error) {
+                console.error('GIF render start error:', error);
+                finalizeGifRendering('GIF生成を開始できませんでした。');
+            }
         }
 
         // --- WebGL Helper Functions ---
@@ -350,13 +562,22 @@
             link.click();
         });
 
+        gifBtn.addEventListener('click', exportGifLoop);
+
         resetBtn.addEventListener('click', function() {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
+            pauseAnimation();
+            isGifRendering = false;
+            setGifButtonState(false, '');
             imageLoader.value = '';
             uploadArea.classList.remove('hidden');
             resultArea.classList.add('hidden');
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (cachedGifWorkerUrl) {
+                URL.revokeObjectURL(cachedGifWorkerUrl);
+                cachedGifWorkerUrl = null;
+            }
         });
     </script>
 </body>
