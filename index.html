@@ -4,220 +4,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>45deg</title>
-    <link rel="stylesheet" href="./hack.css">
     <style>
-        .work {
-            padding: 0 10px;
-            margin-bottom: 1rem;
-        }
-
-        .work .work-header a {
-            border: none;
-        }
-
-        .work .work-header img {
-            border: 1px solid #CCC;
-        }
-
-        .work .work-content {
-            width: 250px;
-        }
-
-        .work .work-content h3 {
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
         }
 
-        .muted {
-            color: #999;
+        body {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
         }
 
-        .work .work-content h3 .muted {
+        /* Headings */
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            white-space: pre-wrap;
+            /* ===== の改行を維持 */
+        }
+
+        h1::before {
+            content: "# ";
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        h2::before {
+            content: "## ";
+        }
+
+        .main>section:first-child h2,
+        .sub>section:first-child h2 {
+            margin-top: 0;
+        }
+
+        a {
+            color: #d94680;
+            text-decoration: none;
+            border-bottom: 1px solid #d94680;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        .text-muted {
+            color: #888;
+        }
+
+        /* About Section */
+        .about-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .main,
+        .sub {
+            min-width: 0;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.25rem 1rem;
+        }
+
+        /* Card Component */
+        .card {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 2px solid #222;
+            border-radius: 0;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 4px 4px 0 #222;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #222;
+        }
+
+        .card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #222;
+        }
+
+        .card-link {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: block;
+            border: none;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card-link:hover {
+            opacity: 1;
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            border-bottom: 2px solid #222;
+            overflow: hidden;
+            background-color: #fafafa;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card-content {
+            padding: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
             font-weight: normal;
+            margin-bottom: 0.45rem;
+            color: #d94680;
         }
 
-        .work .work-content h3::before {
+        .card-title strong {
+            font-weight: bold;
+        }
+
+        .card-title::before {
             content: "» ";
         }
 
-        .work .work-content p {
-            margin: 0.5em;
-            color: #666;
+        .card-desc {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.5;
         }
 
-        @media screen and (max-width: 768px) {
-            .work .work-header {
-                float: left;
-            }
+        .card-content a {
+            pointer-events: auto;
+            position: relative;
+            z-index: 3;
+        }
 
-            .work .work-content {
-                float: left;
-                margin: 1rem;
+        .card-link:focus-visible {
+            outline: 3px solid #d94680;
+            outline-offset: 4px;
+        }
+
+        /* Miscellaneous Section */
+        .misc-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .misc-list li {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .misc-desc {
+            display: block;
+            padding-left: 2ch;
+            padding-top: 0.25rem;
+            color: #555;
+        }
+
+        @media (max-width: 960px) {
+            .page-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 1rem;
             }
         }
     </style>
 </head>
-<!-- Thumbnail: 512x320 -->
-<body class="hack">
-    <div class="main container">
-        <header>
-            <h1>45deg</h1>
-        </header>
-        <main role="main">
-            <h2>About</h2>
-            <p>Not a portfolio, just a place to put my hobbies. <a href="http://x.com/zakurozakuro">X</a></p>
-            <h2>Works</h2>
-            <div class="grid">
-                <div class="work">
-                    <header class="work-header"><a href="./compression-leaderboard/"><img src="./images/i23.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>Compression Leaderboard <span class="muted">(2026)</span></h3>
-                        <p>各種可逆圧縮アルゴリズムのパフォーマンスを比較するためのツール (WASMで動作)</p>
-                    </div>
+
+<body>
+
+    <header>
+        <h1>45deg</h1>
+    </header>
+
+    <section class="about-section">
+        <h2>About</h2>
+        <p>Not a portfolio, just a place to put my hobbies. <a href="http://x.com/zakurozakuro">X</a></p>
+    </section>
+
+    <div class="page-grid">
+        <main class="main">
+            <section>
+                <h2>Works</h2>
+                <div class="works-grid">
+                    <article class="card">
+                        <a class="card-link" href="./compression-leaderboard/"
+                            aria-label="Compression Leaderboard 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i23.png" alt="Compression Leaderboard">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>Compression Leaderboard</strong> <span
+                                    class="text-muted">(2026)</span></h3>
+                            <p class="card-desc">各種可逆圧縮アルゴリズムのパフォーマンスを比較するためのツール (WASMで動作)</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./quickcalc/" aria-label="QuickCalc 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i22.png" alt="QuickCalc">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>QuickCalc</strong> <span class="text-muted">(2026)</span>
+                            </h3>
+                            <p class="card-desc">Swift PlaygroundやAppleのメモにインスパイアされたリアクティブな計算機</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./stick-game/" aria-label="STICK GAME 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i20.png" alt="STICK GAME">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>STICK GAME</strong> <span class="text-muted">(2026)</span>
+                            </h3>
+                            <p class="card-desc"><a
+                                    href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">指を用いた遊び</a>でCPUと対戦
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./mozaic-app/" aria-label="mozaic-app 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i19.jpg" alt="mozaic-app">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>mozaic-app</strong> <span class="text-muted">(2026)</span>
+                            </h3>
+                            <p class="card-desc">ブラウザベースのモザイクアート生成ツール。画像/動画/カメラ入力に対応。タイルの定義も可能</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./nanotation/" aria-label="nanotation 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i16.png" alt="nanotation">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>nanotation</strong> <span class="text-muted">(2026)</span>
+                            </h3>
+                            <p class="card-desc">ブラウザベースのアノテーションツール</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./flowtimer/" aria-label="FlowTimer 2025"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i15.png" alt="FlowTimer">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>FlowTimer</strong> <span class="text-muted">(2025)</span>
+                            </h3>
+                            <p class="card-desc">シンプルなプレゼンテーションタイムキーパー</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./subleq-ide/" aria-label="Subleq Compiler 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i18.png" alt="Subleq Compiler">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>Subleq Compiler</strong> <span
+                                    class="text-muted">(2026)</span></h3>
+                            <p class="card-desc">1命令でチューリング完全となる<a
+                                    href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ
+                                <a href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a></p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./pdf2md/" aria-label="pdf2md 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i21.png" alt="pdf2md">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>pdf2md</strong> <span class="text-muted">(2026)</span></h3>
+                            <p class="card-desc">PDFをMarkdownに変換するツール。画像の抽出も可能。ローカル動作</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./pdf-toc-tools/" aria-label="pdf-toc-tool 2026"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i17.png" alt="pdf-toc-tool">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>pdf-toc-tool</strong> <span class="text-muted">(2026)</span>
+                            </h3>
+                            <p class="card-desc">PDFのTOCごとの表示・分割・結合等をまとめたツールキット PDF Unbinderの後継。ローカル動作</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./pdf-unbinder/" aria-label="PDFUnbinder in Browser 2025"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i14.png" alt="PDFUnbinder in Browser">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>PDFUnbinder in Browser</strong> <span
+                                    class="text-muted">(2025)</span></h3>
+                            <p class="card-desc">PDFの目次を元にファイル分割 [Web版] Made by Vibe Coding</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="/mnist-viz" aria-label="MNIST UMAP Visualization 2024"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i13.png" alt="MNIST UMAP Visualization">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>MNIST UMAP Visualization</strong> <span
+                                    class="text-muted">(2024)</span></h3>
+                            <p class="card-desc">手書き文字を<a
+                                    href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>を使って2次元にマッピングしたものの可視化
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="/cedict" aria-label="HoverDictCN 2019"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i12.png" alt="HoverDictCN">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>HoverDictCN</strong> <span class="text-muted">(2019)</span>
+                            </h3>
+                            <p class="card-desc">中国語の漢字をマウスオーバー/タップすると単語/漢字の意味(英語)が出てくるツール</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="https://github.com/45deg/PDFUnbinder"
+                            aria-label="PDFUnbinder 2018"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i11.png" alt="PDFUnbinder">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>PDFUnbinder</strong> <span class="text-muted">(2018)</span>
+                            </h3>
+                            <p class="card-desc">PDFの目次を元にファイル分割 [JavaFX]</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./RGBCloud" aria-label="RGBCloud 2017"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i9.png" alt="RGBCloud">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>RGBCloud</strong> <span class="text-muted">(2017)</span></h3>
+                            <p class="card-desc">画像に含まれる色の分布を3Dで表示する。RGBとHSL色空間で表示切り替えが可能。スマホでも動くはず。</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./Kantele" aria-label="Kantele 2016"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i7.png" alt="Kantele">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>Kantele</strong> <span class="text-muted">(2016)</span></h3>
+                            <p class="card-desc"><a
+                                    href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>
+                                研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong></p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./rogyAdC2015" aria-label="dynamorphism の紹介 2015"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i6.png" alt="dynamorphism の紹介">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>dynamorphism の紹介</strong> <span
+                                    class="text-muted">(2015)</span></h3>
+                            <p class="card-desc"><a href="http://www.adventar.org/calendars/885">rogy Advent
+                                    Calendar</a> のために書いたものです。関数型プログラミングで動的計画法を行う手法について説明しています。</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./neural-network_v2"
+                            aria-label="ニューラルネットワークの可視化 (ConvnetJS版) 2016"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i3.png" alt="ニューラルネットワークの可視化 (ConvnetJS版)">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>ニューラルネットワークの可視化 (ConvnetJS版)</strong> <span
+                                    class="text-muted">(2016)</span></h3>
+                            <p class="card-desc"><a
+                                    href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="./neural-network" aria-label="ニューラルネットワークの可視化 2014"></a>
+                        <div class="card-img-wrapper">
+                            <img src="./images/i2.png" alt="ニューラルネットワークの可視化">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title"><strong>ニューラルネットワークの可視化</strong> <span
+                                    class="text-muted">(2014)</span></h3>
+                            <p class="card-desc">BPNNの可視化です。Slide: <a
+                                    href="http://www.slideshare.net/z_kro/html5-36655060">HTML5によるニューラルネットワークの可視化</a>
+                            </p>
+                        </div>
+                    </article>
                 </div>
-                <div class="work">
-                    <header class="work-header"><a href="./quickcalc/"><img src="./images/i22.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>QuickCalc <span class="muted">(2026)</span></h3>
-                        <p>Swift PlaygroundやAppleのメモにインスパイアされたリアクティブな計算機</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./stick-game/"><img src="./images/i20.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>STICK GAME <span class="muted">(2026)</span></h3>
-                        <p><a href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82.92.E5.A2.97.E3.82.84.E3.81.99.E9.81.8A.E3.81.B3">指を用いた遊び</a>でCPUと対戦</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./mozaic-app/"><img src="./images/i19.jpg" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>mozaic-app <span class="muted">(2026)</span></h3>
-                        <p>ブラウザベースのモザイクアート生成ツール。画像/動画/カメラ入力に対応。タイルの定義も可能</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./nanotation/"><img src="./images/i16.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>nanotation <span class="muted">(2026)</span></h3>
-                        <p>ブラウザベースのアノテーションツール</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./flowtimer/"><img src="./images/i15.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>FlowTimer <span class="muted">(2025)</span></h3>
-                        <p>シンプルなプレゼンテーションタイムキーパー</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./subleq-ide/"><img src="./images/i18.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>Subleq Compiler <span class="muted">(2026)</span></h3>
-                        <p>1命令でチューリング完全となる<a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ <a href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a></p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./pdf2md/"><img src="./images/i21.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>pdf2md <span class="muted">(2026)</span></h3>
-                        <p>PDFをMarkdownに変換するツール。画像の抽出も可能。ローカル動作</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./pdf-toc-tools/"><img src="./images/i17.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>pdf-toc-tool <span class="muted">(2026)</span></h3>
-                        <p>PDFのTOCごとの表示・分割・結合等をまとめたツールキット PDF Unbinderの後継。ローカル動作</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./pdf-unbinder/"><img
-                                src="./images/i14.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>PDFUnbinder in Browser <span class="muted">(2025)</span></h3>
-                        <p>PDFの目次を元にファイル分割 [Web版] Made by Vibe Coding</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="/mnist-viz"><img src="./images/i13.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>MNIST UMAP Visualization <span class="muted">(2024)</span></h3>
-                        <p>手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>を使って2次元にマッピングしたものの可視化</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="/cedict"><img src="./images/i12.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>HoverDictCN <span class="muted">(2019)</span></h3>
-                        <p>中国語の漢字をマウスオーバー/タップすると単語/漢字の意味(英語)が出てくるツール</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="https://github.com/45deg/PDFUnbinder"><img
-                                src="./images/i11.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>PDFUnbinder <span class="muted">(2018)</span></h3>
-                        <p>PDFの目次を元にファイル分割 [JavaFX]</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./RGBCloud"><img src="./images/i9.png" width="250"></a>
-                    </header>
-                    <div class="work-content">
-                        <h3>RGBCloud <span class="muted">(2017)</span></h3>
-                        <p>画像に含まれる色の分布を3Dで表示する。RGBとHSL色空間で表示切り替えが可能。スマホでも動くはず。</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./Kantele"><img src="./images/i7.png" width="250"></a></header>
-                    <div class="work-content">
-                        <h3>Kantele <span class="muted">(2016)</span></h3>
-                        <p><a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>
-                            研究室所属時の課題で作ったものです。サウンドプログラミングが出来るScheme風の言語です。<strong>音が出ます。</strong></p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./rogyAdC2015"><img src="./images/i6.png" width="250"></a>
-                    </header>
-                    <div class="work-content">
-                        <h3>dynamorphism の紹介 <span class="muted">(2015)</span></h3>
-                        <p><a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a>
-                            のために書いたものです。関数型プログラミングで動的計画法を行う手法について説明しています。</p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./neural-network_v2"><img src="./images/i3.png"
-                                width="250"></a></header>
-                    <div class="work-content">
-                        <h3>ニューラルネットワークの可視化 (ConvnetJS版) <span class="muted">(2016)</span></h3>
-                        <p><a
-                                href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
-                        </p>
-                    </div>
-                </div>
-                <div class="work">
-                    <header class="work-header"><a href="./neural-network"><img src="./images/i2.png" width="250"></a>
-                    </header>
-                    <div class="work-content">
-                        <h3>ニューラルネットワークの可視化 <span class="muted">(2014)</span></h3>
-                        <p>BPNNの可視化です。Slide: <a href="http://www.slideshare.net/z_kro/html5-36655060">HTML5によるニューラルネットワークの可視化</a></p>
-                    </div>
-                </div>
-            </div>
-            <h2>Miscellaneous</h2>
-            <ul>
-                <li><a href="./deaatable/">AsciiArt Table Parser</a> <span class="muted">(2026)</span> - アスキーアート等のテーブルを解析してプレーンにするツール</li>
-                <li><a href="./misc/brownkan.html">ブラウン管テレビ風 画像エフェクター</a> <span class="muted">(2025)</span> - 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト</li>
-                <li><a href="./misc/gabigabi.html">JPEGガビガビ化ツール</a> <span class="muted">(2025)</span> - JPEG圧縮を繰り返してガビガビ質感を作るツール</li>
-                <li><a href="./misc/img2pdf.html">Images to PDF</a> <span class="muted">(2025)</span> - 画像をドラッグ&ドロップで並べ替えて PDF 化するツール</li>
-                <li><a href="./misc/nahuatl.html">ナワトルテキスト補助</a> <span class="muted">(2024)</span> - ナワトル語の長音記号入力を補助するテキストエディタ</li>
-                <li><a href="./misc/safetensors.html">Safetensors metadata viewer</a> <span class="muted">(2023)</span> - safetensors ファイルのメタデータを表示するビューア</li>
-                <li><a href="./misc/jinja2.html">Jinja2 Template Renderer</a> <span class="muted">(2022)</span> - Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー</li>
-            </ul>
+            </section>
         </main>
+
+        <aside class="sub">
+            <section>
+                <h2>Miscellaneous</h2>
+                <ul class="misc-list">
+                    <li>
+                        <a href="./deaatable/">AsciiArt Table Parser</a> <span class="text-muted">(2026)</span>
+                        <span class="misc-desc">アスキーアート等のテーブルを解析してプレーンにするツール</span>
+                    </li>
+                    <li>
+                        <a href="./misc/brownkan.html">ブラウン管テレビ風 画像エフェクター</a> <span class="text-muted">(2025)</span>
+                        <span class="misc-desc">画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト</span>
+                    </li>
+                    <li>
+                        <a href="./misc/gabigabi.html">JPEGガビガビ化ツール</a> <span class="text-muted">(2025)</span>
+                        <span class="misc-desc">JPEG圧縮を繰り返してガビガビ質感を作るツール</span>
+                    </li>
+                    <li>
+                        <a href="./misc/img2pdf.html">Images to PDF</a> <span class="text-muted">(2025)</span>
+                        <span class="misc-desc">画像をドラッグ&ドロップで並べ替えて PDF 化するツール</span>
+                    </li>
+                    <li>
+                        <a href="./misc/nahuatl.html">ナワトルテキスト補助</a> <span class="text-muted">(2024)</span>
+                        <span class="misc-desc">ナワトル語の長音記号入力を補助するテキストエディタ</span>
+                    </li>
+                    <li>
+                        <a href="./misc/safetensors.html">Safetensors metadata viewer</a> <span
+                            class="text-muted">(2023)</span>
+                        <span class="misc-desc">safetensors ファイルのメタデータを表示するビューア</span>
+                    </li>
+                    <li>
+                        <a href="./misc/jinja2.html">Jinja2 Template Renderer</a> <span class="text-muted">(2022)</span>
+                        <span class="misc-desc">Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー</span>
+                    </li>
+                </ul>
+            </section>
+        </aside>
     </div>
+
 </body>
 
 </html>
