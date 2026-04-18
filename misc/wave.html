@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>造波水槽シミュレータ (unverified)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #info {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #fff;
+            pointer-events: none;
+            background: rgba(15, 20, 30, 0.75);
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 350px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #4da6ff;
+        }
+        p { margin: 0 0 10px 0; }
+        .highlight { color: #ffaa00; font-weight: bold; }
+
+        .lil-gui {
+            --background-color: rgba(15, 20, 30, 0.85);
+            --text-color: #eee;
+            --title-background-color: #223344;
+            --widget-color: #334455;
+            --hover-color: #4da6ff;
+            --focus-color: #4da6ff;
+            right: 15px !important;
+            top: 15px !important;
+        }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+          "lil-gui": "https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm"
+        }
+      }
+    </script>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="info">
+        <h1>造波水槽シミュレータ (unverified)</h1>
+        <p>周囲に配置された多数の造波機から波を発生させます。空間では複雑に干渉し合いますが、中心（原点）ではすべての波が重なり、<span class="highlight">巨大な波（フォーカシング）</span>を形成します。</p>
+        <p>▶ 右上のUIから<b>「🌊 Fire Focus Pulse!」</b>を押して、一斉に波束を中心へ放ってみてください。</p>
+        <p style="font-size: 12px; color: #aaa; margin-bottom: 0;">※ Phase Randomness を上げると、位相がズレて中心でも打ち消し合う様子が観察できます。</p>
+        <p>このアプリケーションは未検証です。</p>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { Water } from 'three/addons/objects/Water.js';
+        import GUI from 'lil-gui';
+
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x07111f);
+        scene.fog = new THREE.FogExp2(0x07111f, 0.012);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500);
+        camera.position.set(0, 34, 56);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 18;
+        controls.maxDistance = 120;
+        controls.maxPolarAngle = Math.PI * 0.485;
+        controls.target.set(0, 0, 0);
+
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
+        const sunDirection = new THREE.Vector3(0.72, 1.0, 0.18).normalize();
+        const dirLight = new THREE.DirectionalLight(0xffffff, 3.25);
+        dirLight.position.copy(sunDirection).multiplyScalar(55);
+        scene.add(dirLight);
+        scene.add(new THREE.HemisphereLight(0x9fcfff, 0x10243d, 1.75));
+        scene.add(new THREE.AmbientLight(0x1d3148, 0.35));
+
+        const POOL_RADIUS = 30;
+        const MAX_SOURCES = 64;
+        const DEFAULT_DEPTH = 3.0;
+        const GRAVITY = 9.81;
+        const BANDS = [
+            { scale: 0.72, weight: 0.26, jitter: 0.16 },
+            { scale: 1.0, weight: 0.52, jitter: 0.0 },
+            { scale: 1.42, weight: 0.22, jitter: 0.18 }
+        ];
+
+        const params = {
+            numSources: 42,
+            amplitude: 0.3,
+            waveLength: 3.2,
+            waveSpeed: 1.0,
+            continuousStrength: 0.18,
+            phaseRandomness: 0.0,
+            steepness: 0.76,
+            spectralSpread: 0.26,
+            nonlinearity: 0.58,
+            depth: 2.1,
+            radialFalloff: 0.035,
+            breakingThreshold: 0.8,
+            breakingSoftness: 0.22,
+            breakingDissipation: 0.55,
+            pulseWidth: 0.42,
+            pulseBoost: 1.45,
+            distortionScale: 4.2,
+            normalScale: 0.85,
+            refractionStrength: 0.12,
+            waterClarity: 0.62,
+            foamStrength: 0.82,
+            splashThreshold: 0.38,
+            splashStrength: 2.4,
+            splashSize: 0.3,
+            firePulse: () => {
+                customUniforms.uPulseTime.value = customUniforms.uSimTime.value;
+            }
+        };
+
+        function fract(value) {
+            return value - Math.floor(value);
+        }
+
+        function hashScalar(seed) {
+            return fract(Math.sin(seed * 127.1 + 311.7) * 43758.5453123);
+        }
+
+        function dispersionOmega(k, depth) {
+            return Math.sqrt(Math.max(GRAVITY * k * Math.tanh(k * depth), 0));
+        }
+
+        function groupVelocity(k, depth) {
+            const omega = dispersionOmega(k, depth);
+            const kh = Math.max(k * depth, 1e-4);
+            const sinh2kh = Math.sinh(2 * kh);
+            const factor = 1 + ((2 * kh) / Math.max(sinh2kh, 1e-4));
+            return 0.5 * (omega / k) * factor;
+        }
+
+        function getBandParams(sourceIndex, bandIndex) {
+            const band = BANDS[bandIndex];
+            const seed = sourceIndex * 17.173 + bandIndex * 31.931;
+            const jitter = THREE.MathUtils.lerp(1 - band.jitter, 1 + band.jitter, hashScalar(seed));
+            const bandScale = THREE.MathUtils.lerp(1.0, band.scale * jitter, params.spectralSpread);
+            const lambda = Math.max(0.75, params.waveLength * bandScale);
+            const k = (2 * Math.PI) / lambda;
+            const omega = dispersionOmega(k, params.depth) * params.waveSpeed;
+            const group = groupVelocity(k, params.depth) * params.waveSpeed;
+            const ampGain = band.weight * THREE.MathUtils.lerp(0.9, 1.12, hashScalar(seed + 11.4)) * Math.pow(lambda / params.waveLength, 0.65);
+
+            return { lambda, k, omega, group, ampGain };
+        }
+
+        const tempVec2A = new THREE.Vector2();
+        const tempVec2B = new THREE.Vector2();
+        const tempVec3A = new THREE.Vector3();
+        const tempVec3B = new THREE.Vector3();
+
+        function evaluateWaveSampleCPU(position, time) {
+            let height = 0;
+            let slopeX = 0;
+            let slopeY = 0;
+            let directionalEnergy = 0;
+            let breakingEnergy = 0;
+            let verticalVelocity = 0;
+            tempVec2A.set(0, 0);
+
+            for (let sourceIndex = 0; sourceIndex < params.numSources; sourceIndex += 1) {
+                const sourceX = sourcesArray[sourceIndex * 4 + 0];
+                const sourceY = sourcesArray[sourceIndex * 4 + 1];
+                const phase = sourcesArray[sourceIndex * 4 + 2];
+                const sourceGain = sourcesArray[sourceIndex * 4 + 3];
+                const relX = position.x - sourceX;
+                const relY = position.y - sourceY;
+                const distance = Math.hypot(relX, relY);
+
+                if (distance < 1e-3) continue;
+
+                const dirX = relX / distance;
+                const dirY = relY / distance;
+
+                for (let bandIndex = 0; bandIndex < BANDS.length; bandIndex += 1) {
+                    const band = getBandParams(sourceIndex, bandIndex);
+                    const attenuation = 1 / Math.sqrt(1 + params.radialFalloff * distance * distance);
+                    const coreRadius = Math.max(1.2 * band.lambda, 1.8);
+                    const focusRatio = (POOL_RADIUS + coreRadius) / (distance + coreRadius);
+                    const focusing = Math.min(Math.pow(focusRatio, 0.28), 1.45);
+                    const centerRelax = THREE.MathUtils.smoothstep(distance, coreRadius * 0.55, coreRadius * 1.9);
+                    const baseAmp = params.amplitude * band.ampGain * attenuation * focusing * (1 - 0.18 * centerRelax) * sourceGain;
+                    let envelopeAmp = baseAmp * params.continuousStrength;
+
+                    const timeSincePulse = time - customUniforms.uPulseTime.value;
+                    if (timeSincePulse > 0 && timeSincePulse < 30) {
+                        const sigma = Math.max(band.lambda * params.pulseWidth, 0.35);
+                        const packetOffset = distance - band.group * timeSincePulse;
+                        const envelope = Math.exp(-(packetOffset * packetOffset) / (2 * sigma * sigma));
+                        envelopeAmp += baseAmp * params.pulseBoost * envelope;
+                    }
+
+                    if (envelopeAmp < 1e-4) continue;
+
+                    const theta = band.k * distance - band.omega * time + phase;
+                    const sinTheta = Math.sin(theta);
+                    const cosTheta = Math.cos(theta);
+                    const sin2Theta = Math.sin(2 * theta);
+                    const cos2Theta = Math.cos(2 * theta);
+                    const micheLimit = Math.max(0.88 * Math.tanh(band.k * params.depth), 1e-3);
+                    const steepnessRatio = (2 * band.k * envelopeAmp) / micheLimit;
+                    const crestBias = THREE.MathUtils.smoothstep(sinTheta, 0.0, 0.85);
+                    const centerBreaker = THREE.MathUtils.smoothstep(distance, coreRadius * 0.3, coreRadius * 1.4);
+                    const breaking = THREE.MathUtils.smoothstep(steepnessRatio, params.breakingThreshold, params.breakingThreshold + params.breakingSoftness) * crestBias * (1 + 0.35 * centerBreaker);
+                    const dissipatedAmp = envelopeAmp * (1 - (0.35 + 0.2 * centerBreaker) * params.breakingDissipation * breaking);
+                    const secondAmp = 0.5 * params.nonlinearity * band.k * dissipatedAmp * dissipatedAmp * (1 - params.breakingDissipation * breaking);
+                    const vertical = dissipatedAmp * sinTheta + secondAmp * sin2Theta;
+                    const dZdd = dissipatedAmp * band.k * cosTheta + 2 * secondAmp * band.k * cos2Theta;
+                    const dZdt = -band.omega * dissipatedAmp * cosTheta - 2 * band.omega * secondAmp * cos2Theta;
+
+                    height += vertical;
+                    slopeX += dirX * dZdd;
+                    slopeY += dirY * dZdd;
+                    verticalVelocity += dZdt;
+                    directionalEnergy += Math.abs(dissipatedAmp) * band.k;
+                    tempVec2A.x += dirX * Math.abs(dissipatedAmp) * band.k;
+                    tempVec2A.y += dirY * Math.abs(dissipatedAmp) * band.k;
+                    breakingEnergy += breaking * dissipatedAmp * band.k;
+                }
+            }
+
+            const slope = Math.hypot(slopeX, slopeY);
+            const collision = Math.max(0, directionalEnergy - tempVec2A.length());
+
+            return {
+                height,
+                slopeX,
+                slopeY,
+                slope,
+                collision,
+                breaking: breakingEnergy,
+                verticalVelocity
+            };
+        }
+
+        function createSprayTexture(size = 128) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(size * 0.5, size * 0.5, size * 0.08, size * 0.5, size * 0.5, size * 0.5);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.35, 'rgba(220,240,255,0.95)');
+            gradient.addColorStop(0.7, 'rgba(170,205,235,0.35)');
+            gradient.addColorStop(1, 'rgba(170,205,235,0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+
+        function createCheckerTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            const tileSize = 64;
+
+            const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
+            gradient.addColorStop(0, '#113056');
+            gradient.addColorStop(1, '#081426');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1024, 1024);
+
+            for (let y = 0; y < 1024; y += tileSize) {
+                for (let x = 0; x < 1024; x += tileSize) {
+                    const odd = ((x / tileSize) + (y / tileSize)) % 2 === 1;
+                    ctx.fillStyle = odd ? 'rgba(36, 66, 104, 0.88)' : 'rgba(12, 28, 52, 0.94)';
+                    ctx.fillRect(x, y, tileSize, tileSize);
+                }
+            }
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 2;
+            for (let i = 0; i <= 1024; i += tileSize) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, 1024);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(1024, i);
+                ctx.stroke();
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(POOL_RADIUS / 4, POOL_RADIUS / 4);
+            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+
+        function createFallbackNormalTexture(size = 256) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const image = ctx.createImageData(size, size);
+            const data = image.data;
+
+            for (let y = 0; y < size; y += 1) {
+                for (let x = 0; x < size; x += 1) {
+                    const u = x / size;
+                    const v = y / size;
+                    const sx = Math.sin((u * 11.0 + v * 5.0) * Math.PI * 2);
+                    const sy = Math.cos((u * 7.0 - v * 13.0) * Math.PI * 2);
+                    const dx = 0.45 * sx + 0.35 * Math.sin((u * 23.0 - v * 17.0) * Math.PI * 2);
+                    const dy = 0.45 * sy + 0.25 * Math.cos((u * 19.0 + v * 29.0) * Math.PI * 2);
+                    const normal = new THREE.Vector3(-dx, -dy, 1.0).normalize();
+                    const index = (y * size + x) * 4;
+                    data[index + 0] = (normal.x * 0.5 + 0.5) * 255;
+                    data[index + 1] = (normal.y * 0.5 + 0.5) * 255;
+                    data[index + 2] = (normal.z * 0.5 + 0.5) * 255;
+                    data[index + 3] = 255;
+                }
+            }
+
+            ctx.putImageData(image, 0, 0);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.colorSpace = THREE.NoColorSpace;
+            return texture;
+        }
+
+        const bottomTexture = createCheckerTexture();
+        const bottomShaderTexture = bottomTexture.clone();
+        bottomShaderTexture.wrapS = THREE.RepeatWrapping;
+        bottomShaderTexture.wrapT = THREE.RepeatWrapping;
+        bottomShaderTexture.repeat.copy(bottomTexture.repeat);
+        bottomShaderTexture.colorSpace = THREE.NoColorSpace;
+        bottomShaderTexture.needsUpdate = true;
+
+        const sourcesArray = new Float32Array(MAX_SOURCES * 4);
+        const customUniforms = {
+            uSimTime: { value: 0 },
+            uNumSources: { value: params.numSources },
+            uSources: { value: sourcesArray },
+            uMedianWaveLength: { value: params.waveLength },
+            uWaveSpeedScale: { value: params.waveSpeed },
+            uAmplitude: { value: params.amplitude },
+            uSteepness: { value: params.steepness },
+            uContinuousStrength: { value: params.continuousStrength },
+            uPulseTime: { value: -1000.0 },
+            uPulseWidth: { value: params.pulseWidth },
+            uPulseBoost: { value: params.pulseBoost },
+            uSpectralSpread: { value: params.spectralSpread },
+            uNonlinearity: { value: params.nonlinearity },
+            uDepth: { value: params.depth },
+            uRadialFalloff: { value: params.radialFalloff },
+            uBreakingThreshold: { value: params.breakingThreshold },
+            uBreakingSoftness: { value: params.breakingSoftness },
+            uBreakingDissipation: { value: params.breakingDissipation },
+            uPoolRadius: { value: POOL_RADIUS },
+            uRefractionStrength: { value: params.refractionStrength },
+            uWaterClarity: { value: params.waterClarity },
+            uFoamStrength: { value: params.foamStrength },
+            uBottomMap: { value: bottomShaderTexture }
+        };
+
+        function updateSourcesUniform() {
+            for (let i = 0; i < MAX_SOURCES; i += 1) {
+                if (i < params.numSources) {
+                    const theta = (i / params.numSources) * Math.PI * 2;
+                    const phaseSeed = hashScalar(i + 3.7);
+                    const gainSeed = hashScalar(i + 101.9);
+
+                    sourcesArray[i * 4 + 0] = Math.cos(theta) * POOL_RADIUS;
+                    sourcesArray[i * 4 + 1] = Math.sin(theta) * POOL_RADIUS;
+                    sourcesArray[i * 4 + 2] = phaseSeed * Math.PI * 2 * params.phaseRandomness;
+                    sourcesArray[i * 4 + 3] = THREE.MathUtils.lerp(0.9, 1.12, gainSeed);
+                } else {
+                    sourcesArray[i * 4 + 0] = 0;
+                    sourcesArray[i * 4 + 1] = 0;
+                    sourcesArray[i * 4 + 2] = 0;
+                    sourcesArray[i * 4 + 3] = 0;
+                }
+            }
+            customUniforms.uNumSources.value = params.numSources;
+        }
+
+        function syncSimulationUniforms() {
+            customUniforms.uMedianWaveLength.value = params.waveLength;
+            customUniforms.uWaveSpeedScale.value = params.waveSpeed;
+            customUniforms.uAmplitude.value = params.amplitude;
+            customUniforms.uSteepness.value = params.steepness;
+            customUniforms.uContinuousStrength.value = params.continuousStrength;
+            customUniforms.uPulseWidth.value = params.pulseWidth;
+            customUniforms.uPulseBoost.value = params.pulseBoost;
+            customUniforms.uSpectralSpread.value = params.spectralSpread;
+            customUniforms.uNonlinearity.value = params.nonlinearity;
+            customUniforms.uDepth.value = params.depth;
+            customUniforms.uRadialFalloff.value = params.radialFalloff;
+            customUniforms.uBreakingThreshold.value = params.breakingThreshold;
+            customUniforms.uBreakingSoftness.value = params.breakingSoftness;
+            customUniforms.uBreakingDissipation.value = params.breakingDissipation;
+            customUniforms.uRefractionStrength.value = params.refractionStrength;
+            customUniforms.uWaterClarity.value = params.waterClarity;
+            customUniforms.uFoamStrength.value = params.foamStrength;
+        }
+
+        const wallMat = new THREE.MeshStandardMaterial({
+            color: 0x20384c,
+            roughness: 0.78,
+            metalness: 0.18,
+            side: THREE.DoubleSide
+        });
+        const bottomMat = new THREE.MeshStandardMaterial({
+            map: bottomTexture,
+            roughness: 0.88,
+            metalness: 0.06
+        });
+
+        let wall = null;
+        let bottom = null;
+
+        function rebuildPoolShell() {
+            if (wall) {
+                scene.remove(wall);
+                wall.geometry.dispose();
+            }
+            if (bottom) {
+                scene.remove(bottom);
+                bottom.geometry.dispose();
+            }
+
+            const wallHeight = params.depth + 3.0;
+            const wallGeo = new THREE.CylinderGeometry(POOL_RADIUS + 0.55, POOL_RADIUS + 2.25, wallHeight, 96, 1, true);
+            wall = new THREE.Mesh(wallGeo, wallMat);
+            wall.position.y = (3.0 - params.depth) * 0.5;
+            scene.add(wall);
+
+            const bottomGeo = new THREE.CircleGeometry(POOL_RADIUS + 2.2, 96);
+            bottom = new THREE.Mesh(bottomGeo, bottomMat);
+            bottom.rotation.x = -Math.PI / 2;
+            bottom.position.y = -params.depth;
+            scene.add(bottom);
+        }
+
+        rebuildPoolShell();
+
+        const poleGeo = new THREE.CylinderGeometry(0.12, 0.12, 10, 10);
+        const poleMat = new THREE.MeshStandardMaterial({ color: 0xff5c46, emissive: 0x551408, roughness: 0.3 });
+        const pole = new THREE.Mesh(poleGeo, poleMat);
+        pole.position.y = 2;
+        scene.add(pole);
+
+        const waterGeo = new THREE.PlaneGeometry(POOL_RADIUS * 2, POOL_RADIUS * 2, 192, 192);
+        const fallbackNormalTexture = createFallbackNormalTexture();
+        const water = new Water(waterGeo, {
+            textureWidth: 1024,
+            textureHeight: 1024,
+            clipBias: 0.001,
+            alpha: 0.95,
+            time: 0.0,
+            waterNormals: fallbackNormalTexture,
+            sunDirection: sunDirection.clone(),
+            sunColor: 0xffffff,
+            waterColor: 0x0d456c,
+            distortionScale: params.distortionScale,
+            fog: true,
+            side: THREE.DoubleSide
+        });
+        water.rotation.x = -Math.PI / 2;
+        scene.add(water);
+
+        function replaceOrThrow(source, search, replacement, label) {
+            const hasMatch = typeof search === 'string' ? source.includes(search) : search.test(source);
+            if (!hasMatch) {
+                throw new Error(`Water shader patch failed: ${label}`);
+            }
+            return source.replace(search, replacement);
+        }
+
+        function patchWaterMaterial(mesh) {
+            const material = mesh.material;
+
+            Object.assign(material.uniforms, customUniforms);
+
+            material.vertexShader = replaceOrThrow(
+                material.vertexShader,
+                /uniform float time;\s*/,
+                `uniform float time;
+                uniform float uSimTime;
+                uniform int uNumSources;
+                uniform vec4 uSources[64];
+                uniform float uMedianWaveLength;
+                uniform float uWaveSpeedScale;
+                uniform float uAmplitude;
+                uniform float uSteepness;
+                uniform float uContinuousStrength;
+                uniform float uPulseTime;
+                uniform float uPulseWidth;
+                uniform float uPulseBoost;
+                uniform float uSpectralSpread;
+                uniform float uNonlinearity;
+                uniform float uDepth;
+                uniform float uRadialFalloff;
+                uniform float uBreakingThreshold;
+                uniform float uBreakingSoftness;
+                uniform float uBreakingDissipation;
+                uniform float uPoolRadius;
+
+                varying vec3 vWaveNormal;
+                varying float vSurfaceHeight;
+                varying float vCrest;
+                varying float vEnergy;
+                varying float vBreaking;
+                varying vec2 vBottomUv;
+
+                const float PI = 3.14159265359;
+                const float TWO_PI = 6.28318530718;
+                const float G = 9.81;
+
+                float hash11( float value ) {
+                    return fract( sin( value * 127.1 + 311.7 ) * 43758.5453123 );
+                }
+
+                float fastSinh( float value ) {
+                    float clamped = clamp( value, -10.0, 10.0 );
+                    float ex = exp( clamped );
+                    float emx = exp( -clamped );
+                    return 0.5 * ( ex - emx );
+                }
+
+                float fastTanh( float value ) {
+                    float e2x = exp( clamp( value * 2.0, -20.0, 20.0 ) );
+                    return ( e2x - 1.0 ) / ( e2x + 1.0 );
+                }
+
+                float dispersionOmega( float k ) {
+                    return sqrt( max( G * k * fastTanh( k * uDepth ), 0.0 ) );
+                }
+
+                float groupVelocity( float k, float omega ) {
+                    float kh = max( k * uDepth, 1e-4 );
+                    float factor = 1.0 + ( 2.0 * kh ) / max( fastSinh( 2.0 * kh ), 1e-4 );
+                    return 0.5 * ( omega / k ) * factor;
+                }
+
+                void evaluateSurface(
+                    vec2 pos,
+                    out vec3 surfacePos,
+                    out vec3 tangentX,
+                    out vec3 tangentY,
+                    out float crestAccumulator,
+                    out float energyDensity,
+                    out float breakingAccumulator
+                ) {
+                    surfacePos = vec3( pos, 0.0 );
+                    tangentX = vec3( 1.0, 0.0, 0.0 );
+                    tangentY = vec3( 0.0, 1.0, 0.0 );
+                    crestAccumulator = 0.0;
+                    energyDensity = 0.0;
+                    breakingAccumulator = 0.0;
+
+                    for ( int i = 0; i < 64; i++ ) {
+                        if ( i >= uNumSources ) break;
+
+                        vec4 source = uSources[ i ];
+                        vec2 rel = pos - source.xy;
+                        float d = length( rel );
+
+                        if ( d < 0.001 ) continue;
+
+                        vec2 dir = rel / d;
+                        vec2 dDirDx = vec2( ( 1.0 - dir.x * dir.x ) / d, ( -dir.x * dir.y ) / d );
+                        vec2 dDirDy = vec2( ( -dir.x * dir.y ) / d, ( 1.0 - dir.y * dir.y ) / d );
+                        float phase = source.z;
+                        float sourceGain = source.w;
+                        float seed = float( i ) * 17.173;
+
+                        for ( int band = 0; band < 3; band++ ) {
+                            float bandScale = 1.0;
+                            float bandWeight = 0.5;
+                            float bandJitter = 0.0;
+
+                            if ( band == 0 ) {
+                                bandScale = 0.72;
+                                bandWeight = 0.26;
+                                bandJitter = 0.16;
+                            } else if ( band == 1 ) {
+                                bandScale = 1.0;
+                                bandWeight = 0.52;
+                                bandJitter = 0.0;
+                            } else {
+                                bandScale = 1.42;
+                                bandWeight = 0.22;
+                                bandJitter = 0.18;
+                            }
+
+                            float jitter = mix( 1.0 - bandJitter, 1.0 + bandJitter, hash11( seed + float( band ) * 31.931 ) );
+                            float lambda = max( 0.75, uMedianWaveLength * mix( 1.0, bandScale * jitter, uSpectralSpread ) );
+                            float k = TWO_PI / lambda;
+                            float baseOmega = dispersionOmega( k );
+                            float omega = baseOmega * uWaveSpeedScale;
+                            float cg = groupVelocity( k, baseOmega ) * uWaveSpeedScale;
+                            float attenuation = inversesqrt( 1.0 + uRadialFalloff * d * d );
+                            float coreRadius = max( 1.2 * lambda, 1.8 );
+                            float focusRatio = ( uPoolRadius + coreRadius ) / ( d + coreRadius );
+                            float focusing = min( pow( focusRatio, 0.28 ), 1.45 );
+                            float centerRelax = smoothstep( coreRadius * 1.9, coreRadius * 0.55, d );
+                            float ampSeed = mix( 0.9, 1.12, hash11( seed + float( band ) * 11.4 + 8.13 ) );
+                            float baseAmp = uAmplitude * bandWeight * ampSeed * pow( lambda / uMedianWaveLength, 0.65 ) * attenuation * focusing * ( 1.0 - 0.18 * centerRelax ) * sourceGain;
+
+                            float envelopeAmp = baseAmp * uContinuousStrength;
+                            float timeSincePulse = uSimTime - uPulseTime;
+
+                            if ( timeSincePulse > 0.0 && timeSincePulse < 30.0 ) {
+                                float sigma = max( lambda * uPulseWidth, 0.35 );
+                                float packetOffset = d - cg * timeSincePulse;
+                                float envelope = exp( -( packetOffset * packetOffset ) / ( 2.0 * sigma * sigma ) );
+                                envelopeAmp += baseAmp * uPulseBoost * envelope;
+                            }
+
+                            if ( envelopeAmp < 1e-4 ) continue;
+
+                            float theta = k * d - omega * uSimTime + phase;
+                            float sinTheta = sin( theta );
+                            float cosTheta = cos( theta );
+                            float sin2Theta = sin( 2.0 * theta );
+                            float cos2Theta = cos( 2.0 * theta );
+                            float micheLimit = max( 0.88 * fastTanh( k * uDepth ), 1e-3 );
+                            float steepnessRatio = ( 2.0 * k * envelopeAmp ) / micheLimit;
+                            float crestBias = smoothstep( 0.0, 0.85, sinTheta );
+                            float centerBreaker = smoothstep( coreRadius * 1.4, coreRadius * 0.3, d );
+                            float breaking = smoothstep( uBreakingThreshold, uBreakingThreshold + uBreakingSoftness, steepnessRatio ) * crestBias * ( 1.0 + 0.35 * centerBreaker );
+                            float dissipatedAmp = envelopeAmp * ( 1.0 - ( 0.35 + 0.2 * centerBreaker ) * uBreakingDissipation * breaking );
+                            float secondAmp = 0.5 * uNonlinearity * k * dissipatedAmp * dissipatedAmp * ( 1.0 - uBreakingDissipation * breaking );
+                            float q = min( 0.95, uSteepness / max( k * dissipatedAmp * 4.0, 1e-4 ) );
+                            float lateral = q * dissipatedAmp * cosTheta + q * secondAmp * 0.65 * cos2Theta;
+                            float dLdd = -q * dissipatedAmp * k * sinTheta - q * secondAmp * 1.3 * k * sin2Theta;
+                            float vertical = dissipatedAmp * sinTheta + secondAmp * sin2Theta;
+                            float dZdd = dissipatedAmp * k * cosTheta + 2.0 * secondAmp * k * cos2Theta;
+
+                            surfacePos.xy += dir * lateral;
+                            surfacePos.z += vertical;
+
+                            vec2 dPlanarDx = dDirDx * lateral + dir * ( dLdd * dir.x );
+                            vec2 dPlanarDy = dDirDy * lateral + dir * ( dLdd * dir.y );
+                            tangentX += vec3( dPlanarDx.x, dPlanarDx.y, dZdd * dir.x );
+                            tangentY += vec3( dPlanarDy.x, dPlanarDy.y, dZdd * dir.y );
+
+                            crestAccumulator += max( sinTheta + 0.45 * uNonlinearity * sin2Theta, 0.0 ) * dissipatedAmp * k;
+                            energyDensity += dissipatedAmp * dissipatedAmp * k;
+                            breakingAccumulator += breaking * dissipatedAmp * k;
+                        }
+                    }
+                }`,
+                'inject vertex uniforms'
+            );
+
+            material.vertexShader = replaceOrThrow(
+                material.vertexShader,
+                /void main\(\) \{\s*/,
+                `void main() {
+                    vec3 surfacePos;
+                    vec3 tangentX;
+                    vec3 tangentY;
+                    float crestAccumulator;
+                    float energyDensity;
+                    float breakingAccumulator;
+                    evaluateSurface( position.xy, surfacePos, tangentX, tangentY, crestAccumulator, energyDensity, breakingAccumulator );
+                    vec3 displacedNormal = normalize( cross( tangentX, tangentY ) );`,
+                'inject vertex main prelude'
+            );
+
+            material.vertexShader = replaceOrThrow(
+                material.vertexShader,
+                /mirrorCoord\s*=\s*modelMatrix\s*\*\s*vec4\(\s*position\s*,\s*1\.0\s*\)\s*;\s*/,
+                'vec4 worldPos = modelMatrix * vec4( surfacePos, 1.0 );\n\tmirrorCoord = worldPos;',
+                'replace mirrored position'
+            );
+
+            material.vertexShader = replaceOrThrow(
+                material.vertexShader,
+                /worldPosition\s*=\s*mirrorCoord\.xyzw\s*;\s*/,
+                `worldPosition = mirrorCoord.xyzw;
+\tvWaveNormal = normalize( mat3( modelMatrix ) * displacedNormal );
+\tvSurfaceHeight = surfacePos.z;
+\tvCrest = crestAccumulator;
+\tvEnergy = energyDensity;
+\tvBreaking = breakingAccumulator;
+\tvBottomUv = worldPosition.xz / ( uPoolRadius * 2.0 ) + 0.5;`,
+                'inject wave varyings'
+            );
+
+            material.vertexShader = replaceOrThrow(
+                material.vertexShader,
+                /vec4\s+mvPosition\s*=\s*modelViewMatrix\s*\*\s*vec4\(\s*position\s*,\s*1\.0\s*\)\s*;\s*/,
+                'vec4 mvPosition = modelViewMatrix * vec4( surfacePos, 1.0 );',
+                'replace displaced model view position'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /uniform vec3 waterColor;\s*/,
+                `uniform vec3 waterColor;
+                uniform sampler2D uBottomMap;
+                uniform float uPoolRadius;
+                uniform float uDepth;
+                uniform float uRefractionStrength;
+                uniform float uWaterClarity;
+                uniform float uFoamStrength;`,
+                'inject fragment uniforms'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /varying vec4 worldPosition;\s*/,
+                `varying vec4 worldPosition;
+                varying vec3 vWaveNormal;
+                varying float vSurfaceHeight;
+                varying float vCrest;
+                varying float vEnergy;
+                varying float vBreaking;
+                varying vec2 vBottomUv;`,
+                'inject fragment varyings'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /void main\(\) \{\s*/,
+                `void main() {
+                    if ( length( worldPosition.xz ) > uPoolRadius ) discard;
+                `,
+                'inject fragment discard'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /vec3 surfaceNormal = normalize\( noise\.xzy \* vec3\( 1\.5, 1\.0, 1\.5 \) \);\s*/,
+                `vec3 microNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );
+                vec3 surfaceNormal = normalize( mix( vWaveNormal, microNormal, 0.42 ) );
+                `,
+                'blend geometric and water normals'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /float rf0 = 0\.3;\s*/,
+                'float rf0 = 0.02;\n',
+                'adjust fresnel baseline'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /vec3 scatter = max\( 0\.0, dot\( surfaceNormal, eyeDirection \) \) \* waterColor;\s*/,
+                `float localDepth = max( uDepth - vSurfaceHeight * 0.35, 0.15 );
+                vec2 refractionUv = vBottomUv + surfaceNormal.xz * uRefractionStrength * ( 0.35 + localDepth * 0.08 );
+                vec3 floorSample = pow( texture2D( uBottomMap, refractionUv ).rgb, vec3( 2.2 ) );
+                vec3 absorption = exp( -vec3( 1.7, 1.0, 0.45 ) * localDepth * ( 1.3 - uWaterClarity ) );
+                vec3 refracted = floorSample * absorption;
+                vec3 scatter = max( dot( surfaceNormal, sunDirection ), 0.0 ) * waterColor * 0.38;
+                vec3 subsurface = waterColor * ( 0.14 + 0.45 * max( surfaceNormal.y, 0.0 ) );
+                vec3 baseBody = ( refracted + scatter + subsurface + diffuseLight * 0.14 ) * getShadowMask();
+                `,
+                'inject refraction block'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /vec3 albedo = mix\( \( sunColor \* diffuseLight \* 0\.3 \+ scatter \) \* getShadowMask\(\),\s*\( vec3\( 0\.1 \) \+ reflectionSample \* 0\.9 \+ reflectionSample \* specularLight \), reflectance\);\s*/,
+                'vec3 albedo = mix( baseBody, reflectionSample + specularLight, reflectance );\n',
+                'replace albedo blend'
+            );
+
+            material.fragmentShader = replaceOrThrow(
+                material.fragmentShader,
+                /vec3 outgoingLight = albedo;\s*/,
+                `float foamFactor = smoothstep( 0.28, 1.55, vCrest + vEnergy * 0.18 + vBreaking * 0.75 ) * uFoamStrength;
+                albedo = mix( albedo, vec3( 0.9, 0.96, 1.0 ), min( foamFactor, 1.0 ) );
+                vec3 outgoingLight = albedo;
+                `,
+                'inject foam mix'
+            );
+
+            material.transparent = true;
+            material.needsUpdate = true;
+        }
+
+        patchWaterMaterial(water);
+
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load(
+            'https://threejs.org/examples/textures/waternormals.jpg',
+            (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.colorSpace = THREE.NoColorSpace;
+                water.material.uniforms.normalSampler.value = texture;
+            }
+        );
+
+        function syncWaterMaterial() {
+            water.material.uniforms.distortionScale.value = params.distortionScale;
+            water.material.uniforms.size.value = params.normalScale;
+            water.material.uniforms.sunDirection.value.copy(sunDirection);
+            splashMaterial.size = params.splashSize;
+        }
+
+        const MAX_SPLASH_PARTICLES = 2400;
+        const splashPositions = new Float32Array(MAX_SPLASH_PARTICLES * 3);
+        const splashColors = new Float32Array(MAX_SPLASH_PARTICLES * 3);
+        const splashVelocities = new Float32Array(MAX_SPLASH_PARTICLES * 3);
+        const splashLives = new Float32Array(MAX_SPLASH_PARTICLES);
+        const splashMaxLives = new Float32Array(MAX_SPLASH_PARTICLES);
+        let splashCursor = 0;
+
+        const splashGeometry = new THREE.BufferGeometry();
+        splashGeometry.setAttribute('position', new THREE.BufferAttribute(splashPositions, 3));
+        splashGeometry.setAttribute('color', new THREE.BufferAttribute(splashColors, 3));
+
+        const splashMaterial = new THREE.PointsMaterial({
+            map: createSprayTexture(),
+            size: params.splashSize,
+            sizeAttenuation: true,
+            transparent: true,
+            opacity: 0.9,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            vertexColors: true
+        });
+
+        const splashPoints = new THREE.Points(splashGeometry, splashMaterial);
+        splashPoints.frustumCulled = false;
+        scene.add(splashPoints);
+
+        for (let i = 0; i < MAX_SPLASH_PARTICLES; i += 1) {
+            splashPositions[i * 3 + 1] = -999;
+        }
+
+        const splashSamplePoints = [];
+
+        function buildSplashSamplePoints() {
+            splashSamplePoints.length = 0;
+            splashSamplePoints.push(new THREE.Vector2(0, 0));
+            const rings = [
+                { radius: 3.0, count: 12 },
+                { radius: 6.0, count: 20 },
+                { radius: 9.0, count: 28 },
+                { radius: 12.0, count: 36 }
+            ];
+
+            rings.forEach((ring, ringIndex) => {
+                for (let i = 0; i < ring.count; i += 1) {
+                    const theta = (i / ring.count) * Math.PI * 2 + ringIndex * 0.13;
+                    splashSamplePoints.push(new THREE.Vector2(
+                        Math.cos(theta) * ring.radius,
+                        Math.sin(theta) * ring.radius
+                    ));
+                }
+            });
+        }
+
+        buildSplashSamplePoints();
+
+        function emitSplash(position, normal, intensity) {
+            const spawnCount = THREE.MathUtils.clamp(Math.floor(intensity * 18), 4, 28);
+
+            for (let i = 0; i < spawnCount; i += 1) {
+                const index = splashCursor;
+                splashCursor = (splashCursor + 1) % MAX_SPLASH_PARTICLES;
+
+                const jitterAngle = hashScalar(index * 9.17 + i * 3.1 + customUniforms.uSimTime.value) * Math.PI * 2;
+                const jitterRadius = 0.08 + 0.34 * hashScalar(index * 2.13 + i * 4.7);
+                const lateralJitter = tempVec3A.set(Math.cos(jitterAngle) * jitterRadius, 0, Math.sin(jitterAngle) * jitterRadius);
+                const launchNormal = tempVec3B.copy(normal).multiplyScalar(1.0 + intensity * 0.55);
+
+                splashPositions[index * 3 + 0] = position.x + lateralJitter.x;
+                splashPositions[index * 3 + 1] = position.y + 0.04 + Math.random() * 0.12;
+                splashPositions[index * 3 + 2] = position.z + lateralJitter.z;
+
+                splashVelocities[index * 3 + 0] = launchNormal.x + lateralJitter.x * (0.95 + intensity * 0.35);
+                splashVelocities[index * 3 + 1] = 1.8 + intensity * 2.4 + Math.random() * 1.2;
+                splashVelocities[index * 3 + 2] = launchNormal.z + lateralJitter.z * (0.95 + intensity * 0.35);
+
+                splashLives[index] = 0.45 + Math.random() * 0.55 + intensity * 0.18;
+                splashMaxLives[index] = splashLives[index];
+
+                const brightness = THREE.MathUtils.clamp(0.72 + intensity * 0.72, 0, 1.6);
+                splashColors[index * 3 + 0] = 0.68 * brightness;
+                splashColors[index * 3 + 1] = 0.84 * brightness;
+                splashColors[index * 3 + 2] = 1.0 * brightness;
+            }
+        }
+
+        let splashSampleAccumulator = 0;
+
+        function updateSplashSystem(time, delta) {
+            splashSampleAccumulator += delta;
+
+            if (splashSampleAccumulator >= 1 / 45) {
+                splashSampleAccumulator = 0;
+
+                splashSamplePoints.forEach((samplePoint) => {
+                    const sample = evaluateWaveSampleCPU(samplePoint, time);
+                    const collisionIntensity = sample.collision * (0.55 + sample.breaking * 2.4) * Math.max(sample.slope, 0.08) * Math.max(0, sample.verticalVelocity + 0.55);
+
+                    if (collisionIntensity < params.splashThreshold) return;
+
+                    const normal = tempVec3A.set(-sample.slopeX, 1, -sample.slopeY).normalize();
+                    emitSplash(
+                        tempVec3B.set(samplePoint.x, sample.height, samplePoint.y),
+                        normal,
+                        collisionIntensity * params.splashStrength
+                    );
+                });
+            }
+
+            for (let i = 0; i < MAX_SPLASH_PARTICLES; i += 1) {
+                if (splashLives[i] <= 0) continue;
+
+                splashLives[i] -= delta;
+                if (splashLives[i] <= 0) {
+                    splashPositions[i * 3 + 1] = -999;
+                    splashColors[i * 3 + 0] = 0;
+                    splashColors[i * 3 + 1] = 0;
+                    splashColors[i * 3 + 2] = 0;
+                    continue;
+                }
+
+                splashVelocities[i * 3 + 1] -= 9.81 * delta * 0.85;
+                splashVelocities[i * 3 + 0] *= 0.992;
+                splashVelocities[i * 3 + 2] *= 0.992;
+
+                splashPositions[i * 3 + 0] += splashVelocities[i * 3 + 0] * delta;
+                splashPositions[i * 3 + 1] += splashVelocities[i * 3 + 1] * delta;
+                splashPositions[i * 3 + 2] += splashVelocities[i * 3 + 2] * delta;
+
+                const fade = splashLives[i] / splashMaxLives[i];
+                splashColors[i * 3 + 0] *= 0.996 * fade + 0.004;
+                splashColors[i * 3 + 1] *= 0.996 * fade + 0.004;
+                splashColors[i * 3 + 2] *= 0.996 * fade + 0.004;
+            }
+
+            splashGeometry.attributes.position.needsUpdate = true;
+            splashGeometry.attributes.color.needsUpdate = true;
+        }
+
+        const paddles = [];
+        const paddleGroup = new THREE.Group();
+        scene.add(paddleGroup);
+        const paddleMat = new THREE.MeshStandardMaterial({ color: 0x8a97a8, metalness: 0.58, roughness: 0.38 });
+
+        function createPaddles() {
+            while (paddleGroup.children.length > 0) {
+                const child = paddleGroup.children[0];
+                paddleGroup.remove(child);
+                child.geometry.dispose();
+            }
+
+            paddles.length = 0;
+
+            const paddleWidth = (2 * Math.PI * POOL_RADIUS / params.numSources) * 0.76;
+            const paddleGeo = new THREE.BoxGeometry(paddleWidth, 4.8, 0.9);
+
+            for (let i = 0; i < params.numSources; i += 1) {
+                const theta = (i / params.numSources) * Math.PI * 2;
+                const mesh = new THREE.Mesh(paddleGeo, paddleMat);
+                mesh.rotation.y = -theta;
+                paddleGroup.add(mesh);
+                paddles.push({ mesh, theta, baseRadius: POOL_RADIUS });
+            }
+        }
+
+        function updatePaddles(time) {
+            const timeSincePulse = time - customUniforms.uPulseTime.value;
+
+            paddles.forEach((paddle, index) => {
+                const phase = sourcesArray[index * 4 + 2];
+                const sourceGain = sourcesArray[index * 4 + 3];
+                let radialOffset = 0;
+
+                for (let bandIndex = 0; bandIndex < BANDS.length; bandIndex += 1) {
+                    const band = getBandParams(index, bandIndex);
+                    const baseAmp = params.amplitude * band.ampGain * sourceGain;
+                    let envelopeAmp = baseAmp * params.continuousStrength;
+
+                    if (timeSincePulse > 0 && timeSincePulse < 30) {
+                        const sigma = Math.max(band.lambda * params.pulseWidth, 0.35);
+                        const packetOffset = -band.group * timeSincePulse;
+                        const envelope = Math.exp(-(packetOffset * packetOffset) / (2 * sigma * sigma));
+                        envelopeAmp += baseAmp * params.pulseBoost * envelope;
+                    }
+
+                    const secondAmp = 0.5 * params.nonlinearity * band.k * envelopeAmp * envelopeAmp;
+                    radialOffset -= envelopeAmp * Math.sin(-band.omega * time + phase);
+                    radialOffset -= 0.45 * secondAmp * Math.sin(-2 * band.omega * time + phase * 2);
+                }
+
+                const radius = paddle.baseRadius + radialOffset;
+                paddle.mesh.position.set(
+                    Math.cos(paddle.theta) * radius,
+                    0,
+                    Math.sin(paddle.theta) * radius
+                );
+            });
+        }
+
+        const gui = new GUI({ title: 'コントロールパネル' });
+        gui.add(params, 'firePulse').name('🌊 Fire Focus Pulse!');
+
+        const waveFolder = gui.addFolder('波動モデル');
+        waveFolder.add(params, 'numSources', 4, 64, 1).name('造波機の数').onChange(() => {
+            createPaddles();
+            updateSourcesUniform();
+        });
+        waveFolder.add(params, 'amplitude', 0.08, 0.65, 0.01).name('代表振幅').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'waveLength', 1.5, 9.0, 0.1).name('代表波長').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'waveSpeed', 0.35, 2.25, 0.01).name('時間スケール').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'steepness', 0.0, 1.0, 0.01).name('尖り').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'spectralSpread', 0.0, 1.0, 0.01).name('スペクトル幅').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'nonlinearity', 0.0, 1.0, 0.01).name('非線形').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'depth', 1.2, 6.5, 0.05).name('水深').onChange(() => {
+            syncSimulationUniforms();
+            rebuildPoolShell();
+        });
+        waveFolder.add(params, 'radialFalloff', 0.01, 0.12, 0.001).name('距離減衰').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'breakingThreshold', 0.55, 1.2, 0.01).name('砕波閾値').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'breakingSoftness', 0.05, 0.4, 0.01).name('砕波遷移幅').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'breakingDissipation', 0.0, 0.8, 0.01).name('砕波散逸').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'continuousStrength', 0.0, 1.0, 0.01).name('定常波').onChange(syncSimulationUniforms);
+        waveFolder.add(params, 'phaseRandomness', 0.0, 1.0, 0.01).name('位相ばらつき').onChange(updateSourcesUniform);
+
+        const pulseFolder = gui.addFolder('波束');
+        pulseFolder.add(params, 'pulseWidth', 0.2, 1.2, 0.01).name('波束幅').onChange(syncSimulationUniforms);
+        pulseFolder.add(params, 'pulseBoost', 0.5, 3.0, 0.01).name('パルス強度').onChange(syncSimulationUniforms);
+
+        const opticsFolder = gui.addFolder('光学');
+        opticsFolder.add(params, 'distortionScale', 0.0, 10.0, 0.1).name('反射歪み').onChange(syncWaterMaterial);
+        opticsFolder.add(params, 'normalScale', 0.2, 1.8, 0.01).name('細波スケール').onChange(syncWaterMaterial);
+        opticsFolder.add(params, 'refractionStrength', 0.0, 0.3, 0.005).name('屈折').onChange(syncSimulationUniforms);
+        opticsFolder.add(params, 'waterClarity', 0.15, 1.0, 0.01).name('透明感').onChange(syncSimulationUniforms);
+        opticsFolder.add(params, 'foamStrength', 0.0, 1.5, 0.01).name('白波').onChange(syncSimulationUniforms);
+
+        const splashFolder = gui.addFolder('しぶき');
+        splashFolder.add(params, 'splashThreshold', 0.05, 2.5, 0.01).name('発生閾値');
+        splashFolder.add(params, 'splashStrength', 0.2, 4.0, 0.01).name('発生強度');
+        splashFolder.add(params, 'splashSize', 0.05, 0.6, 0.01).name('粒サイズ').onChange(syncWaterMaterial);
+
+        updateSourcesUniform();
+        syncSimulationUniforms();
+        syncWaterMaterial();
+        createPaddles();
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const time = clock.elapsedTime;
+            customUniforms.uSimTime.value = time;
+            water.material.uniforms.time.value = time * 0.16;
+            water.material.uniforms.eye.value.copy(camera.position);
+
+            controls.update();
+            updatePaddles(time);
+            updateSplashSystem(time, delta);
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
