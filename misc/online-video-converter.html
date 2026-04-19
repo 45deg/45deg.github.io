@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en" color-mode="user">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Video Converter (demo)</title>
+  <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{border:0 solid #e5e7eb;box-sizing:border-box}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent}body{line-height:inherit;margin:0}hr{border-top-width:1px;color:inherit;height:0}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-size:1em;font-variation-settings:normal}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{border-collapse:collapse;border-color:inherit;text-indent:0}button,input,optgroup,select,textarea{color:inherit;font-family:inherit;font-feature-settings:inherit;font-size:100%;font-variation-settings:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{color:#9ca3af;opacity:1}input::placeholder,textarea::placeholder{color:#9ca3af;opacity:1}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{height:auto;max-width:100%}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}@media (min-width:1280px){.container{max-width:1280px}}@media (min-width:1536px){.container{max-width:1536px}}.pointer-events-none{pointer-events:none}.pointer-events-auto{pointer-events:auto}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}.mx-auto{margin-left:auto;margin-right:auto}.mb-1\.5{margin-bottom:.375rem}.mb-2{margin-bottom:.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.ml-4{margin-left:1rem}.mr-2{margin-right:.5rem}.mt-2{margin-top:.5rem}.mt-4{margin-top:1rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-2{height:.5rem}.h-2\.5{height:.625rem}.h-4{height:1rem}.h-8{height:2rem}.max-h-\[60vh\]{max-height:60vh}.min-h-screen{min-height:100vh}.w-4{width:1rem}.w-8{width:2rem}.w-full{width:100%}.max-w-5xl{max-width:64rem}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-move{cursor:move}.cursor-pointer{cursor:pointer}.touch-none{touch-action:none}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.appearance-none{-webkit-appearance:none;-moz-appearance:none;appearance:none}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-6{gap:1.5rem}.space-y-8>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(2rem*var(--tw-space-y-reverse));margin-top:calc(2rem*(1 - var(--tw-space-y-reverse)))}.overflow-hidden{overflow:hidden}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-dashed{border-style:dashed}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240/var(--tw-border-opacity,1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225/var(--tw-border-opacity,1))}.border-transparent{border-color:transparent}.border-white{--tw-border-opacity:1;border-color:rgb(255 255 255/var(--tw-border-opacity,1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74/var(--tw-bg-opacity,1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249/var(--tw-bg-opacity,1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240/var(--tw-bg-opacity,1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252/var(--tw-bg-opacity,1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.p-1{padding:.25rem}.p-6{padding:1.5rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-bottom:.125rem;padding-top:.125rem}.py-2{padding-bottom:.5rem;padding-top:.5rem}.py-3{padding-bottom:.75rem;padding-top:.75rem}.py-8{padding-bottom:2rem;padding-top:2rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.font-sans{font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.tracking-tight{letter-spacing:-.025em}.tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229/var(--tw-text-opacity,1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity,1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity,1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139/var(--tw-text-opacity,1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105/var(--tw-text-opacity,1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85/var(--tw-text-opacity,1))}.text-slate-900{--tw-text-opacity:1;color:rgb(15 23 42/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.accent-indigo-600{accent-color:#4f46e5}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgba(0,0,0,.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color)}.shadow-inner,.shadow-sm{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgba(0,0,0,.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition-all{transition-duration:.15s;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1)}.transition-colors{transition-duration:.15s;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1)}.file\:mr-4::file-selector-button{margin-right:1rem}.file\:rounded-lg::file-selector-button{border-radius:.5rem}.file\:border-0::file-selector-button{border-width:0}.file\:bg-indigo-50::file-selector-button{--tw-bg-opacity:1;background-color:rgb(238 242 255/var(--tw-bg-opacity,1))}.file\:px-4::file-selector-button{padding-left:1rem;padding-right:1rem}.file\:py-2\.5::file-selector-button{padding-bottom:.625rem;padding-top:.625rem}.file\:text-sm::file-selector-button{font-size:.875rem;line-height:1.25rem}.file\:font-semibold::file-selector-button{font-weight:600}.file\:text-indigo-700::file-selector-button{--tw-text-opacity:1;color:rgb(67 56 202/var(--tw-text-opacity,1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61/var(--tw-bg-opacity,1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202/var(--tw-bg-opacity,1))}.hover\:bg-slate-200:hover{--tw-bg-opacity:1;background-color:rgb(226 232 240/var(--tw-bg-opacity,1))}.hover\:file\:bg-indigo-100::file-selector-button:hover{--tw-bg-opacity:1;background-color:rgb(224 231 255/var(--tw-bg-opacity,1))}.focus\:border-indigo-500:focus{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity,1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-1:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.focus\:ring-1:focus,.focus\:ring-2:focus{box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.focus\:ring-indigo-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(99 102 241/var(--tw-ring-opacity,1))}.focus\:ring-offset-2:focus{--tw-ring-offset-width:2px}.disabled\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\:opacity-50:disabled{opacity:.5}@media (min-width:640px){.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:justify-start{justify-content:flex-start}.md\:text-left{text-align:left}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}.\[\&\:\:-moz-progress-bar\]\:bg-indigo-600::-moz-progress-bar{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.\[\&\:\:-webkit-progress-bar\]\:bg-slate-100::-webkit-progress-bar{--tw-bg-opacity:1;background-color:rgb(241 245 249/var(--tw-bg-opacity,1))}.\[\&\:\:-webkit-progress-value\]\:bg-indigo-600::-webkit-progress-value{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.\[\&\:\:-webkit-progress-value\]\:transition-all::-webkit-progress-value{transition-duration:.15s;-webkit-transition-property:all;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1)}</style>
+  <style>
+    /* Styling for the interactive crop box handles */
+    .crop-handle {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: white;
+      border: 2px solid #4f46e5; /* Indigo 600 */
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .crop-handle.nw { top: 0; left: 0; cursor: nwse-resize; }
+    .crop-handle.ne { top: 0; left: 100%; cursor: nesw-resize; }
+    .crop-handle.sw { top: 100%; left: 0; cursor: nesw-resize; }
+    .crop-handle.se { top: 100%; left: 100%; cursor: nwse-resize; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+  <main class="max-w-5xl mx-auto space-y-8">
+    
+    <header class="text-center md:text-left">
+      <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Online Video Converter (demo)</h1>
+      </div>
+      <p class="mt-2 text-slate-600">
+        Load a video, visually crop the frame, trim the timeline, set the output size, and export to MP4 entirely in your browser using <code>WebCodecs</code>.
+      </p>
+    </header>
+
+    <!-- Step 1: Input -->
+    <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <label class="block text-sm font-semibold text-slate-700 mb-2">1. Select Input Video</label>
+      <input id="file" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm" 
+        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer border border-slate-200 rounded-lg p-1 transition-colors">
+    </section>
+
+    <!-- Step 2: Editor (Hidden until file is loaded) -->
+    <section id="editor-section" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hidden">
+      <h2 class="text-sm font-semibold text-slate-700 mb-4">2. Edit Video (Crop & Trim)</h2>
+      
+      <!-- Video Preview & Crop Area -->
+      <div class="relative w-full bg-slate-900 rounded-xl overflow-hidden shadow-inner flex justify-center mb-6">
+        <div id="crop-container" class="relative inline-block select-none touch-none">
+          <video id="preview-video" class="block w-full max-h-[60vh]" playsinline controls></video>
+          
+          <!-- Crop Overlay -->
+          <div id="crop-overlay" class="absolute inset-0 pointer-events-none overflow-hidden hidden">
+            <!-- Box Shadow simulates the dimmed outer area -->
+            <div id="crop-box" class="absolute pointer-events-auto cursor-move border-2 border-dashed border-white" style="box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.65);">
+              <div class="crop-handle nw" data-handle="nw"></div>
+              <div class="crop-handle ne" data-handle="ne"></div>
+              <div class="crop-handle sw" data-handle="sw"></div>
+              <div class="crop-handle se" data-handle="se"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trim Controls -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Start Time (s)</label>
+          <div class="flex items-center gap-2">
+            <input id="trim-start" type="number" min="0" step="0.01" value="0" class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all">
+            <button type="button" id="set-start-btn" class="whitespace-nowrap px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg border border-slate-300 transition-colors">Set to Current</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">End Time (s)</label>
+          <div class="flex items-center gap-2">
+            <input id="trim-end" type="number" min="0" step="0.01" value="0" class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all">
+            <button type="button" id="set-end-btn" class="whitespace-nowrap px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg border border-slate-300 transition-colors">Set to Current</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3: Output Settings & Export -->
+    <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <h2 class="text-sm font-semibold text-slate-700 mb-4">3. Output Settings & Export</h2>
+      
+      <div class="mb-6">
+        <label class="flex justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <span>Output Scale</span>
+          <span id="scale-value" class="text-indigo-600 font-bold">100%</span>
+        </label>
+        <input id="out-scale" type="range" min="10" max="100" step="1" value="100" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+        <div class="flex justify-between items-start mt-2">
+          <p class="text-xs text-slate-500">The output video size will be calculated from the cropped area multiplied by this scale.</p>
+          <div class="flex flex-col items-end ml-4">
+            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Estimated Output</span>
+            <span id="calculated-size" class="font-mono text-sm font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 whitespace-nowrap">-- x --</span>
+          </div>
+        </div>
+      </div>
+
+      <button id="convert-btn" type="button" disabled class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+        Render & Export MP4
+      </button>
+
+      <!-- Status & Progress -->
+      <div class="mt-4">
+        <div class="flex justify-between items-center mb-1.5">
+          <p id="status" class="text-sm text-slate-600 font-medium">Awaiting video...</p>
+          <span id="progress-text" class="text-xs font-bold text-indigo-600">0%</span>
+        </div>
+        <progress id="progress" value="0" max="100" class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-indigo-600 [&::-webkit-progress-value]:transition-all [&::-moz-progress-bar]:bg-indigo-600"></progress>
+      </div>
+
+      <!-- Result Link -->
+      <div id="result-actions" class="mt-4 hidden flex justify-end">
+        <a id="download-link" download="edited_video.mp4" href="#" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          Download MP4
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import * as MP4Box from "https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm";
+    import { WebDemuxer } from "https://cdn.jsdelivr.net/npm/web-demuxer/+esm";
+
+    const wasmUrl = "https://cdn.jsdelivr.net/npm/web-demuxer/dist/wasm-files/web-demuxer.wasm";
+    
+    // UI Elements
+    const fileInput = document.getElementById("file");
+    const editorSection = document.getElementById("editor-section");
+    const previewVideo = document.getElementById("preview-video");
+    
+    // Crop Elements
+    const cropContainer = document.getElementById("crop-container");
+    const cropOverlay = document.getElementById("crop-overlay");
+    const cropBox = document.getElementById("crop-box");
+    
+    // Trim Elements
+    const trimStart = document.getElementById("trim-start");
+    const trimEnd = document.getElementById("trim-end");
+    const setStartBtn = document.getElementById("set-start-btn");
+    const setEndBtn = document.getElementById("set-end-btn");
+    
+    // Output Elements
+    const outScale = document.getElementById("out-scale");
+    const scaleValue = document.getElementById("scale-value");
+    const calculatedSizeEl = document.getElementById("calculated-size");
+    const convertBtn = document.getElementById("convert-btn");
+    const statusEl = document.getElementById("status");
+    const progressEl = document.getElementById("progress");
+    const progressText = document.getElementById("progress-text");
+    const resultActions = document.getElementById("result-actions");
+    const downloadLink = document.getElementById("download-link");
+
+    let objectUrl = "";
+    
+    // Crop State (values 0.0 to 1.0 representing percentage of video dimensions)
+    let cropState = { x: 0, y: 0, w: 1, h: 1 };
+    
+    /**
+     * Display status message in the UI
+     * @param {string} message - Text to display
+     * @param {boolean} isError - Determine if the text should be red
+     */
+    function setStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.className = `text-sm font-medium ${isError ? 'text-red-600' : 'text-slate-600'}`;
+    }
+
+    /**
+     * Update progress bar
+     * @param {number} value - Progress percentage (0 to 100)
+     */
+    function setProgress(value) {
+      const val = Math.max(0, Math.min(100, Math.round(value)));
+      progressEl.value = val;
+      progressText.textContent = `${val}%`;
+    }
+
+    /**
+     * Calculate final output resolution (px) based on current crop box and scale, then update UI
+     */
+    function updateCalculatedSize() {
+      if (!previewVideo.videoWidth || !previewVideo.videoHeight) return;
+      
+      const scale = Number(outScale.value) / 100;
+      const croppedW = Math.floor(previewVideo.videoWidth * cropState.w);
+      const croppedH = Math.floor(previewVideo.videoHeight * cropState.h);
+      
+      // Target dimensions must be even numbers as required by H.264 encoding specifications
+      const targetW = Math.max(2, Math.round((croppedW * scale) / 2) * 2);
+      const targetH = Math.max(2, Math.round((croppedH * scale) / 2) * 2);
+      
+      calculatedSizeEl.textContent = `${targetW} × ${targetH} px`;
+    }
+
+    outScale.addEventListener('input', (e) => {
+      scaleValue.textContent = `${e.target.value}%`;
+      updateCalculatedSize();
+    });
+
+    // --- Interactive Crop Logic ---
+    let isDragging = false;
+    let dragType = null; // 'move', 'nw', 'ne', 'sw', 'se'
+    let dragStartX = 0, dragStartY = 0;
+    let initialCropState = null;
+
+    /**
+     * Update crop box position and size on screen based on internal state (cropState)
+     */
+    function applyCropToUI() {
+      cropBox.style.left = `${cropState.x * 100}%`;
+      cropBox.style.top = `${cropState.y * 100}%`;
+      cropBox.style.width = `${cropState.w * 100}%`;
+      cropBox.style.height = `${cropState.h * 100}%`;
+      updateCalculatedSize();
+    }
+
+    /**
+     * Get touch or mouse click coordinates as relative position (0.0 to 1.0) within video container
+     */
+    function getRelativePointer(e) {
+      const rect = cropContainer.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)),
+        y: Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
+      };
+    }
+
+    function onPointerDown(e) {
+      if (!cropOverlay.classList.contains("hidden")) {
+        const handle = e.target.getAttribute('data-handle');
+        if (handle) dragType = handle;
+        else if (e.target === cropBox) dragType = 'move';
+        else return;
+
+        isDragging = true;
+        initialCropState = { ...cropState };
+        const pt = getRelativePointer(e);
+        dragStartX = pt.x;
+        dragStartY = pt.y;
+        e.preventDefault();
+      }
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      const pt = getRelativePointer(e);
+      const dx = pt.x - dragStartX;
+      const dy = pt.y - dragStartY;
+
+      let { x, y, w, h } = initialCropState;
+
+      if (dragType === 'move') {
+        x = Math.max(0, Math.min(1 - w, x + dx));
+        y = Math.max(0, Math.min(1 - h, y + dy));
+      } else {
+        if (dragType.includes('n')) {
+          const maxH = h + y;
+          const newY = Math.max(0, Math.min(y + h - 0.05, y + dy));
+          h = maxH - newY;
+          y = newY;
+        }
+        if (dragType.includes('s')) {
+          h = Math.max(0.05, Math.min(1 - y, h + dy));
+        }
+        if (dragType.includes('w')) {
+          const maxW = w + x;
+          const newX = Math.max(0, Math.min(x + w - 0.05, x + dx));
+          w = maxW - newX;
+          x = newX;
+        }
+        if (dragType.includes('e')) {
+          w = Math.max(0.05, Math.min(1 - x, w + dx));
+        }
+      }
+
+      cropState = { x, y, w, h };
+      applyCropToUI();
+    }
+
+    function onPointerUp() {
+      isDragging = false;
+      dragType = null;
+    }
+
+    cropContainer.addEventListener('mousedown', onPointerDown);
+    cropContainer.addEventListener('touchstart', onPointerDown, { passive: false });
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove, { passive: false });
+    window.addEventListener('mouseup', onPointerUp);
+    window.addEventListener('touchend', onPointerUp);
+
+
+    // --- Setup Video Metadata & Controls ---
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) {
+        convertBtn.disabled = true;
+        editorSection.classList.add("hidden");
+        return;
+      }
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(file);
+      
+      previewVideo.src = objectUrl;
+      editorSection.classList.remove("hidden");
+      convertBtn.disabled = false;
+      resultActions.classList.add("hidden");
+      setStatus("Video loaded. Adjust crop and trim, then export.");
+      setProgress(0);
+    });
+
+    previewVideo.addEventListener('loadedmetadata', () => {
+      // Setup Trim
+      trimStart.value = 0;
+      trimEnd.value = previewVideo.duration.toFixed(2);
+      
+      // Setup Container Aspect Ratio to perfectly match video frames for accurate cropping math
+      const ratio = previewVideo.videoWidth / previewVideo.videoHeight;
+      cropContainer.style.aspectRatio = ratio;
+      
+      // Reset Crop
+      cropState = { x: 0, y: 0, w: 1, h: 1 };
+      cropOverlay.classList.remove("hidden");
+      applyCropToUI();
+
+      // Reset Scale
+      outScale.value = 100;
+      scaleValue.textContent = "100%";
+    });
+
+    setStartBtn.addEventListener('click', () => {
+      trimStart.value = Math.max(0, previewVideo.currentTime).toFixed(2);
+      if (parseFloat(trimStart.value) > parseFloat(trimEnd.value)) {
+        trimEnd.value = previewVideo.duration.toFixed(2);
+      }
+    });
+
+    setEndBtn.addEventListener('click', () => {
+      trimEnd.value = Math.max(parseFloat(trimStart.value), previewVideo.currentTime).toFixed(2);
+    });
+
+
+    // --- Video Processing Utilities ---
+    
+    /**
+     * Convert Blob to File object (for library compatibility)
+     */
+    function blobToFile(blob, name = "input") {
+      return blob instanceof File ? blob : new File([blob], name, { type: blob.type || "application/octet-stream" });
+    }
+
+    /**
+     * Create a copy of Uint8Array from ArrayBuffer
+     */
+    function copyChunk(chunk) {
+      const bytes = new Uint8Array(chunk.byteLength);
+      chunk.copyTo(bytes);
+      return bytes;
+    }
+
+    /**
+     * Read video ReadableStream to the end and collect as an array
+     */
+    async function collectStream(stream) {
+      const reader = stream.getReader();
+      const chunks = [];
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) chunks.push(value);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      return chunks;
+    }
+
+    /**
+     * Convert raw sample from demuxer to EncodedVideoChunk object for WebCodecs
+     */
+    function toEncodedVideoChunk(sample) {
+      if (sample instanceof EncodedVideoChunk) return sample;
+      const data = sample.data instanceof Uint8Array ? sample.data : new Uint8Array(sample.data);
+      const timestamp = Number.isFinite(sample.timestamp) ? sample.timestamp : Math.round((sample.timestampNs || 0) / 1000);
+      const duration = Number.isFinite(sample.duration) ? sample.duration : Math.round((sample.durationNs || 0) / 1000) || 33_333;
+      return new EncodedVideoChunk({
+        type: sample.type || (sample.is_sync ? "key" : "delta"),
+        timestamp,
+        duration,
+        data,
+      });
+    }
+
+    // --- Main Processing Logic ---
+    
+    /**
+     * Main process: Decode, crop, trim, re-encode, and package as MP4
+     * @param {File} file - Input video file
+     * @returns {Promise<Blob>} - Blob of the newly generated MP4 file
+     */
+    async function executeConversion(file) {
+      if (!("VideoDecoder" in window) || !("VideoEncoder" in window)) {
+        throw new Error("WebCodecs is not supported in this browser.");
+      }
+      if (!MP4Box?.createFile) throw new Error("MP4Box.js failed to load.");
+
+      const scale = Number(outScale.value) / 100;
+      
+      const tStart = parseFloat(trimStart.value) || 0;
+      const tEnd = parseFloat(trimEnd.value) || previewVideo.duration;
+      const startUs = Math.floor(tStart * 1_000_000);
+      const endUs = Math.floor(tEnd * 1_000_000);
+
+      // Calculate target dimensions based on crop size and scale.
+      // H.264 encoding requires dimensions to be even numbers.
+      const croppedW = Math.floor(previewVideo.videoWidth * cropState.w);
+      const croppedH = Math.floor(previewVideo.videoHeight * cropState.h);
+      const targetW = Math.max(2, Math.round((croppedW * scale) / 2) * 2);
+      const targetH = Math.max(2, Math.round((croppedH * scale) / 2) * 2);
+
+      const mp4 = MP4Box.createFile();
+      const canvas = "OffscreenCanvas" in window ? new OffscreenCanvas(targetW, targetH) : document.createElement("canvas");
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext("2d", { alpha: false });
+
+      setStatus("Demuxing video...");
+      setProgress(5);
+
+      const demuxer = new WebDemuxer({ wasmFilePath: wasmUrl });
+      await demuxer.load(blobToFile(file));
+      const decoderConfig = await demuxer.getDecoderConfig("video");
+      if (!decoderConfig) throw new Error("No video track found.");
+
+      const stream = demuxer.read("video", 0);
+      let rawSamples = await collectStream(stream);
+      rawSamples = rawSamples.map(toEncodedVideoChunk);
+
+      // Find optimal starting keyframe preceding the user's start time
+      let startIdx = 0;
+      for (let i = 0; i < rawSamples.length; i++) {
+        if (rawSamples[i].timestamp <= startUs) {
+          if (rawSamples[i].type === 'key') startIdx = i;
+        } else {
+          break;
+        }
+      }
+
+      // Filter to relevant decoding range to save memory
+      const decodeSamples = rawSamples.slice(startIdx).filter(s => s.timestamp <= endUs);
+      if (!decodeSamples.length) throw new Error("No video frames found in the specified trim range.");
+      
+      // Calculate total expected output frames for progress reporting
+      const outputSampleCount = decodeSamples.filter(s => s.timestamp >= startUs).length || 1;
+
+      setStatus("Encoding video...");
+      setProgress(15);
+
+      const encoded = [];
+      let trackId = null;
+      let deferredError = null;
+      let processedFrames = 0;
+
+      const encoder = new VideoEncoder({
+        output: (chunk, metadata) => {
+          if (deferredError) return;
+          if (!trackId) {
+            const description = metadata?.decoderConfig?.description;
+            if (!description) {
+              deferredError = new Error("Failed to retrieve MP4 initialization data.");
+              return;
+            }
+            trackId = mp4.addTrack({
+              timescale: 1_000_000,
+              width: targetW,
+              height: targetH,
+              hdlr: "vide",
+              type: "avc1",
+              name: "Edited Video",
+              avcDecoderConfigRecord: description,
+            });
+          }
+          encoded.push({
+            bytes: copyChunk(chunk),
+            timestamp: chunk.timestamp,
+            key: chunk.type === "key",
+          });
+        },
+        error: (e) => { deferredError = e instanceof Error ? e : new Error(String(e)); }
+      });
+
+      encoder.configure({
+        codec: "avc1.42001f",
+        width: targetW,
+        height: targetH,
+        bitrate: 2_000_000,
+        framerate: 30,
+        avc: { format: "avc" },
+      });
+
+      const decoder = new VideoDecoder({
+        output: (frame) => {
+          if (deferredError) { frame.close(); return; }
+          
+          // Drop frames outside trim range
+          if (frame.timestamp < startUs || frame.timestamp > endUs) {
+            frame.close();
+            return;
+          }
+
+          try {
+            // Source dimensions from VideoFrame (coded dimensions map correctly to canvas drawImage)
+            const cw = frame.codedWidth;
+            const ch = frame.codedHeight;
+
+            // Calculate Crop Area
+            const sx = Math.floor(cropState.x * cw);
+            const sy = Math.floor(cropState.y * ch);
+            const sw = Math.floor(cropState.w * cw);
+            const sh = Math.floor(cropState.h * ch);
+
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, targetW, targetH);
+
+            // Draw cropped area directly to target dimensions
+            ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, targetW, targetH);
+
+            // Normalize timestamp to start at 0
+            const adjustedPts = frame.timestamp - startUs;
+            const outFrame = new VideoFrame(canvas, { timestamp: adjustedPts, duration: frame.duration || 33_333 });
+            
+            encoder.encode(outFrame, { keyFrame: encoded.length % 30 === 0 });
+            outFrame.close();
+            
+            processedFrames++;
+            setProgress(15 + (processedFrames / outputSampleCount) * 70);
+
+          } catch(e) {
+            deferredError = e;
+          } finally {
+            frame.close();
+          }
+        },
+        error: (e) => { deferredError = e instanceof Error ? e : new Error(String(e)); }
+      });
+
+      try {
+        decoder.configure(decoderConfig);
+        for (const sample of decodeSamples) {
+          if (deferredError) break;
+          decoder.decode(sample);
+        }
+        await decoder.flush();
+        await encoder.flush();
+        if (deferredError) throw deferredError;
+      } finally {
+        decoder.close();
+        encoder.close();
+      }
+
+      if (!trackId || !encoded.length) throw new Error("Failed to encode any frames.");
+
+      setStatus("Muxing final MP4...");
+      setProgress(90);
+
+      encoded.forEach((sample, index) => {
+        const next = encoded[index + 1];
+        const duration = next ? Math.max(1, next.timestamp - sample.timestamp) : 33_333;
+        mp4.addSample(trackId, sample.bytes, {
+          duration,
+          dts: sample.timestamp,
+          cts: sample.timestamp,
+          is_sync: sample.key,
+        });
+      });
+
+      setProgress(98);
+      const buffer = mp4.getBuffer();
+      const arrayBuffer = buffer instanceof ArrayBuffer ? buffer : buffer.buffer.slice(buffer.byteOffset || 0, (buffer.byteOffset || 0) + buffer.byteLength);
+      return new Blob([arrayBuffer], { type: "video/mp4" });
+    }
+
+    // --- Action Listeners ---
+    convertBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      convertBtn.disabled = true;
+      resultActions.classList.add("hidden");
+      
+      try {
+        const blob = await executeConversion(file);
+        const finalUrl = URL.createObjectURL(blob);
+        
+        downloadLink.href = finalUrl;
+        resultActions.classList.remove("hidden");
+        
+        setProgress(100);
+        setStatus("Export completed successfully!");
+      } catch (error) {
+        console.error(error);
+        setStatus(error instanceof Error ? error.message : "Conversion failed.", true);
+        setProgress(0);
+      } finally {
+        convertBtn.disabled = false;
+      }
+    });
+
+  </script>
+</body>
+</html>
