@@ -373,14 +373,7 @@ encoder.configure({
     <section class="article-section" aria-labelledby="appendix">
     <h2 id="appendix">6. 補足</h2>
 
-    <h3>6-1. MP4 生成で「エンコード済みなら終わり」ではない理由</h3>
-    <p>
-        H.264 のバイト列だけでは、たいていのプレイヤーはそのまま再生できない。
-        codec 名、初期化データ、サンプルサイズ、時間情報、同期点が別途必要で、MP4 はそれを box と table で持っている。
-        muxer が必要になる理由はここにある。
-    </p>
-
-    <h3>6-2. timescale と duration</h3>
+    <h3>6-1. timescale と duration</h3>
     <p>
         MP4 の時刻は整数で持つので、実装側で timescale を決めて
         <code>dts</code>, <code>cts</code>, <code>duration</code> をその単位で積むことになる。
@@ -389,14 +382,7 @@ encoder.configure({
         30 fps のような値では端数を含む継続時間が混ざることがある。
     </p>
 
-    <h3>6-3. このデモで省いているもの</h3>
-    <ul>
-        <li>音声トラックは持たない。映像 1 トラックのみ。</li>
-        <li>B-frame を使わない前提で <code>cts = dts</code> としている。</li>
-        <li>codec は H.264 固定。WebCodecs の対応状況に依存する。</li>
-    </ul>
-
-    <h3>6-4. 実装時の注意</h3>
+    <h3>6-2. 実装時の注意</h3>
     <ul>
         <li><code>VideoEncoder</code> が見えていても、その codec string や profile で encode できるとは限らない。先に <code>VideoEncoder.isConfigSupported()</code> を通しておく。</li>
     </ul>
