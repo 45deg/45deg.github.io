@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成</title>
+
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        .support-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 0 0 16px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+        }
+
+        .support-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.85em;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .support-pill.ok {
+            color: #14532d;
+            background: #dcfce7;
+        }
+
+        .support-pill.partial {
+            color: #854d0e;
+            background: #fef3c7;
+        }
+
+        .support-pill.bad {
+            color: #7f1d1d;
+            background: #fee2e2;
+        }
+
+        .support-details {
+            color: var(--muted-color);
+            font-size: 0.92em;
+        }
+
+        .glossary-term {
+            position: relative;
+            border-bottom: 1px dashed currentColor;
+            cursor: help;
+        }
+
+        .glossary-term::after {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 10px);
+            transform: translateX(-50%);
+            width: min(280px, 70vw);
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(15, 23, 32, 0.96);
+            color: #fff;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            z-index: 10;
+            white-space: normal;
+        }
+
+        .glossary-term:hover::after,
+        .glossary-term:focus-visible::after {
+            opacity: 1;
+        }
+
+        .button--download {
+            background-color: var(--success-color);
+            pointer-events: none;
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        .button--download:disabled {
+            background-color: var(--success-color);
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        .button--download.ready {
+            pointer-events: auto;
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .button--download.ready:hover {
+            background-color: #219653;
+        }
+    </style>
+</head>
+<body class="article-page">
+<main class="article-layout">
+<article class="article-shell article-entry">
+    <header class="article-header">
+        <h1 class="article-title">WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成</h1>
+        <div class="article-meta">
+            <time class="article-date" datetime="2026-04-09">2026-04-09</time>
+        </div>
+        <div class="article-lead">
+            <p>
+                <code>ffmpeg</code> やサーバ側の処理を使わず、ブラウザだけで MP4 を作るときのメモ。
+                まず <code><a href="https://www.w3.org/TR/webcodecs/" target="_blank" rel="noopener">WebCodecs</a></code> で映像をエンコードし、その後
+                <code><a href="https://github.com/gpac/mp4box.js/" target="_blank" rel="noopener">MP4Box.js</a></code> で MP4 コンテナに詰める流れを実装している。
+            </p>
+        </div>
+    </header>
+
+    <section class="article-section" aria-labelledby="codecs-and-container">
+    <h2 id="codecs-and-container">1. Codecs と Containerの役割</h2>
+
+    <table>
+        <tr><th>観点</th><th>Codec</th><th>Container</th></tr>
+        <tr><td>役割</td><td>画や音を圧縮・復元する</td><td>圧縮済みデータを時刻情報つきで格納する</td></tr>
+        <tr><td>具体例</td><td>H.264 / AVC, AAC, AV1</td><td>MP4, WebM, Matroska</td></tr>
+        <tr><td>このデモでの担当</td><td><code>VideoEncoder</code> が H.264 の <code><span class="glossary-term" tabindex="0" data-tip="圧縮済みの映像 1 サンプルぶんを表す WebCodecs のオブジェクトです。タイムスタンプや key / delta の種別もここに入ります。">EncodedVideoChunk</span></code> を出力</td><td><code>MP4Box.js</code> が MP4 のトラックとサンプル表を構築</td></tr>
+        <tr><td>入れ替え可能性</td><td>同じ MP4 に別 codec を入れることがある</td><td>同じ H.264 を MP4 以外の入れ物に入れることもある</td></tr>
+    </table>
+
+    <p>
+        「MP4 を生成する」=「圧縮済みの映像データを作る」+「再生できる MP4 に組み立てる」の二段階になる。
+    </p>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="mp4-container-structure">
+    <h2 id="mp4-container-structure">2. MP4 コンテナの骨格</h2>
+    <p>
+        MP4 は ISO Base Media File Format 系のファイルで、実体は box の並びでできている。
+        先頭から size と type を読んでいく構造で、よく出てくる
+        <code>ftyp</code>, <code>moov</code>, <code>mdat</code> もその box の名前である。
+    </p>
+
+    <h3>2-1. MP4コンテナの構造</h3>
+
+    <p>ツリー構造にすると以下のようになる（今回は映像トラック 1 本だけ）。</p>
+
+    <pre><code>mp4
+├─ ftyp
+├─ moov
+│  └─ trak
+│     └─ mdia
+│        └─ minf
+│           └─ stbl
+│              ├─ stsd
+│              ├─ stts
+│              ├─ stss
+│              ├─ stsc
+│              ├─ stsz
+│              └─ stco / co64
+└─ mdat</code></pre>
+
+    <h3>2-2. boxに含まれる要素</h3>
+    <table>
+        <tr><th>box</th><th>役割</th><th>今回の見方</th></tr>
+        <tr><td><code>ftyp</code></td><td>ファイル種別と互換ブランドを書く</td><td>MP4 系ファイルであることを示す</td></tr>
+        <tr><td><code>moov</code></td><td>全体のメタデータを持つ</td><td>トラック情報や sample table の親になる</td></tr>
+        <tr><td><code>trak</code></td><td>各トラックの入れ物</td><td>今回は映像トラック 1 本だけ</td></tr>
+        <tr><td><code>mdia</code></td><td>トラック内のメディア情報</td><td><code>vide</code> ハンドラの映像トラックになる</td></tr>
+        <tr><td><code>minf</code></td><td>メディア種別ごとの情報</td><td>映像なら <code>vmhd</code> などが入る</td></tr>
+        <tr><td><code>stbl</code></td><td>サンプル表の集合</td><td>時間、サイズ、同期点を持つ</td></tr>
+        <tr><td><code>mdat</code></td><td>圧縮済みメディアデータ本体</td><td><code>EncodedVideoChunk</code> のバイト列がここへ入る</td></tr>
+    </table>
+
+    <h3>2-3. 映像トラックで重要になる sample table</h3>
+    <p>
+        再生側に必要なのは映像データ本体だけではない。
+        どのサンプルが何バイトで、どれだけの時間続き、どこが<span class="glossary-term" tabindex="0" data-tip="そのフレーム単体から復号を始められる基準フレームです。シーク位置やランダムアクセスの起点になります。">キーフレーム</span>かという表も要る。
+        そのため <code><span class="glossary-term" tabindex="0" data-tip="sample table の略で、サンプルの解釈方法・時刻・サイズ・同期点をまとめる box 群です。">stbl</span></code> の下にいくつかの table がぶら下がる。
+    </p>
+
+    <table>
+        <tr><th>box</th><th>役割</th><th>実装上の見方</th></tr>
+        <tr><td><code>stsd</code></td><td>サンプル記述。どの codec でどう解釈するかを書く</td><td><code>avc1</code> がここにぶら下がる</td></tr>
+        <tr><td><code><span class="glossary-term" tabindex="0" data-tip="decoding time to sample。各サンプルのデコード時刻間隔を持つ表です。">stts</span></code></td><td>decoding time to sample</td><td>各サンプルの継続時間を表す</td></tr>
+        <tr><td><code><span class="glossary-term" tabindex="0" data-tip="composition time to sample。表示順と復号順がずれるときの差分を持ちます。">ctts</span></code></td><td>composition time to sample</td><td>B-frame を使うと表示順との差分が入る</td></tr>
+        <tr><td><code><span class="glossary-term" tabindex="0" data-tip="sync sample table。ランダムアクセス可能なサンプル、つまりキーフレームの一覧です。">stss</span></code></td><td>sync sample table</td><td>キーフレーム一覧になる</td></tr>
+        <tr><td><code>stsc</code></td><td>sample to chunk</td><td>サンプルと chunk の対応を持つ</td></tr>
+        <tr><td><code>stsz</code></td><td>sample size table</td><td>各サンプルのバイト数を記録する</td></tr>
+        <tr><td><code>stco</code> / <code>co64</code></td><td>chunk offset</td><td><code>mdat</code> 内の位置を指す</td></tr>
+    </table>
+
+    <h3>2-4. H.264 を MP4 に入れるときの <code>avc1</code></h3>
+    <p>
+        MP4RA の codec 登録でいう <code>avc1</code> は H.264/AVC の sample entry を表す。
+        つまり「このトラックのサンプルは H.264 として解釈する」という宣言にあたる。
+        このページでは details よりも、H.264 のサンプル列を MP4 の sample table と結びつける流れに集中する。
+    </p>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="webcodecs-and-mp4">
+    <h2 id="webcodecs-and-mp4">3. WebCodecs が返すものと MP4 に必要なもの</h2>
+    <p>
+        WebCodecs の output callback は <code>EncodedVideoChunk</code> と、
+        必要に応じて <code>EncodedVideoChunkMetadata</code> を返す。
+        デモで重要なのは、各 chunk のサイズ・時刻・キーフレームかどうかを MP4 の sample table に写すことだ。
+    </p>
+
+    <table>
+        <tr><th>WebCodecs 側の値</th><th>意味</th><th>MP4 側での使い道</th></tr>
+        <tr><td><code>chunk.byteLength</code></td><td>圧縮済みサンプルのサイズ</td><td><code>stsz</code> 相当の情報になる</td></tr>
+        <tr><td><code>chunk.timestamp</code></td><td>提示時刻</td><td><code>dts</code> / <code>cts</code> の計算材料になる</td></tr>
+        <tr><td><code>chunk.type</code></td><td><code>"key"</code> / <code>"delta"</code></td><td><code>stss</code> に反映される</td></tr>
+    </table>
+
+    <h3>3-1. AVC の <code>annexb</code> と <code>avc</code></h3>
+    <p>
+        AVC では出力形式に <code>annexb</code> と <code>avc</code> がある。
+        MP4 に詰めるなら、最初から <code>avc</code> を選んでおくほうが扱いやすい。
+    </p>
+
+    <table>
+        <tr><th>形式</th><th>パラメータセットの置き場</th><th>向いている用途</th><th>このデモでの扱い</th></tr>
+        <tr><td><code>annexb</code></td><td>ビットストリーム内に SPS / PPS を周期的に含める</td><td>ライブ配信やストリーム途中参加</td><td>使わない</td></tr>
+        <tr><td><code>avc</code></td><td>サンプル列とは別に初期化情報を扱いやすい</td><td>MP4 のように初期化情報を別に保持する形式</td><td>採用する</td></tr>
+    </table>
+
+    <div class="article-note">
+        <span class="glossary-term" tabindex="0" data-tip="delta frame。前後のフレームとの差分を使って復号する通常フレームです。単体では再生開始点になれません。">delta フレーム</span>だけでは途中から再生を始めにくい。
+        だからキーフレームの位置を MP4 側にも残す必要がある。
+    </div>
+
+    <h3>3-2. キーフレームが重要な理由</h3>
+    <p>
+        キーフレームは「そのフレーム単体を起点に復号を再開できる場所」なので、シークやサムネイル生成の起点になる。
+        逆に delta フレームは前のフレーム群を参照するため、そこだけ切り出しても正しく復号できないことがある。
+        このデモでは 1 秒ごとにキーフレームを打ち、<code>chunk.type === "key"</code> のサンプルを MP4 の同期サンプルとして登録している。
+    </p>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="implementation-plan">
+    <h2 id="implementation-plan">4. 実装方針</h2>
+    <ol>
+        <li>各フレームを <code>VideoFrame</code> として作る。</li>
+        <li><code>VideoEncoder</code> を H.264 で構成し、<code>avc: { format: "avc" }</code> を指定する。</li>
+        <li>最初の output callback でトラックを初期化する。</li>
+        <li>各 <code>EncodedVideoChunk</code> を <code>addSample()</code> で MP4 に積む。<span class="glossary-term" tabindex="0" data-tip="MP4 の sync sample フラグです。このサンプルから単独で再生開始できることを示します。">キーフレーム</span>なら <code>is_sync</code> を立てる。</li>
+        <li>最後に <code>save()</code> で <code>Blob</code> 化し、そのままブラウザで再生・保存する。</li>
+    </ol>
+
+    <pre><code class="language-javascript">// エンコーダーの構成
+const encoder = new VideoEncoder({
+  output: (chunk, metadata) => {
+    // 最初の chunk が来たタイミングで MP4 の映像トラックを作る
+    if (trackId === null) {
+      trackId = mp4File.addTrack({
+        timescale: 1000,
+        width,
+        height,
+        hdlr: "vide",
+        type: "avc1",
+        avcDecoderConfigRecord: getAvcDecoderConfigRecord(metadata),
+      });
+    }
+
+    // chunk.type が key なら MP4 の sync sample として扱う
+    mp4File.addSample(trackId, chunkBytes, {
+      duration,
+      dts,
+      cts: dts,
+      is_sync: chunk.type === "key",
+    });
+  },
+});
+
+encoder.configure({
+  codec: "avc1.42001f",
+  width,
+  height,
+  bitrate,
+  framerate: fps,
+  avc: { format: "avc" },
+});</code></pre>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="interactive-demo">
+    <h2 id="interactive-demo">5. 動作デモ</h2>
+    <p>
+        下のデモでは、Canvas に描いたフレームをそのまま H.264 にして MP4 に詰める。
+        生成後は <code>&lt;video&gt;</code> で再生でき、サイズ、サンプル数、キーフレーム数を確認できる。
+    </p>
+
+    <div class="article-demo">
+        <div class="article-demo-grid">
+            <div>
+                <div class="field-grid">
+                    <div class="field-group">
+                        <label for="fpsInput">FPS</label>
+                        <input type="number" id="fpsInput" min="12" max="60" step="1" value="30">
+                    </div>
+                    <div class="field-group">
+                        <label for="secondsInput">秒数</label>
+                        <input type="number" id="secondsInput" min="2" max="30" step="1" value="3">
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="bitrateInput">ビットレート (bps)</label>
+                    <input type="number" id="bitrateInput" min="300000" max="8000000" step="100000" value="2000000">
+                </div>
+
+                <div id="supportBanner" class="support-banner" aria-live="polite">
+                    <span id="supportPill" class="support-pill">確認中</span>
+                    <span id="supportDetails" class="support-details">このブラウザの対応状況を確認しています。</span>
+                </div>
+
+                <div class="button-row">
+                    <button id="generateButton" class="button" type="button">MP4 を生成</button>
+                    <button id="saveButton" class="button button--download" type="button" disabled>保存</button>
+                </div>
+
+                <div id="status" class="status-text">待機中</div>
+
+                <div class="meta-grid">
+                    <div class="meta-card">
+                        <span class="meta-label">Codec</span>
+                        <span class="meta-value" id="statCodec">avc1.42001f</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">解像度</span>
+                        <span class="meta-value" id="statResolution">640 x 360</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">サンプル数</span>
+                        <span class="meta-value" id="statSamples">-</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">キーフレーム数</span>
+                        <span class="meta-value" id="statKeyframes">-</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">出力サイズ</span>
+                        <span class="meta-value" id="statSize">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <canvas id="previewCanvas" class="media-frame" width="640" height="360"></canvas>
+                <div class="surface-card">
+                    <div class="muted-text">生成後プレビュー</div>
+                    <video id="resultVideo" class="media-frame" controls muted playsinline></video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="appendix">
+    <h2 id="appendix">6. 補足</h2>
+
+    <h3>6-1. MP4 生成で「エンコード済みなら終わり」ではない理由</h3>
+    <p>
+        H.264 のバイト列だけでは、たいていのプレイヤーはそのまま再生できない。
+        codec 名、初期化データ、サンプルサイズ、時間情報、同期点が別途必要で、MP4 はそれを box と table で持っている。
+        muxer が必要になる理由はここにある。
+    </p>
+
+    <h3>6-2. timescale と duration</h3>
+    <p>
+        MP4 の時刻は整数で持つので、実装側で timescale を決めて
+        <code>dts</code>, <code>cts</code>, <code>duration</code> をその単位で積むことになる。
+        ここでは計算を見やすくするため <code>timescale = 1000</code> としている。
+        1 フレームぶんの長さは整数 timescale に丸めながら積まれるので、
+        30 fps のような値では端数を含む継続時間が混ざることがある。
+    </p>
+
+    <h3>6-3. このデモで省いているもの</h3>
+    <ul>
+        <li>音声トラックは持たない。映像 1 トラックのみ。</li>
+        <li>B-frame を使わない前提で <code>cts = dts</code> としている。</li>
+        <li>codec は H.264 固定。WebCodecs の対応状況に依存する。</li>
+    </ul>
+
+    <h3>6-4. 実装時の注意</h3>
+    <ul>
+        <li><code>VideoEncoder</code> が見えていても、その codec string や profile で encode できるとは限らない。先に <code>VideoEncoder.isConfigSupported()</code> を通しておく。</li>
+    </ul>
+
+    </section>
+
+    <footer class="article-section article-footer" aria-labelledby="references">
+    <h2 id="references">7. 参考・参照 URL</h2>
+    <ul>
+        <li><a href="https://github.com/gpac/mp4box.js/" target="_blank" rel="noopener">MP4Box.js GitHub</a></li>
+        <li><a href="https://developer.chrome.com/docs/web-platform/best-practices/webcodecs?hl=ja" target="_blank" rel="noopener">WebCodecs による動画処理</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API" target="_blank" rel="noopener">WebCodecs API</a></li>
+        <li><a href="https://www.w3.org/TR/webcodecs/" target="_blank" rel="noopener">W3C WebCodecs</a></li>
+        <li><a href="https://www.w3.org/TR/webcodecs-avc-codec-registration/" target="_blank" rel="noopener">W3C AVC (H.264) WebCodecs Registration</a></li>
+        <li><a href="https://www.w3.org/TR/mse-byte-stream-format-isobmff/" target="_blank" rel="noopener">W3C ISO BMFF Byte Stream Format</a></li>
+        <li><a href="https://mp4ra.org/registered-types/boxes" target="_blank" rel="noopener">MP4 Registration Authority: Boxes</a></li>
+        <li><a href="https://mp4ra.org/registered-types/codecs" target="_blank" rel="noopener">MP4 Registration Authority: Codecs</a></li>
+    </ul>
+</footer>
+</article>
+</main>
+
+<script type="module">
+    import * as MP4Box from "https://cdn.jsdelivr.net/npm/mp4box@2.3.0/+esm";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.hljs) {
+            hljs.highlightAll();
+        }
+    });
+
+    const width = 640;
+    const height = 360;
+    const timescale = 1000;
+    const codec = "avc1.42001f";
+
+    const canvas = document.getElementById("previewCanvas");
+    const ctx = canvas.getContext("2d");
+    const video = document.getElementById("resultVideo");
+    const generateButton = document.getElementById("generateButton");
+    const saveButton = document.getElementById("saveButton");
+    const statusEl = document.getElementById("status");
+    const supportBanner = document.getElementById("supportBanner");
+    const supportPill = document.getElementById("supportPill");
+    const supportDetails = document.getElementById("supportDetails");
+
+    const fpsInput = document.getElementById("fpsInput");
+    const secondsInput = document.getElementById("secondsInput");
+    const bitrateInput = document.getElementById("bitrateInput");
+
+    const statCodec = document.getElementById("statCodec");
+    const statResolution = document.getElementById("statResolution");
+    const statSamples = document.getElementById("statSamples");
+    const statKeyframes = document.getElementById("statKeyframes");
+    const statSize = document.getElementById("statSize");
+
+    statCodec.textContent = codec;
+    statResolution.textContent = `${width} x ${height}`;
+
+    let currentBlob = null;
+    let currentObjectUrl = null;
+
+    const frameTitle = "WebCodecs + MP4Box.js";
+    const frameSubtitle = "single track / fixed style";
+    const framePalette = {
+        skyStart: "#13293d",
+        skyEnd: "#cae9ff",
+        orb: "#ff7f50",
+        ground: "#0b1f2a",
+        text: "rgba(255,255,255,0.94)",
+    };
+
+    // ステータス行にメッセージを出す。
+    function setStatus(message, isError = false) {
+        statusEl.textContent = message;
+        statusEl.classList.toggle("error", isError);
+    }
+
+    // 生成した object URL を後始末する。
+    function releaseObjectUrl() {
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = null;
+        }
+    }
+
+    // 保存ボタンの有効・無効を切り替える。
+    function updateSaveButtonState(hasBlob) {
+        saveButton.disabled = !hasBlob;
+        saveButton.classList.toggle("ready", hasBlob);
+    }
+
+    // Blob を一時リンク経由で保存する。
+    function saveBlob(blob, fileName) {
+        const objectUrl = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = objectUrl;
+        anchor.download = fileName;
+        anchor.rel = "noopener";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    }
+
+    // 画質と再生時間の設定値を読む。
+    function readSettings() {
+        const fps = Math.max(12, Math.min(60, Number(fpsInput.value) || 30));
+        const seconds = Math.max(2, Math.min(30, Number(secondsInput.value) || 3));
+        const bitrate = Math.max(300000, Math.min(8000000, Number(bitrateInput.value) || 2000000));
+        return {
+            width,
+            height,
+            fps,
+            seconds,
+            bitrate,
+            timescale,
+            codec,
+        };
+    }
+
+    // 今見ているブラウザ名をざっくり推定する。
+    function getBrowserLabel() {
+        const uaDataBrands = navigator.userAgentData?.brands ?? [];
+        const brandText = uaDataBrands.map((brand) => brand.brand).join(" ");
+        if (brandText.includes("Chromium")) return "Chromium";
+        if (brandText.includes("Google Chrome")) return "Chrome";
+        if (brandText.includes("Microsoft Edge")) return "Edge";
+        if (brandText.includes("Safari")) return "Safari";
+        if (brandText.includes("Firefox")) return "Firefox";
+
+        const ua = navigator.userAgent;
+        if (ua.includes("Edg/")) return "Edge";
+        if (ua.includes("Chrome/")) return "Chrome";
+        if (ua.includes("Safari/") && !ua.includes("Chrome/")) return "Safari";
+        if (ua.includes("Firefox/")) return "Firefox";
+        return "Unknown browser";
+    }
+
+    // このページに必要な機能の対応状況をまとめる。
+    function getSupportInfo() {
+        const webCodecs = "VideoEncoder" in window && "VideoFrame" in window;
+        const mp4Box = Boolean(MP4Box?.createFile);
+        return {
+            browser: getBrowserLabel(),
+            webCodecs,
+            mp4Box,
+            supported: webCodecs && mp4Box,
+        };
+    }
+
+    // ブラウザ対応の indicator を更新する。
+    function renderSupportIndicator() {
+        const support = getSupportInfo();
+
+        supportBanner.dataset.support = support.supported ? "ok" : support.webCodecs ? "partial" : "bad";
+        supportPill.className = "support-pill";
+        supportPill.classList.add(support.supported ? "ok" : support.webCodecs ? "partial" : "bad");
+        supportPill.textContent = support.supported ? "このブラウザは対応しています" : "一部未対応です";
+
+        const parts = [
+            `Browser: ${support.browser}`,
+            `WebCodecs: ${support.webCodecs ? "OK" : "NG"}`,
+            `MP4Box.js: ${support.mp4Box ? "OK" : "NG"}`,
+        ];
+        supportDetails.textContent = parts.join(" / ");
+    }
+
+    // 1 フレーム分のプレビュー画像を描く。
+    function drawFrame(frameIndex, totalFrames, settings) {
+        const progress = totalFrames <= 1 ? 0 : frameIndex / (totalFrames - 1);
+
+        ctx.clearRect(0, 0, settings.width, settings.height);
+
+        const sky = ctx.createLinearGradient(0, 0, settings.width, settings.height);
+        sky.addColorStop(0, framePalette.skyStart);
+        sky.addColorStop(1, framePalette.skyEnd);
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, settings.width, settings.height);
+
+        const glowX = settings.width * (0.2 + progress * 0.6);
+        const glowY = settings.height * 0.42;
+        const glow = ctx.createRadialGradient(glowX, glowY, 10, glowX, glowY, 130);
+        glow.addColorStop(0, "rgba(255,255,255,0.24)");
+        glow.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, settings.width, settings.height);
+
+        ctx.fillStyle = framePalette.ground;
+        ctx.beginPath();
+        ctx.moveTo(0, settings.height);
+        ctx.lineTo(0, 250);
+        ctx.lineTo(140, 210);
+        ctx.lineTo(300, 242);
+        ctx.lineTo(460, 198);
+        ctx.lineTo(settings.width, 228);
+        ctx.lineTo(settings.width, settings.height);
+        ctx.closePath();
+        ctx.fill();
+
+        const orbX = 100 + progress * (settings.width - 200);
+        const orbY = 156 + Math.sin(progress * Math.PI * 2) * 12;
+        ctx.fillStyle = framePalette.orb;
+        ctx.beginPath();
+        ctx.arc(orbX, orbY, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 文字は 1 種類の書体・サイズ・色で統一する。
+        ctx.fillStyle = framePalette.text;
+        ctx.font = "600 30px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+        ctx.fillText(frameTitle, 28, 56);
+        ctx.fillText(frameSubtitle, 28, 96);
+        ctx.fillText(`frame ${String(frameIndex + 1).padStart(2, "0")} / ${totalFrames}`, 28, settings.height - 28);
+    }
+
+    // 先頭フレームのプレビューを更新する。
+    function updatePreview() {
+        const settings = readSettings();
+        drawFrame(0, Math.max(1, settings.fps * settings.seconds), settings);
+    }
+
+    // WebCodecs の chunk を Uint8Array にする。
+    function chunkToUint8Array(chunk) {
+        const bytes = new Uint8Array(chunk.byteLength);
+        chunk.copyTo(bytes);
+        return bytes;
+    }
+
+    // decoderConfig.description から AVC 初期化情報を取り出す。
+    function getAvcDecoderConfigRecord(metadata) {
+        const decoderConfig = metadata?.decoderConfig;
+        if (!decoderConfig || !("description" in decoderConfig)) {
+            return null;
+        }
+        return decoderConfig.description ?? null;
+    }
+
+    // WebCodecs の VideoEncoder を H.264 設定で作る。
+    async function createEncoder(settings, onChunk) {
+        const config = {
+            codec: settings.codec,
+            width: settings.width,
+            height: settings.height,
+            bitrate: settings.bitrate,
+            framerate: settings.fps,
+            avc: { format: "avc" },
+        };
+
+        const support = await VideoEncoder.isConfigSupported(config);
+        if (!support.supported) {
+            throw new Error("この環境では指定した H.264 WebCodecs 設定がサポートされていません。");
+        }
+
+        const encoder = new VideoEncoder({
+            output: onChunk,
+            error: (error) => {
+                throw error;
+            },
+        });
+
+        encoder.configure(config);
+        return encoder;
+    }
+
+    // 生成したフレーム列を MP4 にまとめる。
+    async function generateMp4(settings) {
+        if (!("VideoEncoder" in window) || !("VideoFrame" in window)) {
+            throw new Error("WebCodecs API に未対応です。Chrome / Edge 系の比較的新しい環境で確認してください。");
+        }
+
+        if (!MP4Box?.createFile) {
+            throw new Error("MP4Box.js の読み込みに失敗しました。");
+        }
+
+        const totalFrames = settings.fps * settings.seconds;
+        const frameDurationUs = Math.round(1_000_000 / settings.fps);
+        const frameDurationTs = settings.timescale / settings.fps;
+        const mp4File = MP4Box.createFile();
+
+        let trackId = null;
+        let sampleIndex = 0;
+        let keyframeCount = 0;
+
+        const encoder = await createEncoder(settings, (chunk, metadata) => {
+            // output callback で受けた chunk を、そのまま MP4 の sample として積む。
+            if (trackId === null) {
+                const avcDecoderConfigRecord = getAvcDecoderConfigRecord(metadata);
+                if (!avcDecoderConfigRecord) {
+                    throw new Error("H.264 の初期化情報を取得できず、MP4 トラックを作成できませんでした。");
+                }
+
+                // 最初の出力 chunk に合わせて映像トラックを確定する
+                trackId = mp4File.addTrack({
+                    timescale: settings.timescale,
+                    width: settings.width,
+                    height: settings.height,
+                    hdlr: "vide",
+                    name: "WebCodecs H.264 Track",
+                    type: "avc1",
+                    avcDecoderConfigRecord,
+                });
+            }
+
+            const bytes = chunkToUint8Array(chunk);
+            const dts = Math.round(sampleIndex * frameDurationTs);
+            const duration = Math.round((sampleIndex + 1) * frameDurationTs) - dts;
+
+            if (chunk.type === "key") {
+                keyframeCount += 1;
+            }
+
+            // B-frame を使わない前提なので cts は dts と同じにする
+            mp4File.addSample(trackId, bytes, {
+                duration,
+                dts,
+                cts: dts,
+                is_sync: chunk.type === "key",
+            });
+
+            sampleIndex += 1;
+        });
+
+        for (let frameIndex = 0; frameIndex < totalFrames; frameIndex += 1) {
+            drawFrame(frameIndex, totalFrames, settings);
+
+            // Canvas の現在状態を VideoFrame 化して順番にエンコードする。
+            const frame = new VideoFrame(canvas, {
+                timestamp: frameIndex * frameDurationUs,
+                duration: frameDurationUs,
+            });
+            encoder.encode(frame, { keyFrame: frameIndex % settings.fps === 0 });
+            frame.close();
+        }
+
+        await encoder.flush();
+        encoder.close();
+
+        if (trackId === null) {
+            throw new Error("MP4 トラックの作成に失敗しました。");
+        }
+
+        // save() は自動ダウンロードを起こすので使わず、バッファだけ取り出す。
+        const buffer = mp4File.getBuffer();
+        const blob = buffer instanceof MP4Box.DataStream
+            ? new Blob([buffer.buffer], { type: "video/mp4" })
+            : buffer instanceof ArrayBuffer
+                ? new Blob([buffer], { type: "video/mp4" })
+                : null;
+
+        if (!(blob instanceof Blob)) {
+            throw new Error("MP4 の Blob 化に失敗しました。");
+        }
+
+        return {
+            blob,
+            sampleCount: sampleIndex,
+            keyframeCount,
+        };
+    }
+
+    // 生成結果の統計を画面に反映する。
+    function updateStats(result) {
+        statSamples.textContent = String(result.sampleCount);
+        statKeyframes.textContent = String(result.keyframeCount);
+        statSize.textContent = `${(result.blob.size / 1024).toFixed(1)} KB`;
+    }
+
+    // 生成ボタン押下時の一連の流れをまとめる。
+    async function handleGenerate() {
+        const settings = readSettings();
+        updatePreview();
+        currentBlob = null;
+        releaseObjectUrl();
+        updateSaveButtonState(false);
+        video.removeAttribute("src");
+        video.load();
+        generateButton.disabled = true;
+        setStatus("MP4 を生成中です...");
+
+        try {
+            const result = await generateMp4(settings);
+            updateStats(result);
+
+            const playableBlob = new Blob([result.blob], { type: "video/mp4" });
+            currentBlob = result.blob;
+            currentObjectUrl = URL.createObjectURL(playableBlob);
+            video.src = currentObjectUrl;
+            video.load();
+            updateSaveButtonState(true);
+            setStatus("生成完了。下の video 要素で再生確認できます。");
+
+        } catch (error) {
+            console.error(error);
+            const message = error instanceof Error ? error.message : "MP4 の生成に失敗しました。";
+            setStatus(message, true);
+        } finally {
+            generateButton.disabled = false;
+        }
+    }
+
+    // 保存ボタンから MP4 をダウンロードする。
+    function handleSave() {
+        if (!currentBlob) {
+            setStatus("先に MP4 を生成してください。", true);
+            return;
+        }
+
+        // ここだけ明示的にダウンロードを実行する。
+        saveBlob(currentBlob, "webcodecs-mp4box-demo.mp4");
+    }
+
+    [fpsInput, secondsInput, bitrateInput].forEach((element) => {
+        element.addEventListener("input", updatePreview);
+        element.addEventListener("change", updatePreview);
+    });
+
+    generateButton.addEventListener("click", handleGenerate);
+    saveButton.addEventListener("click", handleSave);
+
+    renderSupportIndicator();
+    updatePreview();
+</script>
+
+</body>
+</html>
