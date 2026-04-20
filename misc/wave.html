@@ -49,6 +49,73 @@
             right: 15px !important;
             top: 15px !important;
         }
+
+        #target-panel {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            width: 240px;
+            color: #fff;
+            background: rgba(15, 20, 30, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+            padding: 12px;
+            backdrop-filter: blur(8px);
+        }
+
+        #target-panel h2 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #7fd0ff;
+        }
+
+        #target-preview {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            background: #050a12;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #target-status {
+            margin: 8px 0 10px 0;
+            font-size: 12px;
+            line-height: 1.45;
+            color: #d0dae7;
+            min-height: 34px;
+        }
+
+        .target-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .target-actions button {
+            appearance: none;
+            border: 0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            background: linear-gradient(180deg, #2f5674, #1f3344);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .target-actions button:hover {
+            background: linear-gradient(180deg, #3a6a90, #27415a);
+        }
+
+        .target-actions button:active {
+            transform: translateY(1px);
+        }
+
+        #target-file {
+            display: none;
+        }
     </style>
     <script type="importmap">
       {
@@ -66,9 +133,22 @@
         <h1>造波水槽シミュレータ (unverified)</h1>
         <p>周囲に配置された多数の造波機から波を発生させます。空間では複雑に干渉し合いますが、中心（原点）ではすべての波が重なり、<span class="highlight">巨大な波（フォーカシング）</span>を形成します。</p>
         <p>▶ 右上のUIから<b>「🌊 Fire Focus Pulse!」</b>を押して、一斉に波束を中心へ放ってみてください。</p>
+        <p>▶ 右下の <b>Target Waveform</b> で画像を読み込むと、その 2D 高さ場に近づくように造波機を自動フィットします。</p>
         <p style="font-size: 12px; color: #aaa; margin-bottom: 0;">※ Phase Randomness を上げると、位相がズレて中心でも打ち消し合う様子が観察できます。</p>
         <p>このアプリケーションは未検証です。</p>
     </div>
+    <div id="target-panel">
+        <h2>Target Waveform</h2>
+        <canvas id="target-preview" width="192" height="192"></canvas>
+        <div id="target-status">画像を読み込むか、デモ波形を使うと、その 2D 高さ場に近づくようにソースを再フィットします。</div>
+        <div class="target-actions">
+            <button id="target-load" type="button">Load Image</button>
+            <button id="target-fit" type="button">Fit Now</button>
+            <button id="target-demo" type="button">Demo Field</button>
+            <button id="target-clear" type="button">Clear</button>
+        </div>
+    </div>
+    <input id="target-file" type="file" accept="image/*">
 
     <script type="module">
         import * as THREE from 'three';
@@ -78,6 +158,13 @@
         import GUI from 'lil-gui';
 
         const container = document.getElementById('canvas-container');
+        const targetPreview = document.getElementById('target-preview');
+        const targetStatus = document.getElementById('target-status');
+        const targetLoadButton = document.getElementById('target-load');
+        const targetFitButton = document.getElementById('target-fit');
+        const targetDemoButton = document.getElementById('target-demo');
+        const targetClearButton = document.getElementById('target-clear');
+        const targetFileInput = document.getElementById('target-file');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x07111f);
         scene.fog = new THREE.FogExp2(0x07111f, 0.012);
@@ -146,6 +233,7 @@
             splashThreshold: 0.38,
             splashStrength: 2.4,
             splashSize: 0.3,
+            targetStrength: 0.95,
             firePulse: () => {
                 customUniforms.uPulseTime.value = customUniforms.uSimTime.value;
             }
@@ -378,6 +466,20 @@
         bottomShaderTexture.needsUpdate = true;
 
         const sourcesArray = new Float32Array(MAX_SOURCES * 4);
+        const sourcePhases = new Float32Array(MAX_SOURCES);
+        const sourceGains = new Float32Array(MAX_SOURCES);
+        const sourcePhaseSeeds = new Float32Array(MAX_SOURCES);
+        const sourceGainSeeds = new Float32Array(MAX_SOURCES);
+        const targetCanvas = document.createElement('canvas');
+        const targetCtx = targetCanvas.getContext('2d', { willReadFrequently: true });
+        const TARGET_RESOLUTION = 256;
+        targetCanvas.width = TARGET_RESOLUTION;
+        targetCanvas.height = TARGET_RESOLUTION;
+        let targetImageData = null;
+        let targetPixels = null;
+        let targetLabel = 'No target';
+        let targetFitActive = false;
+        let targetSamplePoints = [];
         const customUniforms = {
             uSimTime: { value: 0 },
             uNumSources: { value: params.numSources },
@@ -404,25 +506,172 @@
             uBottomMap: { value: bottomShaderTexture }
         };
 
-        function updateSourcesUniform() {
-            for (let i = 0; i < MAX_SOURCES; i += 1) {
-                if (i < params.numSources) {
-                    const theta = (i / params.numSources) * Math.PI * 2;
-                    const phaseSeed = hashScalar(i + 3.7);
-                    const gainSeed = hashScalar(i + 101.9);
+        function solveLinearSystem(matrix, vector, size) {
+            const a = new Float64Array(matrix);
+            const b = new Float64Array(vector);
 
-                    sourcesArray[i * 4 + 0] = Math.cos(theta) * POOL_RADIUS;
-                    sourcesArray[i * 4 + 1] = Math.sin(theta) * POOL_RADIUS;
-                    sourcesArray[i * 4 + 2] = phaseSeed * Math.PI * 2 * params.phaseRandomness;
-                    sourcesArray[i * 4 + 3] = THREE.MathUtils.lerp(0.9, 1.12, gainSeed);
-                } else {
-                    sourcesArray[i * 4 + 0] = 0;
-                    sourcesArray[i * 4 + 1] = 0;
-                    sourcesArray[i * 4 + 2] = 0;
-                    sourcesArray[i * 4 + 3] = 0;
+            for (let pivot = 0; pivot < size; pivot += 1) {
+                let maxRow = pivot;
+                let maxValue = Math.abs(a[pivot * size + pivot]);
+
+                for (let row = pivot + 1; row < size; row += 1) {
+                    const value = Math.abs(a[row * size + pivot]);
+                    if (value > maxValue) {
+                        maxValue = value;
+                        maxRow = row;
+                    }
+                }
+
+                if (maxValue < 1e-10) {
+                    a[pivot * size + pivot] = 1e-10;
+                    maxValue = 1e-10;
+                }
+
+                if (maxRow !== pivot) {
+                    for (let col = pivot; col < size; col += 1) {
+                        const temp = a[pivot * size + col];
+                        a[pivot * size + col] = a[maxRow * size + col];
+                        a[maxRow * size + col] = temp;
+                    }
+                    const tempVector = b[pivot];
+                    b[pivot] = b[maxRow];
+                    b[maxRow] = tempVector;
+                }
+
+                const pivotValue = a[pivot * size + pivot];
+                for (let col = pivot; col < size; col += 1) {
+                    a[pivot * size + col] /= pivotValue;
+                }
+                b[pivot] /= pivotValue;
+
+                for (let row = 0; row < size; row += 1) {
+                    if (row === pivot) continue;
+                    const factor = a[row * size + pivot];
+                    if (Math.abs(factor) < 1e-12) continue;
+                    for (let col = pivot; col < size; col += 1) {
+                        a[row * size + col] -= factor * a[pivot * size + col];
+                    }
+                    b[row] -= factor * b[pivot];
                 }
             }
-            customUniforms.uNumSources.value = params.numSources;
+
+            return b;
+        }
+
+        function fitSourcesToTarget() {
+            if (!targetPixels) {
+                setTargetStatus('先に画像を読み込むか、Demo Field を生成してください。');
+                return;
+            }
+
+            if (!targetSamplePoints.length) {
+                targetSamplePoints = buildTargetSamplePoints();
+            }
+
+            const sourceCount = params.numSources;
+            const dimensions = sourceCount * 2;
+            const fitTime = 0;
+            const normalMatrix = new Float64Array(dimensions * dimensions);
+            const rhs = new Float64Array(dimensions);
+            const sampleValues = [];
+
+            for (const point of targetSamplePoints) {
+                sampleValues.push(sampleTargetField(point));
+            }
+
+            let mean = 0;
+            for (const value of sampleValues) {
+                mean += value;
+            }
+            mean /= Math.max(sampleValues.length, 1);
+
+            let rms = 0;
+            for (let i = 0; i < sampleValues.length; i += 1) {
+                sampleValues[i] -= mean;
+                rms += sampleValues[i] * sampleValues[i];
+            }
+            rms = Math.sqrt(rms / Math.max(sampleValues.length, 1)) || 1;
+
+            for (let sampleIndex = 0; sampleIndex < targetSamplePoints.length; sampleIndex += 1) {
+                const point = targetSamplePoints[sampleIndex];
+                const targetValue = sampleValues[sampleIndex] / rms;
+                const basis = new Float64Array(dimensions);
+
+                for (let sourceIndex = 0; sourceIndex < sourceCount; sourceIndex += 1) {
+                    const sourceX = sourcesArray[sourceIndex * 4 + 0];
+                    const sourceY = sourcesArray[sourceIndex * 4 + 1];
+                    const relX = point.x - sourceX;
+                    const relY = point.y - sourceY;
+                    const distance = Math.hypot(relX, relY);
+
+                    if (distance < 1e-4) continue;
+
+                    const attenuation = 1 / Math.sqrt(1 + params.radialFalloff * distance * distance);
+                    const coreRadius = Math.max(1.2 * params.waveLength, 1.8);
+                    const focusRatio = (POOL_RADIUS + coreRadius) / (distance + coreRadius);
+                    const focusing = Math.min(Math.pow(focusRatio, 0.28), 1.45);
+                    const centerRelax = THREE.MathUtils.smoothstep(distance, coreRadius * 0.55, coreRadius * 1.9);
+                    const envelope = params.amplitude * attenuation * focusing * (1 - 0.18 * centerRelax) * Math.max(params.continuousStrength, 0.08);
+
+                    let inPhase = 0;
+                    let quadrature = 0;
+
+                    for (let bandIndex = 0; bandIndex < BANDS.length; bandIndex += 1) {
+                        const band = getBandParams(sourceIndex, bandIndex);
+                        const theta = band.k * distance - band.omega * fitTime;
+                        const base = envelope * band.ampGain;
+                        inPhase += base * Math.sin(theta);
+                        quadrature += base * Math.cos(theta);
+                    }
+
+                    basis[sourceIndex * 2 + 0] = inPhase;
+                    basis[sourceIndex * 2 + 1] = quadrature;
+                }
+
+                for (let row = 0; row < dimensions; row += 1) {
+                    rhs[row] += basis[row] * targetValue;
+                    for (let col = row; col < dimensions; col += 1) {
+                        normalMatrix[row * dimensions + col] += basis[row] * basis[col];
+                    }
+                }
+            }
+
+            const regularization = 0.002;
+            for (let i = 0; i < dimensions; i += 1) {
+                normalMatrix[i * dimensions + i] += regularization;
+            }
+
+            for (let row = 0; row < dimensions; row += 1) {
+                for (let col = 0; col < row; col += 1) {
+                    normalMatrix[row * dimensions + col] = normalMatrix[col * dimensions + row];
+                }
+            }
+
+            const solution = solveLinearSystem(normalMatrix, rhs, dimensions);
+
+            let maxGain = 0;
+            for (let sourceIndex = 0; sourceIndex < sourceCount; sourceIndex += 1) {
+                const inPhase = solution[sourceIndex * 2 + 0];
+                const quadrature = solution[sourceIndex * 2 + 1];
+                const gain = Math.hypot(inPhase, quadrature);
+                maxGain = Math.max(maxGain, gain);
+            }
+
+            const fitScale = maxGain > 3.0 ? 3.0 / maxGain : 1.0;
+            for (let sourceIndex = 0; sourceIndex < sourceCount; sourceIndex += 1) {
+                const inPhase = solution[sourceIndex * 2 + 0] * fitScale;
+                const quadrature = solution[sourceIndex * 2 + 1] * fitScale;
+                sourcePhases[sourceIndex] = Math.atan2(quadrature, inPhase);
+                sourceGains[sourceIndex] = THREE.MathUtils.clamp(Math.hypot(inPhase, quadrature), 0, 4.0);
+            }
+
+            targetFitActive = true;
+            applySourceProfileToUniform();
+            setTargetStatus(`Fit 完了。${sourceCount} 個の造波機を ${targetLabel} に近づけました。`);
+        }
+
+        function updateSourcesUniform() {
+            applySourceProfileToUniform();
         }
 
         function syncSimulationUniforms() {
@@ -516,6 +765,171 @@
                 throw new Error(`Water shader patch failed: ${label}`);
             }
             return source.replace(search, replacement);
+        }
+
+        function setTargetStatus(message) {
+            targetStatus.textContent = message;
+        }
+
+        function refreshTargetImageData() {
+            targetImageData = targetCtx.getImageData(0, 0, TARGET_RESOLUTION, TARGET_RESOLUTION);
+            targetPixels = targetImageData.data;
+        }
+
+        function clearTargetField() {
+            targetCtx.fillStyle = '#000000';
+            targetCtx.fillRect(0, 0, TARGET_RESOLUTION, TARGET_RESOLUTION);
+            refreshTargetImageData();
+            targetLabel = 'Empty field';
+            setTargetStatus('ターゲットをクリアしました。画像を読み込むか、Demo Field を使ってください。');
+            renderTargetPreview();
+            targetFitActive = false;
+        }
+
+        function drawDemoTarget() {
+            const image = targetCtx.createImageData(TARGET_RESOLUTION, TARGET_RESOLUTION);
+            const data = image.data;
+
+            for (let y = 0; y < TARGET_RESOLUTION; y += 1) {
+                for (let x = 0; x < TARGET_RESOLUTION; x += 1) {
+                    const u = x / (TARGET_RESOLUTION - 1);
+                    const v = y / (TARGET_RESOLUTION - 1);
+                    const px = u * 2 - 1;
+                    const py = v * 2 - 1;
+                    const r0 = Math.hypot(px + 0.42, py + 0.12);
+                    const r1 = Math.hypot(px - 0.22, py - 0.26);
+                    const ripple = Math.sin((u * 11.5 + v * 7.5) * Math.PI * 2);
+                    const ridge = Math.cos((u * 4.0 - v * 8.0) * Math.PI * 2);
+                    const crown = Math.exp(-r0 * r0 * 3.8) * 0.95;
+                    const basin = -Math.exp(-r1 * r1 * 5.2) * 0.9;
+                    const wave = ripple * Math.exp(-Math.hypot(px, py) * 1.45) * 0.34;
+                    const spiral = Math.sin(Math.atan2(py, px) * 4.0 + Math.hypot(px, py) * 8.0) * 0.14;
+                    const height = THREE.MathUtils.clamp((crown + basin + wave + ridge * 0.08 + spiral) * 0.5 + 0.5, 0, 1);
+                    const value = Math.round(height * 255);
+                    const index = (y * TARGET_RESOLUTION + x) * 4;
+                    data[index + 0] = value;
+                    data[index + 1] = value;
+                    data[index + 2] = value;
+                    data[index + 3] = 255;
+                }
+            }
+
+            targetCtx.putImageData(image, 0, 0);
+            refreshTargetImageData();
+            targetLabel = 'Demo field';
+            setTargetStatus('デモ波形を生成しました。必要なら画像を読み込んでから Fit Now を押してください。');
+            renderTargetPreview();
+            targetFitActive = false;
+        }
+
+        function loadTargetImage(file) {
+            const objectUrl = URL.createObjectURL(file);
+            const image = new Image();
+            image.onload = () => {
+                const scale = Math.min(
+                    TARGET_RESOLUTION / Math.max(image.width, 1),
+                    TARGET_RESOLUTION / Math.max(image.height, 1)
+                );
+                const drawWidth = Math.max(1, Math.round(image.width * scale));
+                const drawHeight = Math.max(1, Math.round(image.height * scale));
+                const offsetX = Math.floor((TARGET_RESOLUTION - drawWidth) * 0.5);
+                const offsetY = Math.floor((TARGET_RESOLUTION - drawHeight) * 0.5);
+
+                targetCtx.fillStyle = '#000000';
+                targetCtx.fillRect(0, 0, TARGET_RESOLUTION, TARGET_RESOLUTION);
+                targetCtx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+                URL.revokeObjectURL(objectUrl);
+                refreshTargetImageData();
+                targetLabel = file.name;
+                setTargetStatus(`読み込み完了: ${file.name}。Fit Now で造波機を合わせます。`);
+                renderTargetPreview();
+                targetFitActive = false;
+            };
+            image.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                setTargetStatus('画像の読み込みに失敗しました。別の画像を試してください。');
+            };
+            image.src = objectUrl;
+        }
+
+        function renderTargetPreview() {
+            const previewCtx = targetPreview.getContext('2d');
+            previewCtx.clearRect(0, 0, targetPreview.width, targetPreview.height);
+            previewCtx.imageSmoothingEnabled = false;
+            previewCtx.drawImage(targetCanvas, 0, 0, targetPreview.width, targetPreview.height);
+        }
+
+        function buildTargetSamplePoints() {
+            const points = [];
+            const grid = 25;
+
+            for (let y = 0; y < grid; y += 1) {
+                for (let x = 0; x < grid; x += 1) {
+                    const px = THREE.MathUtils.lerp(-POOL_RADIUS * 0.95, POOL_RADIUS * 0.95, x / (grid - 1));
+                    const py = THREE.MathUtils.lerp(-POOL_RADIUS * 0.95, POOL_RADIUS * 0.95, y / (grid - 1));
+
+                    if (px * px + py * py > POOL_RADIUS * POOL_RADIUS * 0.93) continue;
+                    points.push(new THREE.Vector2(px, py));
+                }
+            }
+
+            return points;
+        }
+
+        function sampleTargetField(point) {
+            if (!targetPixels) return 0;
+
+            const u = THREE.MathUtils.clamp(point.x / (POOL_RADIUS * 2) + 0.5, 0, 1);
+            const v = THREE.MathUtils.clamp(point.y / (POOL_RADIUS * 2) + 0.5, 0, 1);
+            const fx = u * (TARGET_RESOLUTION - 1);
+            const fy = (1 - v) * (TARGET_RESOLUTION - 1);
+            const x0 = Math.floor(fx);
+            const y0 = Math.floor(fy);
+            const x1 = Math.min(x0 + 1, TARGET_RESOLUTION - 1);
+            const y1 = Math.min(y0 + 1, TARGET_RESOLUTION - 1);
+            const tx = fx - x0;
+            const ty = fy - y0;
+
+            function luminanceAt(x, y) {
+                const index = (y * TARGET_RESOLUTION + x) * 4;
+                return (
+                    targetPixels[index + 0] * 0.299 +
+                    targetPixels[index + 1] * 0.587 +
+                    targetPixels[index + 2] * 0.114
+                ) / 255;
+            }
+
+            const top = THREE.MathUtils.lerp(luminanceAt(x0, y0), luminanceAt(x1, y0), tx);
+            const bottomSample = THREE.MathUtils.lerp(luminanceAt(x0, y1), luminanceAt(x1, y1), tx);
+            const value = THREE.MathUtils.lerp(top, bottomSample, ty);
+            return (value * 2 - 1) * params.targetStrength;
+        }
+
+        function randomizeSourceProfile() {
+            for (let i = 0; i < MAX_SOURCES; i += 1) {
+                sourcePhaseSeeds[i] = hashScalar(i + 3.7) * Math.PI * 2;
+                sourceGainSeeds[i] = THREE.MathUtils.lerp(0.9, 1.12, hashScalar(i + 101.9));
+                sourcePhases[i] = sourcePhaseSeeds[i] * params.phaseRandomness;
+                sourceGains[i] = sourceGainSeeds[i];
+            }
+        }
+
+        function applySourceProfileToUniform() {
+            for (let i = 0; i < MAX_SOURCES; i += 1) {
+                if (i < params.numSources) {
+                    const theta = (i / params.numSources) * Math.PI * 2;
+                    sourcesArray[i * 4 + 0] = Math.cos(theta) * POOL_RADIUS;
+                    sourcesArray[i * 4 + 1] = Math.sin(theta) * POOL_RADIUS;
+                    sourcesArray[i * 4 + 2] = sourcePhases[i];
+                    sourcesArray[i * 4 + 3] = sourceGains[i];
+                } else {
+                    sourcesArray[i * 4 + 0] = 0;
+                    sourcesArray[i * 4 + 1] = 0;
+                    sourcesArray[i * 4 + 2] = 0;
+                    sourcesArray[i * 4 + 3] = 0;
+                }
+            }
+            customUniforms.uNumSources.value = params.numSources;
         }
 
         function patchWaterMaterial(mesh) {
@@ -1049,6 +1463,9 @@
 
         const waveFolder = gui.addFolder('波動モデル');
         waveFolder.add(params, 'numSources', 4, 64, 1).name('造波機の数').onChange(() => {
+            randomizeSourceProfile();
+            targetFitActive = false;
+            setTargetStatus('造波機の数を変更しました。必要ならもう一度 Fit Now を押してください。');
             createPaddles();
             updateSourcesUniform();
         });
@@ -1067,7 +1484,12 @@
         waveFolder.add(params, 'breakingSoftness', 0.05, 0.4, 0.01).name('砕波遷移幅').onChange(syncSimulationUniforms);
         waveFolder.add(params, 'breakingDissipation', 0.0, 0.8, 0.01).name('砕波散逸').onChange(syncSimulationUniforms);
         waveFolder.add(params, 'continuousStrength', 0.0, 1.0, 0.01).name('定常波').onChange(syncSimulationUniforms);
-        waveFolder.add(params, 'phaseRandomness', 0.0, 1.0, 0.01).name('位相ばらつき').onChange(updateSourcesUniform);
+        waveFolder.add(params, 'phaseRandomness', 0.0, 1.0, 0.01).name('位相ばらつき').onChange(() => {
+            if (!targetFitActive) {
+                randomizeSourceProfile();
+            }
+            updateSourcesUniform();
+        });
 
         const pulseFolder = gui.addFolder('波束');
         pulseFolder.add(params, 'pulseWidth', 0.2, 1.2, 0.01).name('波束幅').onChange(syncSimulationUniforms);
@@ -1085,10 +1507,54 @@
         splashFolder.add(params, 'splashStrength', 0.2, 4.0, 0.01).name('発生強度');
         splashFolder.add(params, 'splashSize', 0.05, 0.6, 0.01).name('粒サイズ').onChange(syncWaterMaterial);
 
+        const targetFolder = gui.addFolder('ターゲット波形');
+        targetFolder.add(params, 'targetStrength', 0.1, 2.5, 0.01).name('波形強度');
+
+        const targetActions = {
+            loadImage: () => targetFileInput.click(),
+            fitTarget: () => fitSourcesToTarget(),
+            demoField: () => {
+                drawDemoTarget();
+                fitSourcesToTarget();
+            },
+            clearTarget: () => {
+                clearTargetField();
+                randomizeSourceProfile();
+                updateSourcesUniform();
+            }
+        };
+
+        targetFolder.add(targetActions, 'loadImage').name('画像を読む');
+        targetFolder.add(targetActions, 'fitTarget').name('波形に合わせる');
+        targetFolder.add(targetActions, 'demoField').name('デモを生成');
+        targetFolder.add(targetActions, 'clearTarget').name('クリア');
+
+        randomizeSourceProfile();
+        clearTargetField();
         updateSourcesUniform();
         syncSimulationUniforms();
         syncWaterMaterial();
         createPaddles();
+
+        targetLoadButton.addEventListener('click', () => targetFileInput.click());
+        targetFitButton.addEventListener('click', () => fitSourcesToTarget());
+        targetDemoButton.addEventListener('click', () => {
+            drawDemoTarget();
+            fitSourcesToTarget();
+        });
+        targetClearButton.addEventListener('click', () => {
+            clearTargetField();
+            randomizeSourceProfile();
+            updateSourcesUniform();
+        });
+
+        targetFileInput.addEventListener('change', () => {
+            const file = targetFileInput.files && targetFileInput.files[0];
+            if (file) {
+                loadTargetImage(file);
+            }
+            targetFileInput.value = '';
+        });
 
         const clock = new THREE.Clock();
 
