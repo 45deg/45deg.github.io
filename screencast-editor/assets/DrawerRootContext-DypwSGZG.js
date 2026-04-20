@@ -1,0 +1,1 @@
+import{Cr as e,Er as t,jr as n}from"./exportVideoUtils-BkM3N4iY.js";var r=n(t()),i=r.createContext(void 0);function a(t){let n=r.useContext(i);if(t===!1&&n===void 0)throw Error(e(27));return n}var o=r.createContext(void 0);function s(t){let n=r.useContext(o);if(t===!1&&n===void 0)throw Error(e(90));return n}export{a as i,s as n,i as r,o as t};

@@ -1,0 +1,28 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1B4B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    
+    <linearGradient id="sharedGradient" gradientUnits="userSpaceOnUse" x1="15" y1="25" x2="85" y2="75">
+      <stop offset="0%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E" />
+      <stop offset="100%" stop-color="#E11D48" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100" height="100" rx="22" fill="url(#bgGradient)" />
+
+  <rect x="15" y="25" width="70" height="50" rx="10" fill="none" stroke="url(#sharedGradient)" stroke-width="8"/>
+
+  <line x1="19" x2="81" y1="50" y2="50" stroke="url(#sharedGradient)" stroke-width="5" stroke-linecap="butt" />
+
+  <rect x="46" y="38" width="8" height="24" rx="3" fill="url(#accentGradient)" />
+
+  <path d="M 36,64 L 48,50 L 36,36" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
