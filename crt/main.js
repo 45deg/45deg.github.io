@@ -17,7 +17,10 @@ function createRenderTarget() {
     const renderSize = renderer.getDrawingBufferSize(new THREE.Vector2());
     return new THREE.WebGLRenderTarget(renderSize.x, renderSize.y, {
         colorSpace: THREE.LinearSRGBColorSpace,
-        type: THREE.HalfFloatType
+        type: THREE.HalfFloatType,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        generateMipmaps: false
     });
 }
 
@@ -397,6 +400,7 @@ const fragmentShader = `
             float u_offset = mod(v_index, 2.0) * 0.5;
             float u_index = floor(dotGrid.x - u_offset);
             vec2 localPos = vec2(fract(dotGrid.x - u_offset), fract(dotGrid.y));
+            subLocal = localPos;
             vec2 p = localPos - 0.5;
             p.y *= 0.866025404;
             float dist = length(p);
@@ -449,6 +453,26 @@ const fragmentShader = `
             shape = smoothstep(0.04, -0.04, dist);
             scanline = 0.9 + 0.1 * sin(yLocal * 3.1415);
         }
+
+        float densityLod = smoothstep(280.0, 380.0, u_phosphorSize);
+        float simpleShape;
+        if (u_maskType == 0) {
+            vec2 p = subLocal - 0.5;
+            p.y *= 0.866025404;
+            float dist = length(p);
+            float aa = max(fwidth(dist), 0.001);
+            simpleShape = 1.0 - smoothstep(0.34 - aa, 0.34 + aa, dist);
+        } else if (u_maskType == 1) {
+            float dist = abs(subLocal.x - 0.5);
+            float aa = max(fwidth(dist), 0.001);
+            simpleShape = 1.0 - smoothstep(0.26 - aa, 0.26 + aa, dist);
+        } else {
+            vec2 p = abs(vec2(subLocal.x - 0.5, subLocal.y - 0.5));
+            float dist = max(p.x - 0.28, p.y - 0.38);
+            float aa = max(fwidth(dist), 0.001);
+            simpleShape = 1.0 - smoothstep(-aa, aa, dist);
+        }
+        shape = mix(shape, simpleShape, densityLod);
 
         vec2 centerDist = sampleUv - 0.5;
         float caStrength = dot(centerDist, centerDist) * u_chromaticAberration;
@@ -610,14 +634,20 @@ const persistenceMaterial = new THREE.ShaderMaterial({
         uniform float u_bloom;
         uniform vec2 u_frameTexelSize;
 
+        float emissionMask(vec3 color) {
+            float peak = max(max(color.r, color.g), color.b);
+            return smoothstep(0.035, 0.28, peak);
+        }
+
         vec3 bloomTap(vec2 uv) {
             vec3 color = texture2D(u_currentFrame, clamp(uv, 0.0, 1.0)).rgb;
-            return max(color - vec3(0.72), vec3(0.0));
+            return max(color - vec3(0.72), vec3(0.0)) * emissionMask(color);
         }
 
         void main() {
             vec3 currentColor = texture2D(u_currentFrame, vUv).rgb * u_currentContribution;
             vec3 previousColor = texture2D(u_previousFrame, vUv).rgb;
+            float currentMask = emissionMask(currentColor);
             vec2 r1 = u_frameTexelSize * 3.0;
             vec2 r2 = u_frameTexelSize * 7.0;
             vec3 bloom = bloomTap(vUv) * 0.18;
@@ -632,7 +662,7 @@ const persistenceMaterial = new THREE.ShaderMaterial({
 
             vec3 halfLife = max(u_persistenceDecay, vec3(0.001));
             vec3 decay = exp2(-u_deltaTime / halfLife) * u_persistenceAmount;
-            vec3 persisted = currentColor + bloom * u_bloom + previousColor * decay;
+            vec3 persisted = currentColor + bloom * u_bloom * currentMask + previousColor * decay;
             gl_FragColor = vec4(persisted, 1.0);
         }
     `
