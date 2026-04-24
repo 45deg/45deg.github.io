@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRT Phosphor Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-container">
+        <h1>CRT蛍光体シミュレータ</h1>
+        <div id="panel-content">
+            <div class="preset-grid" aria-label="CRT プリセット">
+                <button type="button" class="preset-btn is-active" data-preset="consumer">Consumer</button>
+                <button type="button" class="preset-btn" data-preset="broadcast">Broadcast</button>
+                <button type="button" class="preset-btn" data-preset="arcade">Arcade</button>
+                <button type="button" class="preset-btn" data-preset="pvm">PVM</button>
+                <button type="button" class="preset-btn" data-preset="rf">RF</button>
+                <button type="button" class="preset-btn" data-preset="aged">Aged</button>
+            </div>
+            <label class="upload-btn">
+                + 画像 / 動画を読み込む
+                <input type="file" id="media-upload" accept="image/*,video/*">
+            </label>
+            <div class="info">
+                <span class="highlight">マウスホイール</span> : ズーム<br>
+                <span class="highlight">ドラッグ</span> : 視点移動<br>
+                <br>
+                ズームインしていくと、映像が<br>
+                RGBの蛍光素子に分解されます。
+            </div>
+        </div>
+        <button type="button" id="panel-toggle" aria-label="パネルを閉じる" aria-expanded="true">▲</button>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
