@@ -1,0 +1,627 @@
+title: 45deg
+profile_url: http://x.com/zakurozakuro
+about:
+  ja: 個人で作ったWebツール、可視化、PDF実験、記事を置いています。作品集というより、試したことや後から見返したいもののログです。
+  en: >-
+    A collection of small web tools, visualizations, PDF experiments, and notes I made for myself. This is less a
+    polished portfolio than a log of things I tried and want to be able to revisit.
+filters:
+  - key: all
+    label: All
+  - key: featured
+    label: Featured
+  - key: pdf
+    label: PDF
+  - key: visual
+    label: Visualization
+  - key: media
+    label: Media
+  - key: language
+    label: Language
+    collapsible: true
+  - key: game
+    label: Game
+    collapsible: true
+  - key: article
+    label: Article
+    collapsible: true
+  - key: misc
+    label: Misc
+    collapsible: true
+works:
+  - href: ./crt/
+    sort: 10
+    featured: true
+    categories:
+      - visual
+      - media
+    title:
+      ja: CRT Phosphor Simulator
+      en: CRT Phosphor Simulator
+    year: 2026
+    description_html:
+      ja: 画像や動画を読み込み、ブラウン管テレビのRGB蛍光体までズームして観察する3D/WebGL実験。
+      en: A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.
+    tags:
+      - WebGL
+      - CRT
+      - Media
+    image:
+      src: ./images/i25.png
+      alt: CRT Phosphor Simulator
+  - href: ./screencast-editor/
+    sort: 20
+    featured: true
+    categories:
+      - media
+    title:
+      ja: ScreenCast Editor
+      en: ScreenCast Editor
+    year: 2026
+    description_html:
+      ja: 動画のカット、結合、テキストや画像のオーバーレイをブラウザ内で行うシンプルな編集ツール。
+      en: A simple browser video editor for cuts, joins, text overlays, and image overlays.
+    tags:
+      - Video
+      - WebCodecs
+      - Editor
+    image:
+      src: ./images/i24.png
+      alt: ScreenCastEditor
+  - href: ./compression-leaderboard/
+    sort: 50
+    featured: true
+    categories:
+      - visual
+    title:
+      ja: Compression Leaderboard
+      en: Compression Leaderboard
+    year: 2026
+    description_html:
+      ja: 同じ入力を複数の可逆圧縮器にかけ、圧縮率・圧縮時間・展開時間をブラウザ上で比較するWASMベンチマーク。
+      en: A WASM benchmark comparing lossless compressors by ratio, compression time, and decompression time.
+    tags:
+      - WASM
+      - Compression
+      - Benchmark
+    image:
+      src: ./images/i23.png
+      alt: Compression Leaderboard
+  - href: ./quickcalc/
+    sort: 60
+    featured: false
+    categories: []
+    title:
+      ja: QuickCalc
+      en: QuickCalc
+    year: 2026
+    description_html:
+      ja: メモを書く感覚で式や変数を並べ、行ごとの計算結果を即時に更新するリアクティブな計算機。
+      en: A note-like reactive calculator where expressions and variables update line by line.
+    tags:
+      - Calculator
+      - Reactive
+    image:
+      src: ./images/i22.png
+      alt: QuickCalc
+  - href: ./stick-game/
+    sort: 70
+    featured: false
+    categories:
+      - game
+    title:
+      ja: STICK GAME
+      en: STICK GAME
+    year: 2026
+    description_html:
+      ja: >-
+        <a
+        href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">指を用いた遊び</a>でCPUと対戦
+        をブラウザゲーム化したもの。CPUと対戦できます。
+      en: A browser game version of a small finger-counting game, with a CPU opponent and a compact state space.
+    tags:
+      - Game
+      - AI
+    image:
+      src: ./images/i20.png
+      alt: STICK GAME
+  - href: ./mozaic-app/
+    sort: 80
+    featured: true
+    categories:
+      - visual
+      - media
+    title:
+      ja: mozaic-app
+      en: mozaic-app
+    year: 2026
+    description_html:
+      ja: 画像・動画・カメラ入力を、任意のタイルセットでモザイクアート化するブラウザツール。
+      en: A browser tool that turns images, videos, or camera input into tile-based mosaic art.
+    tags:
+      - Image
+      - Video
+      - WASM
+    image:
+      src: ./images/i19.jpg
+      alt: mozaic-app
+  - href: ./nanotation/
+    sort: 90
+    featured: false
+    categories:
+      - media
+    title:
+      ja: nanotation
+      en: nanotation
+    year: 2026
+    description_html:
+      ja: 画像などに軽量な注釈を重ねる、ブラウザベースの実験的アノテーションエディタ。
+      en: >-
+        A lightweight browser annotation editor for layering notes over images or work targets, designed for quick
+        review and sharing.
+    tags:
+      - Annotation
+      - Editor
+    image:
+      src: ./images/i16.png
+      alt: nanotation
+  - href: ./subleq-ide/
+    sort: 100
+    featured: false
+    categories:
+      - language
+    title:
+      ja: Subleq Compiler
+      en: Subleq Compiler
+    year: 2026
+    description_html:
+      ja: >-
+        1命令でチューリング完全となる<a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ <a
+        href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a>。高級寄りの構文を単一命令へ落とし込むコンパイラ実験。
+      en: A compiler experiment that lowers a higher-level syntax into the one-instruction SUBLEQ architecture.
+    tags:
+      - Compiler
+      - OISC
+      - SUBLEQ
+    image:
+      src: ./images/i18.png
+      alt: Subleq Compiler
+  - href: ./flowtimer/
+    sort: 210
+    featured: false
+    categories: []
+    title:
+      ja: FlowTimer
+      en: FlowTimer
+    year: 2025
+    description_html:
+      ja: 発表中に必要な残り時間と進行状態だけを見やすく保つ、登壇者向けの最小タイマー。
+      en: A minimal presentation timer focused on the remaining time and progress state a speaker needs while presenting.
+    tags:
+      - Timer
+      - Presentation
+    image:
+      src: ./images/i15.png
+      alt: FlowTimer
+  - href: ./pdf2md/
+    sort: 110
+    featured: false
+    categories:
+      - pdf
+    title:
+      ja: pdf2md
+      en: pdf2md
+    year: 2026
+    description_html:
+      ja: PDFをローカルで解析し、本文のMarkdown化と画像抽出を行う変換ツール。
+      en: A local browser tool for converting PDFs to Markdown and extracting images as part of the same flow.
+    tags:
+      - PDF
+      - Markdown
+      - Local
+    image:
+      src: ./images/i21.png
+      alt: pdf2md
+  - href: ./pdf-toc-tools/
+    sort: 120
+    featured: true
+    categories:
+      - pdf
+    title:
+      ja: pdf-toc-tool
+      en: pdf-toc-tool
+    year: 2026
+    description_html:
+      ja: PDFの目次をもとに、確認・抽出・分割・結合をまとめて扱うローカル動作のツールキット。
+      en: A local PDF toolkit for viewing, extracting, splitting, and merging by table-of-contents entries.
+    tags:
+      - PDF
+      - TOC
+      - Toolkit
+    image:
+      src: ./images/i17.png
+      alt: pdf-toc-tool
+  - href: ./pdf-unbinder/
+    sort: 220
+    featured: false
+    categories:
+      - pdf
+    title:
+      ja: PDFUnbinder in Browser
+      en: PDFUnbinder in Browser
+    year: 2025
+    description_html:
+      ja: PDFのしおり構造を読み取り、章や節ごとにファイル分割するWeb版PDFUnbinder。
+      en: A browser version of PDFUnbinder that reads PDF outlines and splits files by chapter or section.
+    tags:
+      - PDF
+      - Browser
+    image:
+      src: ./images/i14.png
+      alt: PDFUnbinder in Browser
+  - href: /mnist-viz
+    sort: 310
+    featured: false
+    categories:
+      - visual
+    title:
+      ja: MNIST UMAP Visualization
+      en: MNIST UMAP Visualization
+    year: 2024
+    description_html:
+      ja: >-
+        手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>を使って2次元にマッピングしたものの可視化
+        し、数字ごとのクラスタや混ざり方を探索する可視化。
+      en: >-
+        A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and overlap easy to
+        explore.
+    tags:
+      - UMAP
+      - MNIST
+      - Visualization
+    image:
+      src: ./images/i13.png
+      alt: MNIST UMAP Visualization
+  - href: /cedict
+    sort: 510
+    featured: false
+    categories:
+      - language
+    title:
+      ja: HoverDictCN
+      en: HoverDictCN
+    year: 2019
+    description_html:
+      ja: 中国語の文章を読みながら、単語や漢字の英語訳をマウスオーバー/タップで確認する学習補助ツール。
+      en: >-
+        A Chinese reading aid using CEDICT. Hover or tap characters to quickly check word and character meanings in
+        English.
+    tags:
+      - Chinese
+      - Dictionary
+    image:
+      src: ./images/i12.png
+      alt: HoverDictCN
+  - href: https://github.com/45deg/PDFUnbinder
+    sort: 610
+    featured: false
+    categories:
+      - pdf
+    title:
+      ja: PDFUnbinder
+      en: PDFUnbinder
+    year: 2018
+    description_html:
+      ja: PDFの目次をもとにファイルを章単位で分割するJavaFXデスクトップアプリ。
+      en: A JavaFX desktop app for splitting bookmarked PDFs by chapter.
+    tags:
+      - PDF
+      - JavaFX
+    image:
+      src: ./images/i11.png
+      alt: PDFUnbinder
+  - href: ./RGBCloud
+    sort: 710
+    featured: false
+    categories:
+      - visual
+    title:
+      ja: RGBCloud
+      en: RGBCloud
+    year: 2017
+    description_html:
+      ja: 画像ピクセルをRGB/HSL色空間上の点群として描画し、色分布を3Dで眺めるビューア。
+      en: >-
+        A 3D viewer that plots image pixels in RGB or HSL color space so the color distribution can be inspected
+        directly.
+    tags:
+      - Three.js
+      - Color
+      - 3D
+    image:
+      src: ./images/i9.png
+      alt: RGBCloud
+  - href: ./Kantele
+    sort: 810
+    featured: false
+    categories:
+      - language
+    title:
+      ja: Kantele
+      en: Kantele
+    year: 2016
+    description_html:
+      ja: >-
+        <a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>
+        研究室所属時の課題で作った、音を記述して再生するScheme風の言語です。<strong>音が出ます。</strong>
+      en: A Scheme-like sound programming language made as a lab assignment. It plays sound.
+    tags:
+      - Language
+      - Audio
+      - Scheme
+    image:
+      src: ./images/i7.png
+      alt: Kantele
+  - href: ./rogyAdC2015
+    sort: 910
+    featured: false
+    categories:
+      - article
+    title:
+      ja: dynamorphism の紹介
+      en: Introduction to Dynamorphism
+    year: 2015
+    description_html:
+      ja: <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a> のために書いた、関数型プログラミングで動的計画法を行う手法の紹介記事。
+      en: >-
+        A technical article explaining dynamic programming as a functional fold, written with diagrams for rogy Advent
+        Calendar.
+    tags:
+      - Article
+      - Functional Programming
+    image:
+      src: ./images/i6.png
+      alt: dynamorphism の紹介
+  - href: ./neural-network_v2
+    sort: 820
+    featured: true
+    categories:
+      - visual
+    title:
+      ja: ニューラルネットワークの可視化 (ConvnetJS版)
+      en: Neural Network Visualization (ConvnetJS)
+    year: 2016
+    description_html:
+      ja: >-
+        <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
+        層や学習器の設定を変えながら学習の進み方を観察できるConvnetJS版。
+      en: >-
+        A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for observing
+        training behavior.
+    tags:
+      - Neural Net
+      - ConvnetJS
+      - Visualization
+    image:
+      src: ./images/i3.png
+      alt: ニューラルネットワークの可視化 (ConvnetJS版)
+  - href: ./neural-network
+    sort: 1010
+    featured: false
+    categories:
+      - visual
+    title:
+      ja: ニューラルネットワークの可視化
+      en: Neural Network Visualization
+    year: 2014
+    description_html:
+      ja: >-
+        BPNNの可視化です。Slide: <a href="http://www.slideshare.net/z_kro/html5-36655060">HTML5によるニューラルネットワークの可視化</a>
+        。BPNNの重みやノード状態を描画し、学習プロセスを追う初期の可視化実験。
+      en: An early browser visualization of BPNN weights, node states, and the learning process.
+    tags:
+      - BPNN
+      - Visualization
+    image:
+      src: ./images/i2.png
+      alt: ニューラルネットワークの可視化
+  - href: ./misc/online-video-converter.html
+    sort: 30
+    featured: false
+    categories:
+      - media
+      - misc
+    title:
+      ja: ブラウザ上で完結する動画変換ツール
+      en: Browser-only Video Converter
+    year: 2026
+    description_html:
+      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ
+      en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
+    tags:
+      - WebCodecs
+      - Video
+      - Misc
+    placeholder:
+      class: placeholder-video
+      emoji: 🎞️
+  - href: ./articles/mp4.html
+    sort: 40
+    featured: false
+    categories:
+      - article
+      - media
+      - misc
+    title:
+      ja: WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成
+      en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
+    year: 2026
+    description_html:
+      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事
+      en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
+    tags:
+      - Article
+      - MP4
+      - Misc
+    placeholder:
+      class: placeholder-article
+      emoji: 🎬
+  - href: ./articles/zip.html
+    sort: 130
+    featured: false
+    categories:
+      - article
+      - misc
+    title:
+      ja: Compression APIを用いたJS単体でのZIP生成
+      en: ZIP Generation in Plain JavaScript with Compression API
+    year: 2026
+    description_html:
+      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事
+      en: An article explaining how to generate ZIP files in JavaScript with the Compression API.
+    tags:
+      - Article
+      - Compression
+      - Misc
+    placeholder:
+      class: placeholder-article
+      emoji: 📦
+  - href: ./deaatable/
+    sort: 140
+    featured: false
+    categories:
+      - language
+      - misc
+    title:
+      ja: AsciiArt Table Parser
+      en: AsciiArt Table Parser
+    year: 2026
+    description_html:
+      ja: アスキーアート等のテーブルを解析してプレーンにするツール
+      en: A tool that parses ASCII-art style tables and turns them into plain structured text.
+    tags:
+      - Parser
+      - Text
+      - Misc
+    placeholder:
+      class: placeholder-code
+      emoji: ▦
+  - href: ./misc/brownkan.html
+    sort: 230
+    featured: false
+    categories:
+      - visual
+      - misc
+    title:
+      ja: ブラウン管テレビ風 画像エフェクター
+      en: CRT-style Image Effector
+    year: 2025
+    description_html:
+      ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト
+      en: A WebGL image effect tool that processes images into a CRT television look.
+    tags:
+      - WebGL
+      - Image
+      - Misc
+    placeholder:
+      class: placeholder-image
+      emoji: 📺
+  - href: ./misc/gabigabi.html
+    sort: 240
+    featured: false
+    categories:
+      - visual
+      - misc
+    title:
+      ja: JPEGガビガビ化ツール
+      en: JPEG Artifact Generator
+    year: 2025
+    description_html:
+      ja: JPEG圧縮を繰り返してガビガビ質感を作るツール
+      en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
+    tags:
+      - Image
+      - Effect
+      - Misc
+    placeholder:
+      class: placeholder-image
+      emoji: 🖼️
+  - href: ./misc/img2pdf.html
+    sort: 250
+    featured: false
+    categories:
+      - pdf
+      - misc
+    title:
+      ja: Images to PDF
+      en: Images to PDF
+    year: 2025
+    description_html:
+      ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
+      en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
+    tags:
+      - PDF
+      - Image
+      - Misc
+    placeholder:
+      class: placeholder-data
+      emoji: 🧾
+  - href: ./misc/nahuatl.html
+    sort: 320
+    featured: false
+    categories:
+      - language
+      - misc
+    title:
+      ja: ナワトルテキスト補助
+      en: Nahuatl Text Helper
+    year: 2024
+    description_html:
+      ja: ナワトル語の長音記号入力を補助するテキストエディタ
+      en: A text editor that helps input long-vowel marks for Nahuatl.
+    tags:
+      - Editor
+      - Language
+      - Misc
+    placeholder:
+      class: placeholder-text
+      emoji: ✍️
+  - href: ./misc/safetensors.html
+    sort: 410
+    featured: false
+    categories:
+      - misc
+    title:
+      ja: Safetensors metadata viewer
+      en: Safetensors Metadata Viewer
+    year: 2023
+    description_html:
+      ja: safetensors ファイルのメタデータを表示するビューア
+      en: A viewer for inspecting metadata inside safetensors files.
+    tags:
+      - Viewer
+      - Metadata
+      - Misc
+    placeholder:
+      class: placeholder-data
+      emoji: 🧬
+  - href: ./misc/jinja2.html
+    sort: 420
+    featured: false
+    categories:
+      - language
+      - misc
+    title:
+      ja: Jinja2 Template Renderer
+      en: Jinja2 Template Renderer
+    year: 2022
+    description_html:
+      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー
+      en: A browser renderer that runs Jinja2 templates on Pyodide.
+    tags:
+      - Pyodide
+      - Template
+      - Misc
+    placeholder:
+      class: placeholder-code
+      emoji: 🧩

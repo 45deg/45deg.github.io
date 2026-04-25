@@ -15,9 +15,19 @@ body {
 }
 
 /* Headings */
-h1 {
-    font-size: 1.2rem;
+header {
     margin-bottom: 2rem;
+}
+
+header::after {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+h1 {
+    display: inline-block;
+    font-size: 1.2rem;
     line-height: 1.2;
     white-space: pre-wrap;
     /* ===== の改行を維持 */
@@ -69,12 +79,8 @@ a:hover {
 
 .language-switch {
     display: flex;
-    justify-content: flex-end;
+    float: right;
     gap: 0.45rem;
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
     background: #fff;
 }
 
@@ -84,15 +90,19 @@ a:hover {
     pointer-events: none;
 }
 
+.language-switch a,
 .language-switch label {
     border: 1px solid #222;
+    color: #222;
     cursor: pointer;
     font-size: 0.82rem;
     line-height: 1;
     padding: 0.45rem 0.6rem;
+    text-decoration: none;
     user-select: none;
 }
 
+.language-switch .is-active,
 .language-switch input:checked + label {
     background: #222;
     color: #fff;
@@ -371,9 +381,7 @@ section:has(#filter-misc:checked) .works-grid .card:not(.cat-misc) {
     }
 
     .language-switch {
-        position: static;
-        justify-content: flex-end;
-        margin: -0.5rem 0 1.25rem;
+        margin-bottom: 0;
     }
 
     .works-grid {

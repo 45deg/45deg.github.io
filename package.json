@@ -1,0 +1,14 @@
+{
+  "name": "45deg-github-io",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node -e \"fs.rmSync('_site', { recursive: true, force: true })\"",
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "js-yaml": "^4.1.1"
+  }
+}
