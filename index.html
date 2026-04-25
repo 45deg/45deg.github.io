@@ -5,385 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>45deg</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-            color: #222;
-            background-color: #fff;
-            line-height: 1.6;
-            padding: 2rem 1.5rem;
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        /* Headings */
-        h1 {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.2;
-            white-space: pre-wrap;
-            /* ===== の改行を維持 */
-        }
-
-        h1::before {
-            content: "# ";
-        }
-
-        h2 {
-            font-size: 1.1rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
-
-        h2::before {
-            content: "## ";
-        }
-
-        .main>section:first-child h2 {
-            margin-top: 0;
-        }
-
-        a {
-            color: #d94680;
-            text-decoration: none;
-            border-bottom: 1px solid #d94680;
-            transition: opacity 0.2s;
-        }
-
-        a:hover {
-            opacity: 0.7;
-        }
-
-        .text-muted {
-            color: #888;
-        }
-
-        /* About Section */
-        .about-section {
-            margin-bottom: 2.5rem;
-            max-width: 760px;
-        }
-
-        .page-flow {
-            min-width: 0;
-        }
-
-        .language-switch {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.45rem;
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
-            background: #fff;
-        }
-
-        .language-switch input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .language-switch label {
-            border: 1px solid #222;
-            cursor: pointer;
-            font-size: 0.82rem;
-            line-height: 1;
-            padding: 0.45rem 0.6rem;
-            user-select: none;
-        }
-
-        .language-switch input:checked + label {
-            background: #222;
-            color: #fff;
-        }
-
-        .works-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1.25rem 1rem;
-        }
-
-        .featured-works {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.9rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .featured-work {
-            display: grid;
-            grid-template-columns: 88px minmax(0, 1fr);
-            gap: 0.8rem;
-            align-items: center;
-            border: 2px solid #222;
-            box-shadow: 3px 3px 0 #222;
-            padding: 0.55rem;
-            color: inherit;
-            background: #fff;
-            border-bottom: 2px solid #222;
-        }
-
-        .featured-work img {
-            width: 88px;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border: 1px solid #222;
-        }
-
-        .featured-work strong,
-        .featured-work span {
-            display: block;
-        }
-
-        .featured-work span {
-            color: #555;
-            font-size: 0.78rem;
-            line-height: 1.45;
-            margin-top: 0.15rem;
-        }
-
-        .work-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-bottom: 1rem;
-        }
-
-        .work-filters input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .work-filters label {
-            border: 1px solid #222;
-            color: #222;
-            cursor: pointer;
-            font-size: 0.82rem;
-            line-height: 1;
-            padding: 0.45rem 0.6rem;
-            user-select: none;
-        }
-
-        .work-filters label::before {
-            content: "[ ] ";
-        }
-
-        .work-filters input:checked + label {
-            background: #222;
-            color: #fff;
-        }
-
-        .work-filters input:checked + label::before {
-            content: "[x] ";
-        }
-
-        .work-filters input:focus-visible + label {
-            outline: 3px solid #d94680;
-            outline-offset: 2px;
-        }
-
-        section:has(#filter-pdf:checked) .works-grid .card:not(.cat-pdf),
-        section:has(#filter-visual:checked) .works-grid .card:not(.cat-visual),
-        section:has(#filter-media:checked) .works-grid .card:not(.cat-media),
-        section:has(#filter-language:checked) .works-grid .card:not(.cat-language),
-        section:has(#filter-game:checked) .works-grid .card:not(.cat-game),
-        section:has(#filter-article:checked) .works-grid .card:not(.cat-article),
-        section:has(#filter-misc:checked) .works-grid .card:not(.cat-misc) {
-            display: none;
-        }
-
-        /* Card Component */
-        .card {
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            order: var(--sort, 500);
-            border: 2px solid #222;
-            border-radius: 0;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 4px 4px 0 #222;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #222;
-        }
-
-        .card:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #222;
-        }
-
-        .card-link {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            display: block;
-            border: none;
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .card-link:hover {
-            opacity: 1;
-        }
-
-        .card-img-wrapper {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            border-bottom: 2px solid #222;
-            overflow: hidden;
-            background-color: #fafafa;
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .card-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .placeholder-img {
-            display: grid;
-            place-items: center;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffd166, #ef476f);
-            color: #222;
-            font-size: 3.8rem;
-            font-weight: bold;
-            letter-spacing: 0;
-            text-align: center;
-        }
-
-        .placeholder-img::before {
-            content: attr(data-emoji);
-            display: block;
-            line-height: 1;
-        }
-
-        .placeholder-video {
-            background: linear-gradient(135deg, #ffbe0b, #fb5607);
-        }
-
-        .placeholder-article {
-            background: linear-gradient(135deg, #3a86ff, #ff006e);
-        }
-
-        .placeholder-code {
-            background: linear-gradient(135deg, #06d6a0, #118ab2);
-        }
-
-        .placeholder-image {
-            background: linear-gradient(135deg, #f15bb5, #fee440);
-        }
-
-        .placeholder-text {
-            background: linear-gradient(135deg, #9b5de5, #00bbf9);
-        }
-
-        .placeholder-data {
-            background: linear-gradient(135deg, #00f5d4, #f15bb5);
-        }
-
-        .card-content {
-            padding: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .card-title {
-            font-size: 0.95rem;
-            font-weight: normal;
-            margin-bottom: 0.45rem;
-            color: #d94680;
-        }
-
-        .card-title strong {
-            font-weight: bold;
-        }
-
-        .card-title::before {
-            content: "» ";
-        }
-
-        .card-desc {
-            font-size: 0.85rem;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .card-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-            margin-top: 0.65rem;
-        }
-
-        .card-tags span {
-            border: 1px solid #bbb;
-            color: #555;
-            font-size: 0.72rem;
-            line-height: 1;
-            padding: 0.25rem 0.35rem;
-        }
-
-        .card-content a {
-            pointer-events: auto;
-            position: relative;
-            z-index: 3;
-        }
-
-        .card-link:focus-visible {
-            outline: 3px solid #d94680;
-            outline-offset: 4px;
-        }
-
-        @media (max-width: 960px) {
-            .works-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .featured-works {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 1.5rem 1rem;
-            }
-
-            .language-switch {
-                position: static;
-                justify-content: flex-end;
-                margin: -0.5rem 0 1.25rem;
-            }
-
-            .works-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -408,49 +30,30 @@
         <main class="main">
             <section>
                 <h2>Works</h2>
-                <div class="featured-works" aria-label="Pickups">
-                    <a class="featured-work" href="./crt/">
-                        <img src="./images/i25.png" alt="">
-                        <span>
-                            <strong>CRT Phosphor Simulator</strong>
-                            <span>画像や動画をRGB蛍光素子まで拡大して眺める3D/WebGL系の実験。</span>
-                        </span>
-                    </a>
-                    <a class="featured-work" href="./mozaic-app/">
-                        <img src="./images/i19.jpg" alt="">
-                        <span>
-                            <strong>mozaic-app</strong>
-                            <span>画像・動画・カメラ入力からタイルセットを使ってモザイクアートを生成。</span>
-                        </span>
-                    </a>
-                    <a class="featured-work" href="./compression-leaderboard/">
-                        <img src="./images/i23.png" alt="">
-                        <span>
-                            <strong>Compression Leaderboard</strong>
-                            <span>ブラウザ内WASMで圧縮率と速度を横並びに比較するベンチマーク。</span>
-                        </span>
-                    </a>
-                </div>
                 <div class="work-filters" aria-label="Work filters">
                     <input type="radio" id="filter-all" name="work-filter" checked>
-                    <label for="filter-all">All</label>
+                    <label class="tag-filter" for="filter-all">All (30)</label>
+                    <input type="radio" id="filter-featured" name="work-filter">
+                    <label class="tag-filter" for="filter-featured">Featured (6)</label>
                     <input type="radio" id="filter-pdf" name="work-filter">
-                    <label for="filter-pdf">PDF</label>
+                    <label class="tag-filter" for="filter-pdf">PDF (5)</label>
                     <input type="radio" id="filter-visual" name="work-filter">
-                    <label for="filter-visual">Visualization</label>
+                    <label class="tag-filter" for="filter-visual">Visualization (9)</label>
                     <input type="radio" id="filter-media" name="work-filter">
-                    <label for="filter-media">Media</label>
+                    <label class="tag-filter" for="filter-media">Media (6)</label>
                     <input type="radio" id="filter-language" name="work-filter">
-                    <label for="filter-language">Language</label>
+                    <label class="tag-filter is-collapsible" for="filter-language">Language (6)</label>
                     <input type="radio" id="filter-game" name="work-filter">
-                    <label for="filter-game">Game</label>
+                    <label class="tag-filter is-collapsible" for="filter-game">Game (1)</label>
                     <input type="radio" id="filter-article" name="work-filter">
-                    <label for="filter-article">Article</label>
+                    <label class="tag-filter is-collapsible" for="filter-article">Article (3)</label>
                     <input type="radio" id="filter-misc" name="work-filter">
-                    <label for="filter-misc">Misc</label>
+                    <label class="tag-filter is-collapsible" for="filter-misc">Misc (10)</label>
+                    <input class="filter-tags-toggle" type="checkbox" id="filter-tags-expanded">
+                    <label class="filter-more" for="filter-tags-expanded"><span class="more-open">...</span><span class="more-close">Close</span></label>
                 </div>
                 <div class="works-grid">
-                    <article class="card cat-visual cat-media" style="--sort: 10">
+                    <article class="card is-featured cat-visual cat-media" style="--sort: 10">
                         <a class="card-link" href="./crt/" aria-label="CRT">CRT Phosphor Simulator</a>
                         <div class="card-img-wrapper">
                             <img src="./images/i25.png" alt="CRT Phosphor Simulator">
@@ -458,10 +61,10 @@
                         <div class="card-content">
                             <h3 class="card-title"><strong>CRT Phosphor Simulator</strong> <span class="text-muted">(2026)</span></h3>
                             <p class="card-desc">画像や動画を読み込み、ブラウン管テレビのRGB蛍光体までズームして観察する3D/WebGL実験。</p>
-                            <div class="card-tags"><span>WebGL</span><span>CRT</span><span>Media</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>WebGL</span><span>CRT</span><span>Media</span></div>
                         </div> 
                     </article>
-                    <article class="card cat-media" style="--sort: 20">
+                    <article class="card is-featured cat-media" style="--sort: 20">
                         <a class="card-link" href="./screencast-editor/" aria-label="ScreenCast Editor 2026"></a>
                         <div class="card-img-wrapper">
                             <img src="./images/i24.png" alt="ScreenCastEditor">
@@ -469,10 +72,10 @@
                         <div class="card-content">
                             <h3 class="card-title"><strong>ScreenCast Editor</strong> <span class="text-muted">(2026)</span></h3>
                             <p class="card-desc">動画のカット、結合、テキストや画像のオーバーレイをブラウザ内で行うシンプルな編集ツール。</p>
-                            <div class="card-tags"><span>Video</span><span>WebCodecs</span><span>Editor</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>Video</span><span>WebCodecs</span><span>Editor</span></div>
                         </div>
                     </article>
-                    <article class="card cat-visual" style="--sort: 50">
+                    <article class="card is-featured cat-visual" style="--sort: 50">
                         <a class="card-link" href="./compression-leaderboard/"
                             aria-label="Compression Leaderboard 2026"></a>
                         <div class="card-img-wrapper">
@@ -482,7 +85,7 @@
                             <h3 class="card-title"><strong>Compression Leaderboard</strong> <span
                                     class="text-muted">(2026)</span></h3>
                             <p class="card-desc">同じ入力を複数の可逆圧縮器にかけ、圧縮率・圧縮時間・展開時間をブラウザ上で比較するWASMベンチマーク。</p>
-                            <div class="card-tags"><span>WASM</span><span>Compression</span><span>Benchmark</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>WASM</span><span>Compression</span><span>Benchmark</span></div>
                         </div>
                     </article>
 
@@ -514,7 +117,7 @@
                         </div>
                     </article>
 
-                    <article class="card cat-visual cat-media" style="--sort: 80">
+                    <article class="card is-featured cat-visual cat-media" style="--sort: 80">
                         <a class="card-link" href="./mozaic-app/" aria-label="mozaic-app 2026"></a>
                         <div class="card-img-wrapper">
                             <img src="./images/i19.jpg" alt="mozaic-app">
@@ -523,7 +126,7 @@
                             <h3 class="card-title"><strong>mozaic-app</strong> <span class="text-muted">(2026)</span>
                             </h3>
                             <p class="card-desc">画像・動画・カメラ入力を、任意のタイルセットでモザイクアート化するブラウザツール。</p>
-                            <div class="card-tags"><span>Image</span><span>Video</span><span>WASM</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>Image</span><span>Video</span><span>WASM</span></div>
                         </div>
                     </article>
 
@@ -580,7 +183,7 @@
                         </div>
                     </article>
 
-                    <article class="card cat-pdf" style="--sort: 120">
+                    <article class="card is-featured cat-pdf" style="--sort: 120">
                         <a class="card-link" href="./pdf-toc-tools/" aria-label="pdf-toc-tool 2026"></a>
                         <div class="card-img-wrapper">
                             <img src="./images/i17.png" alt="pdf-toc-tool">
@@ -589,7 +192,7 @@
                             <h3 class="card-title"><strong>pdf-toc-tool</strong> <span class="text-muted">(2026)</span>
                             </h3>
                             <p class="card-desc">PDFの目次をもとに、確認・抽出・分割・結合をまとめて扱うローカル動作のツールキット。</p>
-                            <div class="card-tags"><span>PDF</span><span>TOC</span><span>Toolkit</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>PDF</span><span>TOC</span><span>Toolkit</span></div>
                         </div>
                     </article>
 
@@ -688,7 +291,7 @@
                         </div>
                     </article>
 
-                    <article class="card cat-visual" style="--sort: 820">
+                    <article class="card is-featured cat-visual" style="--sort: 820">
                         <a class="card-link" href="./neural-network_v2"
                             aria-label="ニューラルネットワークの可視化 (ConvnetJS版) 2016"></a>
                         <div class="card-img-wrapper">
@@ -700,7 +303,7 @@
                             <p class="card-desc"><a
                                     href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
                                 層や学習器の設定を変えながら学習の進み方を観察できるConvnetJS版。</p>
-                            <div class="card-tags"><span>Neural Net</span><span>ConvnetJS</span><span>Visualization</span></div>
+                            <div class="card-tags"><span class="featured-tag">Featured</span><span>Neural Net</span><span>ConvnetJS</span><span>Visualization</span></div>
                         </div>
                     </article>
 
@@ -839,31 +442,34 @@
             ja: {
                 aboutHeading: "About",
                 aboutText: "個人で作ったWebツール、可視化、PDF実験、記事を置いています。作品集というより、試したことや後から見返したいもののログです。",
-                filterAll: "All",
-                filterPdf: "PDF",
-                filterVisual: "Visualization",
-                filterMedia: "Media",
-                filterLanguage: "Language",
-                filterGame: "Game",
-                filterArticle: "Article",
-                filterMisc: "Misc"
+                filterAll: "All (30)",
+                filterFeatured: "Featured (6)",
+                filterPdf: "PDF (5)",
+                filterVisual: "Visualization (9)",
+                filterMedia: "Media (6)",
+                filterLanguage: "Language (6)",
+                filterGame: "Game (1)",
+                filterArticle: "Article (3)",
+                filterMisc: "Misc (10)"
             },
             en: {
                 aboutHeading: "About",
                 aboutText: "A collection of small web tools, visualizations, PDF experiments, and notes I made for myself. This is less a polished portfolio than a log of things I tried and want to be able to revisit.",
-                filterAll: "All",
-                filterPdf: "PDF",
-                filterVisual: "Visualization",
-                filterMedia: "Media",
-                filterLanguage: "Language",
-                filterGame: "Game",
-                filterArticle: "Article",
-                filterMisc: "Misc"
+                filterAll: "All (30)",
+                filterFeatured: "Featured (6)",
+                filterPdf: "PDF (5)",
+                filterVisual: "Visualization (9)",
+                filterMedia: "Media (6)",
+                filterLanguage: "Language (6)",
+                filterGame: "Game (1)",
+                filterArticle: "Article (3)",
+                filterMisc: "Misc (10)"
             }
         };
 
         const filterLabelKeys = {
             "filter-all": "filterAll",
+            "filter-featured": "filterFeatured",
             "filter-pdf": "filterPdf",
             "filter-visual": "filterVisual",
             "filter-media": "filterMedia",
@@ -871,21 +477,6 @@
             "filter-game": "filterGame",
             "filter-article": "filterArticle",
             "filter-misc": "filterMisc"
-        };
-
-        const featuredText = {
-            "./crt/": {
-                ja: "画像や動画をRGB蛍光素子まで拡大して眺める3D/WebGL系の実験。",
-                en: "A 3D/WebGL experiment for zooming images and videos down to RGB phosphor elements."
-            },
-            "./mozaic-app/": {
-                ja: "画像・動画・カメラ入力からタイルセットを使ってモザイクアートを生成。",
-                en: "Generates mosaic art from images, videos, or camera input using custom tile sets."
-            },
-            "./compression-leaderboard/": {
-                ja: "ブラウザ内WASMで圧縮率と速度を横並びに比較するベンチマーク。",
-                en: "A browser-based WASM benchmark comparing compression ratio and speed side by side."
-            }
         };
 
         const cardText = {
@@ -1023,12 +614,6 @@
             Object.entries(filterLabelKeys).forEach(([id, key]) => {
                 const label = document.querySelector(`label[for="${id}"]`);
                 if (label) label.textContent = uiText[lang][key];
-            });
-
-            document.querySelectorAll(".featured-work").forEach((link) => {
-                const copy = featuredText[link.getAttribute("href")];
-                const desc = link.querySelector("span span");
-                if (copy && desc) desc.textContent = copy[lang];
             });
 
             document.querySelectorAll(".card").forEach((card) => {
