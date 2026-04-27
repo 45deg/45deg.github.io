@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  
+  <meta name="description" content="軽量Transformerモデルを使ってテキストに句読点と改行を付与します。">
+  <link rel="canonical" href="https://45deg.github.io/punct/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://45deg.github.io/punct/">
+  <meta property="og:title" content="テキスト句読点付与 (軽量Transformerモデル)">
+  <meta property="og:description" content="軽量Transformerモデルを使ってテキストに句読点と改行を付与します。">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="テキスト句読点付与 (軽量Transformerモデル)">
+  <meta name="twitter:description" content="軽量Transformerモデルを使ってテキストに句読点と改行を付与します。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>テキスト句読点付与 (軽量Transformerモデル)</title>
+  <script type="module" crossorigin src="./assets/index-kPGlR3eD.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CyYDNdCA.css">
+</head>
+
+<body>
+  <main>
+    <section aria-labelledby="app-title">
+      <header>
+        <h1 id="app-title">テキスト句読点付与 (軽量Transformerモデル v)</h1>
+        <p>テキストに、Transformerモデルを使って句読点と改行を付与します。
+        <span id="model-size">モデルサイズ: 読み込み中</span></p>
+      </header>
+
+      <label>
+        <span>入力テキスト</span>
+        <textarea id="input" spellcheck="false" rows="10">これは句読点のない日本語テキストです必要な位置に句読点を付与します今日は天気がとても良いので近くの公園まで散歩に出かけることにしました道端には色とりどりの花が咲いていて春の訪れを感じさせてくれますベンチに座って読書をする時間は私にとって何よりの贅沢です昨日の夜に焼いたクッキーを持ってくればよかったと少し後悔していますが空が青いのでそれだけで満足な一日になりそうです
+</textarea>
+      </label>
+
+      <div  aria-label="操作">
+        <button id="run" type="button">句読点を付与</button>
+        <button id="copy" type="button" disabled>コピー</button>
+      </div>
+
+      <section aria-labelledby="result-title" class="result-title">
+        <header>
+          <h2 id="result-title">結果</h2>
+          <div>
+            <p id="elapsed-time">処理時間: -</p>
+            <p id="status" role="status">待機中</p>
+          </div>
+        </header>
+        <output id="visualized" aria-live="polite"></output>
+      </section>
+    </section>
+
+    <article>
+      <details>
+        <summary>仕組みの説明</summary>
+
+        <section aria-labelledby="structure-title">
+          <h3 id="structure-title">1. モデルの構造: キャラクターレベル・トランスフォーマー</h3>
+          <p>
+            このモデルは、文字を最小単位として扱う Transformer を使っています。
+            入力の文字列をベクトルに変換し、位置情報を足してから、自己注意機構で文脈を読み取り、2つの出力ヘッドで判定します。
+          </p>
+
+          <ul>
+            <li><strong>文字埋め込み</strong>: 1文字ずつを意味を持つベクトルへ変換します。</li>
+            <li><strong>位置エンコーディング</strong>: 文字の順番をモデルに伝えます。</li>
+            <li><strong>エンコーダー層</strong>: 自己注意機構と SwiGLU で文脈を処理します。</li>
+            <li><strong>デュアル・出力ヘッド</strong>: 句読点と改行を別々に予測します。</li>
+          </ul>
+
+          <figure>
+            <svg width="500" height="720" viewBox="0 0 500 720" xmlns="http://www.w3.org/2000/svg">
+              <rect width="500" height="720" fill="white" />
+
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+                </marker>
+              </defs>
+
+              <text x="250" y="30" text-anchor="middle" class="text title">入力: 文字 ID (input_ids)</text>
+              <line x1="250" y1="40" x2="250" y2="70" class="line" />
+
+              <rect x="150" y="70" width="200" height="60" class="box" />
+              <text x="250" y="95" text-anchor="middle" class="text">Token Embedding</text>
+              <text x="250" y="115" text-anchor="middle" class="text">Positional Embedding</text>
+              <line x1="250" y1="130" x2="250" y2="160" class="line" />
+
+              <rect x="150" y="160" width="200" height="40" class="box" />
+              <text x="250" y="185" text-anchor="middle" class="text">LayerNorm &amp; Dropout</text>
+              <line x1="250" y1="200" x2="250" y2="230" class="line" />
+
+              <rect x="120" y="230" width="260" height="180" class="container2" />
+              <text x="135" y="250" class="text title">Transformer Encoder</text>
+              <text x="135" y="268" class="label">(4 Layers)</text>
+
+              <rect x="150" y="280" width="200" height="40" class="box" />
+              <text x="250" y="305" text-anchor="middle" class="text">Self-Attention</text>
+
+              <line x1="250" y1="320" x2="250" y2="350" class="line" />
+
+              <rect x="150" y="350" width="200" height="40" class="box" />
+              <text x="250" y="375" text-anchor="middle" class="text">SwiGLU FFN</text>
+
+              <line x1="250" y1="410" x2="250" y2="440" class="line" />
+
+              <rect x="150" y="440" width="200" height="40" class="box" />
+              <text x="250" y="465" text-anchor="middle" class="text">Final LayerNorm</text>
+
+              <path d="M 250 480 L 250 500 L 125 500 L 125 530" fill="none" stroke="#000"
+                marker-end="url(#arrowhead)" />
+              <path d="M 250 480 L 250 500 L 375 500 L 375 530" fill="none" stroke="#000"
+                marker-end="url(#arrowhead)" />
+
+              <rect x="50" y="530" width="150" height="60" class="box" />
+              <text x="125" y="555" text-anchor="middle" class="text title">Punct Head</text>
+              <text x="125" y="575" text-anchor="middle" class="label">(Linear Layer)</text>
+              <line x1="125" y1="590" x2="125" y2="620" class="line" />
+              <text x="125" y="645" text-anchor="middle" class="text">句読点予測</text>
+              <text x="125" y="665" text-anchor="middle" class="label">(NONE / 、/ 。)</text>
+
+              <rect x="300" y="530" width="150" height="60" class="box" />
+              <text x="375" y="555" text-anchor="middle" class="text title">Newline Head</text>
+              <text x="375" y="575" text-anchor="middle" class="label">(Linear Layer)</text>
+              <line x1="375" y1="590" x2="375" y2="620" class="line" />
+              <text x="375" y="645" text-anchor="middle" class="text">改行予測</text>
+              <text x="375" y="665" text-anchor="middle" class="label">(確率 0.0~1.0)</text>
+
+            </svg>
+
+          </figure>
+
+        </section>
+
+        <section aria-labelledby="inference-title">
+          <h3 id="inference-title">2. 推論の仕組み: スライディングウィンドウと重み付け</h3>
+          <p>
+            長い文章は、そのままだとモデルの最大文字数を超えてしまいます。
+            そこで少しずつ重ねながら読み、窓の中央に近い予測を少し強く扱って、境界でのブレを抑えます。
+          </p>
+
+          <ol>
+            <li>前処理で既存の句読点、改行、余分な空白を取り除き、文字だけの列にします。</li>
+            <li>最大文字数ごとに切り出し、少しずつずらしながら重ねて見せます。</li>
+            <li>窓の中央に近い予測をより信頼し、重なった部分を平均化します。</li>
+            <li>句読点はマージン、改行はしきい値で最終判断します。</li>
+          </ol>
+
+
+          <h4 id="inference-figure-title">推論のステップ</h4>
+
+          <ol>
+            <li>
+              <strong>前処理</strong>: 入力されたテキストから、既存の句読点や改行、余分な空白をすべて取り除き、プレーンな文字の列にします。
+            </li>
+            <li>
+              <strong>スライディングウィンドウ（重なりあり）</strong>:
+              最大文字数（例：192文字）ごとに区切ってモデルに入力しますが、少しずつずらしながら（ストライド）重ねて処理します。
+              これにより、ある文字が「文章の端」に来ることで文脈が途切れてしまい、予測精度が落ちるのを防ぎます。
+            </li>
+            <li>
+              <strong>中心重視の重み付け（Center Weighting）</strong>:
+              窓の端にある文字よりも、<strong>「窓の中央」にある文字の予測結果をより信頼する</strong>アルゴリズムを採用しています。
+              重なり合った部分の予測結果を、この重みに基づいて平均化することで、非常に滑らかで精度の高い統合を可能にしています。
+            </li>
+          </ol>
+
+          <h4 id="inference-decision-title">最終的な判定</h4>
+          <ul>
+            <li><strong>句読点の挿入</strong>: 各文字に対して算出されたスコアを比較し、特定の基準（マージン）を超えた場合にのみ句読点を挿入します。</li>
+            <li><strong>改行の挿入</strong>: 改行については確率を算 出し、設定されたしきい値（デフォルト30%など）を超えた場合に改行を挟み込みます。</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="training-title">
+          <h3 id="training-title">3. 学習データ</h3>
+          <p>
+            このモデルは
+            <a href="https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-corpus-v4/-/blob/main/README-ja.md" target="_blank"
+              rel="noreferrer">
+              LLM-jp Corpus v4
+            </a>
+            を使って学習されています。日本語の多様なテキストを含む大規模なコーパスです。
+          </p>
+        </section>
+<!--
+        <section class="doc-section" aria-labelledby="references-title">
+          <h3 id="references-title">5. リファレンス</h3>
+          <ol class="reference-list">
+            <li>
+              <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noreferrer">Vaswani et al. (2017)</a>
+              <span>Attention Is All You Need, NeurIPS / arXiv</span>
+            </li>
+            <li>
+              <a href="https://arxiv.org/abs/2002.04745" target="_blank" rel="noreferrer">Xiong et al. (2020)</a>
+              <span>On Layer Normalization in the Transformer Architecture, ICML / arXiv</span>
+            </li>
+            <li>
+              <a href="https://arxiv.org/abs/2002.05202" target="_blank" rel="noreferrer">Shazeer (2020)</a>
+              <span>GLU Variants Improve Transformer, arXiv</span>
+            </li>
+            <li>
+              <a href="https://arxiv.org/abs/2302.13971" target="_blank" rel="noreferrer">Touvron et al. (2023)</a>
+              <span>LLaMA: Open and Efficient Foundation Language Models, Meta AI / arXiv</span>
+            </li>
+            <li>
+              <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.TransformerEncoderLayer.html"
+                target="_blank" rel="noreferrer">
+                PyTorch Docs
+              </a>
+              <span>TransformerEncoderLayer documentation</span>
+            </li>
+          </ol>
+        </section>
+-->
+      </details>
+    </article>
+  </main>
+</body>
+
+</html>
