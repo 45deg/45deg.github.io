@@ -1,0 +1,1364 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>&lt;details&gt;で作る Tree View デモ集</title>
+
+  <!-- Prism.js: code highlight only. No framework / no Tailwind. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --border: #d9dee7;
+      --text: #1d2433;
+      --muted: #687386;
+      --accent: #2f6fed;
+      --code-bg: #f7f8fb;
+      --shadow: 0 16px 40px rgba(20, 26, 38, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(47, 111, 237, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 80px;
+    }
+
+    .hero {
+      margin-bottom: 40px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .intro {
+      max-width: 820px;
+      margin-top: 28px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .intro h2 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .intro p + p {
+      margin-top: 10px;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    .example-card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .example-header {
+      padding: 26px 28px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .example-header h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 1.8rem);
+      letter-spacing: -0.03em;
+    }
+
+    .example-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .tabs {
+      padding: 0 28px 28px;
+    }
+
+    .tab-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-nav button {
+      appearance: none;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      padding: 12px 10px 10px;
+    }
+
+    .tab-nav button[aria-selected="true"] {
+      border-bottom-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.is-active {
+      display: block;
+    }
+
+    .preview {
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, #ffffff, #fafbfc);
+    }
+
+    pre[class*="language-"] {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--code-bg);
+      font-size: 0.9rem;
+    }
+
+    code[class*="language-"] {
+      font-family: var(--font-mono);
+    }
+
+    /* ------------------------------------------------------------------
+       Demo 2: Minimal CSS tree
+    ------------------------------------------------------------------ */
+    .tree-minimal {
+      --line: #d7dde8;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .tree-minimal ul {
+      margin: 0.15rem 0 0.15rem 1rem;
+      padding-left: 0.85rem;
+      list-style: none;
+      border-left: 1px solid var(--line);
+    }
+
+    .tree-minimal li {
+      margin: 0.08rem 0;
+    }
+
+    .tree-minimal summary,
+    .tree-minimal .leaf {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.8rem;
+      padding: 0.12rem 0.45rem;
+      border-radius: 0.5rem;
+    }
+
+    .tree-minimal summary {
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    .tree-minimal summary::marker {
+      color: #8a95a8;
+    }
+
+
+    /* ------------------------------------------------------------------
+       Demo 3: File viewer tree
+    ------------------------------------------------------------------ */
+    .file-tree {
+      --indent: 1.25rem;
+      --line: #d7dce5;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .file-tree ul {
+      margin: 0 0 0 var(--indent);
+      padding: 0 0 0 0.65rem;
+      list-style: none;
+      border-left: 1px solid var(--line);
+    }
+
+    .file-tree li {
+      margin: 0.12rem 0;
+    }
+
+    .file-tree summary,
+    .file-tree .file {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 1.9rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.55rem;
+      color: #243044;
+    }
+
+    .file-tree summary {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .file-tree summary:hover,
+    .file-tree .file:hover {
+      background: #eef4ff;
+    }
+
+    .file-tree summary::marker {
+      content: "";
+    }
+
+    .file-tree summary::before {
+      content: "▸";
+      color: var(--muted);
+      font-size: 0.78rem;
+      transform: translateY(-1px);
+    }
+
+    .file-tree details[open] > summary::before {
+      content: "▾";
+    }
+
+    .file-tree .folder-icon::before {
+      content: "📁";
+    }
+
+    .file-tree details[open] > summary .folder-icon::before {
+      content: "📂";
+    }
+
+    .file-tree .file.html::before { content: "🌐"; }
+    .file-tree .file.css::before { content: "🎨"; }
+    .file-tree .file.js::before { content: "📜"; }
+    .file-tree .file.json::before { content: "{}"; font-weight: 800; color: #7c3aed; }
+    .file-tree .file.md::before { content: "📝"; }
+
+    /* ------------------------------------------------------------------
+       Demo 4: Sidebar tree
+    ------------------------------------------------------------------ */
+    .sidebar-shell {
+      width: min(320px, 100%);
+      border: 1px solid #263044;
+      border-radius: 18px;
+      background: #101827;
+      color: #d8e1f0;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid #263044;
+    }
+
+    .sidebar-header strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .sidebar-header span {
+      color: #8e9ab0;
+      font-size: 0.82rem;
+    }
+
+    .sidebar-tree {
+      margin: 0;
+      padding: 10px;
+      list-style: none;
+    }
+
+    .sidebar-tree ul {
+      margin: 0.2rem 0 0 0.9rem;
+      padding-left: 0.65rem;
+      list-style: none;
+      border-left: 1px solid #2c384f;
+    }
+
+    .sidebar-tree li {
+      margin: 2px 0;
+    }
+
+    .sidebar-tree summary,
+    .sidebar-tree a {
+      display: flex;
+      align-items: center;
+      gap: 0.52rem;
+      min-height: 2.2rem;
+      padding: 0.32rem 0.58rem;
+      border-radius: 10px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .sidebar-tree summary {
+      cursor: pointer;
+      color: #f2f5fb;
+      font-weight: 750;
+    }
+
+    .sidebar-tree summary::marker {
+      content: "";
+    }
+
+    .sidebar-tree summary::after {
+      content: "›";
+      margin-left: auto;
+      color: #748096;
+      transition: transform 150ms ease;
+    }
+
+    .sidebar-tree details[open] > summary::after {
+      transform: rotate(90deg);
+    }
+
+    .sidebar-tree a:hover,
+    .sidebar-tree summary:hover,
+    .sidebar-tree a[aria-current="page"] {
+      background: #1b2740;
+    }
+
+    .sidebar-tree a[aria-current="page"] {
+      color: #ffffff;
+      outline: 1px solid #35558f;
+    }
+
+    .sidebar-tree .badge {
+      margin-left: auto;
+      padding: 0.08rem 0.45rem;
+      border-radius: 999px;
+      background: #243654;
+      color: #b9c8e5;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    /* ------------------------------------------------------------------
+       Demo 5: Animated tree
+    ------------------------------------------------------------------ */
+    .animated-tree {
+      interpolate-size: allow-keywords;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .animated-tree ul {
+      margin: 0 0 0 1.1rem;
+      padding-left: 0.9rem;
+      list-style: none;
+      border-left: 1px solid #d6ddeb;
+    }
+
+    .animated-tree summary {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      width: fit-content;
+      padding: 0.35rem 0.55rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 760;
+    }
+
+    .animated-tree summary::marker {
+      content: "";
+    }
+
+    .animated-tree summary::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-right: 2px solid #728096;
+      border-bottom: 2px solid #728096;
+      transform: rotate(-45deg);
+      transition: transform 180ms ease;
+    }
+
+    .animated-tree details[open] > summary::before {
+      transform: rotate(45deg);
+    }
+
+    .animated-tree details::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition:
+        block-size 240ms ease,
+        opacity 180ms ease,
+        content-visibility 240ms ease allow-discrete;
+    }
+
+    .animated-tree details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+
+    .animated-tree summary:hover,
+    .animated-tree .leaf:hover {
+      background: #f1f5ff;
+    }
+
+    .animated-tree .leaf {
+      display: block;
+      width: fit-content;
+      padding: 0.28rem 0.55rem;
+      border-radius: 10px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animated-tree *,
+      .sidebar-tree * {
+        transition: none !important;
+      }
+    }
+
+    /* ------------------------------------------------------------------
+       Demo 6: Advanced selectable tree
+    ------------------------------------------------------------------ */
+    .advanced-tree {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-width: 520px;
+      border: 1px solid #d7dfed;
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .advanced-tree ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .advanced-tree li + li {
+      border-top: 1px solid #edf1f7;
+    }
+
+    .advanced-tree details > ul {
+      border-top: 1px solid #edf1f7;
+      background: #fbfcff;
+    }
+
+    .advanced-tree summary,
+    .advanced-tree .node {
+      display: grid;
+      align-items: center;
+      gap: 0.65rem;
+      min-height: 2.6rem;
+      padding: 0.42rem 0.75rem;
+    }
+
+    .advanced-tree summary {
+      grid-template-columns: auto 1fr auto;
+      cursor: pointer;
+      font-weight: 780;
+    }
+
+    .advanced-tree .node {
+      grid-template-columns: auto 1fr auto;
+    }
+
+    .advanced-tree .child .node {
+      padding-left: 2rem;
+    }
+
+    .advanced-tree summary::marker {
+      content: "";
+    }
+
+    .advanced-tree summary::before {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      border-right: 2px solid #65738a;
+      border-bottom: 2px solid #65738a;
+      transform: rotate(-45deg);
+      transition: transform 160ms ease;
+    }
+
+    .advanced-tree details[open] > summary::before {
+      transform: rotate(45deg);
+    }
+
+    .advanced-tree .meta {
+      color: #69758a;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .advanced-tree input[type="checkbox"] {
+      accent-color: #2f6fed;
+      width: 1rem;
+      height: 1rem;
+      margin: 0;
+    }
+
+    .advanced-tree label,
+    .advanced-tree summary {
+      user-select: none;
+    }
+
+    .advanced-tree summary:hover,
+    .advanced-tree .node:hover {
+      background: #f2f6ff;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <h1>&lt;details&gt;で作る Tree View デモ集</h1>
+    </header>
+
+    <div class="article-grid">
+      <article class="example-card" id="basic">
+        <header class="example-header">
+          <h2>1. 基本：CSSなし</h2>
+          <p><code>&lt;details&gt;</code> と <code>&lt;summary&gt;</code> の標準挙動だけで階層を表現する。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="基本：CSSなし">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <ul>
+                <li>
+                  <details open>
+                    <summary>ドキュメント</summary>
+                    <ul>
+                      <li>概要</li>
+                      <li>
+                        <details open>
+                          <summary>ガイド</summary>
+                          <ul>
+                            <li>導入</li>
+                            <li>設定</li>
+                            <li>公開</li>
+                          </ul>
+                        </details>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+                <li>README</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;ul&gt;
+  &lt;li&gt;
+    &lt;details open&gt;
+      &lt;summary&gt;ドキュメント&lt;/summary&gt;
+      &lt;ul&gt;
+        &lt;li&gt;概要&lt;/li&gt;
+        &lt;li&gt;
+          &lt;details open&gt;
+            &lt;summary&gt;ガイド&lt;/summary&gt;
+            &lt;ul&gt;
+              &lt;li&gt;導入&lt;/li&gt;
+              &lt;li&gt;設定&lt;/li&gt;
+              &lt;li&gt;公開&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/details&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+  &lt;li&gt;README&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">/* なし */</code></pre>
+          </div>
+        </section>
+      </article>
+
+      <article class="example-card" id="minimal-css">
+        <header class="example-header">
+          <h2>2. CSS：最低限の調整</h2>
+          <p>標準の開閉挙動は残し、余白と縦線だけで読みやすくする。</p>
+          <p>マーカーはブラウザ標準のまま使い、階層の深さだけを線で補助する。ホバーやアイコンを入れないため、本文中の小さな目次や設定一覧にも馴染みやすい。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="CSS：最低限の調整">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <ul class="tree-minimal">
+                <li>
+                  <details open>
+                    <summary>ドキュメント</summary>
+                    <ul>
+                      <li><span class="leaf">概要</span></li>
+                      <li>
+                        <details open>
+                          <summary>ガイド</summary>
+                          <ul>
+                            <li><span class="leaf">導入</span></li>
+                            <li><span class="leaf">設定</span></li>
+                            <li><span class="leaf">公開</span></li>
+                          </ul>
+                        </details>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+                <li><span class="leaf">README</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;ul class="tree-minimal"&gt;
+  &lt;li&gt;
+    &lt;details open&gt;
+      &lt;summary&gt;ドキュメント&lt;/summary&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;span class="leaf"&gt;概要&lt;/span&gt;&lt;/li&gt;
+        &lt;li&gt;
+          &lt;details open&gt;
+            &lt;summary&gt;ガイド&lt;/summary&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;導入&lt;/span&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;設定&lt;/span&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;公開&lt;/span&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/details&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;span class="leaf"&gt;README&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">.tree-minimal {
+  --line: #d7dde8;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.tree-minimal ul {
+  margin: 0.15rem 0 0.15rem 1rem;
+  padding-left: 0.85rem;
+  list-style: none;
+  border-left: 1px solid var(--line);
+}
+
+.tree-minimal li {
+  margin: 0.08rem 0;
+}
+
+.tree-minimal summary,
+.tree-minimal .leaf {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 0.5rem;
+}
+
+.tree-minimal summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.tree-minimal summary::marker {
+  color: #8a95a8;
+}
+</code></pre>
+          </div>
+        </section>
+      </article>
+
+      <article class="example-card" id="file-view">
+        <header class="example-header">
+          <h2>3. ファイルビュー風</h2>
+          <p>フォルダとファイルの見た目を追加し、エディタのファイルツリーに近づける。</p>
+          <p><code>summary::before</code> で開閉マーカーを置き換え、ファイル種別はクラスごとの疑似要素で表す。実際のプロジェクトでは拡張子や種類に応じてアイコンを差し替えるだけで流用できる。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="ファイルビュー風">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <ul class="file-tree">
+                <li>
+                  <details open>
+                    <summary><span class="folder-icon"></span>src</summary>
+                    <ul>
+                      <li>
+                        <details open>
+                          <summary><span class="folder-icon"></span>components</summary>
+                          <ul>
+                            <li><span class="file html">TreeView.html</span></li>
+                            <li><span class="file css">TreeView.css</span></li>
+                          </ul>
+                        </details>
+                      </li>
+                      <li><span class="file js">main.js</span></li>
+                      <li><span class="file css">style.css</span></li>
+                    </ul>
+                  </details>
+                </li>
+                <li><span class="file json">package.json</span></li>
+                <li><span class="file md">README.md</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;ul class="file-tree"&gt;
+  &lt;li&gt;
+    &lt;details open&gt;
+      &lt;summary&gt;&lt;span class="folder-icon"&gt;&lt;/span&gt;src&lt;/summary&gt;
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;details open&gt;
+            &lt;summary&gt;&lt;span class="folder-icon"&gt;&lt;/span&gt;components&lt;/summary&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;span class="file html"&gt;TreeView.html&lt;/span&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;span class="file css"&gt;TreeView.css&lt;/span&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/details&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;span class="file js"&gt;main.js&lt;/span&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;span class="file css"&gt;style.css&lt;/span&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;span class="file json"&gt;package.json&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span class="file md"&gt;README.md&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">.file-tree {
+  --indent: 1.25rem;
+  --line: #d7dce5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.file-tree ul {
+  margin: 0 0 0 var(--indent);
+  padding: 0 0 0 0.65rem;
+  list-style: none;
+  border-left: 1px solid var(--line);
+}
+
+.file-tree summary,
+.file-tree .file {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 1.9rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.55rem;
+}
+
+.file-tree summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.file-tree summary::marker {
+  content: "";
+}
+
+.file-tree summary::before {
+  content: "▸";
+  color: #687386;
+  font-size: 0.78rem;
+}
+
+.file-tree details[open] &gt; summary::before {
+  content: "▾";
+}
+
+.file-tree .folder-icon::before {
+  content: "📁";
+}
+
+.file-tree details[open] &gt; summary .folder-icon::before {
+  content: "📂";
+}
+
+.file-tree .file.html::before { content: "🌐"; }
+.file-tree .file.css::before { content: "🎨"; }
+.file-tree .file.js::before { content: "📜"; }
+.file-tree .file.json::before { content: "{}"; font-weight: 800; }
+.file-tree .file.md::before { content: "📝"; }</code></pre>
+          </div>
+        </section>
+      </article>
+
+      <article class="example-card" id="sidebar">
+        <header class="example-header">
+          <h2>4. サイドバー風</h2>
+          <p>管理画面やドキュメントサイトの左ナビに近い、濃色のツリー型サイドバー。</p>
+          <p>リンク、現在位置、バッジを組み合わせると、単なる階層リストからナビゲーション部品になる。<code>aria-current="page"</code> を使うと、現在表示中のページもHTML上で示せる。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="サイドバー風">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <nav class="sidebar-shell" aria-label="Project navigation">
+                <div class="sidebar-header">
+                  <strong>Workspace</strong>
+                  <span>Documentation</span>
+                </div>
+                <ul class="sidebar-tree">
+                  <li><a href="#" aria-current="page">🏁 Overview</a></li>
+                  <li>
+                    <details open>
+                      <summary>📚 Guides</summary>
+                      <ul>
+                        <li><a href="#">Install</a></li>
+                        <li><a href="#">Routing <span class="badge">New</span></a></li>
+                        <li><a href="#">Deploy</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li>
+                    <details>
+                      <summary>⚙️ Reference</summary>
+                      <ul>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Config</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;nav class="sidebar-shell" aria-label="Project navigation"&gt;
+  &lt;div class="sidebar-header"&gt;
+    &lt;strong&gt;Workspace&lt;/strong&gt;
+    &lt;span&gt;Documentation&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;ul class="sidebar-tree"&gt;
+    &lt;li&gt;&lt;a href="#" aria-current="page"&gt;🏁 Overview&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;
+      &lt;details open&gt;
+        &lt;summary&gt;📚 Guides&lt;/summary&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Install&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Routing &lt;span class="badge"&gt;New&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Deploy&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/details&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;details&gt;
+        &lt;summary&gt;⚙️ Reference&lt;/summary&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#"&gt;API&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Config&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/details&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">.sidebar-shell {
+  width: min(320px, 100%);
+  border: 1px solid #263044;
+  border-radius: 18px;
+  background: #101827;
+  color: #d8e1f0;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #263044;
+}
+
+.sidebar-header strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.sidebar-header span {
+  color: #8e9ab0;
+  font-size: 0.82rem;
+}
+
+.sidebar-tree {
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+}
+
+.sidebar-tree ul {
+  margin: 0.2rem 0 0 0.9rem;
+  padding-left: 0.65rem;
+  list-style: none;
+  border-left: 1px solid #2c384f;
+}
+
+.sidebar-tree summary,
+.sidebar-tree a {
+  display: flex;
+  align-items: center;
+  gap: 0.52rem;
+  min-height: 2.2rem;
+  padding: 0.32rem 0.58rem;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidebar-tree summary {
+  cursor: pointer;
+  color: #f2f5fb;
+  font-weight: 750;
+}
+
+.sidebar-tree summary::marker {
+  content: "";
+}
+
+.sidebar-tree summary::after {
+  content: "›";
+  margin-left: auto;
+  color: #748096;
+  transition: transform 150ms ease;
+}
+
+.sidebar-tree details[open] &gt; summary::after {
+  transform: rotate(90deg);
+}
+
+.sidebar-tree a:hover,
+.sidebar-tree summary:hover,
+.sidebar-tree a[aria-current="page"] {
+  background: #1b2740;
+}
+
+.sidebar-tree .badge {
+  margin-left: auto;
+  padding: 0.08rem 0.45rem;
+  border-radius: 999px;
+  background: #243654;
+  color: #b9c8e5;
+  font-size: 0.72rem;
+  font-weight: 700;
+}</code></pre>
+          </div>
+        </section>
+      </article>
+
+      <article class="example-card" id="animated">
+        <header class="example-header">
+          <h2>5. アニメーション付き</h2>
+          <p>新しめのCSSである <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::details-content"><code>::details-content</code></a> と <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size"><code>interpolate-size</code></a> を使い、JSなしで展開と収納を動かす。</p>
+          <p><code>&lt;details&gt;</code> は閉じる瞬間に中身が非表示になるため、従来は高さのアニメーションにJavaScriptを使う場面が多かった。この作例ではCSS側で中身の領域を扱い、開く動きと閉じる動きの両方を補間する。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="アニメーション付き">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <ul class="animated-tree">
+                <li>
+                  <details open>
+                    <summary>Design System</summary>
+                    <ul>
+                      <li><span class="leaf">Colors</span></li>
+                      <li><span class="leaf">Typography</span></li>
+                      <li>
+                        <details>
+                          <summary>Components</summary>
+                          <ul>
+                            <li><span class="leaf">Button</span></li>
+                            <li><span class="leaf">Card</span></li>
+                            <li><span class="leaf">Dialog</span></li>
+                          </ul>
+                        </details>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;ul class="animated-tree"&gt;
+  &lt;li&gt;
+    &lt;details open&gt;
+      &lt;summary&gt;Design System&lt;/summary&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;span class="leaf"&gt;Colors&lt;/span&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;span class="leaf"&gt;Typography&lt;/span&gt;&lt;/li&gt;
+        &lt;li&gt;
+          &lt;details&gt;
+            &lt;summary&gt;Components&lt;/summary&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;Button&lt;/span&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;Card&lt;/span&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;span class="leaf"&gt;Dialog&lt;/span&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/details&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">.animated-tree {
+  interpolate-size: allow-keywords;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.animated-tree ul {
+  margin: 0 0 0 1.1rem;
+  padding-left: 0.9rem;
+  list-style: none;
+  border-left: 1px solid #d6ddeb;
+}
+
+.animated-tree summary {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 760;
+}
+
+.animated-tree summary::marker {
+  content: "";
+}
+
+.animated-tree summary::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid #728096;
+  border-bottom: 2px solid #728096;
+  transform: rotate(-45deg);
+  transition: transform 180ms ease;
+}
+
+.animated-tree details[open] &gt; summary::before {
+  transform: rotate(45deg);
+}
+
+.animated-tree details::details-content {
+  block-size: 0;
+  overflow: clip;
+  opacity: 0;
+  transition:
+    block-size 240ms ease,
+    opacity 180ms ease,
+    content-visibility 240ms ease allow-discrete;
+}
+
+.animated-tree details[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+
+.animated-tree .leaf {
+  display: block;
+  width: fit-content;
+  padding: 0.28rem 0.55rem;
+  border-radius: 10px;
+}
+
+.animated-tree summary:hover,
+.animated-tree .leaf:hover {
+  background: #f1f5ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-tree * {
+    transition: none !important;
+  }
+}</code></pre>
+          </div>
+        </section>
+      </article>
+
+      <article class="example-card" id="advanced">
+        <header class="example-header">
+          <h2>6. 高度な選択UI</h2>
+          <p>チェックボックス、メタ情報、区切り線を合わせた管理画面向けのツリー。権限設定やフィルタ条件に転用できる。</p>
+          <p>親ノードは開閉、子ノードは選択という役割に分けている。行レイアウトにはCSS Gridを使い、ラベル、件数、チェックボックスの位置を揃えている。</p>
+        </header>
+        <section class="tabs" data-tabs>
+          <div class="tab-nav" role="tablist" aria-label="高度な選択UI">
+            <button type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="html">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="css">CSS</button>
+          </div>
+          <div class="tab-panel is-active" data-panel="preview">
+            <div class="preview">
+              <ul class="advanced-tree">
+                <li>
+                  <details open>
+                    <summary><span>Products</span><span class="meta">3 groups</span></summary>
+                    <ul>
+                      <li class="child"><label class="node"><input type="checkbox" checked /> <span>Analytics</span><span class="meta">12</span></label></li>
+                      <li class="child"><label class="node"><input type="checkbox" /> <span>Billing</span><span class="meta">8</span></label></li>
+                      <li class="child"><label class="node"><input type="checkbox" /> <span>Integrations</span><span class="meta">16</span></label></li>
+                    </ul>
+                  </details>
+                </li>
+                <li>
+                  <details>
+                    <summary><span>Teams</span><span class="meta">2 groups</span></summary>
+                    <ul>
+                      <li class="child"><label class="node"><input type="checkbox" /> <span>Design</span><span class="meta">5</span></label></li>
+                      <li class="child"><label class="node"><input type="checkbox" /> <span>Engineering</span><span class="meta">24</span></label></li>
+                    </ul>
+                  </details>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-panel" data-panel="html">
+            <pre><code class="language-markup">&lt;ul class="advanced-tree"&gt;
+  &lt;li&gt;
+    &lt;details open&gt;
+      &lt;summary&gt;&lt;span&gt;Products&lt;/span&gt;&lt;span class="meta"&gt;3 groups&lt;/span&gt;&lt;/summary&gt;
+      &lt;ul&gt;
+        &lt;li class="child"&gt;
+          &lt;label class="node"&gt;
+            &lt;input type="checkbox" checked /&gt;
+            &lt;span&gt;Analytics&lt;/span&gt;
+            &lt;span class="meta"&gt;12&lt;/span&gt;
+          &lt;/label&gt;
+        &lt;/li&gt;
+        &lt;li class="child"&gt;
+          &lt;label class="node"&gt;
+            &lt;input type="checkbox" /&gt;
+            &lt;span&gt;Billing&lt;/span&gt;
+            &lt;span class="meta"&gt;8&lt;/span&gt;
+          &lt;/label&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+          <div class="tab-panel" data-panel="css">
+            <pre><code class="language-css">.advanced-tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 520px;
+  border: 1px solid #d7dfed;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.advanced-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.advanced-tree summary,
+.advanced-tree .node {
+  display: grid;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.6rem;
+  padding: 0.42rem 0.75rem;
+}
+
+.advanced-tree summary {
+  grid-template-columns: auto 1fr auto;
+  cursor: pointer;
+  font-weight: 780;
+}
+
+.advanced-tree .node {
+  grid-template-columns: auto 1fr auto;
+}
+
+.advanced-tree .child .node {
+  padding-left: 2rem;
+}
+
+.advanced-tree summary::marker {
+  content: "";
+}
+
+.advanced-tree summary::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid #65738a;
+  border-bottom: 2px solid #65738a;
+  transform: rotate(-45deg);
+  transition: transform 160ms ease;
+}
+
+.advanced-tree details[open] &gt; summary::before {
+  transform: rotate(45deg);
+}
+
+.advanced-tree .meta {
+  color: #69758a;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.advanced-tree input[type="checkbox"] {
+  accent-color: #2f6fed;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.advanced-tree summary:hover,
+.advanced-tree .node:hover {
+  background: #f2f6ff;
+}</code></pre>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('[data-tabs]').forEach((tabs) => {
+      const buttons = tabs.querySelectorAll('[data-tab]');
+      const panels = tabs.querySelectorAll('[data-panel]');
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selected = button.dataset.tab;
+
+          buttons.forEach((item) => {
+            item.setAttribute('aria-selected', String(item === button));
+          });
+
+          panels.forEach((panel) => {
+            panel.classList.toggle('is-active', panel.dataset.panel === selected);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

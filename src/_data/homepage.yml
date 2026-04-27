@@ -29,6 +29,25 @@ filters:
     label: Misc
     collapsible: true
 works:
+  - href: ./punct/
+    sort: 2
+    featured: false
+    categories:
+      - language
+    title:
+      ja: 句読点補完ツール
+      en: Japanese Punctuation Completion Tool
+    year: 2026
+    description_html:
+      ja: 日本語テキストに句読点と改行を自動で補う、軽量Transformer/ONNXベースのブラウザツール。
+      en: A browser tool that automatically adds punctuation and line breaks to Japanese text using a lightweight Transformer exported to ONNX.
+    tags:
+      - NLP
+      - ONNX
+      - Language
+    image:
+      src: ./images/i26.png
+      alt: 句読点補完ツール
   - href: ./crt/
     sort: 10
     featured: true

@@ -155,41 +155,26 @@ a:hover {
     outline-offset: 2px;
 }
 
-.work-filters .is-collapsible {
-    display: none;
-}
-
-.work-filters input:checked + .is-collapsible,
-.work-filters:has(#filter-tags-expanded:checked) .is-collapsible {
-    display: inline-block;
-}
-
-.filter-more {
+.work-filters .filter-more {
+    align-items: center;
+    background: #fff;
+    color: #222;
+    display: inline-flex;
+    justify-content: center;
     min-width: 2.2rem;
-    text-align: center;
+    padding-inline: 0.45rem;
 }
 
-.filter-more .more-close {
+.work-filters .filter-more:hover {
+    opacity: 1;
+}
+
+.work-filters .tag-filter.is-collapsible {
     display: none;
 }
 
-#filter-tags-expanded:checked + .filter-more .more-open {
-    display: none;
-}
-
-#filter-tags-expanded:checked + .filter-more .more-close {
-    display: inline;
-}
-
-section:has(#filter-featured:checked) .works-grid .card:not(.is-featured),
-section:has(#filter-pdf:checked) .works-grid .card:not(.cat-pdf),
-section:has(#filter-visual:checked) .works-grid .card:not(.cat-visual),
-section:has(#filter-media:checked) .works-grid .card:not(.cat-media),
-section:has(#filter-language:checked) .works-grid .card:not(.cat-language),
-section:has(#filter-game:checked) .works-grid .card:not(.cat-game),
-section:has(#filter-article:checked) .works-grid .card:not(.cat-article),
-section:has(#filter-misc:checked) .works-grid .card:not(.cat-misc) {
-    display: none;
+.work-filters.is-expanded .tag-filter.is-collapsible {
+    display: inline-flex;
 }
 
 /* Card Component */

@@ -32,14 +32,15 @@
         <main class="main">
             <section>
                 <h2>Works</h2>
-                <div class="work-filters" aria-label="Work filters">
+                <!--
+                <div class="work-filters" id="work-filter-tags" aria-label="Work filters">
                     {% for filter in homepage.filters %}
                     <input type="radio" id="filter-{{ filter.key }}" name="work-filter"{% if loop.first %} checked{% endif %}>
                     <label class="tag-filter{% if filter.collapsible %} is-collapsible{% endif %}" for="filter-{{ filter.key }}">{{ filter.label }} ({{ homepage.works | countByFilter(filter.key) }})</label>
                     {% endfor %}
-                    <input class="filter-tags-toggle" type="checkbox" id="filter-tags-expanded">
-                    <label class="filter-more" for="filter-tags-expanded"><span class="more-open">...</span><span class="more-close">Close</span></label>
+                    <button class="filter-more" type="button" aria-expanded="false" aria-controls="work-filter-tags">...</button>
                 </div>
+                -->
                 <div class="works-grid">
                     {% for work in homepage.works %}
                     <article class="card{% if work.featured %} is-featured{% endif %}{% for category in work.categories %} cat-{{ category }}{% endfor %}" style="--sort: {{ work.sort }}">
