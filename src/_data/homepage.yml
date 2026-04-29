@@ -29,6 +29,25 @@ filters:
     label: Misc
     collapsible: true
 works:
+  - href: ./lucide-search/
+    sort: 1
+    featured: false
+    categories:
+      - visual
+    title:
+      ja: Lucide Icon Search
+      en: Lucide Icon Search
+    year: 2026
+    description_html:
+      ja: >-
+        Lucideアイコンを手書きで検索できるツール
+      en: A tool for searching Lucide icons by handwriting
+    tags:
+      - Icon
+      - Search
+    image:
+      src: ./images/i27.png
+      alt: Lucide Icon Search
   - href: ./punct/
     sort: 2
     featured: false
