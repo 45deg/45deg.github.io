@@ -1,0 +1,1 @@
+import{C as e}from"./editor-CaNSaARC.js";import{ir as t,sr as n}from"./createLucideIcon-DQHiCf65.js";var r=e(n()),i=r.createContext(void 0);function a(e){let n=r.useContext(i);if(e===!1&&n===void 0)throw Error(t(27));return n}var o=r.createContext(void 0);function s(e){let n=r.useContext(o);if(e===!1&&n===void 0)throw Error(t(90));return n}export{a as i,s as n,i as r,o as t};
