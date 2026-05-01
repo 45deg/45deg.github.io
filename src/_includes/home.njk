@@ -2,10 +2,52 @@
 <html lang="{{ lang }}">
 
 <head>
+    {% set siteUrl = homepage.site_url %}
+    {% set siteName = homepage.title %}
+    {% set pageTitle = homepage.seo_title | locale(lang) %}
+    {% set pageDescription = homepage.description | locale(lang) %}
+    {% set canonicalPath = "/" if lang == "ja" else "/index_en.html" %}
+    {% set canonicalUrl = canonicalPath | absoluteUrl(siteUrl) %}
+    {% set alternateJaUrl = "/" | absoluteUrl(siteUrl) %}
+    {% set alternateEnUrl = "/index_en.html" | absoluteUrl(siteUrl) %}
+    {% set ogImageUrl = homepage.og_image | absoluteUrl(siteUrl) %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ homepage.title }}</title>
+    <title>{{ pageTitle }}</title>
+    <meta name="description" content="{{ pageDescription }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ canonicalUrl }}">
+    <link rel="alternate" hreflang="ja" href="{{ alternateJaUrl }}">
+    <link rel="alternate" hreflang="en" href="{{ alternateEnUrl }}">
+    <link rel="alternate" hreflang="x-default" href="{{ alternateJaUrl }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ siteName }}">
+    <meta property="og:title" content="{{ pageTitle }}">
+    <meta property="og:description" content="{{ pageDescription }}">
+    <meta property="og:url" content="{{ canonicalUrl }}">
+    <meta property="og:image" content="{{ ogImageUrl }}">
+    <meta property="og:locale" content="{{ 'ja_JP' if lang == 'ja' else 'en_US' }}">
+    <meta property="og:locale:alternate" content="{{ 'en_US' if lang == 'ja' else 'ja_JP' }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ pageTitle }}">
+    <meta name="twitter:description" content="{{ pageDescription }}">
+    <meta name="twitter:image" content="{{ ogImageUrl }}">
     <link rel="stylesheet" href="{{ './style.css' | localPath(lang) }}">
+    <script type="application/ld+json">
+        {{ {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": siteName,
+            "url": canonicalUrl,
+            "description": pageDescription,
+            "inLanguage": lang,
+            "author": {
+                "@type": "Person",
+                "name": "zakuro",
+                "url": homepage.profile_url
+            }
+        } | json | safe }}
+    </script>
 </head>
 
 <body>
@@ -18,7 +60,7 @@
             <a href="{{ alternateUrl }}">English</a>
             {% else %}
             <a href="{{ alternateUrl }}">日本語</a>
-            <a class="is-active" href="./" aria-current="page">English</a>
+            <a class="is-active" href="./index_en.html" aria-current="page">English</a>
             {% endif %}
         </nav>
     </header>

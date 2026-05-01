@@ -19,6 +19,10 @@ function localPath(value) {
   return value;
 }
 
+function absoluteUrl(value, baseUrl) {
+  return new URL(value, baseUrl).href;
+}
+
 export default function(eleventyConfig) {
   eleventyConfig.addGlobalData(
     "homepage",
@@ -37,6 +41,8 @@ export default function(eleventyConfig) {
   });
 
   eleventyConfig.addFilter("localPath", localPath);
+  eleventyConfig.addFilter("absoluteUrl", absoluteUrl);
+  eleventyConfig.addFilter("json", (value) => JSON.stringify(value));
 
   eleventyConfig.addFilter("countByFilter", (works, key) => {
     if (key === "all") return works.length;
