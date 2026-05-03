@@ -37,6 +37,26 @@ filters:
     label: Misc
     collapsible: true
 works:
+  - href: ./vibe-design-gallery/
+    sort: 0
+    featured: true
+    categories:
+      - visual
+    title:
+      ja: Vibe Design Gallery
+      en: Vibe Design Gallery
+    year: 2026
+    description_html:
+      ja: >-
+        Tailwind CSSのユーティリティクラスを用いたデザインギャラリー。バイブコーディング向けとしてデザインプロンプトも用意。
+      en: >-
+        A design gallery using Tailwind CSS utility classes, with design prompts for vibe coding.
+    tags:
+      - Design
+      - LLM
+    image:
+      src: ./images/i28.png
+      alt: Vibe Design Gallery
   - href: ./lucide-search/
     sort: 1
     featured: false
