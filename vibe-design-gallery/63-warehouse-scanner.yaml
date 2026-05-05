@@ -1,0 +1,44 @@
+id: "63"
+name: "Warehouse Scanner"
+slug: "warehouse-scanner"
+category: "Enterprise"
+tone: "Barcode scanner, logistics, rugged mobile workflow"
+promptCues:
+  - "warehouse operations"
+  - "scanner UI"
+  - "yellow black safety"
+  - "large touch targets"
+  - "rugged workflow"
+tokens:
+  bg: "bg-zinc-950"
+  shell: "border border-yellow-500/40 bg-zinc-900 shadow-xl rounded-xl"
+  card: "border border-zinc-700 bg-zinc-950 rounded-lg"
+  title: "text-yellow-300 font-black uppercase tracking-wide"
+  text: "text-zinc-400 font-mono"
+  label: "text-yellow-300 font-mono uppercase text-xs tracking-widest"
+  input: "bg-black border-2 border-yellow-500/60 text-yellow-100 placeholder:text-yellow-700 focus:ring-4 focus:ring-yellow-500/20 focus:border-yellow-300 rounded-md font-mono"
+  button: "bg-yellow-400 text-black hover:bg-yellow-300 rounded-md font-black uppercase"
+  ghost: "bg-zinc-800 text-yellow-200 border border-yellow-500/30 hover:bg-zinc-700 rounded-md font-mono uppercase"
+  checkbox: "accent-yellow-400"
+  progressTrack: "bg-zinc-800 rounded-sm"
+  progressFill: "bg-yellow-400 rounded-sm"
+  badge: "bg-yellow-400 text-black border border-yellow-300 rounded-md font-black uppercase"
+  mono: "bg-zinc-800 text-yellow-200 rounded-md"
+htmlExample: |-
+  <section class="bg-zinc-950 rounded-[2rem] p-4">
+    <div class="border border-yellow-500/40 bg-zinc-900 shadow-xl rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-zinc-400 font-mono text-[10px] uppercase tracking-[0.22em] mb-2">Enterprise</p>
+          <h2 class="text-yellow-300 font-black uppercase tracking-wide text-2xl">Warehouse Scanner</h2>
+          <p class="text-zinc-400 font-mono mt-1 text-sm">Barcode scanner, logistics, rugged mobile workflow</p>
+        </div>
+        <span class="bg-yellow-400 text-black border border-yellow-300 rounded-md font-black uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-zinc-700 bg-zinc-950 rounded-lg mt-4 p-4">
+        <p class="text-yellow-300 font-mono uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-zinc-400 font-mono mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-yellow-400 text-black hover:bg-yellow-300 rounded-md font-black uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

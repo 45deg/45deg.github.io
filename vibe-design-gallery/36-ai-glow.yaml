@@ -1,0 +1,44 @@
+id: "36"
+name: "AI Glow"
+slug: "ai-glow"
+category: "Futuristic"
+tone: "AI product, luminous, smooth"
+promptCues:
+  - "AI product"
+  - "violet cyan gradient"
+  - "soft glow"
+  - "dark intelligence surface"
+  - "smooth rounded controls"
+tokens:
+  bg: "bg-slate-950"
+  shell: "border border-violet-400/20 bg-slate-900/80 shadow-[0_0_60px_rgba(139,92,246,.2)] rounded-[2rem]"
+  card: "border border-violet-400/20 bg-slate-950/80 rounded-3xl shadow-xl shadow-violet-950/30"
+  title: "text-white font-semibold tracking-tight"
+  text: "text-violet-100/60"
+  label: "text-violet-100/80 font-medium"
+  input: "bg-slate-950 border border-violet-400/30 text-white placeholder:text-violet-200/30 focus:ring-4 focus:ring-violet-400/15 focus:border-violet-300 rounded-2xl"
+  button: "bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-300 text-slate-950 hover:opacity-90 rounded-2xl shadow-lg shadow-violet-500/20 font-semibold"
+  ghost: "bg-violet-400/10 text-violet-100 border border-violet-400/20 hover:bg-violet-400/20 rounded-2xl"
+  checkbox: "accent-violet-400"
+  progressTrack: "bg-violet-400/10 rounded-full"
+  progressFill: "bg-gradient-to-r from-violet-400 to-cyan-300 rounded-full"
+  badge: "bg-violet-400/10 text-violet-100 border border-violet-400/20 rounded-full"
+  mono: "bg-violet-400/10 text-violet-200 rounded-xl"
+htmlExample: |-
+  <section class="bg-slate-950 rounded-[2rem] p-4">
+    <div class="border border-violet-400/20 bg-slate-900/80 shadow-[0_0_60px_rgba(139,92,246,.2)] rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-violet-100/60 text-[10px] uppercase tracking-[0.22em] mb-2">Futuristic</p>
+          <h2 class="text-white font-semibold tracking-tight text-2xl">AI Glow</h2>
+          <p class="text-violet-100/60 mt-1 text-sm">AI product, luminous, smooth</p>
+        </div>
+        <span class="bg-violet-400/10 text-violet-100 border border-violet-400/20 rounded-full px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-violet-400/20 bg-slate-950/80 rounded-3xl shadow-xl shadow-violet-950/30 mt-4 p-4">
+        <p class="text-violet-100/80 font-medium text-xs">Example content</p>
+        <p class="text-violet-100/60 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-300 text-slate-950 hover:opacity-90 rounded-2xl shadow-lg shadow-violet-500/20 font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

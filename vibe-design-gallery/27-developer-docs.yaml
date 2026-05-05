@@ -1,0 +1,44 @@
+id: "27"
+name: "Developer Docs"
+slug: "developer-docs"
+category: "System"
+tone: "Technical, readable, reference-style"
+promptCues:
+  - "developer docs"
+  - "dark reference UI"
+  - "monospace labels"
+  - "violet accents"
+  - "code-adjacent hierarchy"
+tokens:
+  bg: "bg-neutral-950"
+  shell: "border border-neutral-800 bg-neutral-900 shadow-2xl rounded-2xl"
+  card: "border border-neutral-800 bg-neutral-950 rounded-xl"
+  title: "text-neutral-50 font-semibold tracking-tight"
+  text: "text-neutral-400"
+  label: "text-neutral-300 font-mono text-xs uppercase tracking-widest"
+  input: "bg-neutral-950 border border-neutral-700 text-neutral-100 placeholder:text-neutral-600 focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400 rounded-lg font-mono"
+  button: "bg-violet-500 text-white hover:bg-violet-400 rounded-lg font-mono font-semibold"
+  ghost: "bg-neutral-800 text-neutral-200 hover:bg-neutral-700 rounded-lg border border-neutral-700 font-mono"
+  checkbox: "accent-violet-500"
+  progressTrack: "bg-neutral-800 rounded-full"
+  progressFill: "bg-violet-500 rounded-full"
+  badge: "bg-violet-500/10 text-violet-300 border border-violet-500/30 rounded-md font-mono"
+  mono: "bg-neutral-800 text-neutral-400 rounded-md"
+htmlExample: |-
+  <section class="bg-neutral-950 rounded-[2rem] p-4">
+    <div class="border border-neutral-800 bg-neutral-900 shadow-2xl rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-400 text-[10px] uppercase tracking-[0.22em] mb-2">System</p>
+          <h2 class="text-neutral-50 font-semibold tracking-tight text-2xl">Developer Docs</h2>
+          <p class="text-neutral-400 mt-1 text-sm">Technical, readable, reference-style</p>
+        </div>
+        <span class="bg-violet-500/10 text-violet-300 border border-violet-500/30 rounded-md font-mono px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-neutral-800 bg-neutral-950 rounded-xl mt-4 p-4">
+        <p class="text-neutral-300 font-mono text-xs uppercase tracking-widest text-xs">Example content</p>
+        <p class="text-neutral-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-violet-500 text-white hover:bg-violet-400 rounded-lg font-mono font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

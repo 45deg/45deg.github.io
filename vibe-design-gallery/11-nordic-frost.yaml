@@ -1,0 +1,44 @@
+id: "11"
+name: "Nordic Frost"
+slug: "nordic-frost"
+category: "Minimal"
+tone: "Cold, airy, subdued"
+promptCues:
+  - "pale sky tones"
+  - "lightweight typography"
+  - "minimal borders"
+  - "cold airiness"
+  - "restrained controls"
+tokens:
+  bg: "bg-sky-50"
+  shell: "border border-sky-100 bg-white/80 shadow-sm rounded-3xl"
+  card: "border border-sky-100 bg-white/90 rounded-2xl shadow-sm"
+  title: "text-slate-900 font-light tracking-tight"
+  text: "text-slate-500"
+  label: "text-slate-600 font-light"
+  input: "bg-sky-50 border border-sky-100 text-slate-900 placeholder:text-sky-300 focus:ring-4 focus:ring-sky-100 focus:border-sky-300 rounded-2xl"
+  button: "bg-sky-200 text-slate-900 hover:bg-sky-300 rounded-2xl shadow-sm font-medium"
+  ghost: "bg-white text-slate-600 hover:bg-sky-50 rounded-2xl border border-sky-100"
+  checkbox: "accent-sky-300"
+  progressTrack: "bg-sky-100 rounded-full"
+  progressFill: "bg-sky-300 rounded-full"
+  badge: "bg-sky-100 text-sky-700 border border-sky-200 rounded-full"
+  mono: "bg-sky-100 text-sky-600 rounded-full"
+htmlExample: |-
+  <section class="bg-sky-50 rounded-[2rem] p-4">
+    <div class="border border-sky-100 bg-white/80 shadow-sm rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-500 text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-slate-900 font-light tracking-tight text-2xl">Nordic Frost</h2>
+          <p class="text-slate-500 mt-1 text-sm">Cold, airy, subdued</p>
+        </div>
+        <span class="bg-sky-100 text-sky-700 border border-sky-200 rounded-full px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-sky-100 bg-white/90 rounded-2xl shadow-sm mt-4 p-4">
+        <p class="text-slate-600 font-light text-xs">Example content</p>
+        <p class="text-slate-500 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-sky-200 text-slate-900 hover:bg-sky-300 rounded-2xl shadow-sm font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "94"
+name: "Pop Art Comic"
+slug: "pop-art-comic"
+category: "Experimental"
+tone: "Lichtenstein, halftone dots, primary colors, loud"
+promptCues:
+  - "halftone dots"
+  - "primary red and blue"
+  - "thick black outlines"
+  - "pop art"
+  - "comic strip panels"
+tokens:
+  bg: "bg-[radial-gradient(theme(colors.blue.300)_2px,_theme(colors.blue.100)_2px)] bg-[length:10px_10px]"
+  shell: "border-[5px] border-black bg-white shadow-[10px_10px_0_#000] rounded-none"
+  card: "border-[3px] border-black bg-yellow-300 rounded-none shadow-[5px_5px_0_#000]"
+  title: "text-black font-black uppercase tracking-tighter text-4xl"
+  text: "text-black font-bold"
+  label: "text-red-600 font-black uppercase text-xl"
+  input: "bg-white border-[3px] border-black text-black placeholder:text-gray-500 focus:ring-0 focus:bg-cyan-100 rounded-none font-bold"
+  button: "bg-red-500 text-white hover:bg-red-400 border-[4px] border-black rounded-none shadow-[6px_6px_0_#000] font-black uppercase text-xl"
+  ghost: "bg-white text-black hover:bg-cyan-300 border-[4px] border-black rounded-none font-black uppercase shadow-[4px_4px_0_#000]"
+  checkbox: "accent-red-500"
+  progressTrack: "bg-white border-[3px] border-black rounded-none"
+  progressFill: "bg-blue-500 border-r-[3px] border-black rounded-none"
+  badge: "bg-cyan-300 text-black border-[3px] border-black rounded-none font-black uppercase text-sm shadow-[2px_2px_0_#000]"
+  mono: "bg-white text-black border-[3px] border-black rounded-none font-bold"
+htmlExample: |-
+  <section class="bg-[radial-gradient(theme(colors.blue.300)_2px,_theme(colors.blue.100)_2px)] bg-[length:10px_10px] rounded-[2rem] p-4">
+    <div class="border-[5px] border-black bg-white shadow-[10px_10px_0_#000] rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-black font-bold text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-black font-black uppercase tracking-tighter text-4xl text-2xl">Pop Art Comic</h2>
+          <p class="text-black font-bold mt-1 text-sm">Lichtenstein, halftone dots, primary colors, loud</p>
+        </div>
+        <span class="bg-cyan-300 text-black border-[3px] border-black rounded-none font-black uppercase text-sm shadow-[2px_2px_0_#000] px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-[3px] border-black bg-yellow-300 rounded-none shadow-[5px_5px_0_#000] mt-4 p-4">
+        <p class="text-red-600 font-black uppercase text-xl text-xs">Example content</p>
+        <p class="text-black font-bold mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-red-500 text-white hover:bg-red-400 border-[4px] border-black rounded-none shadow-[6px_6px_0_#000] font-black uppercase text-xl mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

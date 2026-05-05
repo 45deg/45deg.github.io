@@ -1,0 +1,44 @@
+id: "32"
+name: "Desert Minimal"
+slug: "desert-minimal"
+category: "Minimal"
+tone: "Warm, spacious, subdued"
+promptCues:
+  - "sand palette"
+  - "warm neutrals"
+  - "quiet luxury-lite"
+  - "large radii"
+  - "spacious cards"
+tokens:
+  bg: "bg-[#f4ead8]"
+  shell: "border border-stone-300 bg-[#fffaf0] shadow-sm rounded-[2rem]"
+  card: "border border-stone-200 bg-[#fffcf5] rounded-[1.5rem] shadow-sm"
+  title: "text-stone-950 font-medium tracking-tight"
+  text: "text-stone-600"
+  label: "text-stone-700"
+  input: "bg-[#fffaf0] border border-stone-300 text-stone-950 placeholder:text-stone-400 focus:ring-4 focus:ring-stone-200/70 focus:border-stone-500 rounded-xl"
+  button: "bg-stone-800 text-stone-50 hover:bg-stone-900 rounded-xl shadow-sm font-medium"
+  ghost: "bg-stone-200 text-stone-800 hover:bg-stone-300 rounded-xl font-medium"
+  checkbox: "accent-stone-800"
+  progressTrack: "bg-stone-200 rounded-full"
+  progressFill: "bg-stone-800 rounded-full"
+  badge: "bg-stone-200 text-stone-700 border border-stone-300 rounded-full"
+  mono: "bg-stone-200 text-stone-600 rounded-lg"
+htmlExample: |-
+  <section class="bg-[#f4ead8] rounded-[2rem] p-4">
+    <div class="border border-stone-300 bg-[#fffaf0] shadow-sm rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-600 text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-stone-950 font-medium tracking-tight text-2xl">Desert Minimal</h2>
+          <p class="text-stone-600 mt-1 text-sm">Warm, spacious, subdued</p>
+        </div>
+        <span class="bg-stone-200 text-stone-700 border border-stone-300 rounded-full px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-stone-200 bg-[#fffcf5] rounded-[1.5rem] shadow-sm mt-4 p-4">
+        <p class="text-stone-700 text-xs">Example content</p>
+        <p class="text-stone-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-stone-800 text-stone-50 hover:bg-stone-900 rounded-xl shadow-sm font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

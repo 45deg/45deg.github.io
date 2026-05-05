@@ -1,0 +1,44 @@
+id: "73"
+name: "Biomechanical"
+slug: "biomechanical"
+category: "Experimental"
+tone: "Alien, organic machinery, dark, unsettling"
+promptCues:
+  - "dark green tones"
+  - "organic curves mixed with sharp edges"
+  - "alien UI"
+  - "Giger-esque"
+  - "dark metallic"
+tokens:
+  bg: "bg-[#0a0f0d]"
+  shell: "border border-emerald-900 bg-[#111a17] shadow-2xl rounded-tr-3xl rounded-bl-3xl rounded-tl-sm rounded-br-sm"
+  card: "border border-[#1f302a] bg-[#0a0f0d] rounded-tr-2xl rounded-bl-2xl rounded-tl-none rounded-br-none"
+  title: "text-emerald-500 font-mono tracking-tighter"
+  text: "text-emerald-800/80"
+  label: "text-emerald-700 uppercase text-xs tracking-widest"
+  input: "bg-[#0a0f0d] border border-[#1f302a] text-emerald-400 placeholder:text-emerald-900 focus:ring-0 focus:border-emerald-600 rounded-none"
+  button: "bg-emerald-900/50 text-emerald-400 hover:bg-emerald-800/80 border border-emerald-700 rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none font-mono uppercase tracking-widest"
+  ghost: "bg-transparent text-emerald-600 border border-emerald-900 hover:bg-[#1f302a] rounded-none font-mono"
+  checkbox: "accent-emerald-700"
+  progressTrack: "bg-[#0a0f0d] border border-[#1f302a] rounded-none"
+  progressFill: "bg-emerald-700 rounded-none"
+  badge: "bg-[#111a17] text-emerald-500 border border-emerald-800 rounded-none font-mono text-xs"
+  mono: "bg-[#0a0f0d] text-emerald-600 rounded-none"
+htmlExample: |-
+  <section class="bg-[#0a0f0d] rounded-[2rem] p-4">
+    <div class="border border-emerald-900 bg-[#111a17] shadow-2xl rounded-tr-3xl rounded-bl-3xl rounded-tl-sm rounded-br-sm p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-emerald-800/80 text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-emerald-500 font-mono tracking-tighter text-2xl">Biomechanical</h2>
+          <p class="text-emerald-800/80 mt-1 text-sm">Alien, organic machinery, dark, unsettling</p>
+        </div>
+        <span class="bg-[#111a17] text-emerald-500 border border-emerald-800 rounded-none font-mono text-xs px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#1f302a] bg-[#0a0f0d] rounded-tr-2xl rounded-bl-2xl rounded-tl-none rounded-br-none mt-4 p-4">
+        <p class="text-emerald-700 uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-emerald-800/80 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-emerald-900/50 text-emerald-400 hover:bg-emerald-800/80 border border-emerald-700 rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none font-mono uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

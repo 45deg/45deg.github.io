@@ -1,0 +1,44 @@
+id: "81"
+name: "Pastel Goth"
+slug: "pastel-goth"
+category: "Playful"
+tone: "Cute but dark, spooky pastel, alternative"
+promptCues:
+  - "black and pastel pink"
+  - "creepy cute"
+  - "sharp dark edges with soft colors"
+  - "alternative teen"
+  - "gothic lolita"
+tokens:
+  bg: "bg-zinc-950"
+  shell: "border-2 border-pink-300 bg-zinc-900 shadow-[8px_8px_0_theme(colors.pink.300)] rounded-3xl"
+  card: "border-2 border-purple-300 bg-zinc-950 rounded-2xl"
+  title: "text-pink-300 font-black tracking-tighter"
+  text: "text-purple-200/70"
+  label: "text-pink-400 font-bold uppercase tracking-widest text-xs"
+  input: "bg-zinc-900 border-2 border-purple-300 text-pink-100 placeholder:text-zinc-600 focus:ring-0 focus:border-pink-300 rounded-xl"
+  button: "bg-pink-300 text-zinc-950 hover:bg-pink-400 border-2 border-pink-300 rounded-xl font-black uppercase shadow-[4px_4px_0_theme(colors.purple.400)]"
+  ghost: "bg-zinc-800 text-purple-300 border-2 border-purple-300 hover:bg-purple-300 hover:text-zinc-950 rounded-xl font-black"
+  checkbox: "accent-pink-400"
+  progressTrack: "bg-zinc-800 border-2 border-purple-300 rounded-full"
+  progressFill: "bg-pink-300 rounded-full"
+  badge: "bg-purple-900 text-pink-300 border border-pink-300 rounded-full font-bold uppercase"
+  mono: "bg-zinc-800 text-pink-200 rounded-xl"
+htmlExample: |-
+  <section class="bg-zinc-950 rounded-[2rem] p-4">
+    <div class="border-2 border-pink-300 bg-zinc-900 shadow-[8px_8px_0_theme(colors.pink.300)] rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-purple-200/70 text-[10px] uppercase tracking-[0.22em] mb-2">Playful</p>
+          <h2 class="text-pink-300 font-black tracking-tighter text-2xl">Pastel Goth</h2>
+          <p class="text-purple-200/70 mt-1 text-sm">Cute but dark, spooky pastel, alternative</p>
+        </div>
+        <span class="bg-purple-900 text-pink-300 border border-pink-300 rounded-full font-bold uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-purple-300 bg-zinc-950 rounded-2xl mt-4 p-4">
+        <p class="text-pink-400 font-bold uppercase tracking-widest text-xs text-xs">Example content</p>
+        <p class="text-purple-200/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-pink-300 text-zinc-950 hover:bg-pink-400 border-2 border-pink-300 rounded-xl font-black uppercase shadow-[4px_4px_0_theme(colors.purple.400)] mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

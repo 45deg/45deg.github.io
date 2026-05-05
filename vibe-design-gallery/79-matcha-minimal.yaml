@@ -1,0 +1,44 @@
+id: "79"
+name: "Matcha Minimal"
+slug: "matcha-minimal"
+category: "Nature"
+tone: "Japanese tea ceremony, tranquil, balanced"
+promptCues:
+  - "matcha green"
+  - "off-white paper"
+  - "wabi-sabi"
+  - "extreme minimalism"
+  - "peaceful space"
+tokens:
+  bg: "bg-[#f5f5f0]"
+  shell: "border-none bg-[#fdfdfb] shadow-sm rounded-none"
+  card: "border-none bg-[#f5f5f0] rounded-none"
+  title: "text-[#4a5d23] font-serif tracking-widest"
+  text: "text-stone-500 font-light"
+  label: "text-[#7b8f51] font-light tracking-[0.2em] text-xs uppercase"
+  input: "bg-transparent border-b border-[#4a5d23] text-stone-700 placeholder:text-stone-300 focus:ring-0 focus:border-stone-900 rounded-none"
+  button: "bg-[#4a5d23] text-white hover:bg-[#38471a] rounded-none px-8 font-light tracking-[0.2em] uppercase"
+  ghost: "bg-transparent text-[#4a5d23] hover:text-stone-900 rounded-none font-light tracking-[0.2em] uppercase"
+  checkbox: "accent-[#4a5d23]"
+  progressTrack: "bg-stone-200 rounded-none"
+  progressFill: "bg-[#4a5d23] rounded-none"
+  badge: "bg-transparent text-[#4a5d23] border border-[#4a5d23] rounded-none font-light tracking-[0.2em] text-xs uppercase"
+  mono: "bg-stone-100 text-[#7b8f51] rounded-none"
+htmlExample: |-
+  <section class="bg-[#f5f5f0] rounded-[2rem] p-4">
+    <div class="border-none bg-[#fdfdfb] shadow-sm rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-500 font-light text-[10px] uppercase tracking-[0.22em] mb-2">Nature</p>
+          <h2 class="text-[#4a5d23] font-serif tracking-widest text-2xl">Matcha Minimal</h2>
+          <p class="text-stone-500 font-light mt-1 text-sm">Japanese tea ceremony, tranquil, balanced</p>
+        </div>
+        <span class="bg-transparent text-[#4a5d23] border border-[#4a5d23] rounded-none font-light tracking-[0.2em] text-xs uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-none bg-[#f5f5f0] rounded-none mt-4 p-4">
+        <p class="text-[#7b8f51] font-light tracking-[0.2em] text-xs uppercase text-xs">Example content</p>
+        <p class="text-stone-500 font-light mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#4a5d23] text-white hover:bg-[#38471a] rounded-none px-8 font-light tracking-[0.2em] uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

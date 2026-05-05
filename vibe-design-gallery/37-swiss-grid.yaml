@@ -1,0 +1,44 @@
+id: "37"
+name: "Swiss Grid"
+slug: "swiss-grid"
+category: "Editorial"
+tone: "Precise, modular, typographic"
+promptCues:
+  - "Swiss typography"
+  - "red accent"
+  - "grid discipline"
+  - "modular panels"
+  - "objective editorial tone"
+tokens:
+  bg: "bg-red-50"
+  shell: "border border-red-200 bg-white rounded-none"
+  card: "border border-red-200 bg-white rounded-none"
+  title: "text-red-700 font-bold tracking-tighter"
+  text: "text-neutral-600"
+  label: "text-neutral-950 font-bold uppercase text-xs tracking-widest"
+  input: "bg-white border border-neutral-950 text-neutral-950 placeholder:text-neutral-400 focus:ring-0 focus:border-red-600 rounded-none"
+  button: "bg-red-600 text-white hover:bg-red-700 rounded-none font-bold uppercase tracking-wide"
+  ghost: "bg-white text-red-700 border border-red-600 hover:bg-red-50 rounded-none font-bold uppercase"
+  checkbox: "accent-red-600"
+  progressTrack: "bg-red-100 rounded-none"
+  progressFill: "bg-red-600 rounded-none"
+  badge: "bg-red-600 text-white border border-red-600 rounded-none font-bold uppercase"
+  mono: "bg-red-50 text-red-700 rounded-none"
+htmlExample: |-
+  <section class="bg-red-50 rounded-[2rem] p-4">
+    <div class="border border-red-200 bg-white rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-600 text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-red-700 font-bold tracking-tighter text-2xl">Swiss Grid</h2>
+          <p class="text-neutral-600 mt-1 text-sm">Precise, modular, typographic</p>
+        </div>
+        <span class="bg-red-600 text-white border border-red-600 rounded-none font-bold uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-red-200 bg-white rounded-none mt-4 p-4">
+        <p class="text-neutral-950 font-bold uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-neutral-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-red-600 text-white hover:bg-red-700 rounded-none font-bold uppercase tracking-wide mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

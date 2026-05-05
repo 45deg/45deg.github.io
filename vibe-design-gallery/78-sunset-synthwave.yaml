@@ -1,0 +1,44 @@
+id: "78"
+name: "Sunset Synthwave"
+slug: "sunset-synthwave"
+category: "Retro"
+tone: "Warm gradients, 80s dusk, driving arcade"
+promptCues:
+  - "orange to purple gradient"
+  - "synthwave sun"
+  - "warm neon"
+  - "retro arcade dusk"
+  - "grid lines"
+tokens:
+  bg: "bg-indigo-950"
+  shell: "border border-pink-500/50 bg-gradient-to-b from-purple-900/80 to-indigo-950/80 backdrop-blur shadow-[0_0_30px_rgba(249,115,22,0.2)] rounded-xl"
+  card: "border-t border-orange-500/50 bg-black/40 rounded-lg"
+  title: "text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 font-black tracking-tight uppercase"
+  text: "text-orange-200/70"
+  label: "text-pink-400 font-mono uppercase tracking-widest text-xs"
+  input: "bg-indigo-950/50 border border-purple-500 text-orange-200 placeholder:text-purple-700 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-400 rounded-md font-mono"
+  button: "bg-gradient-to-r from-orange-500 to-pink-600 text-white hover:from-orange-400 hover:to-pink-500 border border-pink-400 rounded-md font-black uppercase tracking-widest"
+  ghost: "bg-transparent text-orange-400 border border-orange-500 hover:bg-orange-500/20 rounded-md font-bold uppercase"
+  checkbox: "accent-orange-500"
+  progressTrack: "bg-purple-950 rounded-full"
+  progressFill: "bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full"
+  badge: "bg-black/50 text-orange-400 border border-orange-500 rounded-full font-mono text-xs uppercase"
+  mono: "bg-black/40 text-pink-300 rounded-md"
+htmlExample: |-
+  <section class="bg-indigo-950 rounded-[2rem] p-4">
+    <div class="border border-pink-500/50 bg-gradient-to-b from-purple-900/80 to-indigo-950/80 backdrop-blur shadow-[0_0_30px_rgba(249,115,22,0.2)] rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-orange-200/70 text-[10px] uppercase tracking-[0.22em] mb-2">Retro</p>
+          <h2 class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 font-black tracking-tight uppercase text-2xl">Sunset Synthwave</h2>
+          <p class="text-orange-200/70 mt-1 text-sm">Warm gradients, 80s dusk, driving arcade</p>
+        </div>
+        <span class="bg-black/50 text-orange-400 border border-orange-500 rounded-full font-mono text-xs uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-t border-orange-500/50 bg-black/40 rounded-lg mt-4 p-4">
+        <p class="text-pink-400 font-mono uppercase tracking-widest text-xs text-xs">Example content</p>
+        <p class="text-orange-200/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gradient-to-r from-orange-500 to-pink-600 text-white hover:from-orange-400 hover:to-pink-500 border border-pink-400 rounded-md font-black uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

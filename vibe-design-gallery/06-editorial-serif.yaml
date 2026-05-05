@@ -1,0 +1,44 @@
+id: "06"
+name: "Editorial Serif"
+slug: "editorial-serif"
+category: "Editorial"
+tone: "Magazine-like, typographic"
+promptCues:
+  - "serif text"
+  - "paper background"
+  - "thin rules"
+  - "magazine hierarchy"
+  - "classic editorial rhythm"
+tokens:
+  bg: "bg-neutral-100"
+  shell: "border border-neutral-300 bg-[#f8f3ea] shadow-sm rounded-none"
+  card: "border border-neutral-300 bg-[#fffaf1] rounded-none"
+  title: "text-neutral-950 font-serif tracking-tight"
+  text: "text-neutral-600 font-serif"
+  label: "text-neutral-700 font-serif italic"
+  input: "bg-[#fffaf1] border-x-0 border-t-0 border-b border-neutral-900 text-neutral-950 placeholder:text-neutral-400 focus:ring-0 focus:border-neutral-950 rounded-none font-serif"
+  button: "bg-neutral-950 text-[#fffaf1] hover:bg-neutral-800 rounded-none font-serif uppercase tracking-widest"
+  ghost: "bg-transparent text-neutral-950 border border-neutral-950 hover:bg-neutral-950 hover:text-[#fffaf1] rounded-none font-serif"
+  checkbox: "accent-neutral-950"
+  progressTrack: "bg-neutral-300 rounded-none"
+  progressFill: "bg-neutral-950 rounded-none"
+  badge: "bg-transparent text-neutral-950 border border-neutral-950 rounded-none font-serif uppercase tracking-widest"
+  mono: "bg-neutral-200 text-neutral-600 rounded-none"
+htmlExample: |-
+  <section class="bg-neutral-100 rounded-[2rem] p-4">
+    <div class="border border-neutral-300 bg-[#f8f3ea] shadow-sm rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-600 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-neutral-950 font-serif tracking-tight text-2xl">Editorial Serif</h2>
+          <p class="text-neutral-600 font-serif mt-1 text-sm">Magazine-like, typographic</p>
+        </div>
+        <span class="bg-transparent text-neutral-950 border border-neutral-950 rounded-none font-serif uppercase tracking-widest px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-neutral-300 bg-[#fffaf1] rounded-none mt-4 p-4">
+        <p class="text-neutral-700 font-serif italic text-xs">Example content</p>
+        <p class="text-neutral-600 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-neutral-950 text-[#fffaf1] hover:bg-neutral-800 rounded-none font-serif uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

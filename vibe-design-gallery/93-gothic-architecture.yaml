@@ -1,0 +1,44 @@
+id: "93"
+name: "Gothic Architecture"
+slug: "gothic-architecture"
+category: "Luxury"
+tone: "Dark, vaulted, stained glass, solemn"
+promptCues:
+  - "dark stone"
+  - "crimson red"
+  - "arched geometry"
+  - "solemn atmosphere"
+  - "cathedral aesthetics"
+tokens:
+  bg: "bg-[#111111]"
+  shell: "border-t-2 border-[#444] bg-[#1a1a1a] shadow-2xl rounded-t-[3rem] rounded-b-none"
+  card: "border border-[#333] bg-[#222] rounded-t-3xl rounded-b-md shadow-lg"
+  title: "text-[#d1bfae] font-serif tracking-widest uppercase"
+  text: "text-[#888] font-serif"
+  label: "text-[#900] font-serif uppercase tracking-[0.2em] text-xs"
+  input: "bg-[#111] border-b border-[#444] text-[#d1bfae] placeholder:text-[#555] focus:ring-0 focus:border-[#900] rounded-none font-serif"
+  button: "bg-[#900] text-[#d1bfae] hover:bg-[#700] rounded-t-xl rounded-b-sm font-serif uppercase tracking-widest"
+  ghost: "bg-transparent text-[#777] border border-[#444] hover:border-[#777] rounded-t-xl rounded-b-sm font-serif uppercase"
+  checkbox: "accent-[#900]"
+  progressTrack: "bg-[#111] border border-[#333] rounded-none"
+  progressFill: "bg-[#900] rounded-none"
+  badge: "bg-[#111] text-[#900] border border-[#900] rounded-t-full rounded-b-sm font-serif uppercase text-[10px]"
+  mono: "bg-[#111] text-[#d1bfae] rounded-sm font-serif"
+htmlExample: |-
+  <section class="bg-[#111111] rounded-[2rem] p-4">
+    <div class="border-t-2 border-[#444] bg-[#1a1a1a] shadow-2xl rounded-t-[3rem] rounded-b-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#888] font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-[#d1bfae] font-serif tracking-widest uppercase text-2xl">Gothic Architecture</h2>
+          <p class="text-[#888] font-serif mt-1 text-sm">Dark, vaulted, stained glass, solemn</p>
+        </div>
+        <span class="bg-[#111] text-[#900] border border-[#900] rounded-t-full rounded-b-sm font-serif uppercase text-[10px] px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#333] bg-[#222] rounded-t-3xl rounded-b-md shadow-lg mt-4 p-4">
+        <p class="text-[#900] font-serif uppercase tracking-[0.2em] text-xs text-xs">Example content</p>
+        <p class="text-[#888] font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#900] text-[#d1bfae] hover:bg-[#700] rounded-t-xl rounded-b-sm font-serif uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

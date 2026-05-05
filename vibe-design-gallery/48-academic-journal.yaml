@@ -1,0 +1,44 @@
+id: "48"
+name: "Academic Journal"
+slug: "academic-journal"
+category: "Editorial"
+tone: "Dense, scholarly, reserved"
+promptCues:
+  - "formal serif"
+  - "paper neutrality"
+  - "scholarly density"
+  - "quiet borders"
+  - "research publication"
+tokens:
+  bg: "bg-stone-100"
+  shell: "border border-stone-300 bg-white shadow-sm rounded-sm"
+  card: "border border-stone-300 bg-[#fffdfa] rounded-sm"
+  title: "text-stone-950 font-serif tracking-tight"
+  text: "text-stone-700 text-sm font-serif"
+  label: "text-stone-700 font-serif uppercase text-[10px] tracking-[0.18em]"
+  input: "bg-white border border-stone-300 text-stone-950 placeholder:text-stone-400 focus:ring-0 focus:border-stone-700 rounded-sm font-serif"
+  button: "bg-stone-900 text-stone-50 hover:bg-black rounded-sm font-serif uppercase tracking-[0.15em]"
+  ghost: "bg-stone-100 text-stone-800 border border-stone-300 hover:bg-stone-200 rounded-sm font-serif"
+  checkbox: "accent-stone-900"
+  progressTrack: "bg-stone-200 rounded-sm"
+  progressFill: "bg-stone-900 rounded-sm"
+  badge: "bg-stone-100 text-stone-800 border border-stone-300 rounded-sm font-serif uppercase tracking-[0.12em]"
+  mono: "bg-stone-100 text-stone-600 rounded-sm"
+htmlExample: |-
+  <section class="bg-stone-100 rounded-[2rem] p-4">
+    <div class="border border-stone-300 bg-white shadow-sm rounded-sm p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-700 text-sm font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-stone-950 font-serif tracking-tight text-2xl">Academic Journal</h2>
+          <p class="text-stone-700 text-sm font-serif mt-1 text-sm">Dense, scholarly, reserved</p>
+        </div>
+        <span class="bg-stone-100 text-stone-800 border border-stone-300 rounded-sm font-serif uppercase tracking-[0.12em] px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-stone-300 bg-[#fffdfa] rounded-sm mt-4 p-4">
+        <p class="text-stone-700 font-serif uppercase text-[10px] tracking-[0.18em] text-xs">Example content</p>
+        <p class="text-stone-700 text-sm font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-stone-900 text-stone-50 hover:bg-black rounded-sm font-serif uppercase tracking-[0.15em] mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

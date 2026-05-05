@@ -39,7 +39,7 @@ filters:
 works:
   - href: ./vibe-design-gallery/
     sort: 0
-    featured: true
+    featured: false
     categories:
       - visual
     title:

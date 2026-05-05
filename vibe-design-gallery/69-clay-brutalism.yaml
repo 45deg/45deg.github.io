@@ -1,0 +1,44 @@
+id: "69"
+name: "Clay Brutalism"
+slug: "clay-brutalism"
+category: "Experimental"
+tone: "Chunky, heavy, thick yet soft"
+promptCues:
+  - "thick rounded borders"
+  - "heavy shadows"
+  - "clay colors"
+  - "bold but soft"
+  - "tactile heft"
+tokens:
+  bg: "bg-[#e8e4db]"
+  shell: "border-[6px] border-stone-800 bg-[#f4f0e6] shadow-[8px_8px_0_theme(colors.stone.800)] rounded-[2.5rem]"
+  card: "border-[4px] border-stone-800 bg-[#faf8f5] shadow-[4px_4px_0_theme(colors.stone.800)] rounded-[2rem]"
+  title: "text-stone-900 font-black tracking-tight"
+  text: "text-stone-600 font-bold"
+  label: "text-stone-800 font-black uppercase text-sm"
+  input: "bg-white border-[4px] border-stone-800 text-stone-900 placeholder:text-stone-400 focus:ring-0 focus:bg-[#f4f0e6] rounded-2xl"
+  button: "bg-orange-500 text-stone-900 border-[4px] border-stone-800 hover:bg-orange-400 rounded-2xl shadow-[4px_4px_0_theme(colors.stone.800)] font-black uppercase"
+  ghost: "bg-stone-300 text-stone-900 border-[4px] border-stone-800 hover:bg-stone-200 rounded-2xl font-black uppercase"
+  checkbox: "accent-orange-500"
+  progressTrack: "bg-stone-300 border-[4px] border-stone-800 rounded-full"
+  progressFill: "bg-orange-500 rounded-full"
+  badge: "bg-orange-300 text-stone-900 border-[3px] border-stone-800 rounded-full font-black uppercase"
+  mono: "bg-stone-200 text-stone-800 border-[3px] border-stone-800 rounded-xl"
+htmlExample: |-
+  <section class="bg-[#e8e4db] rounded-[2rem] p-4">
+    <div class="border-[6px] border-stone-800 bg-[#f4f0e6] shadow-[8px_8px_0_theme(colors.stone.800)] rounded-[2.5rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-600 font-bold text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-stone-900 font-black tracking-tight text-2xl">Clay Brutalism</h2>
+          <p class="text-stone-600 font-bold mt-1 text-sm">Chunky, heavy, thick yet soft</p>
+        </div>
+        <span class="bg-orange-300 text-stone-900 border-[3px] border-stone-800 rounded-full font-black uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-[4px] border-stone-800 bg-[#faf8f5] shadow-[4px_4px_0_theme(colors.stone.800)] rounded-[2rem] mt-4 p-4">
+        <p class="text-stone-800 font-black uppercase text-sm text-xs">Example content</p>
+        <p class="text-stone-600 font-bold mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-orange-500 text-stone-900 border-[4px] border-stone-800 hover:bg-orange-400 rounded-2xl shadow-[4px_4px_0_theme(colors.stone.800)] font-black uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

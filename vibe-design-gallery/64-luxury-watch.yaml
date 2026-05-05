@@ -1,0 +1,44 @@
+id: "64"
+name: "Luxury Watch"
+slug: "luxury-watch"
+category: "Luxury"
+tone: "Precision, black steel, premium instrument feel"
+promptCues:
+  - "black steel"
+  - "precision instrument"
+  - "premium watch UI"
+  - "fine tick marks"
+  - "metallic restraint"
+tokens:
+  bg: "bg-neutral-950"
+  shell: "border border-neutral-700 bg-gradient-to-br from-neutral-900 to-black shadow-2xl rounded-[2rem]"
+  card: "border border-neutral-700 bg-black rounded-[1.5rem] shadow-xl"
+  title: "text-neutral-100 font-serif tracking-tight"
+  text: "text-neutral-500"
+  label: "text-neutral-300 font-mono uppercase text-xs tracking-[0.24em]"
+  input: "bg-black border border-neutral-700 text-neutral-100 placeholder:text-neutral-600 focus:ring-4 focus:ring-neutral-400/10 focus:border-neutral-300 rounded-full font-mono"
+  button: "bg-neutral-100 text-black hover:bg-white rounded-full shadow-lg font-serif uppercase tracking-[0.18em]"
+  ghost: "bg-neutral-800 text-neutral-200 border border-neutral-700 hover:bg-neutral-700 rounded-full font-mono"
+  checkbox: "accent-neutral-100"
+  progressTrack: "bg-neutral-800 rounded-full"
+  progressFill: "bg-neutral-100 rounded-full"
+  badge: "bg-neutral-100/10 text-neutral-200 border border-neutral-700 rounded-full font-mono uppercase"
+  mono: "bg-neutral-900 text-neutral-400 rounded-full"
+htmlExample: |-
+  <section class="bg-neutral-950 rounded-[2rem] p-4">
+    <div class="border border-neutral-700 bg-gradient-to-br from-neutral-900 to-black shadow-2xl rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-500 text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-neutral-100 font-serif tracking-tight text-2xl">Luxury Watch</h2>
+          <p class="text-neutral-500 mt-1 text-sm">Precision, black steel, premium instrument feel</p>
+        </div>
+        <span class="bg-neutral-100/10 text-neutral-200 border border-neutral-700 rounded-full font-mono uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-neutral-700 bg-black rounded-[1.5rem] shadow-xl mt-4 p-4">
+        <p class="text-neutral-300 font-mono uppercase text-xs tracking-[0.24em] text-xs">Example content</p>
+        <p class="text-neutral-500 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-neutral-100 text-black hover:bg-white rounded-full shadow-lg font-serif uppercase tracking-[0.18em] mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

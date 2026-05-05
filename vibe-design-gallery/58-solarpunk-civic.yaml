@@ -1,0 +1,44 @@
+id: "58"
+name: "Solarpunk Civic"
+slug: "solarpunk-civic"
+category: "Nature"
+tone: "Optimistic, ecological, civic technology"
+promptCues:
+  - "solarpunk"
+  - "warm green"
+  - "civic dashboard"
+  - "optimistic sustainability"
+  - "sunlit gradients"
+tokens:
+  bg: "bg-gradient-to-br from-lime-50 via-yellow-50 to-emerald-50"
+  shell: "border border-lime-200 bg-white/80 backdrop-blur shadow-lg shadow-lime-200/30 rounded-[2rem]"
+  card: "border border-lime-100 bg-white rounded-[1.5rem] shadow-sm"
+  title: "text-emerald-950 font-bold tracking-tight"
+  text: "text-emerald-700/70"
+  label: "text-emerald-900 font-semibold"
+  input: "bg-lime-50 border border-lime-200 text-emerald-950 placeholder:text-lime-400 focus:ring-4 focus:ring-lime-100 focus:border-emerald-500 rounded-xl"
+  button: "bg-gradient-to-r from-emerald-600 to-lime-500 text-white hover:opacity-90 rounded-xl shadow-sm font-bold"
+  ghost: "bg-yellow-100 text-yellow-900 hover:bg-yellow-200 rounded-xl font-bold"
+  checkbox: "accent-emerald-600"
+  progressTrack: "bg-lime-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-emerald-600 to-yellow-400 rounded-full"
+  badge: "bg-yellow-100 text-yellow-900 border border-yellow-200 rounded-full font-semibold"
+  mono: "bg-lime-100 text-emerald-700 rounded-lg"
+htmlExample: |-
+  <section class="bg-gradient-to-br from-lime-50 via-yellow-50 to-emerald-50 rounded-[2rem] p-4">
+    <div class="border border-lime-200 bg-white/80 backdrop-blur shadow-lg shadow-lime-200/30 rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-emerald-700/70 text-[10px] uppercase tracking-[0.22em] mb-2">Nature</p>
+          <h2 class="text-emerald-950 font-bold tracking-tight text-2xl">Solarpunk Civic</h2>
+          <p class="text-emerald-700/70 mt-1 text-sm">Optimistic, ecological, civic technology</p>
+        </div>
+        <span class="bg-yellow-100 text-yellow-900 border border-yellow-200 rounded-full font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-lime-100 bg-white rounded-[1.5rem] shadow-sm mt-4 p-4">
+        <p class="text-emerald-900 font-semibold text-xs">Example content</p>
+        <p class="text-emerald-700/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gradient-to-r from-emerald-600 to-lime-500 text-white hover:opacity-90 rounded-xl shadow-sm font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

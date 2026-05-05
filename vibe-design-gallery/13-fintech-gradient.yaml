@@ -1,0 +1,44 @@
+id: "13"
+name: "Fintech Gradient"
+slug: "fintech-gradient"
+category: "Commerce"
+tone: "Premium conversion UI"
+promptCues:
+  - "gradient CTAs"
+  - "premium fintech"
+  - "indigo and fuchsia"
+  - "conversion-focused"
+  - "smooth cards"
+tokens:
+  bg: "bg-indigo-50"
+  shell: "border border-indigo-100 bg-white shadow-xl shadow-indigo-200/30 rounded-3xl"
+  card: "border border-indigo-100 bg-white rounded-2xl shadow-lg shadow-indigo-200/20"
+  title: "text-indigo-950 font-bold tracking-tight"
+  text: "text-indigo-600/70"
+  label: "text-indigo-900 font-semibold"
+  input: "bg-white border border-indigo-200 text-indigo-950 placeholder:text-indigo-300 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 rounded-xl"
+  button: "bg-gradient-to-r from-indigo-600 to-fuchsia-500 text-white hover:opacity-90 rounded-xl shadow-lg shadow-indigo-300/40 font-semibold"
+  ghost: "bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl font-semibold"
+  checkbox: "accent-indigo-600"
+  progressTrack: "bg-indigo-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-indigo-600 to-fuchsia-500 rounded-full"
+  badge: "bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200 rounded-full font-semibold"
+  mono: "bg-indigo-100 text-indigo-600 rounded-lg"
+htmlExample: |-
+  <section class="bg-indigo-50 rounded-[2rem] p-4">
+    <div class="border border-indigo-100 bg-white shadow-xl shadow-indigo-200/30 rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-indigo-600/70 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-indigo-950 font-bold tracking-tight text-2xl">Fintech Gradient</h2>
+          <p class="text-indigo-600/70 mt-1 text-sm">Premium conversion UI</p>
+        </div>
+        <span class="bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200 rounded-full font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-indigo-100 bg-white rounded-2xl shadow-lg shadow-indigo-200/20 mt-4 p-4">
+        <p class="text-indigo-900 font-semibold text-xs">Example content</p>
+        <p class="text-indigo-600/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gradient-to-r from-indigo-600 to-fuchsia-500 text-white hover:opacity-90 rounded-xl shadow-lg shadow-indigo-300/40 font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

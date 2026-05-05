@@ -1,0 +1,44 @@
+id: "53"
+name: "Adaptive Mobile"
+slug: "adaptive-mobile"
+category: "Mobile"
+tone: "Personalized, rounded, adaptive mobile feel"
+promptCues:
+  - "adaptive rounded UI"
+  - "large rounded shapes"
+  - "muted adaptive color"
+  - "soft mobile surfaces"
+  - "friendly system UI"
+tokens:
+  bg: "bg-green-50"
+  shell: "border border-green-100 bg-[#fbfff8] shadow-sm rounded-[2rem]"
+  card: "border border-green-100 bg-white rounded-[1.75rem] shadow-sm"
+  title: "text-green-950 font-semibold tracking-tight"
+  text: "text-green-700/70"
+  label: "text-green-900 font-medium"
+  input: "bg-green-50 border border-green-200 text-green-950 placeholder:text-green-300 focus:ring-4 focus:ring-green-100 focus:border-green-500 rounded-[1.4rem]"
+  button: "bg-green-700 text-white hover:bg-green-800 rounded-[1.4rem] shadow-sm font-semibold"
+  ghost: "bg-green-100 text-green-900 hover:bg-green-200 rounded-[1.4rem] font-semibold"
+  checkbox: "accent-green-700"
+  progressTrack: "bg-green-100 rounded-full"
+  progressFill: "bg-green-700 rounded-full"
+  badge: "bg-green-100 text-green-900 border border-green-200 rounded-full font-medium"
+  mono: "bg-green-100 text-green-700 rounded-[1.25rem]"
+htmlExample: |-
+  <section class="bg-green-50 rounded-[2rem] p-4">
+    <div class="border border-green-100 bg-[#fbfff8] shadow-sm rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-green-700/70 text-[10px] uppercase tracking-[0.22em] mb-2">Mobile</p>
+          <h2 class="text-green-950 font-semibold tracking-tight text-2xl">Adaptive Mobile</h2>
+          <p class="text-green-700/70 mt-1 text-sm">Personalized, rounded, adaptive mobile feel</p>
+        </div>
+        <span class="bg-green-100 text-green-900 border border-green-200 rounded-full font-medium px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-green-100 bg-white rounded-[1.75rem] shadow-sm mt-4 p-4">
+        <p class="text-green-900 font-medium text-xs">Example content</p>
+        <p class="text-green-700/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-green-700 text-white hover:bg-green-800 rounded-[1.4rem] shadow-sm font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

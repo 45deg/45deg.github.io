@@ -1,0 +1,44 @@
+id: "70"
+name: "Medieval Parchment"
+slug: "medieval-parchment"
+category: "Retro"
+tone: "Historical, lore-rich, worn paper"
+promptCues:
+  - "parchment paper"
+  - "brown ink"
+  - "serif typography"
+  - "fantasy lore"
+  - "ancient documents"
+tokens:
+  bg: "bg-[#e2d5c4]"
+  shell: "border-2 border-[#8b6f4e] bg-[#f4ebd8] shadow-lg rounded-sm"
+  card: "border border-[#b59b7a] bg-[#faf3e3] rounded-sm"
+  title: "text-[#4a3419] font-serif tracking-tight"
+  text: "text-[#5e472a] font-serif"
+  label: "text-[#8b6f4e] font-serif italic text-sm"
+  input: "bg-[#f4ebd8] border border-[#8b6f4e] text-[#4a3419] placeholder:text-[#b59b7a] focus:ring-0 focus:border-[#4a3419] rounded-none font-serif"
+  button: "bg-[#4a3419] text-[#f4ebd8] hover:bg-[#2d1e0d] rounded-none font-serif uppercase tracking-widest"
+  ghost: "bg-transparent text-[#4a3419] border border-[#4a3419] hover:bg-[#e2d5c4] rounded-none font-serif uppercase"
+  checkbox: "accent-[#4a3419]"
+  progressTrack: "bg-[#d4c5b0] rounded-none"
+  progressFill: "bg-[#4a3419] rounded-none"
+  badge: "bg-[#e2d5c4] text-[#4a3419] border border-[#8b6f4e] rounded-none font-serif"
+  mono: "bg-[#e2d5c4] text-[#4a3419] rounded-none border border-[#b59b7a]"
+htmlExample: |-
+  <section class="bg-[#e2d5c4] rounded-[2rem] p-4">
+    <div class="border-2 border-[#8b6f4e] bg-[#f4ebd8] shadow-lg rounded-sm p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#5e472a] font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Retro</p>
+          <h2 class="text-[#4a3419] font-serif tracking-tight text-2xl">Medieval Parchment</h2>
+          <p class="text-[#5e472a] font-serif mt-1 text-sm">Historical, lore-rich, worn paper</p>
+        </div>
+        <span class="bg-[#e2d5c4] text-[#4a3419] border border-[#8b6f4e] rounded-none font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#b59b7a] bg-[#faf3e3] rounded-sm mt-4 p-4">
+        <p class="text-[#8b6f4e] font-serif italic text-sm text-xs">Example content</p>
+        <p class="text-[#5e472a] font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#4a3419] text-[#f4ebd8] hover:bg-[#2d1e0d] rounded-none font-serif uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "61"
+name: "Holographic Lab"
+slug: "holographic-lab"
+category: "Futuristic"
+tone: "Scientific, translucent, holographic interface"
+promptCues:
+  - "holographic panels"
+  - "scientific UI"
+  - "cyan violet shimmer"
+  - "thin glass borders"
+  - "lab console"
+tokens:
+  bg: "bg-gradient-to-br from-slate-950 via-cyan-950 to-violet-950"
+  shell: "border border-cyan-200/20 bg-cyan-200/5 backdrop-blur-xl shadow-[0_0_60px_rgba(103,232,249,.14)] rounded-3xl"
+  card: "border border-violet-200/20 bg-white/5 backdrop-blur rounded-2xl shadow-xl"
+  title: "text-cyan-100 font-semibold tracking-tight"
+  text: "text-cyan-100/60"
+  label: "text-cyan-100/80 font-mono uppercase text-xs tracking-widest"
+  input: "bg-slate-950/50 border border-cyan-200/30 text-cyan-50 placeholder:text-cyan-200/30 focus:ring-4 focus:ring-cyan-200/10 focus:border-cyan-100 rounded-xl font-mono"
+  button: "bg-cyan-200 text-slate-950 hover:bg-white rounded-xl shadow-lg shadow-cyan-500/10 font-bold"
+  ghost: "bg-violet-200/10 text-violet-100 border border-violet-200/20 hover:bg-violet-200/20 rounded-xl font-mono"
+  checkbox: "accent-cyan-200"
+  progressTrack: "bg-cyan-200/10 rounded-full"
+  progressFill: "bg-gradient-to-r from-cyan-200 to-violet-300 rounded-full"
+  badge: "bg-cyan-200/10 text-cyan-100 border border-cyan-200/20 rounded-full font-mono uppercase"
+  mono: "bg-white/5 text-cyan-100 rounded-xl"
+htmlExample: |-
+  <section class="bg-gradient-to-br from-slate-950 via-cyan-950 to-violet-950 rounded-[2rem] p-4">
+    <div class="border border-cyan-200/20 bg-cyan-200/5 backdrop-blur-xl shadow-[0_0_60px_rgba(103,232,249,.14)] rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-cyan-100/60 text-[10px] uppercase tracking-[0.22em] mb-2">Futuristic</p>
+          <h2 class="text-cyan-100 font-semibold tracking-tight text-2xl">Holographic Lab</h2>
+          <p class="text-cyan-100/60 mt-1 text-sm">Scientific, translucent, holographic interface</p>
+        </div>
+        <span class="bg-cyan-200/10 text-cyan-100 border border-cyan-200/20 rounded-full font-mono uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-violet-200/20 bg-white/5 backdrop-blur rounded-2xl shadow-xl mt-4 p-4">
+        <p class="text-cyan-100/80 font-mono uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-cyan-100/60 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-cyan-200 text-slate-950 hover:bg-white rounded-xl shadow-lg shadow-cyan-500/10 font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>
