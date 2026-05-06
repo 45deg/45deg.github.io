@@ -85,7 +85,7 @@
                 -->
                 <div class="works-grid">
                     {% for work in homepage.works %}
-                    <article class="card{% if work.featured %} is-featured{% endif %}{% for category in work.categories %} cat-{{ category }}{% endfor %}" style="--sort: {{ work.sort }}">
+                    <article class="card{% if work.featured %} is-featured{% endif %}{% for category in work.categories %} cat-{{ category }}{% endfor %}">
                         <a class="card-link" href="{{ work.href | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }} {{ work.year }}"></a>
                         <div class="card-img-wrapper">
                             {% if work.image %}

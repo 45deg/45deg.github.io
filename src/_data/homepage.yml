@@ -37,8 +37,23 @@ filters:
     label: Misc
     collapsible: true
 works:
+  - href: ./stitch/
+    featured: false
+    categories:
+      - visual
+    title:
+      ja: Stitch
+      en: Stitch
+    year: 2026
+    description_html:
+      ja: 複数の重なったスクリーンショットを一枚の画像に合成するツール。
+      en: A tool for stitching together multiple overlapping screenshots into a single image.
+    tags:
+      - Image
+    image:
+      src: ./images/i29.png
+      alt: Stitch
   - href: ./vibe-design-gallery/
-    sort: 0
     featured: false
     categories:
       - visual
@@ -58,7 +73,6 @@ works:
       src: ./images/i28.png
       alt: Vibe Design Gallery
   - href: ./lucide-search/
-    sort: 1
     featured: false
     categories:
       - visual
@@ -77,7 +91,6 @@ works:
       src: ./images/i27.png
       alt: Lucide Icon Search
   - href: ./punct/
-    sort: 2
     featured: false
     categories:
       - language
@@ -96,7 +109,6 @@ works:
       src: ./images/i26.png
       alt: 句読点補完ツール
   - href: ./crt/
-    sort: 10
     featured: true
     categories:
       - visual
@@ -116,7 +128,6 @@ works:
       src: ./images/i25.png
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
-    sort: 20
     featured: true
     categories:
       - media
@@ -135,7 +146,6 @@ works:
       src: ./images/i24.png
       alt: ScreenCastEditor
   - href: ./compression-leaderboard/
-    sort: 50
     featured: true
     categories:
       - visual
@@ -154,7 +164,6 @@ works:
       src: ./images/i23.png
       alt: Compression Leaderboard
   - href: ./quickcalc/
-    sort: 60
     featured: false
     categories: []
     title:
@@ -171,7 +180,6 @@ works:
       src: ./images/i22.png
       alt: QuickCalc
   - href: ./stick-game/
-    sort: 70
     featured: false
     categories:
       - game
@@ -192,7 +200,6 @@ works:
       src: ./images/i20.png
       alt: STICK GAME
   - href: ./mozaic-app/
-    sort: 80
     featured: true
     categories:
       - visual
@@ -212,7 +219,6 @@ works:
       src: ./images/i19.jpg
       alt: mozaic-app
   - href: ./nanotation/
-    sort: 90
     featured: false
     categories:
       - media
@@ -232,7 +238,6 @@ works:
       src: ./images/i16.png
       alt: nanotation
   - href: ./subleq-ide/
-    sort: 100
     featured: false
     categories:
       - language
@@ -253,7 +258,6 @@ works:
       src: ./images/i18.png
       alt: Subleq Compiler
   - href: ./flowtimer/
-    sort: 210
     featured: false
     categories: []
     title:
@@ -270,7 +274,6 @@ works:
       src: ./images/i15.png
       alt: FlowTimer
   - href: ./pdf2md/
-    sort: 110
     featured: false
     categories:
       - pdf
@@ -289,7 +292,6 @@ works:
       src: ./images/i21.png
       alt: pdf2md
   - href: ./pdf-toc-tools/
-    sort: 120
     featured: true
     categories:
       - pdf
@@ -308,7 +310,6 @@ works:
       src: ./images/i17.png
       alt: pdf-toc-tool
   - href: ./pdf-unbinder/
-    sort: 220
     featured: false
     categories:
       - pdf
@@ -326,7 +327,6 @@ works:
       src: ./images/i14.png
       alt: PDFUnbinder in Browser
   - href: /mnist-viz
-    sort: 310
     featured: false
     categories:
       - visual
@@ -349,7 +349,6 @@ works:
       src: ./images/i13.png
       alt: MNIST UMAP Visualization
   - href: /cedict
-    sort: 510
     featured: false
     categories:
       - language
@@ -369,7 +368,6 @@ works:
       src: ./images/i12.png
       alt: HoverDictCN
   - href: https://github.com/45deg/PDFUnbinder
-    sort: 610
     featured: false
     categories:
       - pdf
@@ -387,7 +385,6 @@ works:
       src: ./images/i11.png
       alt: PDFUnbinder
   - href: ./RGBCloud
-    sort: 710
     featured: false
     categories:
       - visual
@@ -408,7 +405,6 @@ works:
       src: ./images/i9.png
       alt: RGBCloud
   - href: ./Kantele
-    sort: 810
     featured: false
     categories:
       - language
@@ -429,7 +425,6 @@ works:
       src: ./images/i7.png
       alt: Kantele
   - href: ./rogyAdC2015
-    sort: 910
     featured: false
     categories:
       - article
@@ -449,7 +444,6 @@ works:
       src: ./images/i6.png
       alt: dynamorphism の紹介
   - href: ./neural-network_v2
-    sort: 820
     featured: true
     categories:
       - visual
@@ -472,7 +466,6 @@ works:
       src: ./images/i3.png
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./neural-network
-    sort: 1010
     featured: false
     categories:
       - visual
@@ -492,7 +485,6 @@ works:
       src: ./images/i2.png
       alt: ニューラルネットワークの可視化
   - href: ./misc/online-video-converter.html
-    sort: 30
     featured: false
     categories:
       - media
@@ -512,7 +504,6 @@ works:
       class: placeholder-video
       emoji: 🎞️
   - href: ./articles/mp4.html
-    sort: 40
     featured: false
     categories:
       - article
@@ -533,7 +524,6 @@ works:
       class: placeholder-article
       emoji: 🎬
   - href: ./articles/zip.html
-    sort: 130
     featured: false
     categories:
       - article
@@ -553,7 +543,6 @@ works:
       class: placeholder-article
       emoji: 📦
   - href: ./deaatable/
-    sort: 140
     featured: false
     categories:
       - language
@@ -573,7 +562,6 @@ works:
       class: placeholder-code
       emoji: ▦
   - href: ./misc/brownkan.html
-    sort: 230
     featured: false
     categories:
       - visual
@@ -593,7 +581,6 @@ works:
       class: placeholder-image
       emoji: 📺
   - href: ./misc/gabigabi.html
-    sort: 240
     featured: false
     categories:
       - visual
@@ -613,7 +600,6 @@ works:
       class: placeholder-image
       emoji: 🖼️
   - href: ./misc/img2pdf.html
-    sort: 250
     featured: false
     categories:
       - pdf
@@ -633,7 +619,6 @@ works:
       class: placeholder-data
       emoji: 🧾
   - href: ./misc/nahuatl.html
-    sort: 320
     featured: false
     categories:
       - language
@@ -653,7 +638,6 @@ works:
       class: placeholder-text
       emoji: ✍️
   - href: ./misc/safetensors.html
-    sort: 410
     featured: false
     categories:
       - misc
@@ -672,7 +656,6 @@ works:
       class: placeholder-data
       emoji: 🧬
   - href: ./misc/jinja2.html
-    sort: 420
     featured: false
     categories:
       - language
