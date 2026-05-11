@@ -47,7 +47,7 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("countByFilter", (works, key) => {
     if (key === "all") return works.length;
     if (key === "featured") return works.filter((work) => work.featured).length;
-    return works.filter((work) => work.categories?.includes(key)).length;
+    return works.filter((work) => work.tags?.includes(key[0].toUpperCase() + key.slice(1))).length;
   });
 
   return {

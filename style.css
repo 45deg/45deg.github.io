@@ -121,16 +121,12 @@ a:hover {
     margin-bottom: 1rem;
 }
 
-.work-filters input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.work-filters label {
+.work-filters button {
+    background: #fff;
     border: 1px solid #222;
     color: #222;
     cursor: pointer;
+    font: inherit;
     font-size: 0.82rem;
     line-height: 1;
     padding: 0.45rem 0.6rem;
@@ -141,40 +137,18 @@ a:hover {
     content: "[ ] ";
 }
 
-.work-filters input:checked + .tag-filter {
+.work-filters .tag-filter.is-active {
     background: #222;
     color: #fff;
 }
 
-.work-filters input:checked + .tag-filter::before {
+.work-filters .tag-filter.is-active::before {
     content: "[x] ";
 }
 
-.work-filters input:focus-visible + label {
+.work-filters button:focus-visible {
     outline: 3px solid #d94680;
     outline-offset: 2px;
-}
-
-.work-filters .filter-more {
-    align-items: center;
-    background: #fff;
-    color: #222;
-    display: inline-flex;
-    justify-content: center;
-    min-width: 2.2rem;
-    padding-inline: 0.45rem;
-}
-
-.work-filters .filter-more:hover {
-    opacity: 1;
-}
-
-.work-filters .tag-filter.is-collapsible {
-    display: none;
-}
-
-.work-filters.is-expanded .tag-filter.is-collapsible {
-    display: inline-flex;
 }
 
 /* Card Component */
@@ -214,6 +188,10 @@ a:hover {
     border-color: #222;
     color: #fff;
     font-weight: bold;
+}
+
+.card[hidden] {
+    display: none;
 }
 
 .card-link {

@@ -11,36 +11,24 @@ og_image: ./images/i25.png
 about:
   ja: 個人で作ったWebツール、可視化、記事を置いています。作品集というより、試したことや後から見返したいもののログです。
   en: >-
-    A collection of small web tools, visualizations, and notes I made for myself. This is less a
-    polished portfolio than a log of things I tried and want to be able to revisit.
+    A collection of small web tools, visualizations, and notes I made for myself. This is less a polished
+    portfolio than a log of things I tried and want to be able to revisit.
 filters:
   - key: all
-    label: All
+    label:
+      ja: すべて
+      en: All
   - key: featured
-    label: Featured
-  - key: pdf
-    label: PDF
-  - key: visual
-    label: Visualization
-  - key: media
-    label: Media
-  - key: language
-    label: Language
-    collapsible: true
-  - key: game
-    label: Game
-    collapsible: true
+    label:
+      ja: Feature
+      en: Feature
   - key: article
-    label: Article
-    collapsible: true
-  - key: misc
-    label: Misc
-    collapsible: true
+    label:
+      ja: Article
+      en: Article
 works:
   - href: ./stitch/
     featured: false
-    categories:
-      - visual
     title:
       ja: Stitch
       en: Stitch
@@ -50,57 +38,53 @@ works:
       en: A tool for stitching together multiple overlapping screenshots into a single image.
     tags:
       - Image
+      - Visualization
     image:
       src: ./images/i29.png
       alt: Stitch
   - href: ./vibe-design-gallery/
     featured: false
-    categories:
-      - visual
     title:
       ja: Vibe Design Gallery
       en: Vibe Design Gallery
     year: 2026
     description_html:
-      ja: >-
-        Tailwind CSSのユーティリティクラスを用いたデザインギャラリー。バイブコーディング向けとしてデザインプロンプトも用意。
-      en: >-
-        A design gallery using Tailwind CSS utility classes, with design prompts for vibe coding.
+      ja: Tailwind CSSのユーティリティクラスを用いたデザインギャラリー。バイブコーディング向けとしてデザインプロンプトも用意。
+      en: A design gallery using Tailwind CSS utility classes, with design prompts for vibe coding.
     tags:
       - Design
       - LLM
+      - Visualization
     image:
       src: ./images/i28.png
       alt: Vibe Design Gallery
   - href: ./lucide-search/
     featured: false
-    categories:
-      - visual
     title:
       ja: Lucide Icon Search
       en: Lucide Icon Search
     year: 2026
     description_html:
-      ja: >-
-        Lucideアイコンを手書きで検索できるツール
+      ja: Lucideアイコンを手書きで検索できるツール
       en: A tool for searching Lucide icons by handwriting
     tags:
       - Icon
       - Search
+      - Visualization
     image:
       src: ./images/i27.png
       alt: Lucide Icon Search
   - href: ./punct/
     featured: false
-    categories:
-      - language
     title:
       ja: 句読点補完ツール
       en: Japanese Punctuation Completion Tool
     year: 2026
     description_html:
       ja: 日本語テキストに句読点と改行を自動で補う、軽量Transformer/ONNXベースのブラウザツール。
-      en: A browser tool that automatically adds punctuation and line breaks to Japanese text using a lightweight Transformer exported to ONNX.
+      en: >-
+        A browser tool that automatically adds punctuation and line breaks to Japanese text using a
+        lightweight Transformer exported to ONNX.
     tags:
       - NLP
       - ONNX
@@ -110,9 +94,6 @@ works:
       alt: 句読点補完ツール
   - href: ./crt/
     featured: true
-    categories:
-      - visual
-      - media
     title:
       ja: CRT Phosphor Simulator
       en: CRT Phosphor Simulator
@@ -124,13 +105,12 @@ works:
       - WebGL
       - CRT
       - Media
+      - Visualization
     image:
       src: ./images/i25.png
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
     featured: true
-    categories:
-      - media
     title:
       ja: ScreenCast Editor
       en: ScreenCast Editor
@@ -142,13 +122,12 @@ works:
       - Video
       - WebCodecs
       - Editor
+      - Media
     image:
       src: ./images/i24.png
       alt: ScreenCastEditor
   - href: ./compression-leaderboard/
     featured: true
-    categories:
-      - visual
     title:
       ja: Compression Leaderboard
       en: Compression Leaderboard
@@ -160,12 +139,12 @@ works:
       - WASM
       - Compression
       - Benchmark
+      - Visualization
     image:
       src: ./images/i23.png
       alt: Compression Leaderboard
   - href: ./quickcalc/
     featured: false
-    categories: []
     title:
       ja: QuickCalc
       en: QuickCalc
@@ -181,8 +160,6 @@ works:
       alt: QuickCalc
   - href: ./stick-game/
     featured: false
-    categories:
-      - game
     title:
       ja: STICK GAME
       en: STICK GAME
@@ -201,9 +178,6 @@ works:
       alt: STICK GAME
   - href: ./mozaic-app/
     featured: true
-    categories:
-      - visual
-      - media
     title:
       ja: mozaic-app
       en: mozaic-app
@@ -215,13 +189,13 @@ works:
       - Image
       - Video
       - WASM
+      - Visualization
+      - Media
     image:
       src: ./images/i19.jpg
       alt: mozaic-app
   - href: ./nanotation/
     featured: false
-    categories:
-      - media
     title:
       ja: nanotation
       en: nanotation
@@ -229,26 +203,25 @@ works:
     description_html:
       ja: 画像などに軽量な注釈を重ねる、ブラウザベースの実験的アノテーションエディタ。
       en: >-
-        A lightweight browser annotation editor for layering notes over images or work targets, designed for quick
-        review and sharing.
+        A lightweight browser annotation editor for layering notes over images or work targets, designed for
+        quick review and sharing.
     tags:
       - Annotation
       - Editor
+      - Media
     image:
       src: ./images/i16.png
       alt: nanotation
   - href: ./subleq-ide/
     featured: false
-    categories:
-      - language
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
     year: 2026
     description_html:
       ja: >-
-        1命令でチューリング完全となる<a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ <a
-        href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a>。高級寄りの構文を単一命令へ落とし込むコンパイラ実験。
+        1命令でチューリング完全となる<a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ
+        <a href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a>。高級寄りの構文を単一命令へ落とし込むコンパイラ実験。
       en: A compiler experiment that lowers a higher-level syntax into the one-instruction SUBLEQ architecture.
     tags:
       - Compiler
@@ -259,14 +232,15 @@ works:
       alt: Subleq Compiler
   - href: ./flowtimer/
     featured: false
-    categories: []
     title:
       ja: FlowTimer
       en: FlowTimer
     year: 2025
     description_html:
       ja: 発表中に必要な残り時間と進行状態だけを見やすく保つ、登壇者向けの最小タイマー。
-      en: A minimal presentation timer focused on the remaining time and progress state a speaker needs while presenting.
+      en: >-
+        A minimal presentation timer focused on the remaining time and progress state a speaker needs while
+        presenting.
     tags:
       - Timer
       - Presentation
@@ -275,8 +249,6 @@ works:
       alt: FlowTimer
   - href: ./pdf2md/
     featured: false
-    categories:
-      - pdf
     title:
       ja: pdf2md
       en: pdf2md
@@ -285,7 +257,7 @@ works:
       ja: PDFをローカルで解析し、本文のMarkdown化と画像抽出を行う変換ツール。
       en: A local browser tool for converting PDFs to Markdown and extracting images as part of the same flow.
     tags:
-      - PDF
+      - Media
       - Markdown
       - Local
     image:
@@ -293,8 +265,6 @@ works:
       alt: pdf2md
   - href: ./pdf-toc-tools/
     featured: true
-    categories:
-      - pdf
     title:
       ja: pdf-toc-tool
       en: pdf-toc-tool
@@ -303,7 +273,7 @@ works:
       ja: PDFの目次をもとに、確認・抽出・分割・結合をまとめて扱うローカル動作のツールキット。
       en: A local PDF toolkit for viewing, extracting, splitting, and merging by table-of-contents entries.
     tags:
-      - PDF
+      - Media
       - TOC
       - Toolkit
     image:
@@ -311,8 +281,6 @@ works:
       alt: pdf-toc-tool
   - href: ./pdf-unbinder/
     featured: false
-    categories:
-      - pdf
     title:
       ja: PDFUnbinder in Browser
       en: PDFUnbinder in Browser
@@ -321,15 +289,13 @@ works:
       ja: PDFのしおり構造を読み取り、章や節ごとにファイル分割するWeb版PDFUnbinder。
       en: A browser version of PDFUnbinder that reads PDF outlines and splits files by chapter or section.
     tags:
-      - PDF
+      - Media
       - Browser
     image:
       src: ./images/i14.png
       alt: PDFUnbinder in Browser
   - href: /mnist-viz
     featured: false
-    categories:
-      - visual
     title:
       ja: MNIST UMAP Visualization
       en: MNIST UMAP Visualization
@@ -339,8 +305,8 @@ works:
         手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>を使って2次元にマッピングしたものの可視化
         し、数字ごとのクラスタや混ざり方を探索する可視化。
       en: >-
-        A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and overlap easy to
-        explore.
+        A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and
+        overlap easy to explore.
     tags:
       - UMAP
       - MNIST
@@ -350,8 +316,6 @@ works:
       alt: MNIST UMAP Visualization
   - href: /cedict
     featured: false
-    categories:
-      - language
     title:
       ja: HoverDictCN
       en: HoverDictCN
@@ -359,18 +323,17 @@ works:
     description_html:
       ja: 中国語の文章を読みながら、単語や漢字の英語訳をマウスオーバー/タップで確認する学習補助ツール。
       en: >-
-        A Chinese reading aid using CEDICT. Hover or tap characters to quickly check word and character meanings in
-        English.
+        A Chinese reading aid using CEDICT. Hover or tap characters to quickly check word and character
+        meanings in English.
     tags:
       - Chinese
       - Dictionary
+      - Language
     image:
       src: ./images/i12.png
       alt: HoverDictCN
   - href: https://github.com/45deg/PDFUnbinder
     featured: false
-    categories:
-      - pdf
     title:
       ja: PDFUnbinder
       en: PDFUnbinder
@@ -379,15 +342,13 @@ works:
       ja: PDFの目次をもとにファイルを章単位で分割するJavaFXデスクトップアプリ。
       en: A JavaFX desktop app for splitting bookmarked PDFs by chapter.
     tags:
-      - PDF
+      - Media
       - JavaFX
     image:
       src: ./images/i11.png
       alt: PDFUnbinder
   - href: ./RGBCloud
     featured: false
-    categories:
-      - visual
     title:
       ja: RGBCloud
       en: RGBCloud
@@ -395,19 +356,18 @@ works:
     description_html:
       ja: 画像ピクセルをRGB/HSL色空間上の点群として描画し、色分布を3Dで眺めるビューア。
       en: >-
-        A 3D viewer that plots image pixels in RGB or HSL color space so the color distribution can be inspected
-        directly.
+        A 3D viewer that plots image pixels in RGB or HSL color space so the color distribution can be
+        inspected directly.
     tags:
       - Three.js
       - Color
       - 3D
+      - Visualization
     image:
       src: ./images/i9.png
       alt: RGBCloud
   - href: ./Kantele
     featured: false
-    categories:
-      - language
     title:
       ja: Kantele
       en: Kantele
@@ -418,7 +378,6 @@ works:
         研究室所属時の課題で作った、音を記述して再生するScheme風の言語です。<strong>音が出ます。</strong>
       en: A Scheme-like sound programming language made as a lab assignment. It plays sound.
     tags:
-      - Language
       - Audio
       - Scheme
     image:
@@ -426,17 +385,17 @@ works:
       alt: Kantele
   - href: ./rogyAdC2015
     featured: false
-    categories:
-      - article
     title:
       ja: dynamorphism の紹介
       en: Introduction to Dynamorphism
     year: 2015
     description_html:
-      ja: <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a> のために書いた、関数型プログラミングで動的計画法を行う手法の紹介記事。
+      ja: >-
+        <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a>
+        のために書いた、関数型プログラミングで動的計画法を行う手法の紹介記事。
       en: >-
-        A technical article explaining dynamic programming as a functional fold, written with diagrams for rogy Advent
-        Calendar.
+        A technical article explaining dynamic programming as a functional fold, written with diagrams for
+        rogy Advent Calendar.
     tags:
       - Article
       - Functional Programming
@@ -445,19 +404,18 @@ works:
       alt: dynamorphism の紹介
   - href: ./neural-network_v2
     featured: true
-    categories:
-      - visual
     title:
       ja: ニューラルネットワークの可視化 (ConvnetJS版)
       en: Neural Network Visualization (ConvnetJS)
     year: 2016
     description_html:
       ja: >-
-        <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
+        <a
+        href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
         層や学習器の設定を変えながら学習の進み方を観察できるConvnetJS版。
       en: >-
-        A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for observing
-        training behavior.
+        A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for
+        observing training behavior.
     tags:
       - Neural Net
       - ConvnetJS
@@ -467,8 +425,6 @@ works:
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./neural-network
     featured: false
-    categories:
-      - visual
     title:
       ja: ニューラルネットワークの可視化
       en: Neural Network Visualization
@@ -486,9 +442,6 @@ works:
       alt: ニューラルネットワークの可視化
   - href: ./misc/online-video-converter.html
     featured: false
-    categories:
-      - media
-      - misc
     title:
       ja: ブラウザ上で完結する動画変換ツール
       en: Browser-only Video Converter
@@ -500,15 +453,12 @@ works:
       - WebCodecs
       - Video
       - Misc
+      - Media
     placeholder:
       class: placeholder-video
       emoji: 🎞️
   - href: ./articles/mp4.html
     featured: false
-    categories:
-      - article
-      - media
-      - misc
     title:
       ja: WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成
       en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
@@ -520,14 +470,12 @@ works:
       - Article
       - MP4
       - Misc
+      - Media
     placeholder:
       class: placeholder-article
       emoji: 🎬
   - href: ./articles/zip.html
     featured: false
-    categories:
-      - article
-      - misc
     title:
       ja: Compression APIを用いたJS単体でのZIP生成
       en: ZIP Generation in Plain JavaScript with Compression API
@@ -544,9 +492,6 @@ works:
       emoji: 📦
   - href: ./deaatable/
     featured: false
-    categories:
-      - language
-      - misc
     title:
       ja: AsciiArt Table Parser
       en: AsciiArt Table Parser
@@ -563,9 +508,6 @@ works:
       emoji: ▦
   - href: ./misc/brownkan.html
     featured: false
-    categories:
-      - visual
-      - misc
     title:
       ja: ブラウン管テレビ風 画像エフェクター
       en: CRT-style Image Effector
@@ -577,14 +519,12 @@ works:
       - WebGL
       - Image
       - Misc
+      - Visualization
     placeholder:
       class: placeholder-image
       emoji: 📺
   - href: ./misc/gabigabi.html
     featured: false
-    categories:
-      - visual
-      - misc
     title:
       ja: JPEGガビガビ化ツール
       en: JPEG Artifact Generator
@@ -596,14 +536,12 @@ works:
       - Image
       - Effect
       - Misc
+      - Visualization
     placeholder:
       class: placeholder-image
       emoji: 🖼️
   - href: ./misc/img2pdf.html
     featured: false
-    categories:
-      - pdf
-      - misc
     title:
       ja: Images to PDF
       en: Images to PDF
@@ -612,7 +550,7 @@ works:
       ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
       en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
     tags:
-      - PDF
+      - Media
       - Image
       - Misc
     placeholder:
@@ -620,9 +558,6 @@ works:
       emoji: 🧾
   - href: ./misc/nahuatl.html
     featured: false
-    categories:
-      - language
-      - misc
     title:
       ja: ナワトルテキスト補助
       en: Nahuatl Text Helper
@@ -639,8 +574,6 @@ works:
       emoji: ✍️
   - href: ./misc/safetensors.html
     featured: false
-    categories:
-      - misc
     title:
       ja: Safetensors metadata viewer
       en: Safetensors Metadata Viewer
@@ -657,9 +590,6 @@ works:
       emoji: 🧬
   - href: ./misc/jinja2.html
     featured: false
-    categories:
-      - language
-      - misc
     title:
       ja: Jinja2 Template Renderer
       en: Jinja2 Template Renderer
