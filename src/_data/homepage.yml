@@ -27,6 +27,22 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./pixelate/
+    featured: false
+    title:
+      ja: Pixel Grid Studio
+      en: Pixel Grid Studio
+    year: 2026
+    description_html:
+      ja: 生成画像をグリッドに合わせ、パレットとマスクでピクセル画像へ変換するブラウザツール。
+      en: A browser tool for converting generated images into pixel art with grid fitting, palettes, and masks.
+    tags:
+      - Image
+      - Pixel Art
+      - Editor
+    image:
+      src: ./images/i30.png
+      alt: Pixel Grid Studio
   - href: ./stitch/
     featured: false
     title:
