@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zustand 実践メモ</title>
+    <meta name="description" content="React で Zustand を使うときの基本的な使い方、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモです。">
+    <meta name="keywords" content="Zustand, React, 状態管理, TypeScript, useSyncExternalStore, ミドルウェア, SSR">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://45deg.github.io/articles/zustand.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://45deg.github.io/articles/zustand.html">
+    <meta property="og:title" content="Zustand 実践メモ">
+    <meta property="og:description" content="React で Zustand を使うときの基本的な使い方、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモです。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Zustand 実践メモ">
+    <meta name="twitter:description" content="React で Zustand を使うときの基本的な使い方、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモです。">
+
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        .decision-table td:first-child {
+            white-space: nowrap;
+        }
+
+        .article-note {
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 14px;
+            background: #f7fbff;
+        }
+
+        .article-note.warning {
+            border-left-color: var(--danger-color);
+            background: #fff7f7;
+        }
+
+        .compact-list li {
+            margin-bottom: 0.45em;
+        }
+
+        .cheatsheet-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 18px;
+            margin: 16px 0 22px;
+        }
+
+        .cheatsheet-item {
+            border-left: 3px solid var(--border-color);
+            padding-left: 10px;
+        }
+
+        .cheatsheet-item h4 {
+            margin: 0 0 4px;
+            font-size: 0.98rem;
+        }
+
+        .cheatsheet-item p {
+            margin: 0;
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+
+        @media (max-width: 760px) {
+            .cheatsheet-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .article-diagram {
+            margin: 22px 0 26px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #fbfcfd;
+            overflow-x: auto;
+        }
+
+        .article-diagram svg {
+            display: block;
+            min-width: 760px;
+            width: 100%;
+            height: auto;
+        }
+
+        .diagram-title {
+            font: 700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            fill: #2c3e50;
+        }
+
+        .diagram-label {
+            font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            fill: #2c3e50;
+        }
+
+        .diagram-small {
+            font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            fill: #52616f;
+        }
+
+        .diagram-box {
+            fill: #fff;
+            stroke: #bdc3c7;
+            stroke-width: 1.4;
+            rx: 6;
+        }
+
+        .diagram-box-strong {
+            fill: #eef6ff;
+            stroke: #3498db;
+            stroke-width: 1.6;
+            rx: 6;
+        }
+
+        .diagram-box-warning {
+            fill: #fff7f7;
+            stroke: #c0392b;
+            stroke-width: 1.5;
+            rx: 6;
+        }
+
+        .diagram-arrow {
+            stroke: #52616f;
+            stroke-width: 1.8;
+            fill: none;
+            marker-end: url(#arrow);
+        }
+
+        .diagram-arrow-blue {
+            stroke: #1d4f91;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrow-blue);
+        }
+
+        .diagram-dashed {
+            stroke-dasharray: 5 5;
+        }
+    </style>
+</head>
+<body class="article-page">
+<main class="article-layout">
+<article class="article-shell article-entry">
+    <header class="article-header">
+        <h1 class="article-title">Zustand 実践メモ</h1>
+        <div class="article-meta">
+            <time class="article-date" datetime="2026-05-14">2026-05-14</time>
+        </div>
+        <div class="article-lead">
+            <p>
+                <a href="https://github.com/pmndrs/zustand" target="_blank" rel="noopener">Zustand</a> は、React の外側に置いたストアをフックから購読する状態管理ライブラリである。
+                ここでは機能の表面だけでなく、実装から分かる更新規則、購読の単位、SSR 時の境界を確認する。
+            </p>
+        </div>
+    </header>
+
+    <section class="article-section" aria-labelledby="positioning">
+    <h2 id="positioning">1. Zustand は何を解決するのか</h2>
+    <p>
+        Zustand の中心は「React コンポーネントの外にストアを置き、コンポーネントはセレクタで必要な部分だけ購読する」という形である。
+        <code>create</code> が返すものは React フックであり、同時に <code>getState</code>, <code>setState</code>, <code>subscribe</code>, <code>getInitialState</code> を持つストアでもある。
+    </p>
+
+    <table class="decision-table">
+        <tr><th>観点</th><th>Zustand の性質</th><th>設計上の意味</th></tr>
+        <tr><td>提供元コンポーネント</td><td>通常は不要</td><td>単一ページアプリでは、ストアを読み込むだけで使える</td></tr>
+        <tr><td>購読単位</td><td>セレクタの戻り値</td><td>コンポーネントごとに必要な値だけを読む設計に向く</td></tr>
+        <tr><td>更新</td><td><code>set</code> / <code>setState</code></td><td>reducer 固定ではなく、更新関数をストアに置くことが多い</td></tr>
+        <tr><td>React 連携</td><td><code>useSyncExternalStore</code></td><td>React 18 以降の外部ストア購読の仕組みに乗る</td></tr>
+        <tr><td>素のストア</td><td>React なしでも作れる</td><td>Context による注入、React 外の処理、テストで使いやすい</td></tr>
+    </table>
+
+    <p>
+        「グローバル状態を全部入れる場所」ではなく、「複数のコンポーネントから同じ可変状態を参照し、更新と購読を明示的に管理したい場所」と考える方が事故が少ない。
+        React の局所状態、URL、サーバーデータのキャッシュ、フォーム管理まで Zustand に集める必要はない。
+    </p>
+
+    </section>
+
+    <section class="article-section" aria-labelledby="basic-usage">
+    <h2 id="basic-usage">2. 基本的な使用方法</h2>
+    <p>
+        まずは <code>create</code> でストアを作り、コンポーネントではセレクタで必要な値や更新関数だけを取り出す。
+        Provider で囲む必要はなく、作ったフックを import して呼ぶだけで使える。
+    </p>
+
+<pre><code class="language-sh">npm install zustand
+
+# pnpm の場合
+pnpm add zustand</code></pre>
+
+<pre><code class="language-ts">import { create } from 'zustand'
+
+type CounterState = {
+  count: number
+  increase: () =&gt; void
+  reset: () =&gt; void
+}
+
+export const useCounterStore = create&lt;CounterState&gt;()((set) =&gt; ({
+  count: 0,
+  increase: () =&gt; set((state) =&gt; ({ count: state.count + 1 })),
+  reset: () =&gt; set({ count: 0 }),
+}))</code></pre>
+
+    <p>
+        React コンポーネントでは、ストア全体ではなく表示や操作に必要なものを選んで読む。
+        更新関数も同じフックから取り出して、イベントハンドラで呼べばよい。
+    </p>
+
+<pre><code class="language-tsx">function Counter() {
+  const count = useCounterStore((state) =&gt; state.count)
+  const increase = useCounterStore((state) =&gt; state.increase)
+  const reset = useCounterStore((state) =&gt; state.reset)
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;count: {count}&lt;/p&gt;
+      &lt;button onClick={increase}&gt;+1&lt;/button&gt;
+      &lt;button onClick={reset}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+    <p>
+        コンポーネント外から現在値を読む場合は <code>getState</code>、外部イベントを購読する場合は <code>subscribe</code> を使える。
+        ただし、画面に表示する値はフックで購読し、外部購読では解除関数を管理する。
+    </p>
+
+<pre><code class="language-ts">const currentCount = useCounterStore.getState().count
+
+const unsubscribe = useCounterStore.subscribe((state, prevState) =&gt; {
+  if (state.count !== prevState.count) {
+    console.log('count changed:', state.count)
+  }
+})
+
+unsubscribe()</code></pre>
+
+    <div class="article-note">
+        <p>
+            基本形は「<code>create</code> で状態と更新関数を定義する」「コンポーネントではセレクタで読む」「イベントでは更新関数を呼ぶ」の三つである。
+            その上で、再レンダリングや SSR の境界が必要になったら後続の章を確認する。
+        </p>
+    </div>
+    </section>
+
+    <section class="article-section" aria-labelledby="core">
+    <h2 id="core">3. コア実装から分かること</h2>
+    <p>
+        Zustand の素のストアは概念的には次の構造である。
+        実装では <code>Set</code> に購読関数を持ち、<code>setState</code> が新しい状態を作って購読関数に現在の状態と直前の状態を渡す。
+    </p>
+
+<pre><code class="language-ts">type StoreApi&lt;T&gt; = {
+  setState: {
+    (partial: T | Partial&lt;T&gt; | ((state: T) =&gt; T | Partial&lt;T&gt;), replace?: false): void
+    (state: T | ((state: T) =&gt; T), replace: true): void
+  }
+  getState: () =&gt; T
+  getInitialState: () =&gt; T
+  subscribe: (listener: (state: T, prevState: T) =&gt; void) =&gt; () =&gt; void
+}</code></pre>
+
+    <p>
+        重要なのは <code>setState</code> の既定動作である。
+        <code>replace</code> を明示しない通常更新では、次の値がオブジェクトの場合に <code>Object.assign({}, state, nextState)</code> 相当の浅いマージになる。
+        深いマージではないため、入れ子のオブジェクトは自分で不変更新する必要がある。
+    </p>
+
+<pre><code class="language-ts">type AuthState = {
+  user: { id: string; name: string } | null
+  status: 'anonymous' | 'loading' | 'authenticated'
+  actions: {
+    setUser: (user: AuthState['user']) =&gt; void
+    rename: (name: string) =&gt; void
+  }
+}
+
+const useAuthStore = create&lt;AuthState&gt;()((set) =&gt; ({
+  user: null,
+  status: 'anonymous',
+  actions: {
+    setUser: (user) =&gt; set({ user, status: user ? 'authenticated' : 'anonymous' }),
+    rename: (name) =&gt;
+      set((state) =&gt; ({
+        user: state.user ? { ...state.user, name } : null,
+      })),
+  },
+}))</code></pre>
+
+    <div class="article-note">
+        <p>
+            <code>set({ user: ... })</code> はルートの状態だけを浅くマージする。
+            <code>user.name</code> だけを暗黙にマージしてくれるわけではない。
+            入れ子の更新が多いストアでは、状態形状を浅くするか、公式ミドルウェアの <code>immer</code> を検討する。
+        </p>
+    </div>
+    </section>
+
+    <section class="article-section" aria-labelledby="selectors">
+    <h2 id="selectors">4. セレクタと再レンダリング</h2>
+    <p>
+        React 側の <code>useStore</code> は内部で <code>React.useSyncExternalStore</code> を使い、<code>selector(api.getState())</code> の結果をスナップショットとして扱う。
+        セレクタの戻り値が変わったと判断されると、コンポーネントは再レンダリングされる。
+        v5 の標準 <code>create</code> では比較関数を直接渡せないため、戻り値は基本的に <code>Object.is</code> で比較されるものとして考える。
+    </p>
+
+    <h3>4-1. 小さいセレクタを基本にする</h3>
+<pre><code class="language-tsx">const userName = useAuthStore((state) =&gt; state.user?.name)
+const status = useAuthStore((state) =&gt; state.status)
+const rename = useAuthStore((state) =&gt; state.actions.rename)</code></pre>
+
+    <p>
+        プリミティブ値や安定した関数参照を個別に取るセレクタは扱いやすい。
+        ストア初期化時に作った更新関数は、その関数自体を差し替えない限り同じ参照を保つ。
+    </p>
+
+    <h3>4-2. オブジェクトや配列を毎回作るセレクタは注意する</h3>
+<pre><code class="language-tsx">// 更新のたびに新しいオブジェクトを返す
+const view = useAuthStore((state) =&gt; ({
+  name: state.user?.name,
+  status: state.status,
+}))</code></pre>
+
+    <p>
+        このセレクタは呼ばれるたびに新しいオブジェクトを返す。
+        値の中身が同じでも参照は異なるため、不要な再レンダリングや v5 での不安定なスナップショット問題につながり得る。
+        複数値をまとめたい場合は <code>useShallow</code> を使う。
+    </p>
+
+<pre><code class="language-tsx">import { useShallow } from 'zustand/react/shallow'
+
+const view = useAuthStore(
+  useShallow((state) =&gt; ({
+    name: state.user?.name,
+    status: state.status,
+  })),
+)</code></pre>
+
+    <p>
+        v5 移行ガイドでは、セレクタが新しい参照を返す場合に無限ループになり得る例も示されている。
+        代替関数をセレクタ内で毎回作るようなコードも同じ問題を持つ。
+    </p>
+
+<pre><code class="language-tsx">const NOOP = () =&gt; {}
+
+const onSubmit = useFormStore((state) =&gt; state.onSubmit ?? NOOP)</code></pre>
+    </section>
+
+    <section class="article-section" aria-labelledby="store-shape">
+    <h2 id="store-shape">5. ストアの形と更新関数の置き方</h2>
+    <p>
+        Zustand は reducer を強制しない。
+        実務では状態と更新関数を同じストアに置き、コンポーネントからは更新関数を呼ぶだけにする形が読みやすい。
+        ただし更新関数をどこに置くかは、セレクタの安定性と永続化の対象に影響する。
+    </p>
+
+<pre><code class="language-ts">type Todo = { id: string; title: string; done: boolean }
+
+type TodoStore = {
+  todos: Record&lt;string, Todo&gt;
+  order: string[]
+  actions: {
+    add: (title: string) =&gt; void
+    toggle: (id: string) =&gt; void
+    remove: (id: string) =&gt; void
+  }
+}
+
+export const useTodoStore = create&lt;TodoStore&gt;()((set) =&gt; ({
+  todos: {},
+  order: [],
+  actions: {
+    add: (title) =&gt; {
+      const id = crypto.randomUUID()
+      set((state) =&gt; ({
+        todos: { ...state.todos, [id]: { id, title, done: false } },
+        order: [...state.order, id],
+      }))
+    },
+    toggle: (id) =&gt;
+      set((state) =&gt; {
+        const todo = state.todos[id]
+        if (!todo) return {}
+        return {
+          todos: { ...state.todos, [id]: { ...todo, done: !todo.done } },
+        }
+      }),
+    remove: (id) =&gt;
+      set((state) =&gt; {
+        const { [id]: _removed, ...todos } = state.todos
+        return { todos, order: state.order.filter((todoId) =&gt; todoId !== id) }
+      }),
+  },
+}))</code></pre>
+
+    <p>
+        上の例では更新関数を <code>actions</code> にまとめている。
+        これは必須ではないが、<code>persist</code> の <code>partialize</code> で状態だけを保存しやすく、コンポーネント側でも <code>useTodoStore((s) =&gt; s.actions.add)</code> のように選びやすい。
+    </p>
+
+    <h3>5-1. スライス分割は実装分割であってストア分散ではない</h3>
+    <p>
+        公式ドキュメントの slices pattern は、複数の作成関数を展開して一つの結合済みストアを作る方法である。
+        ミドルウェアは個別スライスではなく、結合したストアに適用するのが公式の注意点である。
+    </p>
+
+<pre><code class="language-ts">const createUserSlice = (set) =&gt; ({
+  user: null,
+  setUser: (user) =&gt; set({ user }),
+})
+
+const createProjectSlice = (set, get) =&gt; ({
+  projects: {},
+  clearUserProjects: () =&gt; {
+    const user = get().user
+    if (user) set({ projects: {} })
+  },
+})
+
+export const useAppStore = create((...args) =&gt; ({
+  ...createUserSlice(...args),
+  ...createProjectSlice(...args),
+}))</code></pre>
+    </section>
+
+    <section class="article-section" aria-labelledby="typescript">
+    <h2 id="typescript">6. 型付け</h2>
+    <p>
+        TypeScript では <code>create&lt;State&gt;()((set, get) =&gt; ...)</code> の二段呼び出し形式を使うのが基本である。
+    </p>
+
+<pre><code class="language-ts">type SessionState = {
+  token: string | null
+  expiresAt: number | null
+  actions: {
+    setSession: (token: string, expiresAt: number) =&gt; void
+    clear: () =&gt; void
+  }
+}
+
+export const useSessionStore = create&lt;SessionState&gt;()((set) =&gt; ({
+  token: null,
+  expiresAt: null,
+  actions: {
+    setSession: (token, expiresAt) =&gt; set({ token, expiresAt }),
+    clear: () =&gt; set({ token: null, expiresAt: null }),
+  },
+}))</code></pre>
+
+    <p>
+        v5 では <code>setState</code> の <code>replace: true</code> に対する型が厳しくなっている。
+        <code>replace: true</code> はルートの状態を完全に置き換える指定なので、部分オブジェクトを渡す用途には使わない。
+    </p>
+
+<pre><code class="language-ts">// 通常の浅いマージ
+useSessionStore.setState({ token: 'new-token' })
+
+// 完全置換。actions も含めて完全な状態が必要
+useSessionStore.setState(
+  {
+    token: null,
+    expiresAt: null,
+    actions: useSessionStore.getState().actions,
+  },
+  true,
+)</code></pre>
+    </section>
+
+    <section class="article-section" aria-labelledby="middleware">
+    <h2 id="middleware">7. ミドルウェアは必要なものだけ足す</h2>
+    <p>
+        Zustand のミドルウェアはストア作成関数を包む関数である。
+        代表的には <code>persist</code>, <code>devtools</code>, <code>immer</code>, <code>subscribeWithSelector</code>, <code>redux</code> がある。
+        どれも便利だが、ストアの意味を変えるため、導入理由を明確にする。
+    </p>
+
+    <table>
+        <tr><th>ミドルウェア</th><th>用途</th><th>注意点</th></tr>
+        <tr><td><code>persist</code></td><td><code>localStorage</code> 等に状態を保存する</td><td><code>partialize</code>, <code>version</code>, <code>migrate</code> を設計する</td></tr>
+        <tr><td><code>devtools</code></td><td>Redux DevTools に更新を出す</td><td>更新名を付けないと追跡しにくい</td></tr>
+        <tr><td><code>immer</code></td><td>入れ子の更新を下書きへの代入として書く</td><td>Immer の実行コストとルールを受け入れる</td></tr>
+        <tr><td><code>subscribeWithSelector</code></td><td>React 外でセレクタ付き購読をする</td><td>購読解除の管理が必要</td></tr>
+    </table>
+
+    <h3>7-1. persist は保存対象を絞る</h3>
+<pre><code class="language-ts">import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+
+export const useSettingsStore = create&lt;SettingsStore&gt;()(
+  persist(
+    (set) =&gt; ({
+      theme: 'system',
+      draftSearchQuery: '',
+      actions: {
+        setTheme: (theme) =&gt; set({ theme }),
+        setDraftSearchQuery: (draftSearchQuery) =&gt; set({ draftSearchQuery }),
+      },
+    }),
+    {
+      name: 'settings-v1',
+      storage: createJSONStorage(() =&gt; localStorage),
+      partialize: (state) =&gt; ({ theme: state.theme }),
+      version: 1,
+    },
+  ),
+)</code></pre>
+
+    <p>
+        <code>persist</code> は既定で <code>localStorage</code> を使う。
+        一時的な入力値、通信由来の古くなりやすいデータ、認可上慎重に扱うべき値を雑に保存しない。
+        公式ドキュメントでは <code>skipHydration</code> が SSR 用の選択肢として説明されている。
+    </p>
+    </section>
+
+    <section class="article-section" aria-labelledby="react-boundaries">
+    <h2 id="react-boundaries">8. React での境界設計</h2>
+
+    <h3>8-1. コンポーネントでは読み取りを細くする</h3>
+    <p>
+        コンポーネントで <code>useStore()</code> とセレクタなしに呼ぶと、そのコンポーネントはストア全体を購読する。
+        画面が大きくなるほど、関係ない更新で再レンダリングされる範囲が広がる。
+    </p>
+
+<pre><code class="language-tsx">// 避けたい: ストアのどこが変わっても再レンダリング候補になる
+const state = useTodoStore()
+
+// よい: このコンポーネントが必要なものだけ読む
+const todo = useTodoStore((state) =&gt; state.todos[id])
+const toggle = useTodoStore((state) =&gt; state.actions.toggle)</code></pre>
+
+    <h3>8-2. イベント処理内での非購読の読み取り</h3>
+    <p>
+        <code>getState</code> はコンポーネント外やイベント処理で現在値を読む逃げ道として使える。
+        ただし描画中に使う値なら、フック経由で購読する。
+    </p>
+
+<pre><code class="language-tsx">function SaveButton() {
+  const save = async () =&gt; {
+    const { todos } = useTodoStore.getState()
+    await saveTodos(Object.values(todos))
+  }
+
+  return &lt;button onClick={save}&gt;Save&lt;/button&gt;
+}</code></pre>
+
+    <h3>8-3. React Context と素のストア</h3>
+    <p>
+        Zustand は通常、提供元コンポーネントを必要としない。ただし、ストアを props で初期化したい場合、テストで差し替えたい場合、Next.js 等でリクエストごとにストアを分けたい場合は Context が有効である。
+        公式ドキュメントではフックそのものを Context に入れるのではなく、<code>createStore</code> で作った素のストアと <code>useStore(store, selector)</code> を組み合わせる方法が示されている。
+    </p>
+
+<pre><code class="language-tsx">import { createContext, useContext, useState } from 'react'
+import { createStore, useStore } from 'zustand'
+
+const CounterStoreContext = createContext&lt;ReturnType&lt;typeof createCounterStore&gt; | null&gt;(null)
+
+function CounterStoreProvider({ children }: { children: React.ReactNode }) {
+  const [store] = useState(() =&gt; createCounterStore({ count: 0 }))
+  return (
+    &lt;CounterStoreContext.Provider value={store}&gt;
+      {children}
+    &lt;/CounterStoreContext.Provider&gt;
+  )
+}
+
+function useCounter&lt;T&gt;(selector: (state: CounterStore) =&gt; T): T {
+  const store = useContext(CounterStoreContext)
+  if (!store) throw new Error('CounterStoreProvider is missing')
+  return useStore(store, selector)
+}</code></pre>
+    </section>
+
+    <section class="article-section" aria-labelledby="ssr">
+    <h2 id="ssr">9. SSR / Next.js での注意点</h2>
+    <p>
+        Zustand のストアはモジュール状態になり得る。
+        クライアントだけで動く単一ページアプリならそれが利点になるが、サーバーが複数リクエストを処理する環境では、リクエスト間で状態を共有しない設計が必要である。
+        公式の Next.js ガイドも「ストアはリクエストごとに作る」「React Server Components はストアを読んだり書いたりしない」と説明している。
+    </p>
+
+    <div class="article-note warning">
+        <p>
+            Server Component からグローバルなストアを読む設計は避ける。
+            ユーザー固有の値がモジュール状態に残ると、リクエスト間共有やハイドレーション不一致の原因になる。
+        </p>
+    </div>
+
+    <p>
+        ハイドレーションではサーバーとクライアントの初期出力が一致する必要がある。
+        <code>localStorage</code> を読む <code>persist</code> ストア、現在時刻、乱数、ブラウザ専用 API に依存する値は、初期描画に混ぜると不一致を作りやすい。
+        SSR 対応が必要なストアは、初期値を明示的に渡す、クライアントのマウント後に復元する、またはそもそもサーバー描画の表示条件から外す。
+    </p>
+
+    <figure class="article-diagram" aria-label="SSR 環境でのストア境界">
+        <svg viewBox="0 0 900 430" role="img" aria-labelledby="ssr-boundary-title ssr-boundary-desc">
+            <title id="ssr-boundary-title">SSR 環境でのストア境界</title>
+            <desc id="ssr-boundary-desc">サーバー上のグローバルストアはリクエスト間で共有され得るため、リクエストごとにストアを作る。</desc>
+            <defs>
+                <marker id="arrow-ssr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#52616f"></path>
+                </marker>
+                <marker id="arrow-ssr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1d4f91"></path>
+                </marker>
+            </defs>
+
+            <text x="32" y="38" class="diagram-title">SSR では「どこに状態が残るか」を分けて考える</text>
+
+            <rect x="44" y="78" width="360" height="116" class="diagram-box-warning"></rect>
+            <text x="68" y="112" class="diagram-label">避ける: サーバー上のグローバルストア</text>
+            <text x="68" y="144" class="diagram-small">リクエスト A と B が同じモジュール状態を見る可能性がある</text>
+            <text x="68" y="168" class="diagram-small">ユーザー固有の値を置くと混線の原因になる</text>
+
+            <rect x="502" y="78" width="160" height="54" class="diagram-box"></rect>
+            <text x="526" y="112" class="diagram-label">リクエスト A</text>
+
+            <rect x="502" y="154" width="160" height="54" class="diagram-box"></rect>
+            <text x="526" y="188" class="diagram-label">リクエスト B</text>
+
+            <path d="M 502 105 C 462 105, 444 112, 404 124" class="diagram-arrow diagram-dashed" marker-end="url(#arrow-ssr)"></path>
+            <path d="M 502 181 C 462 181, 444 164, 404 148" class="diagram-arrow diagram-dashed" marker-end="url(#arrow-ssr)"></path>
+
+            <rect x="44" y="240" width="190" height="64" class="diagram-box"></rect>
+            <text x="68" y="268" class="diagram-label">リクエスト A</text>
+            <text x="68" y="290" class="diagram-small">initA</text>
+
+            <rect x="44" y="326" width="190" height="64" class="diagram-box"></rect>
+            <text x="68" y="354" class="diagram-label">リクエスト B</text>
+            <text x="68" y="376" class="diagram-small">initB</text>
+
+            <rect x="314" y="240" width="190" height="64" class="diagram-box"></rect>
+            <text x="338" y="268" class="diagram-label">ストア A</text>
+            <text x="338" y="290" class="diagram-small">createStore(initA)</text>
+
+            <rect x="314" y="326" width="190" height="64" class="diagram-box"></rect>
+            <text x="338" y="354" class="diagram-label">ストア B</text>
+            <text x="338" y="376" class="diagram-small">createStore(initB)</text>
+
+            <rect x="638" y="278" width="210" height="82" class="diagram-box-strong"></rect>
+            <text x="662" y="308" class="diagram-label">Context で注入</text>
+            <text x="662" y="334" class="diagram-small">useStore(store, selector)</text>
+
+            <path d="M 234 272 L 314 272" class="diagram-arrow-blue" marker-end="url(#arrow-ssr-blue)"></path>
+            <path d="M 234 358 L 314 358" class="diagram-arrow-blue" marker-end="url(#arrow-ssr-blue)"></path>
+            <path d="M 504 272 C 560 272, 582 300, 638 308" class="diagram-arrow-blue" marker-end="url(#arrow-ssr-blue)"></path>
+            <path d="M 504 358 C 560 358, 582 338, 638 330" class="diagram-arrow-blue" marker-end="url(#arrow-ssr-blue)"></path>
+            <text x="84" y="414" class="diagram-small">要点: ユーザー別、リクエスト別の状態は、モジュール上の一つのストアに置かない。</text>
+        </svg>
+    </figure>
+    </section>
+
+    <section class="article-section" aria-labelledby="practices">
+    <h2 id="practices">10. 実務でのベストプラクティス</h2>
+    <ol class="compact-list">
+        <li>ストアに入れる前に、React の局所状態、URL、サーバーデータのキャッシュ、フォーム管理のどれかで足りないか確認する。</li>
+        <li>コンポーネントではセレクタを必ず書く。ストア全体を読むコンポーネントを増やさない。</li>
+        <li>セレクタはプリミティブ値、安定参照、または <code>useShallow</code> で安定化したオブジェクトや配列を返す。</li>
+        <li>更新関数はストアに置き、コンポーネントからは更新関数を呼ぶ。更新処理をコンポーネントに散らさない。</li>
+        <li>ルートの状態は浅い構造を優先する。深いオブジェクトを頻繁に更新するなら正規化や <code>immer</code> を検討する。</li>
+        <li><code>persist</code> は保存対象を <code>partialize</code> で絞り、形式変更に備えて <code>version</code> と <code>migrate</code> を設計する。</li>
+        <li>SSR ではモジュール上のグローバルストアをユーザー別、リクエスト別の状態に使わない。ストア作成関数と Context で境界を作る。</li>
+        <li>React 外の購読は必ず解除関数を管理する。長寿命の処理で購読を放置するとリークになる。</li>
+        <li><code>replace: true</code> は完全置換として扱う。部分更新のつもりで使わない。</li>
+        <li>ストアを巨大化させすぎない。スライス分割は「一つのストアを保ったまま実装を分ける」ために使う。</li>
+    </ol>
+    </section>
+
+    <section class="article-section" aria-labelledby="anti-patterns">
+    <h2 id="anti-patterns">11. よくある失敗</h2>
+    <table>
+        <tr><th>失敗</th><th>何が起きるか</th><th>対策</th></tr>
+        <tr><td><code>useStore()</code> を広く使う</td><td>関係ない更新で再レンダリングされる</td><td>セレクタを書く</td></tr>
+        <tr><td>セレクタで毎回オブジェクトや配列を作る</td><td>参照が毎回変わる</td><td>小さいセレクタか <code>useShallow</code></td></tr>
+        <tr><td>サーバーでグローバルストアにユーザー状態を置く</td><td>リクエスト間共有の危険がある</td><td>リクエストごとに素のストアを作る</td></tr>
+        <tr><td>永続化に更新関数や一時状態も含める</td><td>不要な復元、古い値、移行負荷が出る</td><td><code>partialize</code> で保存対象を限定</td></tr>
+        <tr><td>Zustand をサーバーデータのキャッシュ代わりにする</td><td>再取得、古さ判定、重複排除、失敗時の再試行を自前実装することになる</td><td>TanStack Query 等のサーバーデータ用ライブラリを使う</td></tr>
+    </table>
+    </section>
+
+    <section class="article-section" aria-labelledby="when-not">
+    <h2 id="when-not">12. Zustand を使わない方がよい場面</h2>
+    <p>
+        Zustand は小さいが、万能な状態置き場ではない。
+        通信結果のキャッシュ、ページング、再試行、古さ判定、更新後の再取得が中心ならサーバーデータ用ライブラリの領域である。
+        複雑なフォーム検証とフィールド単位の変更管理が中心ならフォームライブラリの領域である。
+        URL と共有される絞り込みやタブは URLSearchParams の方がよい場合が多い。
+    </p>
+    <p>
+        Zustand がよく合うのは、画面横断のクライアント状態、複数コンポーネント間で共有する編集・セッション・作業領域の状態、React 外のイベントからも更新される状態、提供元コンポーネントの階層を増やしたくない単一ページアプリの状態である。
+        逆に「全部 Zustand に寄せる」設計は、責務が見えにくくなる。
+    </p>
+    </section>
+
+    <section class="article-section" aria-labelledby="appendix-api">
+    <h2 id="appendix-api">Appendix. API・実装チートシート</h2>
+
+    <div class="cheatsheet-grid">
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/create" target="_blank" rel="noopener"><code>create</code></a></h4>
+            <p><code>zustand</code> から import。React フック付きストアを作る入口。戻り値は <code>getState</code>, <code>setState</code>, <code>subscribe</code>, <code>getInitialState</code> も持つ。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/create-store" target="_blank" rel="noopener"><code>createStore</code></a></h4>
+            <p><code>zustand/vanilla</code> から import。React から独立した素のストア。Context 注入、テスト、React 外、SSR のリクエスト単位ストアに向く。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/hooks/use-store" target="_blank" rel="noopener"><code>useStore</code></a></h4>
+            <p><code>zustand</code> から import。<code>useStore(store, selector)</code> で素のストアを React から読む。描画に必要な値だけを購読する。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/create-with-equality-fn" target="_blank" rel="noopener"><code>createWithEqualityFn</code></a></h4>
+            <p><code>zustand/traditional</code> から import。セレクタ比較関数を使いたい場合の入口。利用には <code>use-sync-external-store</code> が必要。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/hooks/use-shallow" target="_blank" rel="noopener"><code>useShallow</code></a></h4>
+            <p><code>zustand/react/shallow</code> から import。複数値をオブジェクトや配列でまとめる時に、浅い比較で前回参照を再利用する。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/shallow" target="_blank" rel="noopener"><code>shallow</code></a></h4>
+            <p><code>zustand/vanilla/shallow</code> から import。単体の浅い比較関数。深い構造の同値判定ではなく、トップレベルの比較に使う。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/create" target="_blank" rel="noopener"><code>set</code> / <code>setState</code></a></h4>
+            <p>状態を更新して購読者へ通知する。通常はルートだけ浅くマージする。<code>replace: true</code> は完全置換なので完全な状態を渡す。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/apis/create-store" target="_blank" rel="noopener"><code>get</code> / <code>getState</code> / <code>subscribe</code></a></h4>
+            <p>現在値の非購読読み取りと React 外の購読に使う。描画に使う値はフックで読む。<code>subscribe</code> の解除関数は必ず管理する。</p>
+        </section>
+    </div>
+
+    <h3>ミドルウェア早見表</h3>
+    <div class="cheatsheet-grid">
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/middlewares/persist" target="_blank" rel="noopener"><code>persist</code></a></h4>
+            <p><code>zustand/middleware</code> から import。ストレージ保存と復元。<code>partialize</code>, <code>version</code>, <code>migrate</code>, hydration 方針を先に決める。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/middlewares/devtools" target="_blank" rel="noopener"><code>devtools</code></a></h4>
+            <p><code>zustand/middleware</code> から import。Redux DevTools に更新履歴を出す。ストア名、アクション名、動的ストアの <code>cleanup</code> を意識する。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/middlewares/immer" target="_blank" rel="noopener"><code>immer</code></a></h4>
+            <p><code>zustand/middleware/immer</code> から import。入れ子の不変更新を代入風に書く。draft の扱いと更新頻度に対するコストを見る。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/middlewares/subscribe-with-selector" target="_blank" rel="noopener"><code>subscribeWithSelector</code></a></h4>
+            <p><code>zustand/middleware</code> から import。React 外で特定スライスだけを購読する。解除、比較関数、<code>fireImmediately</code> の要否を決める。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/reference/middlewares/combine" target="_blank" rel="noopener"><code>combine</code></a></h4>
+            <p><code>zustand/middleware</code> から import。初期状態から型推論しつつ action を足す。型明示のストア設計と読みやすさを比べる。</p>
+        </section>
+        <section class="cheatsheet-item">
+            <h4><a href="https://zustand.docs.pmnd.rs/middlewares/redux" target="_blank" rel="noopener"><code>redux</code></a></h4>
+            <p><code>zustand/middleware</code> から import。reducer と <code>dispatch</code> の形に寄せる。既存 Redux 的設計を残す必要がある時向け。</p>
+        </section>
+    </div>
+
+    <div class="article-note">
+        <p>
+            実装の要点は、<code>setState</code> が状態を差し替え、<code>subscribe</code> の listener 群へ現在値と直前値を通知し、React 側はセレクタ結果をスナップショットとして購読する、という流れである。
+            したがって「どの値を購読するか」「更新後も参照が安定するか」「購読をいつ解除するか」が性能と安全性の中心になる。
+        </p>
+    </div>
+    </section>
+
+    <section class="article-section" aria-labelledby="references">
+    <h2 id="references">参考</h2>
+    <ul>
+        <li><a href="https://zustand.docs.pmnd.rs" target="_blank" rel="noopener">Zustand docs</a></li>
+        <li><a href="https://github.com/pmndrs/zustand" target="_blank" rel="noopener">Zustand on GitHub</a></li>
+    </ul>
+    </section>
+</article>
+</main>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
