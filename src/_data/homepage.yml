@@ -20,8 +20,8 @@ filters:
       en: All
   - key: featured
     label:
-      ja: Feature
-      en: Feature
+      ja: Featured
+      en: Featured
   - key: article
     label:
       ja: Article

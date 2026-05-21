@@ -94,7 +94,7 @@
                             <h3 class="card-title"><strong>{{ work.title | locale(lang) }}</strong> <span class="text-muted">({{ work.year }})</span></h3>
                             <p class="card-desc">{{ work.description_html | locale(lang) | safe }}</p>
                             <div class="card-tags" aria-label="{{ 'タグ' if lang == 'ja' else 'Tags' }}">
-                                {% if work.featured %}<span class="featured-tag">Feature</span>{% endif %}
+                                {% if work.featured %}<span class="featured-tag">Featured</span>{% endif %}
                                 {% for tag in work.tags %}<span>{{ tag }}</span>{% endfor %}
                             </div>
                         </div>
