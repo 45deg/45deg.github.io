@@ -490,6 +490,23 @@ works:
     placeholder:
       class: placeholder-article
       emoji: 🎬
+  - href: ./articles/intl.html
+    featured: false
+    title:
+      ja: Intl API 比較ビューア
+      en: Intl API Comparison Viewer
+    year: 2026
+    description_html:
+      ja: JavaScript の Intl API を一覧比較し、ローケル別に主要コンストラクターの出力差を確認する実験ページ
+      en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
+    tags:
+      - Article
+      - Intl
+      - JavaScript
+      - Misc
+    placeholder:
+      class: placeholder-article
+      emoji: 🌐
   - href: ./articles/zip.html
     featured: false
     title:

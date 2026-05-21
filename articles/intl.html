@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intl API 比較ビューア</title>
+    <meta name="description" content="JavaScript の Intl API を一覧比較し、NumberFormat や DateTimeFormat などをローケル別に試せるタブ式ビューアです。">
+    <meta name="keywords" content="Intl, JavaScript, i18n, ローケル, NumberFormat, DateTimeFormat, Collator, Segmenter">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://45deg.github.io/articles/intl.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://45deg.github.io/articles/intl.html">
+    <meta property="og:title" content="Intl API 比較ビューア">
+    <meta property="og:description" content="JavaScript の Intl API を一覧比較し、主要な Intl コンストラクターの出力差をローケル別に確認するための実験ページです。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Intl API 比較ビューア">
+    <meta name="twitter:description" content="JavaScript の Intl API を一覧比較し、主要な Intl コンストラクターの出力差をローケル別に確認するための実験ページです。">
+
+    <link rel="stylesheet" href="./styles.css">
+
+    <style>
+        .article-shell {
+            max-width: 1120px;
+            background: transparent;
+            box-shadow: none;
+            padding: 28px;
+        }
+
+        .article-header {
+            margin-bottom: 14px;
+        }
+
+        .article-title {
+            margin-bottom: 8px;
+        }
+
+        .intro-line {
+            color: var(--muted-color);
+            margin: 0;
+        }
+
+        .intl-workbench {
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            overflow: visible;
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 18px;
+            min-height: 640px;
+        }
+
+        .tab-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            border-radius: 14px;
+            position: sticky;
+            top: 16px;
+            align-self: start;
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+            z-index: 2;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+        }
+
+        .tab-button {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 6px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.92em;
+            font-weight: 700;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .tab-button:hover,
+        .tab-button:focus-visible {
+            background: #f8fafc;
+            border-color: #d7e0e8;
+            outline: none;
+        }
+
+        .tab-button[aria-selected="true"] {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        .tab-panel {
+            display: none;
+            padding: 18px;
+        }
+
+        .tab-panel.is-active {
+            display: block;
+        }
+
+        .workbench-main {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(148, 163, 184, 0.42);
+            border-radius: 16px;
+            box-shadow: 0 22px 50px rgba(15, 23, 42, 0.1);
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .api-card-slot {
+            padding: 18px 18px 0;
+        }
+
+        .api-card {
+            border: 1px solid #d8e0e6;
+            border-radius: 10px;
+            background: #fbfcfd;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+        }
+
+        .api-card h2 {
+            border: 0;
+            margin: 0 0 6px;
+            padding: 0;
+            font-size: 1.12em;
+        }
+
+        .api-card p {
+            margin: 0;
+            color: var(--muted-color);
+        }
+
+        .api-card a {
+            display: inline-block;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .code-card {
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            background: #1f2933;
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+        }
+
+        .code-toolbar {
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            color: #dbe4ec;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            font-size: 0.86em;
+            font-weight: 700;
+        }
+
+        .article-entry .sample-code {
+            margin: 0;
+            border-radius: 0;
+            background: #1f2933;
+            color: #eef5fb;
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        .copy-code {
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.9em;
+            padding: 5px 9px;
+        }
+
+        .copy-code:hover,
+        .copy-code:focus-visible {
+            background: rgba(255, 255, 255, 0.16);
+            outline: none;
+        }
+
+        .token-keyword,
+        .token-class {
+            color: #8bd3ff;
+        }
+
+        .token-string {
+            color: #a7e3a1;
+        }
+
+        .token-number {
+            color: #ffd38a;
+        }
+
+        .token-property {
+            color: #f7b7d2;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .control-panel .field-group {
+            margin-bottom: 0;
+        }
+
+        .control-panel .field-group.wide {
+            grid-column: 1 / -1;
+        }
+
+        .locale-toolbar {
+            padding: 14px 18px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+            margin: 0;
+        }
+
+        .locale-toolbar.is-hidden {
+            display: none;
+        }
+
+        .locale-toolbar-head {
+            align-items: center;
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .locale-toolbar-title {
+            color: var(--secondary-color);
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .locale-pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .locale-pill {
+            appearance: none;
+            border: 1px solid #cfd8df;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.88em;
+            line-height: 1;
+            padding: 8px 10px;
+        }
+
+        .locale-flag {
+            margin-right: 6px;
+        }
+
+        .locale-label {
+            align-items: center;
+            display: inline-flex;
+            gap: 0;
+        }
+
+        .locale-pill[aria-pressed="true"] {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .locale-more {
+            min-width: 38px;
+            font-weight: 800;
+        }
+
+        .result-meta {
+            color: var(--muted-color);
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .results-head {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .view-toggle {
+            display: inline-flex;
+            gap: 4px;
+            padding: 3px;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            background: #f8fafb;
+        }
+
+        .view-button {
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: transparent;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.86em;
+            font-weight: 700;
+            padding: 6px 9px;
+        }
+
+        .view-button[aria-pressed="true"] {
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            color: #111827;
+        }
+
+        .locale-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .locale-card {
+            border: 1px solid #d9e2ea;
+            border-radius: 10px;
+            background: #fff;
+            min-width: 0;
+            padding: 12px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+        }
+
+        .locale-card.is-error {
+            border-color: #e3a29a;
+            background: #fffafa;
+        }
+
+        .locale-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .locale-code {
+            color: var(--secondary-color);
+            font-weight: 800;
+        }
+
+        .resolved-locale {
+            color: var(--muted-color);
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .locale-output {
+            color: #111827;
+            font-size: 1.08em;
+            font-weight: 700;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .locale-detail {
+            display: none;
+        }
+
+        .result-table-wrap {
+            overflow-x: auto;
+        }
+
+        .article-entry .result-table {
+            margin: 0;
+        }
+
+        .result-table td:last-child {
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .chip {
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: #f8fafb;
+            color: var(--secondary-color);
+            display: inline-flex;
+            font-size: 0.88em;
+            line-height: 1.2;
+            padding: 6px 10px;
+        }
+
+        .segment-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .segment-token {
+            border: 1px solid #cfd8df;
+            border-radius: 4px;
+            background: #f8fafb;
+            padding: 4px 7px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.86em;
+        }
+
+        .article-note.compact {
+            margin-top: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .control-panel,
+            .locale-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intl-workbench {
+                grid-template-columns: 180px minmax(0, 1fr);
+                gap: 14px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .intl-workbench {
+                display: block;
+            }
+
+            .tab-list {
+                margin-bottom: 14px;
+                height: auto;
+                max-height: none;
+                position: static;
+            }
+
+            .control-panel,
+            .locale-toolbar,
+            .locale-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-panel {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="article-page">
+<main class="article-layout">
+<article class="article-shell article-entry">
+    <header class="article-header">
+        <h1 class="article-title">Intl API 比較ビューア</h1>
+        <div class="article-lead">
+            <p class="intro-line">
+                <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl" target="_blank" rel="noopener">MDN の Intl</a> を入口に、主要 API をロケール別にすぐ試すための小さなツール。
+            </p>
+        </div>
+    </header>
+
+    <div class="intl-workbench">
+        <div class="tab-list" role="tablist" aria-label="Intl API の比較タブ">
+            <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="panel-number" id="tab-number" data-tab="number">NumberFormat</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-date" id="tab-date" data-tab="date">DateTimeFormat</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-relative" id="tab-relative" data-tab="relative">RelativeTime</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-list" id="tab-list" data-tab="list">ListFormat</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-plural" id="tab-plural" data-tab="plural">PluralRules</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-collator" id="tab-collator" data-tab="collator">Collator</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-segmenter" id="tab-segmenter" data-tab="segmenter">Segmenter</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-display" id="tab-display" data-tab="display">DisplayNames</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-locale" id="tab-locale" data-tab="locale">Locale</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-values" id="tab-values" data-tab="values">Supported values</button>
+        </div>
+
+        <div class="workbench-main">
+        <div class="api-card-slot" id="api-card-slot"></div>
+        <div class="locale-toolbar" aria-label="ローケル設定">
+            <div class="locale-toolbar-head">
+                <p class="locale-toolbar-title">比較対象ローケル</p>
+            </div>
+            <div class="locale-pill-list" id="locale-pills"></div>
+        </div>
+
+        <section class="tab-panel is-active" role="tabpanel" aria-labelledby="tab-number" id="panel-number" data-panel="number">
+            <div class="control-panel">
+                <div class="field-group">
+                    <label for="number-input">数値</label>
+                    <input id="number-input" type="number" step="0.001" value="1234567.89">
+                </div>
+                <div class="field-group">
+                    <label for="number-style">style</label>
+                    <select id="number-style">
+                        <option value="decimal">decimal</option>
+                        <option value="currency">currency</option>
+                        <option value="percent">percent</option>
+                        <option value="unit">unit</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="number-notation">notation</label>
+                    <select id="number-notation">
+                        <option value="standard">standard</option>
+                        <option value="compact">compact</option>
+                        <option value="scientific">scientific</option>
+                        <option value="engineering">engineering</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="number-currency">currency</label>
+                    <select id="number-currency">
+                        <option value="JPY">JPY</option>
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="CNY">CNY</option>
+                        <option value="INR">INR</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="number-unit">unit</label>
+                    <select id="number-unit">
+                        <option value="kilometer">kilometer</option>
+                        <option value="meter">meter</option>
+                        <option value="liter">liter</option>
+                        <option value="celsius">celsius</option>
+                        <option value="byte">byte</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="number-digits">最大小数桁</label>
+                    <input id="number-digits" type="number" min="0" max="20" value="2">
+                </div>
+            </div>
+            <div data-results="number"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-date" id="panel-date" data-panel="date">
+            <div class="control-panel">
+                <div class="field-group">
+                    <label for="date-input">日時</label>
+                    <input id="date-input" type="datetime-local" value="2026-05-18T21:30">
+                </div>
+                <div class="field-group">
+                    <label for="date-style">dateStyle</label>
+                    <select id="date-style">
+                        <option value="full">full</option>
+                        <option value="long" selected>long</option>
+                        <option value="medium">medium</option>
+                        <option value="short">short</option>
+                        <option value="">なし</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="time-style">timeStyle</label>
+                    <select id="time-style">
+                        <option value="full">full</option>
+                        <option value="long">long</option>
+                        <option value="medium" selected>medium</option>
+                        <option value="short">short</option>
+                        <option value="">なし</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="date-time-zone">timeZone</label>
+                    <select id="date-time-zone">
+                        <option value="Asia/Tokyo">Asia/Tokyo</option>
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">America/New_York</option>
+                        <option value="Europe/London">Europe/London</option>
+                        <option value="Asia/Kolkata">Asia/Kolkata</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="date-calendar">calendar</label>
+                    <select id="date-calendar">
+                        <option value="">既定</option>
+                        <option value="gregory">gregory</option>
+                        <option value="japanese">japanese</option>
+                        <option value="buddhist">buddhist</option>
+                        <option value="islamic">islamic</option>
+                        <option value="hebrew">hebrew</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="date-hour-cycle">hourCycle</label>
+                    <select id="date-hour-cycle">
+                        <option value="">既定</option>
+                        <option value="h11">h11</option>
+                        <option value="h12">h12</option>
+                        <option value="h23">h23</option>
+                        <option value="h24">h24</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="date"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-relative" id="panel-relative" data-panel="relative">
+            <div class="control-panel">
+                <div class="field-group">
+                    <label for="relative-value">値</label>
+                    <input id="relative-value" type="number" value="-3">
+                </div>
+                <div class="field-group">
+                    <label for="relative-unit">unit</label>
+                    <select id="relative-unit">
+                        <option value="second">second</option>
+                        <option value="minute">minute</option>
+                        <option value="hour">hour</option>
+                        <option value="day" selected>day</option>
+                        <option value="week">week</option>
+                        <option value="month">month</option>
+                        <option value="quarter">quarter</option>
+                        <option value="year">year</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="relative-numeric">numeric</label>
+                    <select id="relative-numeric">
+                        <option value="always">always</option>
+                        <option value="auto" selected>auto</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="relative-style">style</label>
+                    <select id="relative-style">
+                        <option value="long">long</option>
+                        <option value="short" selected>short</option>
+                        <option value="narrow">narrow</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="relative"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-list" id="panel-list" data-panel="list">
+            <div class="control-panel">
+                <div class="field-group wide">
+                    <label for="list-items">リスト項目（改行区切り）</label>
+                    <textarea id="list-items" rows="4">Tokyo
+Paris
+Cairo
+São Paulo</textarea>
+                </div>
+                <div class="field-group">
+                    <label for="list-type">type</label>
+                    <select id="list-type">
+                        <option value="conjunction">conjunction</option>
+                        <option value="disjunction">disjunction</option>
+                        <option value="unit">unit</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="list-style">style</label>
+                    <select id="list-style">
+                        <option value="long">long</option>
+                        <option value="short" selected>short</option>
+                        <option value="narrow">narrow</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="list"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-plural" id="panel-plural" data-panel="plural">
+            <div class="control-panel">
+                <div class="field-group">
+                    <label for="plural-value">値</label>
+                    <input id="plural-value" type="number" step="1" value="1">
+                </div>
+                <div class="field-group">
+                    <label for="plural-type">type</label>
+                    <select id="plural-type">
+                        <option value="cardinal">cardinal</option>
+                        <option value="ordinal">ordinal</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="plural"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-collator" id="panel-collator" data-panel="collator">
+            <div class="control-panel">
+                <div class="field-group wide">
+                    <label for="collator-items">並べ替える文字列（改行区切り）</label>
+                    <textarea id="collator-items" rows="4">ä
+z
+a
+å
+ö
+o
+10
+2</textarea>
+                </div>
+                <div class="field-group">
+                    <label for="collator-sensitivity">sensitivity</label>
+                    <select id="collator-sensitivity">
+                        <option value="base">base</option>
+                        <option value="accent">accent</option>
+                        <option value="case">case</option>
+                        <option value="variant" selected>variant</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="collator-numeric">numeric</label>
+                    <select id="collator-numeric">
+                        <option value="true" selected>true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="collator"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-segmenter" id="panel-segmenter" data-panel="segmenter">
+            <div class="control-panel">
+                <div class="field-group wide">
+                    <label for="segmenter-text">テキスト</label>
+                    <textarea id="segmenter-text" rows="4">Intl.Segmenter は日本語の単語分割にも使えます。Hello world!</textarea>
+                </div>
+                <div class="field-group">
+                    <label for="segmenter-granularity">granularity</label>
+                    <select id="segmenter-granularity">
+                        <option value="grapheme">grapheme</option>
+                        <option value="word" selected>word</option>
+                        <option value="sentence">sentence</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="segmenter"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-display" id="panel-display" data-panel="display">
+            <div class="control-panel">
+                <div class="field-group wide">
+                    <label for="display-codes">コード（改行区切り）</label>
+                    <textarea id="display-codes" rows="4">JP
+US
+BR
+EG</textarea>
+                </div>
+                <div class="field-group">
+                    <label for="display-type">type</label>
+                    <select id="display-type">
+                        <option value="region" selected>region</option>
+                        <option value="language">language</option>
+                        <option value="script">script</option>
+                        <option value="currency">currency</option>
+                        <option value="calendar">calendar</option>
+                        <option value="dateTimeField">dateTimeField</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="display-style">style</label>
+                    <select id="display-style">
+                        <option value="long">long</option>
+                        <option value="short" selected>short</option>
+                        <option value="narrow">narrow</option>
+                    </select>
+                </div>
+            </div>
+            <div data-results="display"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-locale" id="panel-locale" data-panel="locale">
+            <div class="control-panel">
+                <div class="field-group wide">
+                    <label for="locale-tags">解析するロケールタグ（改行区切り）</label>
+                    <textarea id="locale-tags" rows="4">ja-JP-u-ca-japanese
+en-US
+de-DE-u-co-phonebk
+th-TH-u-nu-thai</textarea>
+                </div>
+            </div>
+            <div data-results="locale"></div>
+        </section>
+
+        <section class="tab-panel" role="tabpanel" aria-labelledby="tab-values" id="panel-values" data-panel="values">
+            <div class="control-panel">
+                <div class="field-group">
+                    <label for="values-key">key</label>
+                    <select id="values-key">
+                        <option value="calendar">calendar</option>
+                        <option value="collation">collation</option>
+                        <option value="currency">currency</option>
+                        <option value="numberingSystem">numberingSystem</option>
+                        <option value="timeZone">timeZone</option>
+                        <option value="unit">unit</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="values-filter">絞り込み</label>
+                    <input id="values-filter" type="search" placeholder="japan, usd, meter など">
+                </div>
+            </div>
+            <div data-results="values"></div>
+        </section>
+        </div>
+    </div>
+
+</article>
+</main>
+
+<script>
+(() => {
+    const defaultLocales = [
+        "ja-JP", "ja-JP-u-ca-japanese", "en-US", "en-GB", "de-DE", "de-AT",
+        "fr-FR", "es-ES", "it-IT", "pt-BR", "ru-RU", "uk-UA", "pl-PL",
+        "tr-TR", "ar-EG", "he-IL", "fa-IR", "hi-IN", "bn-BD", "th-TH",
+        "th-TH-u-nu-thai", "vi-VN", "id-ID", "ms-MY", "ko-KR", "zh-CN",
+        "zh-TW", "yue-HK", "sv-SE", "fi-FI", "da-DK", "nl-NL", "cs-CZ",
+        "hu-HU", "el-GR", "ro-RO", "en-IN", "en-AU", "es-MX", "fr-CA",
+        "sw-KE", "am-ET", "zu-ZA"
+    ];
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    const samples = {
+        number: `const nf = new Intl.NumberFormat("ja-JP", {
+  style: "currency",
+  currency: "JPY"
+});
+nf.format(1234567.89);`,
+        date: `const df = new Intl.DateTimeFormat("ja-JP", {
+  dateStyle: "long",
+  timeStyle: "short",
+  timeZone: "Asia/Tokyo"
+});
+df.format(new Date());`,
+        relative: `const rtf = new Intl.RelativeTimeFormat("ja-JP", {
+  numeric: "auto",
+  style: "short"
+});
+rtf.format(-3, "day");`,
+        list: `const lf = new Intl.ListFormat("ja-JP", {
+  type: "conjunction",
+  style: "short"
+});
+lf.format(["Tokyo", "Paris", "Cairo"]);`,
+        plural: `const pr = new Intl.PluralRules("en-US", {
+  type: "cardinal"
+});
+pr.select(1);`,
+        collator: `const collator = new Intl.Collator("sv-SE", {
+  sensitivity: "variant",
+  numeric: true
+});
+["ä", "z", "a", "10", "2"].sort(collator.compare);`,
+        segmenter: `const segmenter = new Intl.Segmenter("ja-JP", {
+  granularity: "word"
+});
+Array.from(segmenter.segment("吾輩は猫である"));`,
+        display: `const dn = new Intl.DisplayNames("ja-JP", {
+  type: "region",
+  style: "short"
+});
+dn.of("BR");`,
+        locale: `const locale = new Intl.Locale("ja-JP-u-ca-japanese");
+locale.calendar;
+locale.toString();`,
+        values: `Intl.supportedValuesOf("calendar");
+Intl.supportedValuesOf("currency");
+Intl.supportedValuesOf("timeZone");`
+    };
+
+    const apiInfo = {
+        number: {
+            title: "Intl.NumberFormat",
+            description: "数値、通貨、パーセント、単位をロケールごとの表記ルールで整形します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"
+        },
+        date: {
+            title: "Intl.DateTimeFormat",
+            description: "日時をカレンダー、タイムゾーン、時刻表記などの差を含めてロケール別に整形します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
+        },
+        relative: {
+            title: "Intl.RelativeTimeFormat",
+            description: "「3日前」「next week」のような相対時間を、言語ごとの自然な表現で生成します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat"
+        },
+        list: {
+            title: "Intl.ListFormat",
+            description: "複数の項目を「A、B、C」や「A, B, and C」のような自然なリスト表現にします。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat"
+        },
+        plural: {
+            title: "Intl.PluralRules",
+            description: "数値が one、few、many など、どの複数形カテゴリに入るかを判定します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules"
+        },
+        collator: {
+            title: "Intl.Collator",
+            description: "文字列比較とソートを、アクセント、大小文字、数値順などを含めてロケール別に扱います。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator"
+        },
+        segmenter: {
+            title: "Intl.Segmenter",
+            description: "文字、単語、文の境界をロケールに応じて分割します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter"
+        },
+        display: {
+            title: "Intl.DisplayNames",
+            description: "国、言語、文字体系、通貨などのコードを、指定ロケールの表示名に変換します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames"
+        },
+        locale: {
+            title: "Intl.Locale",
+            description: "BCP 47 ロケールタグを解析し、言語、地域、カレンダーなどの構成要素を確認します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale"
+        },
+        values: {
+            title: "Intl.supportedValuesOf()",
+            description: "ブラウザがサポートするカレンダー、通貨、タイムゾーン、単位などの値を取得します。",
+            url: "https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf"
+        }
+    };
+
+    const state = {
+        activeTab: "number",
+        locales: [],
+        supportedLocales: [],
+        showAllLocales: false,
+        resultView: "card"
+    };
+
+    const localeCompareTabs = new Set([
+        "number",
+        "date",
+        "relative",
+        "list",
+        "plural",
+        "collator",
+        "segmenter",
+        "display"
+    ]);
+
+    const escapeHtml = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+
+    function parseList(value) {
+        return value
+            .split(/[\n,]+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+    }
+
+    function isSupported(name) {
+        return typeof Intl[name] === "function";
+    }
+
+    function getLocaleRegion(locale) {
+        try {
+            const parsed = new Intl.Locale(locale);
+            return parsed.region || "";
+        } catch (error) {
+            const match = String(locale).match(/(?:^|-)([A-Z]{2})(?=$|-)/);
+            return match ? match[1] : "";
+        }
+    }
+
+    function regionToFlag(region) {
+        if (!/^[A-Z]{2}$/.test(region)) return "";
+        const first = region.codePointAt(0) - 65 + 0x1f1e6;
+        const second = region.codePointAt(1) - 65 + 0x1f1e6;
+        return String.fromCodePoint(first, second);
+    }
+
+    function getLocaleFlag(locale) {
+        return regionToFlag(getLocaleRegion(locale));
+    }
+
+    function localeLabelHtml(locale) {
+        const flag = getLocaleFlag(locale);
+        return `<span class="locale-label">${flag ? `<span class="locale-flag" aria-hidden="true">${flag}</span>` : ""}<code>${escapeHtml(locale)}</code></span>`;
+    }
+
+    function getLocales() {
+        return state.locales.length ? [...state.locales] : getBrowserSupportedLocales().slice(0, 12);
+    }
+
+    function getBrowserSupportedLocales() {
+        const candidates = [...new Set([...(navigator.languages || []), ...defaultLocales])];
+        return Intl.NumberFormat.supportedLocalesOf(candidates)
+            .filter((locale) => getLocaleRegion(locale));
+    }
+
+    function getSupportedValues(key, fallback = []) {
+        if (typeof Intl.supportedValuesOf !== "function") {
+            return fallback;
+        }
+        try {
+            return Intl.supportedValuesOf(key);
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    function replaceSelectOptions(selector, values, preferred = "") {
+        const select = $(selector);
+        if (!select || !values.length) return;
+        select.innerHTML = values
+            .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+            .join("");
+        if (preferred && values.includes(preferred)) {
+            select.value = preferred;
+        }
+    }
+
+    function getDisplayCodeSamples(type) {
+        const samplesByType = {
+            region: ["JP", "US", "BR", "EG"],
+            language: ["ja", "en", "pt", "ar"],
+            script: ["Jpan", "Latn", "Arab", "Hans"],
+            dateTimeField: ["year", "month", "day", "hour"]
+        };
+        if (type === "currency") {
+            return getSupportedValues("currency", ["JPY", "USD", "EUR", "BRL"]).slice(0, 4);
+        }
+        if (type === "calendar") {
+            return getSupportedValues("calendar", ["gregory", "japanese", "buddhist", "islamic"]).slice(0, 4);
+        }
+        return samplesByType[type] || samplesByType.region;
+    }
+
+    function syncDisplayCodes() {
+        $("#display-codes").value = getDisplayCodeSamples($("#display-type").value).join("\n");
+    }
+
+    function formatError(error) {
+        return error && error.message ? error.message : String(error);
+    }
+
+    function getResolvedLabel(formatter) {
+        if (!formatter || typeof formatter.resolvedOptions !== "function") {
+            return "";
+        }
+        const options = formatter.resolvedOptions();
+        return options.locale || "";
+    }
+
+    function jsValue(value) {
+        if (typeof value === "number" || typeof value === "boolean") {
+            return String(value);
+        }
+        return JSON.stringify(value);
+    }
+
+    function optionBlock(entries) {
+        const lines = entries
+            .filter(([, value]) => value !== "" && value !== undefined && value !== null)
+            .map(([key, value]) => `  ${key}: ${jsValue(value)}`);
+        return lines.length ? `{\n${lines.join(",\n")}\n}` : "{}";
+    }
+
+    function getCurrentSample(name) {
+        const locale = getLocales()[0] || "ja-JP";
+        if (name === "number") {
+            const style = $("#number-style").value;
+            const options = [
+                ["style", style],
+                ["notation", $("#number-notation").value],
+                ["maximumFractionDigits", Number($("#number-digits").value)]
+            ];
+            if (style === "currency") options.push(["currency", $("#number-currency").value]);
+            if (style === "unit") options.push(["unit", $("#number-unit").value]);
+            return `const nf = new Intl.NumberFormat(${jsValue(locale)}, ${optionBlock(options)});\nnf.format(${Number($("#number-input").value)});`;
+        }
+        if (name === "date") {
+            return `const df = new Intl.DateTimeFormat(${jsValue(locale)}, ${optionBlock([
+                ["dateStyle", $("#date-style").value],
+                ["timeStyle", $("#time-style").value],
+                ["timeZone", $("#date-time-zone").value],
+                ["calendar", $("#date-calendar").value],
+                ["hourCycle", $("#date-hour-cycle").value]
+            ])});\ndf.format(new Date(${jsValue($("#date-input").value)}));`;
+        }
+        if (name === "relative") {
+            return `const rtf = new Intl.RelativeTimeFormat(${jsValue(locale)}, ${optionBlock([
+                ["numeric", $("#relative-numeric").value],
+                ["style", $("#relative-style").value]
+            ])});\nrtf.format(${Number($("#relative-value").value)}, ${jsValue($("#relative-unit").value)});`;
+        }
+        if (name === "list") {
+            return `const lf = new Intl.ListFormat(${jsValue(locale)}, ${optionBlock([
+                ["type", $("#list-type").value],
+                ["style", $("#list-style").value]
+            ])});\nlf.format(${JSON.stringify(parseList($("#list-items").value))});`;
+        }
+        if (name === "plural") {
+            return `const pr = new Intl.PluralRules(${jsValue(locale)}, ${optionBlock([
+                ["type", $("#plural-type").value]
+            ])});\npr.select(${Number($("#plural-value").value)});`;
+        }
+        if (name === "collator") {
+            return `const collator = new Intl.Collator(${jsValue(locale)}, ${optionBlock([
+                ["sensitivity", $("#collator-sensitivity").value],
+                ["numeric", $("#collator-numeric").value === "true"]
+            ])});\n${JSON.stringify(parseList($("#collator-items").value))}.sort(collator.compare);`;
+        }
+        if (name === "segmenter") {
+            return `const segmenter = new Intl.Segmenter(${jsValue(locale)}, ${optionBlock([
+                ["granularity", $("#segmenter-granularity").value]
+            ])});\nArray.from(segmenter.segment(${jsValue($("#segmenter-text").value)}));`;
+        }
+        if (name === "display") {
+            const type = $("#display-type").value;
+            const codes = parseList($("#display-codes").value)
+                .map((code) => type === "currency" ? code.toUpperCase() : code);
+            return `const dn = new Intl.DisplayNames(${jsValue(locale)}, ${optionBlock([
+                ["type", type],
+                ["style", $("#display-style").value],
+                ["fallback", "code"]
+            ])});\n${JSON.stringify(codes)}.map((code) => dn.of(code));`;
+        }
+        if (name === "locale") {
+            const tag = parseList($("#locale-tags").value)[0] || locale;
+            return `const locale = new Intl.Locale(${jsValue(tag)});\nlocale.toString();`;
+        }
+        if (name === "values") {
+            const key = $("#values-key").value;
+            const filter = $("#values-filter").value.trim().toLowerCase();
+            const base = `Intl.supportedValuesOf(${jsValue(key)})`;
+            return filter
+                ? `${base}.filter((value) => value.includes(${jsValue(filter)}));`
+                : `${base};`;
+        }
+        return samples[name] || "";
+    }
+
+    function renderResults(target, formatterName, rows, unitLabel = "ローケル") {
+        const toggle = `
+            <div class="view-toggle" role="group" aria-label="結果表示">
+                <button class="view-button" type="button" data-view="card" aria-pressed="${state.resultView === "card"}">カード</button>
+                <button class="view-button" type="button" data-view="table" aria-pressed="${state.resultView === "table"}">Table</button>
+            </div>
+        `;
+        const body = state.resultView === "table"
+            ? `
+                <div class="result-table-wrap">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>${escapeHtml(unitLabel)}</th>
+                                <th>resolved</th>
+                                <th>result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows.map((row) => `
+                                <tr>
+                                    <td>${row.labelHtml || `<code>${escapeHtml(row.label)}</code>`}</td>
+                                    <td>${escapeHtml(row.resolved || "")}</td>
+                                    <td>${row.html || escapeHtml(row.output)}</td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                </div>
+            `
+            : `<div class="locale-grid">${rows.map((row) => `
+                <article class="locale-card${row.error ? " is-error" : ""}">
+                    <div class="locale-head">
+                        <span class="locale-code">${row.labelHtml || escapeHtml(row.label)}</span>
+                        <span class="resolved-locale">${escapeHtml(row.resolved || "")}</span>
+                    </div>
+                    <div class="locale-output">${row.html || escapeHtml(row.output)}</div>
+                </article>
+            `).join("")}</div>`;
+
+        $(target).innerHTML = `
+            <div class="results-head">
+                <p class="result-meta">${escapeHtml(formatterName)}: ${rows.length} ${escapeHtml(unitLabel)}を実行</p>
+                ${toggle}
+            </div>
+            ${body}
+        `;
+    }
+
+    function renderLocaleCards(target, formatterName, build) {
+        const locales = getLocales();
+        const rows = locales.map((locale) => {
+            try {
+                const result = build(locale);
+                return {
+                    label: locale,
+                    labelHtml: localeLabelHtml(locale),
+                    output: result.output,
+                    html: result.html,
+                    resolved: result.resolved
+                };
+            } catch (error) {
+                return {
+                    label: locale,
+                    labelHtml: localeLabelHtml(locale),
+                    output: formatError(error),
+                    resolved: "error",
+                    error: true
+                };
+            }
+        });
+        renderResults(target, formatterName, rows);
+    }
+
+    function numberOptions() {
+        const style = $("#number-style").value;
+        const options = {
+            style,
+            notation: $("#number-notation").value,
+            maximumFractionDigits: Number($("#number-digits").value)
+        };
+        if (style === "currency") {
+            options.currency = $("#number-currency").value;
+        }
+        if (style === "unit") {
+            options.unit = $("#number-unit").value;
+        }
+        return options;
+    }
+
+    function renderNumber() {
+        renderLocaleCards("[data-results='number']", "Intl.NumberFormat", (locale) => {
+            const formatter = new Intl.NumberFormat(locale, numberOptions());
+            return {
+                output: formatter.format(Number($("#number-input").value)),
+                resolved: getResolvedLabel(formatter),
+                detail: escapeHtml(JSON.stringify(formatter.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderDate() {
+        renderLocaleCards("[data-results='date']", "Intl.DateTimeFormat", (locale) => {
+            const options = {
+                timeZone: $("#date-time-zone").value
+            };
+            const dateStyle = $("#date-style").value;
+            const timeStyle = $("#time-style").value;
+            const calendar = $("#date-calendar").value;
+            const hourCycle = $("#date-hour-cycle").value;
+            if (dateStyle) options.dateStyle = dateStyle;
+            if (timeStyle) options.timeStyle = timeStyle;
+            if (calendar) options.calendar = calendar;
+            if (hourCycle) options.hourCycle = hourCycle;
+            const formatter = new Intl.DateTimeFormat(locale, options);
+            const date = new Date($("#date-input").value);
+            return {
+                output: formatter.format(date),
+                resolved: getResolvedLabel(formatter),
+                detail: escapeHtml(JSON.stringify(formatter.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderRelative() {
+        if (!isSupported("RelativeTimeFormat")) {
+            $("[data-results='relative']").innerHTML = `<p class="status-text error">このブラウザは Intl.RelativeTimeFormat に対応していません。</p>`;
+            return;
+        }
+        renderLocaleCards("[data-results='relative']", "Intl.RelativeTimeFormat", (locale) => {
+            const formatter = new Intl.RelativeTimeFormat(locale, {
+                numeric: $("#relative-numeric").value,
+                style: $("#relative-style").value
+            });
+            return {
+                output: formatter.format(Number($("#relative-value").value), $("#relative-unit").value),
+                resolved: getResolvedLabel(formatter),
+                detail: escapeHtml(JSON.stringify(formatter.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderList() {
+        if (!isSupported("ListFormat")) {
+            $("[data-results='list']").innerHTML = `<p class="status-text error">このブラウザは Intl.ListFormat に対応していません。</p>`;
+            return;
+        }
+        renderLocaleCards("[data-results='list']", "Intl.ListFormat", (locale) => {
+            const formatter = new Intl.ListFormat(locale, {
+                type: $("#list-type").value,
+                style: $("#list-style").value
+            });
+            return {
+                output: formatter.format(parseList($("#list-items").value)),
+                resolved: getResolvedLabel(formatter),
+                detail: escapeHtml(JSON.stringify(formatter.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderPlural() {
+        renderLocaleCards("[data-results='plural']", "Intl.PluralRules", (locale) => {
+            const formatter = new Intl.PluralRules(locale, {
+                type: $("#plural-type").value
+            });
+            const value = Number($("#plural-value").value);
+            const samples = [0, 1, 2, 3, 5, 10, 21, 101]
+                .map((sample) => `${sample}: ${formatter.select(sample)}`)
+                .join(" / ");
+            return {
+                output: `${value}: ${formatter.select(value)}`,
+                resolved: getResolvedLabel(formatter),
+                detail: escapeHtml(samples)
+            };
+        });
+    }
+
+    function renderCollator() {
+        renderLocaleCards("[data-results='collator']", "Intl.Collator", (locale) => {
+            const collator = new Intl.Collator(locale, {
+                sensitivity: $("#collator-sensitivity").value,
+                numeric: $("#collator-numeric").value === "true"
+            });
+            const sorted = parseList($("#collator-items").value).sort(collator.compare);
+            return {
+                output: sorted.join(" / "),
+                resolved: getResolvedLabel(collator),
+                detail: escapeHtml(JSON.stringify(collator.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderSegmenter() {
+        if (!isSupported("Segmenter")) {
+            $("[data-results='segmenter']").innerHTML = `<p class="status-text error">このブラウザは Intl.Segmenter に対応していません。</p>`;
+            return;
+        }
+        renderLocaleCards("[data-results='segmenter']", "Intl.Segmenter", (locale) => {
+            const segmenter = new Intl.Segmenter(locale, {
+                granularity: $("#segmenter-granularity").value
+            });
+            const segments = Array.from(segmenter.segment($("#segmenter-text").value)).slice(0, 40);
+            const tokens = segments.map((item) => {
+                const suffix = item.isWordLike === false ? " aria-label=\"word-like false\"" : "";
+                return `<span class="segment-token"${suffix}>${escapeHtml(item.segment)}</span>`;
+            }).join("");
+            return {
+                html: `<div class="segment-list">${tokens}</div>`,
+                resolved: getResolvedLabel(segmenter),
+                detail: `${segments.length} segments shown${segments.length === 40 ? " (truncated)" : ""}`
+            };
+        });
+    }
+
+    function renderDisplay() {
+        if (!isSupported("DisplayNames")) {
+            $("[data-results='display']").innerHTML = `<p class="status-text error">このブラウザは Intl.DisplayNames に対応していません。</p>`;
+            return;
+        }
+        renderLocaleCards("[data-results='display']", "Intl.DisplayNames", (locale) => {
+            const type = $("#display-type").value;
+            const displayNames = new Intl.DisplayNames(locale, {
+                type,
+                style: $("#display-style").value,
+                fallback: "code"
+            });
+            const rows = parseList($("#display-codes").value)
+                .map((code) => {
+                    const normalizedCode = type === "currency" ? code.toUpperCase() : code;
+                    try {
+                        return `${normalizedCode}: ${displayNames.of(normalizedCode)}`;
+                    } catch (error) {
+                        return `${normalizedCode}: ${formatError(error)}`;
+                    }
+                })
+                .join(" / ");
+            return {
+                output: rows,
+                resolved: getResolvedLabel(displayNames),
+                detail: escapeHtml(JSON.stringify(displayNames.resolvedOptions()))
+            };
+        });
+    }
+
+    function renderLocale() {
+        if (!isSupported("Locale")) {
+            $("[data-results='locale']").innerHTML = `<p class="status-text error">このブラウザは Intl.Locale に対応していません。</p>`;
+            return;
+        }
+        const tags = parseList($("#locale-tags").value);
+        const rows = tags.map((tag) => {
+            try {
+                const locale = new Intl.Locale(tag);
+                return {
+                    label: tag,
+                    labelHtml: localeLabelHtml(tag),
+                    output: locale.toString(),
+                    resolved: [locale.language, locale.region].filter(Boolean).join("-") || "Intl.Locale"
+                };
+            } catch (error) {
+                return {
+                    label: tag,
+                    labelHtml: localeLabelHtml(tag),
+                    output: formatError(error),
+                    resolved: "error",
+                    error: true
+                };
+            }
+        });
+        renderResults("[data-results='locale']", "Intl.Locale", rows, "タグ");
+    }
+
+    function renderValues() {
+        if (typeof Intl.supportedValuesOf !== "function") {
+            $("[data-results='values']").innerHTML = `<p class="status-text error">このブラウザは Intl.supportedValuesOf() に対応していません。</p>`;
+            return;
+        }
+        const key = $("#values-key").value;
+        const filter = $("#values-filter").value.trim().toLowerCase();
+        try {
+            const values = Intl.supportedValuesOf(key)
+                .filter((value) => !filter || value.toLowerCase().includes(filter));
+            const shown = values.slice(0, 240);
+            const rows = shown.map((value) => ({
+                label: key,
+                output: value,
+                resolved: "supported"
+            }));
+            renderResults("[data-results='values']", `Intl.supportedValuesOf("${key}")${values.length > shown.length ? " 先頭240件" : ""}`, rows, "値");
+        } catch (error) {
+            $("[data-results='values']").innerHTML = `<p class="status-text error">${escapeHtml(formatError(error))}</p>`;
+        }
+    }
+
+    const renderers = {
+        number: renderNumber,
+        date: renderDate,
+        relative: renderRelative,
+        list: renderList,
+        plural: renderPlural,
+        collator: renderCollator,
+        segmenter: renderSegmenter,
+        display: renderDisplay,
+        locale: renderLocale,
+        values: renderValues
+    };
+
+    function renderActive() {
+        updateLocaleToolbarVisibility();
+        updateSampleCode(state.activeTab);
+        renderers[state.activeTab]();
+    }
+
+    function setTab(name) {
+        state.activeTab = name;
+        $$(".tab-button").forEach((button) => {
+            const selected = button.dataset.tab === name;
+            button.setAttribute("aria-selected", String(selected));
+            button.tabIndex = selected ? 0 : -1;
+        });
+        $$(".tab-panel").forEach((panel) => {
+            panel.classList.toggle("is-active", panel.dataset.panel === name);
+        });
+        renderApiInfo();
+        renderActive();
+    }
+
+    function setupTabs() {
+        $$(".tab-button").forEach((button) => {
+            button.addEventListener("click", () => setTab(button.dataset.tab));
+            button.addEventListener("keydown", (event) => {
+                const buttons = $$(".tab-button");
+                const current = buttons.indexOf(button);
+                let next = current;
+                if (event.key === "ArrowRight" || event.key === "ArrowDown") next = (current + 1) % buttons.length;
+                if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = (current - 1 + buttons.length) % buttons.length;
+                if (event.key === "Home") next = 0;
+                if (event.key === "End") next = buttons.length - 1;
+                if (next !== current) {
+                    event.preventDefault();
+                    buttons[next].focus();
+                    setTab(buttons[next].dataset.tab);
+                }
+            });
+        });
+    }
+
+    function highlightCode(code) {
+        return escapeHtml(code)
+            .replace(/(&quot;[^&]*?&quot;)/g, '<span class="token-string">$1</span>')
+            .replace(/\b(const|new|return|true|false)\b/g, '<span class="token-keyword">$1</span>')
+            .replace(/\b(Intl\.[A-Za-z]+|Intl\.supportedValuesOf|Array|Date)\b/g, '<span class="token-class">$1</span>')
+            .replace(/\b([a-zA-Z]+)(?=:)/g, '<span class="token-property">$1</span>')
+            .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="token-number">$1</span>');
+    }
+
+    function renderApiInfo() {
+        const info = apiInfo[state.activeTab];
+        if (!info) return;
+        $("#api-card-slot").innerHTML = `
+            <section class="api-card" aria-label="${escapeHtml(info.title)} の説明">
+                <h2>${escapeHtml(info.title)}</h2>
+                <p>${escapeHtml(info.description)}</p>
+                <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">MDN を開く</a>
+            </section>
+        `;
+    }
+
+    function updateLocaleToolbarVisibility() {
+        const toolbar = $(".locale-toolbar");
+        if (!toolbar) return;
+        toolbar.classList.toggle("is-hidden", !localeCompareTabs.has(state.activeTab));
+    }
+
+    function renderLocalePills() {
+        const supportedLocales = state.supportedLocales;
+        const visibleLocales = state.showAllLocales
+            ? supportedLocales
+            : supportedLocales.filter((locale) => state.locales.includes(locale));
+        $("#locale-pills").innerHTML = `
+            ${visibleLocales.map((locale) => `
+                <button class="locale-pill" type="button" aria-pressed="${state.locales.includes(locale)}" data-locale="${escapeHtml(locale)}">${localeLabelHtml(locale)}</button>
+            `).join("")}
+            <button class="locale-pill locale-more" type="button" data-locale-more aria-pressed="${state.showAllLocales}" aria-label="${state.showAllLocales ? "supported ローケルを収納" : "supported ローケルをすべて表示"}">...</button>
+        `;
+    }
+
+    function setupSamples() {
+        $$(".tab-panel").forEach((panel) => {
+            const sample = getCurrentSample(panel.dataset.panel);
+            let introHtml = "";
+            if (sample) {
+                introHtml += `
+                    <div class="code-card">
+                        <div class="code-toolbar">
+                            <span>Sample</span>
+                            <button class="copy-code" type="button" data-copy-code="${escapeHtml(panel.dataset.panel)}">Copy</button>
+                        </div>
+                        <pre class="sample-code"><code data-sample-code="${escapeHtml(panel.dataset.panel)}">${highlightCode(sample)}</code></pre>
+                    </div>
+                `;
+            }
+            if (introHtml) {
+                panel.insertAdjacentHTML("afterbegin", introHtml);
+            }
+        });
+    }
+
+    function updateSampleCode(name) {
+        const code = $(`[data-sample-code='${name}']`);
+        if (!code) return;
+        code.innerHTML = highlightCode(getCurrentSample(name));
+    }
+
+    function setupLocalePills() {
+        const supportedLocales = getBrowserSupportedLocales();
+        state.supportedLocales = supportedLocales;
+        state.locales = supportedLocales.slice(0, 16);
+        renderLocalePills();
+        $("#locale-pills").addEventListener("click", (event) => {
+            const moreButton = event.target.closest("[data-locale-more]");
+            if (moreButton) {
+                state.showAllLocales = !state.showAllLocales;
+                renderLocalePills();
+                return;
+            }
+            const button = event.target.closest(".locale-pill");
+            if (!button) return;
+            const locale = button.dataset.locale;
+            const enabled = !state.locales.includes(locale);
+            state.locales = enabled
+                ? [...state.locales, locale]
+                : state.locales.filter((item) => item !== locale);
+            if (!state.locales.length) {
+                state.locales = [locale];
+            }
+            renderLocalePills();
+            renderActive();
+        });
+    }
+
+    function setupSupportedValueLists() {
+        replaceSelectOptions("#number-currency", getSupportedValues("currency", ["JPY", "USD", "EUR", "GBP", "CNY", "INR"]), "USD");
+        replaceSelectOptions("#number-unit", getSupportedValues("unit", ["kilometer", "meter", "liter", "celsius", "byte"]), "kilometer");
+        replaceSelectOptions("#date-time-zone", getSupportedValues("timeZone", ["Asia/Tokyo", "UTC", "America/New_York", "Europe/London", "Asia/Kolkata"]), "Asia/Tokyo");
+        const calendars = getSupportedValues("calendar", ["gregory", "japanese", "buddhist", "islamic", "hebrew"]);
+        const dateCalendar = $("#date-calendar");
+        if (dateCalendar && calendars.length) {
+            dateCalendar.innerHTML = `<option value="">既定</option>${calendars
+                .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+                .join("")}`;
+        }
+        syncDisplayCodes();
+        $("#display-type").addEventListener("change", () => {
+            syncDisplayCodes();
+        });
+    }
+
+    function setupCopyButtons() {
+        function fallbackCopy(code) {
+            const textarea = document.createElement("textarea");
+            textarea.value = code;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.left = "-9999px";
+            document.body.append(textarea);
+            textarea.focus();
+            textarea.select();
+            textarea.setSelectionRange(0, code.length);
+            document.execCommand("copy");
+            textarea.remove();
+        }
+
+        $$(".copy-code").forEach((button) => {
+            button.addEventListener("click", async () => {
+                const code = getCurrentSample(button.dataset.copyCode);
+                try {
+                    try {
+                        if (!navigator.clipboard || !window.isSecureContext) {
+                            throw new Error("clipboard api unavailable");
+                        }
+                        await navigator.clipboard.writeText(code);
+                    } catch (error) {
+                        fallbackCopy(code);
+                    }
+                    button.textContent = "Copied";
+                    window.setTimeout(() => {
+                        button.textContent = "Copy";
+                    }, 1200);
+                } catch (error) {
+                    button.textContent = "Failed";
+                    window.setTimeout(() => {
+                        button.textContent = "Copy";
+                    }, 1200);
+                }
+            });
+        });
+    }
+
+    function setupResultViewToggle() {
+        document.addEventListener("click", (event) => {
+            const button = event.target.closest(".view-button");
+            if (!button) return;
+            state.resultView = button.dataset.view;
+            renderActive();
+        });
+    }
+
+    function setupControls() {
+        const controls = $$("input, select, textarea");
+        controls.forEach((element) => {
+            element.addEventListener("input", renderActive);
+            element.addEventListener("change", renderActive);
+        });
+    }
+
+    function init() {
+        setupTabs();
+        setupLocalePills();
+        setupSupportedValueLists();
+        setupSamples();
+        setupCopyButtons();
+        setupResultViewToggle();
+        setupControls();
+        renderApiInfo();
+        renderActive();
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>
