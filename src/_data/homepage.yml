@@ -27,6 +27,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./articles/intl.html
+    featured: false
+    title:
+      ja: Intl API 比較ビューア
+      en: Intl API Comparison Viewer
+    year: 2026
+    description_html:
+      ja: JavaScript の Intl API を一覧比較し、ローケル別に主要コンストラクターの出力差を確認する実験ページ
+      en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
+    tags:
+      - Article
+      - Intl
+      - JavaScript
+      - Misc
+    placeholder:
+      class: placeholder-article
+      emoji: 🌐
   - href: ./pixelate/
     featured: false
     title:
@@ -43,6 +60,23 @@ works:
     image:
       src: ./images/i30.png
       alt: Pixel Grid Studio
+  - href: ./articles/zustand.html
+    featured: false
+    title:
+      ja: Zustand 実践メモ
+      en: Practical Zustand Notes
+    year: 2026
+    description_html:
+      ja: React で Zustand を使うときの基本、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモ
+      en: Practical notes on Zustand basics, selectors, typing, middleware, SSR, and design trade-offs in React.
+    tags:
+      - Article
+      - Zustand
+      - React
+      - JavaScript
+    placeholder:
+      class: placeholder-article
+      emoji: 🐻
   - href: ./stitch/
     featured: false
     title:
@@ -228,6 +262,72 @@ works:
     image:
       src: ./images/i16.png
       alt: nanotation
+  - href: ./misc/online-video-converter.html
+    featured: false
+    title:
+      ja: ブラウザ上で完結する動画変換ツール
+      en: Browser-only Video Converter
+    year: 2026
+    description_html:
+      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ
+      en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
+    tags:
+      - WebCodecs
+      - Video
+      - Misc
+      - Media
+    placeholder:
+      class: placeholder-video
+      emoji: 🎞️
+  - href: ./deaatable/
+    featured: false
+    title:
+      ja: AsciiArt Table Parser
+      en: AsciiArt Table Parser
+    year: 2026
+    description_html:
+      ja: アスキーアート等のテーブルを解析してプレーンにするツール
+      en: A tool that parses ASCII-art style tables and turns them into plain structured text.
+    tags:
+      - Parser
+      - Text
+      - Misc
+    placeholder:
+      class: placeholder-code
+      emoji: ▦
+  - href: ./articles/zip.html
+    featured: false
+    title:
+      ja: Compression APIを用いたJS単体でのZIP生成
+      en: ZIP Generation in Plain JavaScript with Compression API
+    year: 2026
+    description_html:
+      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事
+      en: An article explaining how to generate ZIP files in JavaScript with the Compression API.
+    tags:
+      - Article
+      - Compression
+      - Misc
+    placeholder:
+      class: placeholder-article
+      emoji: 📦
+  - href: ./articles/mp4.html
+    featured: false
+    title:
+      ja: WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成
+      en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
+    year: 2026
+    description_html:
+      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事
+      en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
+    tags:
+      - Article
+      - MP4
+      - Misc
+      - Media
+    placeholder:
+      class: placeholder-article
+      emoji: 🎬
   - href: ./subleq-ide/
     featured: false
     title:
@@ -246,23 +346,6 @@ works:
     image:
       src: ./images/i18.png
       alt: Subleq Compiler
-  - href: ./flowtimer/
-    featured: false
-    title:
-      ja: FlowTimer
-      en: FlowTimer
-    year: 2025
-    description_html:
-      ja: 発表中に必要な残り時間と進行状態だけを見やすく保つ、登壇者向けの最小タイマー。
-      en: >-
-        A minimal presentation timer focused on the remaining time and progress state a speaker needs while
-        presenting.
-    tags:
-      - Timer
-      - Presentation
-    image:
-      src: ./images/i15.png
-      alt: FlowTimer
   - href: ./pdf2md/
     featured: false
     title:
@@ -295,6 +378,23 @@ works:
     image:
       src: ./images/i17.png
       alt: pdf-toc-tool
+  - href: ./flowtimer/
+    featured: false
+    title:
+      ja: FlowTimer
+      en: FlowTimer
+    year: 2025
+    description_html:
+      ja: 発表中に必要な残り時間と進行状態だけを見やすく保つ、登壇者向けの最小タイマー。
+      en: >-
+        A minimal presentation timer focused on the remaining time and progress state a speaker needs while
+        presenting.
+    tags:
+      - Timer
+      - Presentation
+    image:
+      src: ./images/i15.png
+      alt: FlowTimer
   - href: ./pdf-unbinder/
     featured: false
     title:
@@ -310,6 +410,56 @@ works:
     image:
       src: ./images/i14.png
       alt: PDFUnbinder in Browser
+  - href: ./misc/brownkan.html
+    featured: false
+    title:
+      ja: ブラウン管テレビ風 画像エフェクター
+      en: CRT-style Image Effector
+    year: 2025
+    description_html:
+      ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト
+      en: A WebGL image effect tool that processes images into a CRT television look.
+    tags:
+      - WebGL
+      - Image
+      - Misc
+      - Visualization
+    placeholder:
+      class: placeholder-image
+      emoji: 📺
+  - href: ./misc/gabigabi.html
+    featured: false
+    title:
+      ja: JPEGガビガビ化ツール
+      en: JPEG Artifact Generator
+    year: 2025
+    description_html:
+      ja: JPEG圧縮を繰り返してガビガビ質感を作るツール
+      en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
+    tags:
+      - Image
+      - Effect
+      - Misc
+      - Visualization
+    placeholder:
+      class: placeholder-image
+      emoji: 🖼️
+  - href: ./misc/img2pdf.html
+    featured: false
+    title:
+      ja: Images to PDF
+      en: Images to PDF
+    year: 2025
+    description_html:
+      ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
+      en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
+    tags:
+      - Media
+      - Image
+      - Misc
+    placeholder:
+      class: placeholder-data
+      emoji: 🧾
   - href: /mnist-viz
     featured: false
     title:
@@ -330,6 +480,54 @@ works:
     image:
       src: ./images/i13.png
       alt: MNIST UMAP Visualization
+  - href: ./misc/nahuatl.html
+    featured: false
+    title:
+      ja: ナワトルテキスト補助
+      en: Nahuatl Text Helper
+    year: 2024
+    description_html:
+      ja: ナワトル語の長音記号入力を補助するテキストエディタ
+      en: A text editor that helps input long-vowel marks for Nahuatl.
+    tags:
+      - Editor
+      - Language
+      - Misc
+    placeholder:
+      class: placeholder-text
+      emoji: ✍️
+  - href: ./misc/safetensors.html
+    featured: false
+    title:
+      ja: Safetensors metadata viewer
+      en: Safetensors Metadata Viewer
+    year: 2023
+    description_html:
+      ja: safetensors ファイルのメタデータを表示するビューア
+      en: A viewer for inspecting metadata inside safetensors files.
+    tags:
+      - Viewer
+      - Metadata
+      - Misc
+    placeholder:
+      class: placeholder-data
+      emoji: 🧬
+  - href: ./misc/jinja2.html
+    featured: false
+    title:
+      ja: Jinja2 Template Renderer
+      en: Jinja2 Template Renderer
+    year: 2022
+    description_html:
+      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー
+      en: A browser renderer that runs Jinja2 templates on Pyodide.
+    tags:
+      - Pyodide
+      - Template
+      - Misc
+    placeholder:
+      class: placeholder-code
+      emoji: 🧩
   - href: /cedict
     featured: false
     title:
@@ -399,25 +597,6 @@ works:
     image:
       src: ./images/i7.png
       alt: Kantele
-  - href: ./rogyAdC2015
-    featured: false
-    title:
-      ja: dynamorphism の紹介
-      en: Introduction to Dynamorphism
-    year: 2015
-    description_html:
-      ja: >-
-        <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a>
-        のために書いた、関数型プログラミングで動的計画法を行う手法の紹介記事。
-      en: >-
-        A technical article explaining dynamic programming as a functional fold, written with diagrams for
-        rogy Advent Calendar.
-    tags:
-      - Article
-      - Functional Programming
-    image:
-      src: ./images/i6.png
-      alt: dynamorphism の紹介
   - href: ./neural-network_v2
     featured: true
     title:
@@ -439,6 +618,25 @@ works:
     image:
       src: ./images/i3.png
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
+  - href: ./rogyAdC2015
+    featured: false
+    title:
+      ja: dynamorphism の紹介
+      en: Introduction to Dynamorphism
+    year: 2015
+    description_html:
+      ja: >-
+        <a href="http://www.adventar.org/calendars/885">rogy Advent Calendar</a>
+        のために書いた、関数型プログラミングで動的計画法を行う手法の紹介記事。
+      en: >-
+        A technical article explaining dynamic programming as a functional fold, written with diagrams for
+        rogy Advent Calendar.
+    tags:
+      - Article
+      - Functional Programming
+    image:
+      src: ./images/i6.png
+      alt: dynamorphism の紹介
   - href: ./neural-network
     featured: false
     title:
@@ -456,184 +654,3 @@ works:
     image:
       src: ./images/i2.png
       alt: ニューラルネットワークの可視化
-  - href: ./misc/online-video-converter.html
-    featured: false
-    title:
-      ja: ブラウザ上で完結する動画変換ツール
-      en: Browser-only Video Converter
-    year: 2026
-    description_html:
-      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ
-      en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
-    tags:
-      - WebCodecs
-      - Video
-      - Misc
-      - Media
-    placeholder:
-      class: placeholder-video
-      emoji: 🎞️
-  - href: ./articles/mp4.html
-    featured: false
-    title:
-      ja: WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成
-      en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
-    year: 2026
-    description_html:
-      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事
-      en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
-    tags:
-      - Article
-      - MP4
-      - Misc
-      - Media
-    placeholder:
-      class: placeholder-article
-      emoji: 🎬
-  - href: ./articles/intl.html
-    featured: false
-    title:
-      ja: Intl API 比較ビューア
-      en: Intl API Comparison Viewer
-    year: 2026
-    description_html:
-      ja: JavaScript の Intl API を一覧比較し、ローケル別に主要コンストラクターの出力差を確認する実験ページ
-      en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
-    tags:
-      - Article
-      - Intl
-      - JavaScript
-      - Misc
-    placeholder:
-      class: placeholder-article
-      emoji: 🌐
-  - href: ./articles/zip.html
-    featured: false
-    title:
-      ja: Compression APIを用いたJS単体でのZIP生成
-      en: ZIP Generation in Plain JavaScript with Compression API
-    year: 2026
-    description_html:
-      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事
-      en: An article explaining how to generate ZIP files in JavaScript with the Compression API.
-    tags:
-      - Article
-      - Compression
-      - Misc
-    placeholder:
-      class: placeholder-article
-      emoji: 📦
-  - href: ./deaatable/
-    featured: false
-    title:
-      ja: AsciiArt Table Parser
-      en: AsciiArt Table Parser
-    year: 2026
-    description_html:
-      ja: アスキーアート等のテーブルを解析してプレーンにするツール
-      en: A tool that parses ASCII-art style tables and turns them into plain structured text.
-    tags:
-      - Parser
-      - Text
-      - Misc
-    placeholder:
-      class: placeholder-code
-      emoji: ▦
-  - href: ./misc/brownkan.html
-    featured: false
-    title:
-      ja: ブラウン管テレビ風 画像エフェクター
-      en: CRT-style Image Effector
-    year: 2025
-    description_html:
-      ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト
-      en: A WebGL image effect tool that processes images into a CRT television look.
-    tags:
-      - WebGL
-      - Image
-      - Misc
-      - Visualization
-    placeholder:
-      class: placeholder-image
-      emoji: 📺
-  - href: ./misc/gabigabi.html
-    featured: false
-    title:
-      ja: JPEGガビガビ化ツール
-      en: JPEG Artifact Generator
-    year: 2025
-    description_html:
-      ja: JPEG圧縮を繰り返してガビガビ質感を作るツール
-      en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
-    tags:
-      - Image
-      - Effect
-      - Misc
-      - Visualization
-    placeholder:
-      class: placeholder-image
-      emoji: 🖼️
-  - href: ./misc/img2pdf.html
-    featured: false
-    title:
-      ja: Images to PDF
-      en: Images to PDF
-    year: 2025
-    description_html:
-      ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
-      en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
-    tags:
-      - Media
-      - Image
-      - Misc
-    placeholder:
-      class: placeholder-data
-      emoji: 🧾
-  - href: ./misc/nahuatl.html
-    featured: false
-    title:
-      ja: ナワトルテキスト補助
-      en: Nahuatl Text Helper
-    year: 2024
-    description_html:
-      ja: ナワトル語の長音記号入力を補助するテキストエディタ
-      en: A text editor that helps input long-vowel marks for Nahuatl.
-    tags:
-      - Editor
-      - Language
-      - Misc
-    placeholder:
-      class: placeholder-text
-      emoji: ✍️
-  - href: ./misc/safetensors.html
-    featured: false
-    title:
-      ja: Safetensors metadata viewer
-      en: Safetensors Metadata Viewer
-    year: 2023
-    description_html:
-      ja: safetensors ファイルのメタデータを表示するビューア
-      en: A viewer for inspecting metadata inside safetensors files.
-    tags:
-      - Viewer
-      - Metadata
-      - Misc
-    placeholder:
-      class: placeholder-data
-      emoji: 🧬
-  - href: ./misc/jinja2.html
-    featured: false
-    title:
-      ja: Jinja2 Template Renderer
-      en: Jinja2 Template Renderer
-    year: 2022
-    description_html:
-      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー
-      en: A browser renderer that runs Jinja2 templates on Pyodide.
-    tags:
-      - Pyodide
-      - Template
-      - Misc
-    placeholder:
-      class: placeholder-code
-      emoji: 🧩
