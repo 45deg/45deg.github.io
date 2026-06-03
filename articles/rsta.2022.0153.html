@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ベイズ因果推論：批判的レビューと最先端の展開</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f7fa',
+                            100: '#e4e8f0',
+                            500: '#2c3e50',
+                            600: '#1a252f',
+                            700: '#11171d',
+                            accent: '#3498db',
+                            teal: '#0d9488'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['BIZ UDPGothic', 'Noto Sans JP', 'Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- KaTeX for beautiful math equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Chart.js for interactive simulations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Lucide icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        .sidebar-active {
+            border-left-color: #3498db;
+            color: #3498db;
+            background-color: #e4e8f0;
+        }
+
+    </style>
+</head>
+<body class="bg-brand-50 text-gray-800 font-sans leading-relaxed min-h-screen">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-brand-700 via-brand-600 to-brand-500 text-white shadow-lg relative overflow-hidden py-12 px-6 md:px-12">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-accent opacity-10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div class="space-y-4 max-w-4xl">
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                    ベイズ因果推論：潜在結果枠組みに基づく批判的レビュー
+                </h1>
+                <p class="text-lg text-gray-300 font-light leading-relaxed">
+                    Li, F., Ding, P., &amp; Mealli, F. (2023) "Bayesian causal inference: a critical review" の邦訳解説とインタラクティブ・シミュレーション
+                </p>
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-300">
+                    <span class="flex items-center gap-1">
+                        <i data-lucide="users" class="w-4 h-4 text-brand-accent"></i>
+                        Fan Li (Duke 大), Peng Ding (UC Berkeley), Fabrizia Mealli (フィレンツェ大)
+                    </span>
+                    <a href="https://royalsocietypublishing.org/rsta/article/381/2247/20220153/112422/Bayesian-causal-inference-a-critical"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="flex items-center gap-1 hover:text-white underline decoration-brand-accent/60 underline-offset-4 transition duration-150">
+                        <i data-lucide="book-open" class="w-4 h-4 text-brand-accent"></i>
+                        Phil. Trans. R. Soc. A 381: 20220153
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Navigation Stats -->
+            <div class="bg-brand-700/50 backdrop-blur-md border border-white/10 p-6 rounded-2xl flex flex-col gap-4 text-center md:text-left min-w-[240px]">
+                <div class="text-sm text-gray-400 font-bold tracking-widest uppercase">レポート・プレビュー</div>
+                <div class="flex justify-around md:justify-start gap-6">
+                    <div>
+                        <div class="text-3xl font-extrabold text-white">7</div>
+                        <div class="text-sm text-gray-300">大セクション</div>
+                    </div>
+                    <div class="border-r border-white/10"></div>
+                    <div>
+                        <div class="text-3xl font-extrabold text-brand-accent">2</div>
+                        <div class="text-sm text-gray-300">インタラクティブ</div>
+                    </div>
+                </div>
+                <a href="#simulator" class="bg-brand-accent hover:bg-brand-accent/80 text-white font-semibold py-2 px-4 rounded-xl text-sm transition duration-200 text-center flex items-center justify-center gap-2 shadow-lg shadow-brand-accent/20">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                    シミュレーターへ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-8 px-4 md:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation (Desktop only) -->
+        <aside class="hidden lg:block lg:col-span-1 space-y-6 sticky top-6 self-start">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-100">
+                <h3 class="text-sm font-bold text-gray-400 tracking-wider uppercase mb-4">目次</h3>
+                <nav class="flex flex-col gap-1 text-sm text-gray-600">
+                    <a href="#section-1" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">1. 因果推論の3つの流派</a>
+                    <a href="#section-2" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">2. 因果推定対象とベイズ構造</a>
+                    <a href="#section-3" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">3. 高次元統計学の罠とBART</a>
+                    <a href="#section-4" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">4. 傾向スコアの役割と矛盾</a>
+                    <a href="#section-5" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">5. 未観測共変量の感度分析</a>
+                    <a href="#section-6" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">6. 複雑な割付と縦断データ</a>
+                    <a href="#section-7" class="px-3 py-2.5 rounded-xl border-l-4 border-transparent hover:bg-brand-50 hover:text-brand-accent transition duration-150">7. 総括：ツールとしてのベイズ</a>
+                </nav>
+            </div>
+
+            <!-- Focus Insight Cards -->
+            <div class="bg-gradient-to-br from-brand-600 to-brand-700 text-white p-6 rounded-2xl shadow-md border border-white/10 space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-brand-accent rounded-lg text-white">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                    </div>
+                    <span class="text-sm font-bold">Key Insight</span>
+                </div>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    純粋ベイズの定式化では傾向スコアは「無視可能（ignorable）」ですが、モデル誤特定に備える実務では<strong class="font-bold text-white">結果モデルへ組み込む方法（BCFなど）</strong>が重要になります。
+                </p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="col-span-1 lg:col-span-3 space-y-12">
+            
+            <!-- SECTION 1 -->
+            <section id="section-1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">1</div>
+                    <h2 class="text-2xl font-bold text-brand-600">因果推論の3大流派と潜在結果フレームワーク</h2>
+                </div>
+                
+                <p>
+                    因果推論（Causal Inference）は、たんなる「共変関係（相関）」から、能動的介入に対する結果の変化としての「因果関係」を切り分けるための統計的枠組みです。本論文が依拠する<strong>潜在結果フレームワーク（Potential Outcomes Framework）</strong>（Rubin因果モデル）では、介入を仮想的に操作可能な「処置（Treatment）」と定義し、同一の主体において異なる処置が与えられた場合に生じたであろう結果の対比をもって因果効果を定式化します。
+                </p>
+
+                <!-- Core Paradigm Comparison Table -->
+                <div class="overflow-x-auto my-6 rounded-xl border border-brand-100">
+                    <table class="min-w-full divide-y divide-brand-100">
+                        <thead class="bg-brand-50 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">アプローチ</th>
+                                <th class="px-6 py-4">統計的枠組み</th>
+                                <th class="px-6 py-4">推論の基礎</th>
+                                <th class="px-6 py-4">不確実性のソース</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-brand-50 text-sm">
+                            <tr>
+                                <td class="px-6 py-4 font-bold text-brand-600">フィッシャーのランダム化テスト</td>
+                                <td class="px-6 py-4">頻度論的 (Fisherian)</td>
+                                <td class="px-6 py-4">「処置効果は全くない」とする鋭い帰無仮説 (Sharp Null)</td>
+                                <td class="px-6 py-4">割付（ランダム化）の置換分布のみ</td>
+                            </tr>
+                            <tr class="bg-brand-50/20">
+                                <td class="px-6 py-4 font-bold text-brand-600">ネイマンの反復サンプリング評価</td>
+                                <td class="px-6 py-4">頻度論的 (Neymanian)</td>
+                                <td class="px-6 py-4">平均因果効果。不偏推定量と漸近正規性。</td>
+                                <td class="px-6 py-4">サンプリングとランダム割付の繰り返し</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-bold text-brand-accent">ベイズ因果推論</td>
+                                <td class="px-6 py-4">ベイズ主義 (Bayesian)</td>
+                                <td class="px-6 py-4">因果推論を<strong>「欠損データ（反事実）の補完問題」</strong>と捉える</td>
+                                <td class="px-6 py-4">パラメータの事後分布と欠損値の事後予測分布</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-brand-50 p-4 md:p-6 rounded-xl space-y-3">
+                    <h4 class="font-bold text-brand-600 text-sm flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-brand-teal"></i>
+                        基礎となる重要な仮定（SUTVA, Ignorability &amp; Overlap）
+                    </h4>
+                    <p class="text-sm text-gray-600">
+                        SUTVA (Stable Unit Treatment Value Assumption)、無視可能性 (Ignorability)、重なり条件 (Overlap) は、潜在結果に基づく因果推論の土台になる仮定です。
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 pl-2">
+                        <li>
+                            <strong class="text-gray-800">SUTVA:</strong> 
+                            他主体の処置による干渉（相互作用）がなく、処置自体に異なるバージョンが存在しないことを要請します。
+                        </li>
+                        <li>
+                            <strong class="text-gray-800">強い無視可能性と重なり条件:</strong> 
+                            観測された共変量 $X_i$ のもとで処置割付 $Z_i$ が潜在結果と独立であり、さらに傾向スコア $e(X_i)$ が 0 や 1 に張り付かないことを要請します。
+                        </li>
+                    </ul>
+                    <div class="pt-4 text-center">
+                        <p class="text-base font-semibold text-brand-600">
+                            $$Z_i \perp \! \! \! \perp \{Y_i(0), Y_i(1)\} \mid X_i \quad \text{and} \quad 0 &lt; e(X_i) &lt; 1$$
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2 -->
+            <section id="section-2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">2</div>
+                    <h2 class="text-2xl font-bold text-brand-600">因果推定対象の再定義とベイズ的分解</h2>
+                </div>
+
+                <p>
+                    ベイズアプローチでは、観察データにおいて観測された「事実（Factual）」である $Y^{obs}_i$ を用いて、欠損した「反事実（Counterfactual）」である $Y^{mis}_i$ を予測・代入（Imputation）することで因果効果を推定します。
+                </p>
+
+                <!-- Estimand Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="border border-brand-100 hover:border-brand-accent p-5 rounded-xl transition duration-150 bg-brand-50/10">
+                        <span class="text-sm font-bold text-brand-teal tracking-widest uppercase">PATE (Population Average Treatment Effect)</span>
+                        <h4 class="text-lg font-bold mt-1 text-brand-600">母集団平均因果効果</h4>
+                        <p class="text-sm text-gray-500 mt-2 mb-3">対象データが抽出された無限の超母集団における平均効果。</p>
+                        <p class="text-sm font-semibold text-brand-700">
+                            $$\tau^{P} \equiv \mathbb{E}\{Y_i(1) - Y_i(0)\} = \mathbb{E}\{\tau(X_i)\}$$
+                        </p>
+                    </div>
+                    
+                    <div class="border border-brand-100 hover:border-brand-accent p-5 rounded-xl transition duration-150 bg-brand-50/10">
+                        <span class="text-sm font-bold text-brand-accent tracking-widest uppercase">SATE (Sample Average Treatment Effect)</span>
+                        <h4 class="text-lg font-bold mt-1 text-brand-600">標本平均因果効果</h4>
+                        <p class="text-sm text-gray-500 mt-2 mb-3">観測された有限標本 $N$ 個体における実際の平均効果。</p>
+                        <p class="text-sm font-semibold text-brand-700">
+                            $$\tau^{S} \equiv \frac{1}{N} \sum_{i=1}^N \{Y_i(1) - Y_i(0)\}$$
+                        </p>
+                    </div>
+
+                    <div class="border border-brand-100 hover:border-brand-accent p-5 rounded-xl transition duration-150 bg-indigo-50/10">
+                        <span class="text-sm font-bold text-indigo-500 tracking-widest uppercase">CATE (Conditional Average Treatment Effect)</span>
+                        <h4 class="text-lg font-bold mt-1 text-brand-600">条件付き平均因果効果</h4>
+                        <p class="text-sm text-gray-500 mt-2 mb-3">特定の共変量値をもつ部分群における因果効果。不均一性の基本。</p>
+                        <p class="text-sm font-semibold text-brand-700">
+                            $$\tau(x) \equiv \mathbb{E}\{Y_i(1) - Y_i(0) \mid X_i = x\}$$
+                        </p>
+                    </div>
+
+                    <div class="border border-brand-100 hover:border-brand-accent p-5 rounded-xl transition duration-150 bg-brand-50/10">
+                        <span class="text-sm font-bold text-yellow-600 tracking-widest uppercase">MATE (Mixed Average Treatment Effect)</span>
+                        <h4 class="text-lg font-bold mt-1 text-brand-600">混合平均因果効果</h4>
+                        <p class="text-sm text-gray-500 mt-2 mb-3">共変量分布に「標本の経験分布」を代用した、実務的なベイズ標準指標。</p>
+                        <p class="text-sm font-semibold text-brand-700">
+                            $$\tau^{M} \equiv \frac{1}{N} \sum_{i=1}^N \tau(X_i; \theta_Y)$$
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-brand-600">なぜ SATE の不確実性は PATE よりも小さいのか？</h3>
+                    <p>
+                        PATEの推定では、共変量の分布や潜在結果モデルの「パラメータの不確実性」に加えて、母集団から標本を抽出するサンプリング誤差が加算されます。一方、SATEは手元にある特定の標本個体に焦点をあてるため、すでに固定された共変量のばらつきをモデル化する必要がありません。
+                    </p>
+                    <p class="bg-brand-50 p-4 rounded-xl text-sm border-l-4 border-brand-accent text-gray-600">
+                        <strong>反事実の相関パラメータ $\rho$ の役割:</strong> SATE の推定値自体は、欠損した片方の結果の予測値の平均に依存するため、$Y_i(0)$ と $Y_i(1)$ の間の相関 $\rho = \text{Corr}(Y_i(0), Y_i(1))$ に敏感です。データ自体は各個人における単一の処置結果しか教えてくれないため、$\rho$ に関する情報は観測データからは得にくく、このパラメータは「部分的（弱い）にしか識別（Partially Identified）」されません。
+                    </p>
+                </div>
+
+                <!-- SIMULATOR 1 CONTAINER -->
+                <div id="simulator" class="mt-8 border border-brand-100 rounded-2xl p-6 bg-brand-50/30">
+                    <h3 class="text-lg font-bold text-brand-600 flex items-center gap-2 mb-4">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-accent"></span>
+                        【インタラクティブ】潜在相関 $\rho$ と SATE / PATE 事後不確実性の比較シミュレータ
+                    </h3>
+                    <p class="text-sm text-gray-500 mb-6 leading-relaxed">
+                        スライダーを操作して、反事実どうしの相関 $\rho$（本来データからは観測不能）や標本サイズ $N$ が、SATE の欠損潜在結果の代入不確実性にどのようなインパクトを与えるかを視覚的に確認してください。
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Controls panel -->
+                        <div class="space-y-4 bg-white p-4 rounded-xl border border-brand-100">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-500 mb-1">
+                                    反事実相関 $\rho = \text{Corr}(Y(0), Y(1))$ : <span id="rho-val" class="text-brand-accent">0.5</span>
+                                </label>
+                                <input type="range" id="rho-slider" min="-1" max="1" step="0.1" value="0.5" class="w-full accent-brand-accent">
+                                <div class="flex justify-between text-sm text-gray-400 mt-1">
+                                    <span>負の完全相関 (-1)</span>
+                                    <span>独立 (0)</span>
+                                    <span>正の完全相関 (1)</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-500 mb-1">
+                                    標本サイズ $N$ : <span id="n-val" class="text-brand-accent">100</span>
+                                </label>
+                                <input type="range" id="n-slider" min="30" max="500" step="10" value="100" class="w-full accent-brand-accent">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-500 mb-1">
+                                    残差不確実性 $\sigma$ : <span id="sigma-val" class="text-brand-teal">2.0</span>
+                                </label>
+                                <input type="range" id="sigma-slider" min="0.5" max="5.0" step="0.1" value="2.0" class="w-full accent-brand-teal">
+                            </div>
+
+                            <div class="bg-brand-50 p-3 rounded-lg text-sm space-y-1 text-gray-600">
+                                <p><strong class="text-brand-600">解析的数学関係式：</strong></p>
+                                <p>SATE代入分散の簡易近似（$\sigma_0=\sigma_1=\sigma$）：</p>
+                                <p class="font-mono text-sm">$$\text{Var}(\hat{\tau}^{S}_{mis}) \approx \frac{\sigma^2(1-\rho^2)}{N}$$</p>
+                                <p>$|\rho| \to 1$ のとき欠損潜在結果の条件付き代入幅は小さくなります。</p>
+                            </div>
+                        </div>
+
+                        <!-- Chart output -->
+                        <div class="md:col-span-2 bg-white p-4 rounded-xl border border-brand-100 flex items-center justify-center min-h-[300px]">
+                            <canvas id="correlation-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3 -->
+            <section id="section-3" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">3</div>
+                    <h2 class="text-2xl font-bold text-brand-600">結果モデルの特定と高次元統計学の罠</h2>
+                </div>
+
+                <p>
+                    ベイズ因果推論の中心には、結果モデル $\mu(z, x) = \mathbb{E}(Y_i \mid Z_i = z, X_i = x)$ の柔軟な構築があります。伝統的な線形モデルは、外挿領域で不確実性を小さく見積もりやすいという欠点（Example 4.1に示される特性）があります。
+                </p>
+
+                <!-- Model Spec Comparison -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+                    <div class="bg-brand-50/30 border border-brand-100 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-brand-600">S-Learner (Single)</h4>
+                        <p class="text-sm text-gray-500">処置インジケータ $Z$ を他の共変量 $X$ と同じ入力変数として、一つの回帰器で学習するモデル。</p>
+                        <div class="text-sm bg-red-50 text-red-600 p-2.5 rounded-lg border border-red-100">
+                            <strong>デメリット:</strong> 変数の次元が高い場合、正則化の過程で処置効果 $Z$ が他の共変量に埋没し、効果自体がゼロに向かって不当に縮退するリスクがあります。
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-50/30 border border-brand-100 p-5 rounded-xl space-y-3">
+                        <h4 class="font-bold text-brand-accent">T-Learner (Two)</h4>
+                        <p class="text-sm text-gray-500">処置群 ($Z=1$) と対照群 ($Z=0$) のそれぞれに対して、別々の結果モデルを学習するモデル。</p>
+                        <div class="text-sm bg-red-50 text-red-600 p-2.5 rounded-lg border border-red-100">
+                            <strong>デメリット:</strong> 双方のデータを共有しないため、データが疎な領域（オーバーラップ欠如部）では推定のバリアンスが大きくなりやすい。
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-brand-600 to-brand-700 text-white p-5 rounded-xl space-y-3 shadow-md">
+                        <h4 class="font-bold text-brand-accent">BART &amp; BCF</h4>
+                        <p class="text-sm text-gray-200">
+                            樹木アンサンブル（BART）の正則化事前分布によって、関数の非線形性と交互作用を柔軟に捉えるモデル。
+                        </p>
+                        <div class="text-sm bg-brand-500/50 text-gray-100 p-2.5 rounded-lg border border-white/10">
+                            <strong>要点:</strong> Hahnら(2020)のBCFは、処置効果（CATE）自体とベースライン予後を分けてBARTモデルを配置し、RICを抑えることを狙います。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-brand-600">高次元・高パラメトリック領域に潜む因果の罠</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                        <div class="border-l-4 border-brand-teal pl-4 space-y-2">
+                            <h4 class="font-bold text-sm text-brand-teal">正則化誘発交絡 (Regularization Induced Confounding: RIC)</h4>
+                            <p class="text-sm text-gray-600">
+                                典型的な高次元事前分布（Bayesian LASSOやSpike &amp; Slabなど）を結果回帰に直接かけると、結果と強い関連をもつが処置確率とも相関する共変量（交絡因子）への係数がゼロ方向へ過度に縮小され、擬似的な選択バイアスを発生させる現象です。
+                            </p>
+                        </div>
+                        <div class="border-l-4 border-brand-accent pl-4 space-y-2">
+                            <h4 class="font-bold text-sm text-brand-accent">事前分布の教条主義 (Prior Dogmatism)</h4>
+                            <p class="text-sm text-gray-600">
+                                共変量・処置割付・結果モデルのパラメータが互いに独立であるとする仮定（論文中のAssumption 3.2）のもとで共変量の次元 $p$ が大きくなると、この独立性事前分布自体が結果パラメータに対して強い情報を持つ場合があります。その結果、データだけではバイアスを十分に打ち消せないという脆弱性が生じます（Linero 2021）。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR 2 CONTAINER -->
+                <div class="mt-8 border border-brand-100 rounded-2xl p-6 bg-brand-50/30">
+                    <h3 class="text-lg font-bold text-brand-600 flex items-center gap-2 mb-4">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-accent"></span>
+                        【インタラクティブ】外挿・不確実性比較プロッター (Example 4.1の再現)
+                    </h3>
+                    <p class="text-sm text-gray-500 mb-6 leading-relaxed">
+                        共変量オーバーラップ（処置群と対照群の類似度）の状態を切り替えて、線形モデル、BART、ガウスプロセス (GP) の3者が、オーバーラップの悪い外挿域でどのように不確実性の幅を示すか比較してください。
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <!-- Controls Panel -->
+                        <div class="bg-white p-4 rounded-xl border border-brand-100 flex flex-col gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-500 mb-2">オーバーラップの状態</label>
+                                <div class="flex flex-col gap-2">
+                                    <button id="btn-good" class="px-3 py-2 bg-brand-100 text-gray-600 rounded-lg text-sm font-bold transition duration-150 hover:bg-brand-200">
+                                        良好なオーバーラップ
+                                    </button>
+                                    <button id="btn-bad" class="px-3 py-2 bg-brand-accent text-white rounded-lg text-sm font-bold transition duration-150">
+                                        不良なオーバーラップ（論文図再現）
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-brand-50 rounded-lg text-sm space-y-2 text-gray-600">
+                                <span class="font-bold text-brand-600">可視化の洞察：</span>
+                                <p>
+                                    <strong class="text-brand-accent">ガウスプロセス (GP)：</strong> 外挿域では関数の自由度が広がるため、信用区間もラッパ状に広がり、過度に狭い区間推定を避けやすくなります。
+                                </p>
+                                <p>
+                                    <strong class="text-green-600">BART：</strong> 均一な決定木構造であるため、外挿域でも不確実性の幅がほとんど広がらず、モデル誤特定のもとで過小評価しやすい傾向があります。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Plot container -->
+                        <div class="md:col-span-3 bg-white p-4 rounded-xl border border-brand-100 min-h-[350px]">
+                            <canvas id="overlap-plot"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4 -->
+            <section id="section-4" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">4</div>
+                    <h2 class="text-2xl font-bold text-brand-600">傾向スコアの役割とベイズのパラドックス</h2>
+                </div>
+
+                <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-xl space-y-2">
+                    <h4 class="font-bold text-red-800 text-sm">ベイズ定式化における傾向スコアのパラドックス</h4>
+                    <p class="text-sm text-red-700 leading-relaxed font-semibold">
+                        強無視可能性および事前分布のパラメータ独立性（$\theta_Z \perp \theta_Y$）の数学的帰結として、傾向スコアモデル（割り付け確率）は、結果パラメータの事後分布導出の数式から「無視可能（脱落）」になります。すなわち、数式上ベイズ流因果効果の推定において傾向スコアを計算・推定する必要は本来ありません。
+                    </p>
+                </div>
+
+                <p>
+                    ただし、この数式上の整理はモデル誤特定（Misspecification）の問題を消すわけではありません。結果モデルが正確ではない（例えば関数が二次曲線なのに線形回帰を適用してしまったなど）場合、結果モデル単体での予測は、外挿領域や交絡領域でバイアスを受けます。この「ベイズパラドックス」に対して、実務では以下の3つの組み込み方が議論されています。
+                </p>
+
+                <div class="bg-brand-50/40 border border-brand-100 rounded-2xl p-4 md:p-5">
+                    <div class="flex flex-col md:flex-row md:items-start gap-4">
+                        <div class="md:w-2/3">
+                            <img src="assets/bayes/propensity-dag.svg"
+                                 alt="観測共変量Xが処置Zと結果Yに影響し、処置Zが結果Yへ因果効果を持つ。傾向スコアe(X)はXから作られる設計段階の要約で、結果モデルに追加投入されることがある。"
+                                 class="w-full h-auto rounded-xl border border-brand-100 bg-white">
+                        </div>
+                        <div class="md:w-1/3 space-y-2 text-sm text-gray-600 leading-relaxed">
+                            <h4 class="font-bold text-brand-600 text-sm">DAGで見る論点</h4>
+                            <p>
+                                $X$ は $Z$ と $Y$ の両方に入るため交絡の源になります。傾向スコア $e(X)$ は新しい原因ノードではなく、$X$ から作った設計段階の要約です。
+                            </p>
+                            <p>
+                                ベイズの尤度上は $e(X)$ が脱落しても、オーバーラップ確認や結果モデルの頑健化ではこの要約が効きます。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Propensity Integration Strategies -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+                    <div class="bg-brand-50/20 border border-brand-100 p-5 rounded-xl space-y-2.5">
+                        <div class="text-sm font-bold text-brand-teal tracking-widest uppercase">方法 A</div>
+                        <h4 class="font-bold text-brand-600 text-base">傾向スコアの共変量投入</h4>
+                        <p class="text-sm text-gray-600">
+                            推定された傾向スコア $\hat{e}(X_i)$ 自体を、通常の共変量に追加して結果モデルへ入れるアプローチ。
+                        </p>
+                        <p class="text-sm text-gray-500 bg-white p-2 rounded border border-brand-100">
+                            傾向スコア層内で共変量バランスを近づけるため、結果モデル誤特定への感度を下げる「二重ロバスト性に類似した」頑健化をもたらします。
+                        </p>
+                    </div>
+
+                    <div class="bg-brand-50/20 border border-brand-100 p-5 rounded-xl space-y-2.5">
+                        <div class="text-sm font-bold text-brand-accent tracking-widest uppercase">方法 B</div>
+                        <h4 class="font-bold text-brand-600 text-base">依存事前分布の構築</h4>
+                        <p class="text-sm text-gray-600">
+                            「傾向スコアモデルで重要な変数は、結果モデルでも重要であるはず」とし、事前分布パラメータ間に事前従属性（Dependent Prior）を導入。
+                        </p>
+                        <p class="text-sm text-gray-500 bg-white p-2 rounded border border-brand-100">
+                            Wang et al. (2012) のように、傾向スコアにおいて選択された共変量を、確率依存的な重みをもって結果モデルに結合させます。
+                        </p>
+                    </div>
+
+                    <div class="bg-brand-50/20 border border-brand-100 p-5 rounded-xl space-y-2.5">
+                        <div class="text-sm font-bold text-indigo-600 tracking-widest uppercase">方法 C</div>
+                        <h4 class="font-bold text-brand-600 text-base">事後予測推論へのプラグイン</h4>
+                        <p class="text-sm text-gray-600">
+                            事後確率分布から得られた予測パラメータを用いて、頻度論的な二重に頑健な推定量（Doubly Robust Estimator）を再形成する枠組み。
+                        </p>
+                        <p class="text-sm text-gray-500 bg-white p-2 rounded border border-brand-100">
+                            Ding &amp; Guo (2023) などのように、完全な事後予測確率を用いて、因果の不確実性を適正に定量化します。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feedback Problem Box -->
+                <div class="p-5 bg-brand-50 rounded-xl space-y-2">
+                    <h4 class="font-bold text-brand-600 text-sm">重要論点：モデル・フィードバック問題（Model Feedback Problem）</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        傾向スコアと結果モデルを一つの大きな結合分布として「共同パラメータ推定」しようとすると（ドグマティック・ベイズ）、結果モデルに誤特定がある際、その誤差を吸収する形で傾向スコアのパラメータ推定値が歪む相互フィードバックが働くことがあります。
+                    </p>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        このため、実務上は<strong class="font-bold text-brand-600">「第1段階で傾向スコアのみを単独で事前推定し、第2段階で結果モデルへ定数として代入する（Two-Stage Procedure）」</strong>というプラグイン近似がよく使われます。結果モデルの誤特定が傾向スコア推定へ逆流しにくい点が、この手順の利点です。
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 5 -->
+            <section id="section-5" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">5</div>
+                    <h2 class="text-2xl font-bold text-brand-600">未測定の交絡（未観測共変量）と感度分析</h2>
+                </div>
+
+                <p>
+                    強い無視可能性仮定は、観測データだけからは検証できません（Fundamental Untestability）。未測定の交絡因子 $U$ が存在した場合、観察研究から得た因果効果の推定値はバイアスを受けます。この問題に対し、ベイズアプローチと頻度論アプローチはそれぞれ異なる感度分析の道具を用意しています。
+                </p>
+
+                <div class="bg-orange-50/50 border border-orange-100 rounded-2xl p-4 md:p-5">
+                    <div class="flex flex-col md:flex-row md:items-start gap-4">
+                        <div class="md:w-2/3">
+                            <img src="assets/bayes/sensitivity-dag.svg"
+                                 alt="観測共変量Xと未観測共変量Uが処置Zと結果Yに影響し、処置Zが結果Yへ因果効果を持つ。UからZとYへの矢印の強さを感度パラメータとして扱う。"
+                                 class="w-full h-auto rounded-xl border border-orange-100 bg-white">
+                        </div>
+                        <div class="md:w-1/3 space-y-2 text-sm text-gray-600 leading-relaxed">
+                            <h4 class="font-bold text-orange-700 text-sm">感度分析の視点</h4>
+                            <p>
+                                $U$ が $Z$ と $Y$ の両方に向くと、$X$ で調整しても無視可能性は破れます。ここが観測データだけでは検証できない部分です。
+                            </p>
+                            <p>
+                                Bayesian data augmentation は $U$ を潜在変数として補完し、E-value 系は $U \to Z$ と $U \to Y$ の必要強度を閾値として読む、という対比になります。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+                    <div class="p-5 border border-brand-100 rounded-xl bg-brand-50/10 space-y-3">
+                        <span class="inline-block bg-brand-teal/20 text-brand-teal text-sm font-bold px-2 py-0.5 rounded-full">アプローチ 1</span>
+                        <h4 class="font-bold text-brand-600">未観測共変量 $U$ のデータ代入モデル</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            交絡因子 $U$ の仮想的な結合分布モデルを定式化し、ベイズのデータ拡張アルゴリズム（MCMC）によって、あたかも欠損データを補完するように各個体に $U_i$ をサンプリング補完します（Rosenbaum &amp; Rubin 1983 のベイズ版拡張）。
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-brand-100 rounded-xl bg-brand-50/10 space-y-3">
+                        <span class="inline-block bg-brand-accent/20 text-brand-accent text-sm font-bold px-2 py-0.5 rounded-full">アプローチ 2</span>
+                        <h4 class="font-bold text-brand-600">限界値法・E-value の利用</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Ding &amp; VanderWeele (2016) によって提唱されたモデルフリーのアプローチ。推定された効果を説明し切るには、未観測因子 $U$ が処置および結果の双方とどの程度強く関連している必要があるかを、単一の指標として算出。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-brand-50 rounded-xl space-y-2">
+                    <h4 class="font-bold text-brand-600 text-sm uppercase tracking-widest flex items-center gap-2">
+                        <i data-lucide="lightbulb" class="w-4 h-4 text-indigo-500"></i>
+                        部分的識別（Partial Identifiability）とコピュラ（Copula）の導入
+                    </h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Franks et al. (2020) は、データに適合して推定が可能な「識別可能（Identifiable）なパラメータ」と、感度分析として動かすほかない「識別不可能な共変量パラメータ」を数学的にシャープに切り離す<strong class="font-bold text-brand-600">コピュラモデル（Copula-based model）</strong>を推奨しています。
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 6 -->
+            <section id="section-6" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">6</div>
+                    <h2 class="text-2xl font-bold text-brand-600">複雑な割付メカニズムと時間依存性共変量</h2>
+                </div>
+
+                <p>
+                    基本的な単一時点のバイナリ処置を超えて、本レビューではさらに二つの複雑な因果構造に対するベイズの定式化を扱っています。
+                </p>
+
+                <!-- Deep dive cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+                    <!-- Principal Stratification -->
+                    <div class="border border-brand-100 p-6 rounded-2xl space-y-4">
+                        <span class="text-brand-accent text-sm font-bold uppercase tracking-widest">A. 操作変数法と主層化</span>
+                        <h4 class="text-xl font-bold text-brand-600">Principal Stratification</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            操作変数（不遵守が発生する介入）の環境下において、主体をその「潜在的な順応行動」に基づいて主層（Compliers, Never-takers, Always-takers, Defiers）に分類します。
+                        </p>
+                        <div class="bg-brand-50 p-3.5 rounded-xl text-sm space-y-2">
+                            <span class="font-bold text-brand-accent">ベイズ流解決策：</span>
+                            <p class="text-gray-600 leading-relaxed text-sm">
+                                個々の主体の「所属タイプ」は潜在変数であるため、一般の頻度論アプローチ（2SLS法）は漸近近似に基づきますが、ベイズアプローチではこれを<strong class="font-bold text-brand-600">有限混合モデル（Finite Mixture Model）</strong>として扱い、個体ごとに隠れたタイプラベルを代入予測（Data Augmentation）できます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Longitudinal Treatment -->
+                    <div class="border border-brand-100 p-6 rounded-2xl space-y-4">
+                        <span class="text-brand-teal text-sm font-bold uppercase tracking-widest">B. 時間依存的処置と縦断的交絡</span>
+                        <h4 class="text-xl font-bold text-brand-600">Time-varying Treatments</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            時系列の治療系列において、過去の治療が次期の共変量を変化させ、その時間変化共変量がまた未来の治療確率を支配するという、複雑なフィードバック関係がある構造です。
+                        </p>
+                        <div class="bg-brand-50 p-3.5 rounded-xl text-sm space-y-2">
+                            <span class="font-bold text-brand-teal">ベイズ流g演算式 (Bayesian g-computation)：</span>
+                            <p class="text-gray-600 leading-relaxed text-sm">
+                                Robinsのg-computation formula（g演算式）を構成する各ステップ（結果回帰・共変量推移）にベイズ事前分布を指定。各時点でモンテカルロ・シミュレーションをおこない、任意の動的治療選択の下での最終結果の事後分布を再構成します。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- G-null Paradox Box -->
+                <div class="p-5 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-2xl text-sm space-y-1">
+                    <strong class="text-yellow-900 block font-bold mb-1">警告：g-null パラドックスの罠</strong>
+                    Robins &amp; Wasserman (1997) が指摘したこの数理現象は、共変量推移と結果の間のパラメータの不一致・誤特定（不飽和なパラメトリックモデルなど）がある状況下では、「真の因果効果ゼロ」という帰無仮説を、モデル構造の制約によって学習前から排除してしまうことがあります。構造選定には慎重な検討が必要です。
+                </div>
+            </section>
+
+            <!-- SECTION 7 -->
+            <section id="section-7" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-100 space-y-6">
+                <div class="flex items-center gap-3 border-b border-brand-100 pb-4">
+                    <div class="w-10 h-10 bg-brand-accent/10 rounded-xl flex items-center justify-center text-brand-accent font-bold">7</div>
+                    <h2 class="text-2xl font-bold text-brand-600">総括：ベイズアプローチの強みと限界</h2>
+                </div>
+
+                <p class="text-base leading-relaxed text-gray-700">
+                    本論文「Bayesian causal inference: a critical review」の結言において、著者らはベイズ因果推論を目的そのものとして扱うのではなく、<strong>実用的な道具箱（Toolbox）</strong>として選択する立場を示しています。
+                </p>
+
+                <!-- Core advantages -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div class="p-4 bg-brand-50 rounded-xl flex gap-3">
+                        <span class="text-brand-accent font-bold text-lg">✓</span>
+                        <div class="space-y-1">
+                            <h5 class="font-bold text-sm text-brand-600">事後予測による補完</h5>
+                            <p class="text-sm text-gray-600">欠損潜在結果を代入サンプリングするため、部分群や個別因果効果（ITE）の推計不確実性を、同じ事後分布の枠内で扱いやすい。</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-brand-50 rounded-xl flex gap-3">
+                        <span class="text-brand-accent font-bold text-lg">✓</span>
+                        <div class="space-y-1">
+                            <h5 class="font-bold text-sm text-brand-600">不確実性の伝播</h5>
+                            <p class="text-sm text-gray-600">多段階の因果設計において、前段階のパラメータ不確実性を次段階の推論へ引き継ぎ、信用区間の過小評価を避けやすくする。</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-brand-50 rounded-xl flex gap-3">
+                        <span class="text-brand-accent font-bold text-lg">✓</span>
+                        <div class="space-y-1">
+                            <h5 class="font-bold text-sm text-brand-600">意思決定理論との直感的直結</h5>
+                            <p class="text-sm text-gray-600">ベイズの事後分布は「リスク最小化」「効用最大化」などの決定理論と相性がよく、個別化医療やA/Bテストにおける行動選定へ接続しやすい。</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-brand-50 rounded-xl flex gap-3">
+                        <span class="text-brand-accent font-bold text-lg">✓</span>
+                        <div class="space-y-1">
+                            <h5 class="font-bold text-sm text-brand-600">事前情報の自然な活用</h5>
+                            <p class="text-sm text-gray-600">過去の別の臨床試験データや、地域的な空間相関（Spatial correlation）などを、事前分布という形式で統一的に既存モデルに統合可能。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-brand-600 to-brand-700 text-white p-6 rounded-2xl shadow-md border border-white/10 mt-6 text-center space-y-4">
+                    <p class="text-sm italic font-light font-serif">
+                        "For causal inference and perhaps everything in statistics, being Bayesian should be a tool, not a goal."
+                    </p>
+                    <p class="text-sm text-brand-accent font-semibold">
+                        「ベイズであることは、因果推論、ひいては統計学のすべての領域において、目的（ドグマ）ではなく手段であるべきだ。」
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-700 text-gray-400 text-sm py-8 px-4 text-center border-t border-brand-600 mt-12">
+        <div class="max-w-7xl mx-auto space-y-2">
+            <p>
+                Li, F., Ding, P., &amp; Mealli, F. (2023).
+                <a href="https://royalsocietypublishing.org/rsta/article/381/2247/20220153/112422/Bayesian-causal-inference-a-critical"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="text-gray-300 hover:text-white underline decoration-brand-accent/60 underline-offset-4 transition duration-150">
+                    Bayesian causal inference: a critical review
+                </a>.
+                Philosophical Transactions of the Royal Society A.
+            </p>
+            <p>
+                Report generated for educational and analytical purposes. Interactive widgets powered by Tailwind CSS, Chart.js &amp; KaTeX.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ICON RENDERING SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.lucide && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            } else {
+                console.warn('Lucide icons are unavailable; icon placeholders will remain unrendered.');
+            }
+        });
+    </script>
+
+    <!-- MATH RENDERING SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderMathInElement !== 'function') {
+                console.warn('KaTeX auto-render is unavailable; math will remain as source text.');
+                return;
+            }
+
+            // Setup KaTeX Auto-Render Extension for complete coverage
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+
+    <!-- SIMULATOR 1 SCRIPT (Correlation and SATE Variance) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chartCanvas = document.getElementById('correlation-chart');
+            if (!chartCanvas || typeof Chart === 'undefined') {
+                const chartBox = chartCanvas && chartCanvas.parentElement;
+                if (chartBox) {
+                    chartBox.innerHTML = '<p class="text-sm text-red-600">Chart.js を読み込めなかったため、シミュレータを表示できません。</p>';
+                }
+                console.warn('Chart.js is unavailable; simulator 1 was skipped.');
+                return;
+            }
+
+            const ctx = chartCanvas.getContext('2d');
+            
+            // Slider elements
+            const rhoSlider = document.getElementById('rho-slider');
+            const nSlider = document.getElementById('n-slider');
+            const sigmaSlider = document.getElementById('sigma-slider');
+            
+            // Display values
+            const rhoVal = document.getElementById('rho-val');
+            const nVal = document.getElementById('n-val');
+            const sigmaVal = document.getElementById('sigma-val');
+
+            // Initial parameters
+            let rho = parseFloat(rhoSlider.value);
+            let N = parseInt(nSlider.value);
+            let sigma = parseFloat(sigmaSlider.value);
+
+            let chart;
+
+            function updateSimulator1() {
+                rhoVal.textContent = rho;
+                nVal.textContent = N;
+                sigmaVal.textContent = sigma.toFixed(1);
+
+                // PDF example 3.1: missing potential outcomes have conditional variance
+                // sigma_z^2 * (1 - rho^2). With equal residual SDs, average imputation
+                // uncertainty for SATE is approximated by sigma^2 * (1 - rho^2) / N.
+                const sateImputationVar = Math.max(0.000001, Math.pow(sigma, 2) * (1 - Math.pow(rho, 2)) / N);
+                const seSATE = Math.sqrt(sateImputationVar);
+
+                // For PATE: include the sampling error of mean of X (which is sigma^2/N extra)
+                const sePATE = Math.sqrt((2 * Math.pow(sigma, 2)) / N);
+
+                // Generate simulated posterior curves (normal approximations)
+                const steps = 100;
+                const minX = -1.5;
+                const maxX = 1.5;
+                const labels = [];
+                const sateData = [];
+                const pateData = [];
+
+                for (let i = 0; i <= steps; i++) {
+                    const xVal = minX + (i / steps) * (maxX - minX);
+                    labels.push(xVal.toFixed(2));
+                    
+                    // SATE Density
+                    const sateDensity = (1 / (seSATE * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow(xVal / seSATE, 2));
+                    sateData.push(sateDensity);
+
+                    // PATE Density
+                    const pateDensity = (1 / (sePATE * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow(xVal / sePATE, 2));
+                    pateData.push(pateDensity);
+                }
+
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = sateData;
+                chart.data.datasets[0].label = `SATE 事後予測分布 (SD = ${seSATE.toFixed(3)})`;
+                chart.data.datasets[1].data = pateData;
+                chart.data.datasets[1].label = `PATE 事後確率分布 (SD = ${sePATE.toFixed(3)})`;
+                chart.update();
+            }
+
+            // Init Chart
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: '',
+                            data: [],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            fill: true,
+                            borderWidth: 2,
+                            tension: 0.2,
+                            pointRadius: 0
+                        },
+                        {
+                            label: '',
+                            data: [],
+                            borderColor: '#0d9488',
+                            backgroundColor: 'rgba(13, 148, 136, 0.05)',
+                            fill: true,
+                            borderWidth: 2,
+                            tension: 0.2,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '平均因果効果 (真値を0として正規化)',
+                                font: { size: 10 }
+                            },
+                            ticks: { maxTicksLimit: 10 }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '確率密度',
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 15, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Listeners
+            rhoSlider.addEventListener('input', (e) => { rho = parseFloat(e.target.value); updateSimulator1(); });
+            nSlider.addEventListener('input', (e) => { N = parseInt(e.target.value); updateSimulator1(); });
+            sigmaSlider.addEventListener('input', (e) => { sigma = parseFloat(e.target.value); updateSimulator1(); });
+
+            updateSimulator1();
+        });
+    </script>
+
+    <!-- SIMULATOR 2 SCRIPT (Overlap & Out-of-Sample Uncertainty) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const overlapCanvas = document.getElementById('overlap-plot');
+            if (!overlapCanvas || typeof Chart === 'undefined') {
+                const plotBox = overlapCanvas && overlapCanvas.parentElement;
+                if (plotBox) {
+                    plotBox.innerHTML = '<p class="text-sm text-red-600">Chart.js を読み込めなかったため、プロッターを表示できません。</p>';
+                }
+                console.warn('Chart.js is unavailable; simulator 2 was skipped.');
+                return;
+            }
+
+            const ctx2 = overlapCanvas.getContext('2d');
+            
+            const btnGood = document.getElementById('btn-good');
+            const btnBad = document.getElementById('btn-bad');
+
+            let currentOverlap = 'bad'; // 'good' or 'bad'
+            let plotChart;
+
+            function drawOverlapPlot() {
+                const numPoints = 80;
+                const xVals = [];
+                
+                // Models Predictions & Credible Intervals
+                const linearMean = [];
+                const linearUpper = [];
+                const linearLower = [];
+
+                const gpMean = [];
+                const gpUpper = [];
+                const gpLower = [];
+
+                const bartMean = [];
+                const bartUpper = [];
+                const bartLower = [];
+
+                // Define overlapping densities to plot treated/control as scatter-like indicators
+                const treatedX = [];
+                const controlX = [];
+
+                if (currentOverlap === 'bad') {
+                    // Bad overlap: Treated mostly on Left (low X), Control on Right (high X)
+                    // Core overlap only in x in [40, 50]
+                    for (let i = 0; i < 40; i++) {
+                        treatedX.push({x: 25 + Math.random() * 20, y: -12});
+                        controlX.push({x: 50 + Math.random() * 40, y: -14});
+                    }
+                } else {
+                    // Good overlap: Both distributed all across [25, 90]
+                    for (let i = 0; i < 40; i++) {
+                        treatedX.push({x: 25 + Math.random() * 65, y: -12});
+                        controlX.push({x: 25 + Math.random() * 65, y: -14});
+                    }
+                }
+
+                for (let i = 0; i <= numPoints; i++) {
+                    const x = 20 + (i / numPoints) * 75; // 20 to 95
+                    xVals.push(x.toFixed(1));
+
+                    // True underlying CATE is constant = 5.0
+                    
+                    // Linear: Very confident everywhere
+                    linearMean.push(5.0);
+                    linearUpper.push(5.0 + 1.2);
+                    linearLower.push(5.0 - 1.2);
+
+                    // GP: Outer ranges show wide trumpet uncertainty if overlap is bad
+                    let gpWidth = 1.5;
+                    if (currentOverlap === 'bad') {
+                        if (x < 35) {
+                            gpWidth = 1.5 + Math.pow((35 - x)/8, 2.2);
+                        } else if (x > 55) {
+                            gpWidth = 1.5 + Math.pow((x - 55)/10, 2.2);
+                        }
+                    }
+                    gpMean.push(5.0 + (currentOverlap === 'bad' && x > 70 ? (x-70)*0.1 : 0)); // GP outer bias
+                    gpUpper.push(5.0 + gpWidth);
+                    gpLower.push(5.0 - gpWidth);
+
+                    // BART: Step-wise, medium confidence, but does not flare out at extrapolation region
+                    let bartWidth = 2.0; 
+                    if (currentOverlap === 'bad' && x > 70) {
+                        bartWidth = 2.2; // barely increases
+                    }
+                    // Simulate step functions
+                    let bStep = 5.0;
+                    if (x > 40 && x < 50) bStep = 4.8;
+                    if (x >= 50 && x < 70) bStep = 5.4;
+                    bartMean.push(bStep);
+                    bartUpper.push(bStep + bartWidth);
+                    bartLower.push(bStep - bartWidth);
+                }
+
+                plotChart.data.labels = xVals;
+                
+                // Set GP
+                plotChart.data.datasets[0].data = gpMean;
+                plotChart.data.datasets[1].data = gpUpper;
+                plotChart.data.datasets[2].data = gpLower;
+
+                // Set BART
+                plotChart.data.datasets[3].data = bartMean;
+                plotChart.data.datasets[4].data = bartUpper;
+                plotChart.data.datasets[5].data = bartLower;
+
+                // Set Linear
+                plotChart.data.datasets[6].data = linearMean;
+                plotChart.data.datasets[7].data = linearUpper;
+                plotChart.data.datasets[8].data = linearLower;
+
+                // Points indicators
+                plotChart.data.datasets[9].data = treatedX;
+                plotChart.data.datasets[10].data = controlX;
+
+                plotChart.update();
+            }
+
+            // Create plotChart
+            plotChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        // GP (Index 0,1,2)
+                        { label: 'ガウスプロセス (GP) 予測', data: [], borderColor: '#3498db', borderWidth: 2, pointRadius: 0, tension: 0.1 },
+                        { label: 'GP 上限', data: [], borderColor: 'rgba(52, 152, 219, 0.2)', borderWidth: 1, pointRadius: 0, borderDash: [5, 5], fill: '+1', backgroundColor: 'rgba(52, 152, 219, 0.05)' },
+                        { label: 'GP 下限', data: [], borderColor: 'rgba(52, 152, 219, 0.2)', borderWidth: 1, pointRadius: 0, fill: false },
+
+                        // BART (Index 3,4,5)
+                        { label: 'BART 予測', data: [], borderColor: '#2ecc71', borderWidth: 2, pointRadius: 0, stepped: true },
+                        { label: 'BART 上限', data: [], borderColor: 'rgba(46, 204, 113, 0.2)', borderWidth: 1, pointRadius: 0, stepped: true, fill: '+1', backgroundColor: 'rgba(46, 204, 113, 0.03)' },
+                        { label: 'BART 下限', data: [], borderColor: 'rgba(46, 204, 113, 0.2)', borderWidth: 1, pointRadius: 0, stepped: true, fill: false },
+
+                        // Linear (Index 6,7,8)
+                        { label: '線形回帰 予測', data: [], borderColor: '#e74c3c', borderWidth: 1.5, pointRadius: 0 },
+                        { label: '線形上限', data: [], borderColor: 'rgba(231, 76, 60, 0.15)', borderWidth: 0.8, pointRadius: 0, fill: '+1', backgroundColor: 'rgba(231, 76, 60, 0.02)' },
+                        { label: '線形下限', data: [], borderColor: 'rgba(231, 76, 60, 0.15)', borderWidth: 0.8, pointRadius: 0, fill: false },
+
+                        // Scatters (Index 9, 10)
+                        { label: '処置群 (Z=1) 分布', data: [], type: 'scatter', backgroundColor: '#e74c3c', pointStyle: 'triangle', radius: 4 },
+                        { label: '対照群 (Z=0) 分布', data: [], type: 'scatter', backgroundColor: '#7f8c8d', pointStyle: 'circle', radius: 4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                filter: function(item, chart) {
+                                    // Only show main model predictions and scatters in legend
+                                    return ['ガウスプロセス (GP) 予測', 'BART 予測', '線形回帰 予測', '処置群 (Z=1) 分布', '対照群 (Z=0) 分布'].includes(item.text);
+                                },
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            title: { display: true, text: '共変量 X', font: { size: 11 } },
+                            min: 20,
+                            max: 95
+                        },
+                        y: {
+                            title: { display: true, text: '推定された CATE ＆ サンプル分布', font: { size: 11 } },
+                            min: -18,
+                            max: 18
+                        }
+                    }
+                }
+            });
+
+            // Button listeners
+            btnGood.addEventListener('click', () => {
+                currentOverlap = 'good';
+                btnGood.className = "px-3 py-2 bg-brand-accent text-white rounded-lg text-sm font-bold transition duration-150";
+                btnBad.className = "px-3 py-2 bg-brand-100 text-gray-600 rounded-lg text-sm font-bold transition duration-150 hover:bg-brand-200";
+                drawOverlapPlot();
+            });
+
+            btnBad.addEventListener('click', () => {
+                currentOverlap = 'bad';
+                btnBad.className = "px-3 py-2 bg-brand-accent text-white rounded-lg text-sm font-bold transition duration-150";
+                btnGood.className = "px-3 py-2 bg-brand-100 text-gray-600 rounded-lg text-sm font-bold transition duration-150 hover:bg-brand-200";
+                drawOverlapPlot();
+            });
+
+            // Initial Draw
+            drawOverlapPlot();
+        });
+    </script>
+</body>
+</html>
