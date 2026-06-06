@@ -7,7 +7,7 @@ seo_title:
 description:
   ja: 45degは、個人で作ったWebツール、可視化、ブラウザアプリ、技術記事をまとめた制作ログです。
   en: 45deg is a personal collection of web tools, visualizations, browser apps, and technical notes.
-og_image: ./images/i25.png
+og_image: ./images/i25.jpg
 about:
   ja: 個人で作ったWebツール、可視化、記事を置いています。作品集というより、試したことや後から見返したいもののログです。
   en: >-
@@ -27,6 +27,22 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./lecture-scheduler/
+    featured: false
+    title:
+      ja: Lecture Scheduler
+      en: Lecture Scheduler
+    year: 2026
+    description_html:
+      ja: 月間カレンダー上で講義スケジュールを作成・編集するツール。
+      en: A tool for creating and editing lecture schedules on a monthly calendar.
+    tags:
+      - Calendar
+      - Scheduling
+      - Editor
+    image:
+      src: ./images/i31.png
+      alt: Lecture Scheduler
   - href: ./articles/intl.html
     featured: false
     title:
@@ -157,7 +173,7 @@ works:
       - Media
       - Visualization
     image:
-      src: ./images/i25.png
+      src: ./images/i25.jpg
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
     featured: true
@@ -652,5 +668,5 @@ works:
       - BPNN
       - Visualization
     image:
-      src: ./images/i2.png
+      src: ./images/i2.jpg
       alt: ニューラルネットワークの可視化
