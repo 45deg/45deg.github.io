@@ -27,6 +27,21 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./size-estimator/
+    featured: false
+    title:
+      ja: Image Measurement Tool
+      en: Image Measurement Tool
+    year: 2026
+    description_html:
+      ja: 写真や画像内のオブジェクトの長さを簡単に測定できるWebツール。
+      en: A web application that makes it easy to measure the length of objects on photos or images.
+    tags:
+      - Image
+      - Editor
+    image:
+      src: ./images/i32.jpg
+      alt: Image Measurement Tool
   - href: ./lecture-scheduler/
     featured: false
     title:
