@@ -6,7 +6,7 @@ eleventyExcludeFromCollections: true
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% for url in sitemap.urls %}
   <url>
-    <loc>{{ sitemap.baseUrl }}{{ url }}</loc>
+    <loc>{{ url | absoluteUrl(sitemap.baseUrl) | escape }}</loc>
   </url>
 {% endfor %}
 </urlset>
