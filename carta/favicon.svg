@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- 斜めの背面カード -->
+  <rect x="3.5" y="4.5" width="18" height="23" rx="3" transform="rotate(-12 12.5 16)" fill="#1d8eb5" opacity="0.4" stroke="#1d8eb5" stroke-width="1.5" />
+  <!-- まっすぐの前面カード -->
+  <rect x="10.5" y="4.5" width="18" height="23" rx="3" fill="#1d8eb5" stroke="#1d8eb5" stroke-width="1.5" />
+  <!-- 前面カードの中のダミーのテキストライン -->
+  <line x1="14.5" y1="10.5" x2="24.5" y2="10.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  <line x1="14.5" y1="16.5" x2="20.5" y2="16.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  <line x1="14.5" y1="22.5" x2="22.5" y2="22.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+</svg>

@@ -27,6 +27,22 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./carta/
+    featured: false
+    title:
+      ja: Carta
+      en: Carta
+    year: 2026
+    description_html:
+      ja: 学習内容を構造化した知識ポスターとして変換・出力・印刷できるツール。
+      en: A tool for turning learning content into structured knowledge posters for export and printing.
+    tags:
+      - Knowledge
+      - Poster
+      - Editor
+    image:
+      src: ./images/i33.png
+      alt: Carta
   - href: ./size-estimator/
     featured: false
     title:
