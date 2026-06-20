@@ -28,7 +28,7 @@ filters:
       en: Article
 works:
   - href: ./carta/
-    featured: false
+    featured: true
     title:
       ja: Carta
       en: Carta
@@ -92,7 +92,7 @@ works:
       class: placeholder-article
       emoji: 🌐
   - href: ./pixelate/
-    featured: false
+    featured: true
     title:
       ja: Pixel Grid Studio
       en: Pixel Grid Studio
@@ -125,7 +125,7 @@ works:
       class: placeholder-article
       emoji: 🐻
   - href: ./stitch/
-    featured: false
+    featured: true
     title:
       ja: Stitch
       en: Stitch
@@ -156,7 +156,7 @@ works:
       src: ./images/i28.png
       alt: Vibe Design Gallery
   - href: ./lucide-search/
-    featured: false
+    featured: true
     title:
       ja: Lucide Icon Search
       en: Lucide Icon Search
@@ -376,7 +376,7 @@ works:
       class: placeholder-article
       emoji: 🎬
   - href: ./subleq-ide/
-    featured: false
+    featured: true
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
@@ -425,6 +425,23 @@ works:
     image:
       src: ./images/i17.png
       alt: pdf-toc-tool
+  - href: ./misc/toritsu.html
+    featured: false
+    title:
+      ja: 倒立振子シミュレータ
+      en: Inverted Pendulum Simulator
+    year: 2026
+    description_html:
+      ja: 台車型倒立振子の挙動をブラウザ上でリアルタイムに体感できるシミュレータ。古典制御（PID/PDカスケード）、現代制御（LQR）、非線形制御（スライディングモード制御）の3手法をダイナミックなビジュアライズとグラフで比較。
+      en: A browser-based real-time simulation of an inverted pendulum on a cart. Compare classical control (PID/PD cascade), modern control (LQR), and non-linear control (Sliding Mode Control) with dynamic visualizations and charts.
+    tags:
+      - Simulation
+      - Physics
+      - Control Theory
+      - Visualization
+    image:
+      src: ./images/i34.png
+      alt: Inverted Pendulum Simulator
   - href: ./flowtimer/
     featured: false
     title:
@@ -666,7 +683,7 @@ works:
       src: ./images/i3.png
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./rogyAdC2015
-    featured: false
+    featured: true
     title:
       ja: dynamorphism の紹介
       en: Introduction to Dynamorphism
