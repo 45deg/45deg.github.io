@@ -356,7 +356,8 @@
 }</code></pre>
 
     <p>
-        実装では <code>.katex-mathml</code> を除去し、HTML 内の <code>&amp;nbsp;</code>, <code>&amp;middot;</code>, <code>&amp;times;</code> は XML として安全な数値文字参照へ置き換える。
+        実装では <code>.katex-mathml</code> を除去し、KaTeX が根号・伸縮アクセント・打ち消し線などに使う内側の <code>&lt;svg&gt;</code> には SVG 名前空間を明示する。
+        また、HTML 内の <code>&amp;nbsp;</code>, <code>&amp;middot;</code>, <code>&amp;times;</code> は XML として安全な数値文字参照へ置き換える。
         SVG は XML なので、HTML では通る実体参照がそのままでは壊れることがある。
     </p>
     </section>
@@ -693,7 +694,9 @@ function minifySvg(svg) {
     <ul>
         <li><code>foreignObject</code> に依存するため、ブラウザ以外の SVG レンダラでは表示できないことがある。</li>
         <li>DOM クラスからのフォント判定は KaTeX の内部構造に依存する。KaTeX のバージョンを固定し、更新時にマッピングを確認する。</li>
-        <li>すべての KaTeX コマンドを網羅するには、<code>mathscr</code>, <code>mathsf</code>, <code>boldsymbol</code>, サイズ付き区切り記号などのテストケースを増やす必要がある。</li>
+        <li>すべての KaTeX コマンドを網羅するには、根号、伸縮アクセント、<code>cancel</code>, <code>array</code>, <code>cases</code>, 色、<code>mathscr</code>, <code>mathsf</code>, <code>boldsymbol</code>, サイズ付き区切り記号などのテストケースを増やす必要がある。</li>
+        <li><code>\href</code>, <code>\includegraphics</code>, <code>\htmlClass</code>, <code>\htmlStyle</code> などの HTML 拡張は、KaTeX の <code>trust</code> 設定に依存する。外部画像や任意スタイルを扱う場合は、別途セキュリティ方針と表示確認が必要になる。</li>
+        <li>CJK など KaTeX フォント外の Unicode 文字はシステムフォントにフォールバックするため、完全な単体 SVG として保存したい場合は別のフォント埋め込み戦略が必要になる。</li>
         <li>正規表現ベースの CSS minify は固定入力向け。一般化するなら CSS パーサや SVGO を使う。</li>
         <li>生成 SVG のアクセシビリティを重視するなら、元の LaTeX を <code>&lt;title&gt;</code> や <code>&lt;desc&gt;</code> に入れる処理を追加する。</li>
         <li>フォントのサブセット化と WOFF2 再圧縮は重い処理なので、複数数式を扱う場合はフォントの展開結果とサブセット結果をキャッシュする。</li>
@@ -767,7 +770,7 @@ function minifySvg(svg) {
     const collageHeight = 360;
 
     // デモ用の固定コラージュ。複数の KaTeX クラスを意図的に混ぜることで、
-    // Main / Math / AMS / Caligraphic / Fraktur / SansSerif / Size / Typewriter を使わせる。
+    // Main / Math / AMS / Caligraphic / Fraktur / SansSerif / Size / Typewriter と色指定を使わせる。
     const demoCases = [
         {
             label: "integral / size fonts",
@@ -778,8 +781,8 @@ function minifySvg(svg) {
             height: 78,
         },
         {
-            label: "AMS / calligraphic",
-            tex: "\\mathbb{R}\\subset\\mathbb{C},\\quad \\mathcal{F}(X)",
+            label: "color / AMS / calligraphic",
+            tex: "\\textcolor{#228B22}{\\mathbb{R}}\\subset\\mathbb{C},\\quad \\mathcal{F}(X)",
             x: 334,
             y: 70,
             width: 274,
@@ -1085,6 +1088,9 @@ function minifySvg(svg) {
         // 画面上の DOM を直接変更しないように clone してから加工する。
         const sourceClone = container.cloneNode(true);
         sourceClone.querySelectorAll(".katex-mathml").forEach((mathml) => mathml.remove());
+        sourceClone.querySelectorAll(".katex svg").forEach((svg) => {
+            svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        });
 
         const pieces = Array.from(sourceClone.querySelectorAll(".collage-formula")).map((formula) => {
             const x = Number(formula.dataset.x);
