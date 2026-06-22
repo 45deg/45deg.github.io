@@ -74,6 +74,23 @@ works:
     image:
       src: ./images/i31.png
       alt: Lecture Scheduler
+  - href: ./articles/katex2svg.html
+    featured: false
+    title:
+      ja: KaTeX から SVG に変換する
+      en: Converting KaTeX to SVG
+    year: 2026
+    description_html:
+      ja: KaTeX の HTML 出力を foreignObject で SVG に埋め込み、DOM 解析と WOFF2 のグリフ単位サブセット化で小さなスタンドアロン SVG を作る実装メモ。
+      en: Notes on embedding KaTeX HTML output in SVG with foreignObject, DOM analysis, and WOFF2 glyph subsetting for compact standalone SVGs.
+    tags:
+      - Article
+      - KaTeX
+      - SVG
+      - JavaScript
+    placeholder:
+      class: placeholder-article
+      emoji: π
   - href: ./articles/intl.html
     featured: false
     title:

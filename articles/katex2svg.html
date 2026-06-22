@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaTeX から SVG に変換する</title>
+    <meta name="description" content="KaTeX の HTML 出力を foreignObject で SVG に埋め込み、DOM 解析と WOFF2 のグリフ単位サブセット化でスタンドアロン SVG を小さくする手法を整理します。">
+    <meta name="keywords" content="KaTeX, SVG, foreignObject, WOFF2, Glypht, font subset, MathJax, JavaScript">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://45deg.github.io/articles/katex2svg.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://45deg.github.io/articles/katex2svg.html">
+    <meta property="og:title" content="KaTeX から SVG に変換する">
+    <meta property="og:description" content="KaTeX の HTML 出力を foreignObject で SVG に埋め込み、DOM 解析と WOFF2 のグリフ単位サブセット化でスタンドアロン SVG を小さくする手法を整理します。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="KaTeX から SVG に変換する">
+    <meta name="twitter:description" content="KaTeX の HTML 出力を foreignObject で SVG に埋め込み、DOM 解析と WOFF2 のグリフ単位サブセット化でスタンドアロン SVG を小さくする手法を整理します。">
+
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!--
+        Glypht は worker と WASM を内部で読み込むため、GitHub Pages で動かすには
+        記事と同じ origin に vendor ファイルを置く。CDN の worker を直接 new Worker()
+        すると、ブラウザの same-origin 制約で失敗することがある。
+    -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@glypht/core": "./katex2svg-vendor/glypht-core/index.js",
+            "@glypht/web-worker": "./katex2svg-vendor/glypht-web-worker/index.js",
+            "@smol-range/decompress": "./katex2svg-vendor/smol-range-decompress/index.js"
+        }
+    }
+    </script>
+
+    <style>
+        .article-note {
+            margin-top: 14px;
+        }
+
+        .article-note.warning {
+            border-left-color: var(--danger-color);
+            background: #fff7f7;
+        }
+
+        .flow-list {
+            counter-reset: flow;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .flow-list li {
+            counter-increment: flow;
+            position: relative;
+            margin-bottom: 14px;
+            padding-left: 44px;
+        }
+
+        .flow-list li::before {
+            content: counter(flow);
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: var(--accent-color);
+            color: #fff;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .demo-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .collage-preview,
+        .generated-preview {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .collage-preview {
+            position: relative;
+            box-sizing: border-box;
+            padding: 36px 28px 24px;
+        }
+
+        .collage-title {
+            position: absolute;
+            left: 24px;
+            top: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .collage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            height: 100%;
+        }
+
+        .collage-card {
+            min-width: 0;
+            padding: 10px 12px;
+            border-left: 3px solid var(--accent-color);
+            background: #f9fbfd;
+        }
+
+        .collage-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--muted-color);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .collage-formula {
+            font-size: 26px;
+            line-height: 1.3;
+            overflow: hidden;
+        }
+
+        .generated-preview {
+            display: grid;
+            place-items: center;
+        }
+
+        .generated-preview img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .button-row {
+            margin-top: 12px;
+            gap: 10px;
+        }
+
+        .status-box {
+            min-height: 9em;
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #fff;
+            white-space: pre-wrap;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            font-size: 0.84em;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .metric {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 0.82em;
+            color: var(--muted-color);
+        }
+
+        .metric span {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .phase-chart {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .phase-row {
+            display: grid;
+            grid-template-columns: minmax(92px, 0.8fr) minmax(0, 2fr) minmax(58px, auto);
+            gap: 10px;
+            align-items: center;
+            font-size: 0.88em;
+        }
+
+        .phase-label {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        .phase-track {
+            height: 12px;
+            border-radius: 999px;
+            background: #e8edf2;
+            overflow: hidden;
+        }
+
+        .phase-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #1976d2, #26a69a);
+            transition: width 180ms ease;
+        }
+
+        .phase-size {
+            text-align: right;
+            color: var(--muted-color);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .compact-list li {
+            margin-bottom: 0.45em;
+        }
+
+        @media (max-width: 760px) {
+            .article-shell {
+                padding: 28px 22px;
+            }
+
+            .demo-panel,
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="article-page">
+<main class="article-layout">
+<article class="article-shell article-entry">
+    <header class="article-header">
+        <h1 class="article-title">KaTeX から SVG に変換する</h1>
+        <div class="article-meta">
+            <time class="article-date" datetime="2026-06-22">2026-06-22</time>
+        </div>
+        <div class="article-lead">
+            <p>
+                KaTeX で組んだ数式を、外部ファイルに依存しない SVG として保存するための実装メモ。
+                ここでは KaTeX の HTML 出力を <code>foreignObject</code> で保持しつつ、KaTeX の DOM から「文字ごとの使用フォント」を解析し、必要なグリフだけを WOFF2 として SVG に埋め込む。
+            </p>
+        </div>
+    </header>
+
+    <section class="article-section" aria-labelledby="why">
+    <h2 id="why">1. KaTeXをSVGとして保存することについて</h2>
+    <p>
+        数式をスライド、印刷用の素材、Canvas、画像変換パイプラインなどへ渡したい場合、HTML ページから独立した SVG があると扱いやすい。
+        KaTeX の通常出力は HTML、CSS、Web フォントの組み合わせなので、そのままでは表示環境の CSS とフォント配信に依存する。
+        そこで、レンダリング済みの KaTeX DOM と必要な CSS、サブセット化したフォントを SVG 内に閉じ込める。
+    </p>
+    <p>
+        ただし、理由がない場合は <a href="https://www.mathjax.org/" target="_blank" rel="noopener">MathJax</a> を使うのを推奨する。
+        MathJax は <a href="https://docs.mathjax.org/en/latest/output/svg.html" target="_blank" rel="noopener">SVG 出力</a>を直接持っており、数式を SVG として扱う用途では自然な選択肢になる。
+        この記事の方法は、KaTeX の高速な HTML レンダリングや既存の KaTeX ベースの表示結果を、そのままスタンドアロン SVG にしたい場合のためのもの。
+    </p>
+
+    <div class="article-note warning">
+        <p>
+            ここで作る SVG は、文字を <code>&lt;path&gt;</code> に変換した純粋なベクターではない。
+            <code>foreignObject</code> 内に HTML を入れるため、ブラウザ表示には向く一方、PDF 変換ツールや一部の SVG レンダラでは欠落する場合がある。
+        </p>
+    </div>
+    </section>
+
+    <section class="article-section" aria-labelledby="whole-flow">
+    <h2 id="whole-flow">2. 全体の処理フロー</h2>
+    <p>
+        単に「数式に含まれる文字」を全部の KaTeX フォントに対してサブセット化すると、スペースなどの共通文字に反応して、ほぼすべてのフォントが対象になってしまう。
+        サブセットフォントにもヘッダーや基本テーブルのオーバーヘッドがあるため、20 個の KaTeX フォントを少しずつ埋め込むだけで大きくなる。
+        重要なのは、文字集合ではなく「この文字はこのフォントで描かれる」という対応を作ること。
+    </p>
+
+    <ol class="flow-list">
+        <li>KaTeX で数式を HTML としてレンダリングし、表示用の <code>.katex-html</code> を得る。</li>
+        <li>DOM ツリーを走査し、テキストノードごとに親要素のクラス階層からフォントファミリーとスタイルを判定する。</li>
+        <li>フォントキーごとに Unicode コードポイントの集合を作る。</li>
+        <li>KaTeX の WOFF2 を TTF に展開し、該当フォントだけをグリフ単位でサブセット化する。</li>
+        <li>不要テーブルを落とし、Brotli 圧縮レベル 11（WOFF2）で再圧縮する。</li>
+        <li><code>unicode-range</code> 付きの <code>@font-face</code> と KaTeX CSS を SVG の <code>&lt;defs&gt;</code> に入れる。</li>
+        <li><code>foreignObject</code> に KaTeX の HTML 構造を入れ、最後に CSS と SVG を minify する。</li>
+    </ol>
+    </section>
+
+    <section class="article-section" aria-labelledby="foreign-object">
+    <h2 id="foreign-object">3. foreignObjectによる埋め込みの方法</h2>
+    <p>
+        分数、指数、根号、行列、大きな演算子などの二次元レイアウトを自前で SVG の <code>&lt;text&gt;</code> に戻すのは難しい。
+        そこで、KaTeX が生成した HTML レイアウトをそのまま <code>foreignObject</code> に入れる。
+        レイアウト計算はブラウザの HTML/CSS エンジンに任せる。
+    </p>
+
+    <p>
+        ※以下のコード例は説明用の簡略版である。
+    </p>
+
+    <pre><code class="language-js">function buildSvg({ container, subsetWoff2Parts, paddingX, paddingY }) {
+  // foreignObject の外側は通常の SVG として扱える。
+  // ここでは KaTeX HTML の周囲に余白を足したサイズを SVG 全体のサイズにする。
+  const containerRect = container.getBoundingClientRect();
+  const width = Math.ceil(containerRect.width + paddingX * 2);
+  const height = Math.ceil(containerRect.height + paddingY * 2);
+
+  // サブセット化した WOFF2 を Data URL にし、SVG 内の style に閉じ込める。
+  // unicode-range を付けることで、同じ font-family 名のまま必要な文字だけを読ませられる。
+  const fontFaces = subsetWoff2Parts.map((part) =&gt; {
+    const { weight, style } = getFontStyleAndWeight(part.subfamilyName);
+
+    return `
+      @font-face {
+        font-family: "${part.familyName}";
+        src: url("data:font/woff2;base64,${bytesToBase64(part.bytes)}") format("woff2");
+        font-weight: ${weight};
+        font-style: ${style};
+        unicode-range: ${part.unicodeRange};
+      }`;
+  }).join("\n");
+
+  // KaTeX CSS に含まれる CDN フォント定義は使わない。
+  // ここで作った Data URL 版 @font-face に置き換える。
+  const cleanKatexCss = katexCss.replace(/@font-face\s*\{[\s\S]*?\}/g, "");
+  const minifiedCss = minifyCss(cleanKatexCss + "\n" + fontFaces);
+
+  // foreignObject の中だけ XHTML 名前空間にする。
+  // これがないと SVG XML として解釈されたときに HTML レイアウトにならない。
+  return minifySvg(`&lt;svg xmlns="http://www.w3.org/2000/svg"
+      width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"&gt;
+    &lt;defs&gt;&lt;style&gt;${minifiedCss}&lt;/style&gt;&lt;/defs&gt;
+    &lt;rect width="100%" height="100%" fill="#fff"/&gt;
+    &lt;foreignObject width="100%" height="100%"&gt;
+      &lt;div xmlns="http://www.w3.org/1999/xhtml"
+          style="padding:${paddingY}px ${paddingX}px;box-sizing:border-box;display:inline-block;"&gt;
+        ${container.closest(".katex").outerHTML}
+      &lt;/div&gt;
+    &lt;/foreignObject&gt;
+  &lt;/svg&gt;`);
+}</code></pre>
+
+    <p>
+        実装では <code>.katex-mathml</code> を除去し、HTML 内の <code>&amp;nbsp;</code>, <code>&amp;middot;</code>, <code>&amp;times;</code> は XML として安全な数値文字参照へ置き換える。
+        SVG は XML なので、HTML では通る実体参照がそのままでは壊れることがある。
+    </p>
+    </section>
+
+    <section class="article-section" aria-labelledby="font-analysis">
+    <h2 id="font-analysis">4. KaTeXのDOMクラスから「文字ごとの使用フォント」を判定する</h2>
+    <p>
+        KaTeX の <code>.katex-html</code> には、文字の種類に応じたクラスが付く。
+        例えば <code>.mathnormal</code> は <code>KaTeX_Math-Italic</code>、<code>.amsrm</code> や <code>.mathbb</code> は <code>KaTeX_AMS-Regular</code>、大型の積分記号は <code>.op-symbol.large-op</code> から <code>KaTeX_Size2-Regular</code> と判定できる。
+    </p>
+
+    <p>
+        ここでは主要なクラスとフォントキーの対応を示す。
+    </p>
+
+    <table>
+        <tr><th>DOMクラス</th><th>フォントキー</th><th>用途</th></tr>
+        <tr><td><code>.mathnormal</code></td><td><code>KaTeX_Math-Italic</code></td><td>変数、ギリシャ文字など</td></tr>
+        <tr><td><code>.mathbf</code></td><td><code>KaTeX_Main-Bold</code></td><td>太字の本文系文字</td></tr>
+        <tr><td><code>.amsrm</code>, <code>.mathbb</code></td><td><code>KaTeX_AMS-Regular</code></td><td>AMS記号、黒板太字</td></tr>
+        <tr><td><code>.mathcal</code></td><td><code>KaTeX_Caligraphic-Regular</code></td><td>カリグラフィ</td></tr>
+        <tr><td><code>.mathfrak</code></td><td><code>KaTeX_Fraktur-Regular</code></td><td>フラクトゥール</td></tr>
+        <tr><td><code>.delimsizing.size1</code></td><td><code>KaTeX_Size1-Regular</code></td><td>伸縮括弧</td></tr>
+        <tr><td><code>.op-symbol.large-op</code></td><td><code>KaTeX_Size2-Regular</code></td><td>積分などの大型演算子</td></tr>
+    </table>
+
+    <p>
+        ※以下のコード例は説明のための簡略版である。改行コードの除外や、より網羅的なクラス判定を含む完全な実装は、ソースコードを参照のこと。
+    </p>
+
+    <pre><code class="language-js">function collectFontToCharactersMap(katexHtmlRoot) {
+  const fontToCharactersMap = new Map();
+
+  function traverse(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.nodeValue;
+      if (!text) return;
+
+      const fontInfo = getFontForElement(node.parentElement);
+      const key = `${fontInfo.family}-${fontInfo.style}`;
+
+      if (!fontToCharactersMap.has(key)) {
+        fontToCharactersMap.set(key, new Set());
+      }
+
+      for (const char of text) {
+        fontToCharactersMap.get(key).add(char.codePointAt(0));
+      }
+      return;
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      // KaTeX の根号罫線などに含まれる装飾用 SVG は文字フォントの対象外。
+      if (node.tagName.toLowerCase() === "svg") return;
+
+      for (const child of node.childNodes) {
+        traverse(child);
+      }
+    }
+  }
+
+  traverse(katexHtmlRoot);
+  return fontToCharactersMap;
+}</code></pre>
+
+    <pre><code class="language-js">function getFontForElement(element) {
+  let family = "KaTeX_Main";
+  let hasItalic = false;
+  let hasBold = false;
+
+  let current = element;
+  while (current && !current.classList.contains("katex-html")) {
+    const cl = current.classList;
+
+    if (cl.contains("textit") || cl.contains("mathit")) hasItalic = true;
+    if (cl.contains("mathbf")) hasBold = true;
+
+    if (cl.contains("mathnormal")) {
+      family = "KaTeX_Math";
+      hasItalic = true;
+    } else if (cl.contains("amsrm") || cl.contains("mathbb") || cl.contains("textbb")) {
+      family = "KaTeX_AMS";
+    } else if (cl.contains("mathcal")) {
+      family = "KaTeX_Caligraphic";
+    } else if (cl.contains("mathfrak") || cl.contains("textfrak")) {
+      family = "KaTeX_Fraktur";
+    } else if (cl.contains("mathtt") || cl.contains("texttt")) {
+      family = "KaTeX_Typewriter";
+    } else if (cl.contains("mathsf") || cl.contains("textsf")) {
+      family = "KaTeX_SansSerif";
+    } else if (cl.contains("delimsizing")) {
+      if (cl.contains("size1")) family = "KaTeX_Size1";
+      else if (cl.contains("size2")) family = "KaTeX_Size2";
+      else if (cl.contains("size3")) family = "KaTeX_Size3";
+      else if (cl.contains("size4")) family = "KaTeX_Size4";
+    } else if (cl.contains("op-symbol")) {
+      if (cl.contains("small-op")) family = "KaTeX_Size1";
+      else if (cl.contains("large-op")) family = "KaTeX_Size2";
+    }
+
+    current = current.parentElement;
+  }
+
+  let style = "Regular";
+  if (hasBold && hasItalic) style = "Bold Italic";
+  else if (hasBold) style = "Bold";
+  else if (hasItalic) style = "Italic";
+
+  return { family, style };
+}</code></pre>
+    </section>
+
+    <section class="article-section" aria-labelledby="woff2-subset">
+    <h2 id="woff2-subset">5. 必要なグリフだけをWOFF2としてSVGに埋め込む</h2>
+    <p>
+        実装では <a href="https://github.com/valadaptive/glypht" target="_blank" rel="noopener">Glypht</a> の <code>GlyphtContext</code> と <code>WoffCompressionContext</code> を使う。
+        KaTeX の WOFF2 をいったん TTF に展開し、フォントオブジェクトへ読み込んでから、フォントごとのコードポイント集合で <code>font.subset()</code> を実行する。
+    </p>
+
+    <p>
+        ※以下のコード例は主要な処理の流れを示す簡略版である。エラーハンドリングや非同期タイムアウト処理を含む完全な実装は、ソースコードを参照のこと。
+    </p>
+
+    <pre><code class="language-js">import {
+  GlyphtContext,
+  WoffCompressionContext,
+} from "@glypht/core";
+
+const fontContext = new GlyphtContext();
+const compressionContext = new WoffCompressionContext(1);
+
+// Vite の例。KaTeX の WOFF2 を URL としてすべて拾い、先に TTF へ展開しておく。
+const fontUrlModules = import.meta.glob("/node_modules/katex/dist/fonts/*.woff2", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const originalWoff2BytesList = await Promise.all(
+  Object.values(fontUrlModules).sort().map(async (url) =&gt; {
+    const response = await fetch(url);
+    return new Uint8Array(await response.arrayBuffer());
+  }),
+);
+
+const decompressedFontBytesList = await Promise.all(
+  originalWoff2BytesList.map((bytes) =&gt; {
+    return compressionContext.decompressToTTF(bytes.slice(), { transfer: true });
+  }),
+);</code></pre>
+
+    <pre><code class="language-js">async function subsetFonts(fontToCharactersMap, fontWeight) {
+  const fonts = await fontContext.loadFonts(
+    decompressedFontBytesList.map((bytes) =&gt; bytes.slice()),
+    { transfer: true },
+  );
+
+  const subsetWoff2Parts = [];
+
+  for (const font of fonts) {
+    const key = `${font.familyName}-${font.subfamilyName}`;
+    if (!fontToCharactersMap.has(key)) continue;
+
+    const fontCodePoints = Array.from(fontToCharactersMap.get(key)).sort((a, b) =&gt; a - b);
+
+    const subset = await font.subset({
+      // 可変フォントの場合に備えて wght 軸を指定する。
+      // KaTeX の通常フォントでは固定値として扱われる。
+      axisValues: [{
+        type: "single",
+        tag: "wght",
+        value: fontWeight,
+      }],
+      unicodeRanges: {
+        named: [],
+        custom: fontCodePoints,
+      },
+      // SVG 表示に不要なテーブルは落とす。
+      // glyph と layout に必要なテーブルは Glypht 側が保持する。
+      dropTables: ["DSIG", "gasp", "hdmx", "LTSH", "VDMX", "META", "MVAR", "PCLT"],
+      preprocess: true,
+    });
+
+    if (!subset?.data || subset.data.length === 0) continue;
+
+    const subsetWoff2 = await compressionContext.compressFromTTF(subset.data, {
+      // subset() の戻り値は TTF。スタンドアロン SVG に入れる前に WOFF2 へ戻す。
+      algorithm: "woff2",
+      level: 11,
+      transfer: true,
+    });
+
+    subsetWoff2Parts.push({
+      bytes: subsetWoff2,
+      unicodeRange: fontCodePoints.map((c) =&gt; `U+${c.toString(16).toUpperCase()}`).join(", "),
+      familyName: font.familyName,
+      subfamilyName: font.subfamilyName,
+    });
+  }
+
+  for (const font of fonts) {
+    await font.destroy();
+  }
+
+  return subsetWoff2Parts;
+}</code></pre>
+
+    <p>
+        ここでのポイントは、サブセット化の対象を「そのフォントで実際に描かれる文字」に限定すること。
+        <code>unicode-range</code> も同じ文字集合に合わせて付けるため、SVG 内では KaTeX 本来の <code>font-family</code> 名を保ったまま、ブラウザが該当文字だけをサブセットフォントから読む。
+    </p>
+    </section>
+
+    <section class="article-section" aria-labelledby="minify">
+    <h2 id="minify">6. CSSおよびSVGの最小化</h2>
+    <p>
+        フォントを小さくしても、KaTeX CSS をそのまま入れるとそれだけで大きい。
+        KaTeX CSS には、今回の式では使わないレイアウト、サイズ、アクセント、環境用のセレクタが多く含まれる。
+        そのため、外部フォント用の <code>@font-face</code> を取り除き、生成された KaTeX DOM にマッチするルールだけを <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model" target="_blank" rel="noopener">CSSOM</a> で残す。
+        そのうえで、生成した Data URL 版 <code>@font-face</code> を足してから minify する。
+    </p>
+
+    <pre><code class="language-js">function pruneKatexCss(css, katexRoot) {
+  const style = document.createElement("style");
+  style.textContent = css;
+  document.head.appendChild(style);
+
+  try {
+    return Array.from(style.sheet.cssRules).flatMap((rule) =&gt; {
+      if (rule.type !== CSSRule.STYLE_RULE) return [];
+
+      // カンマ区切りの selectorText を分解し、
+      // 実際の KaTeX DOM に当たるセレクタだけを残す。
+      const selectors = rule.selectorText.split(",").map((selector) =&gt; selector.trim());
+      const usedSelectors = selectors.filter((selector) =&gt; {
+        const normalized = selector.replace(/::?(before|after)/g, "").trim();
+        return katexRoot.matches(normalized) || katexRoot.querySelector(normalized);
+      });
+
+      return usedSelectors.length ? `${usedSelectors.join(",")}{${rule.style.cssText}}` : [];
+    }).join("");
+  } finally {
+    style.remove();
+  }
+}
+
+function minifyCss(css) {
+  // 固定入力である KaTeX CSS と自前の @font-face だけを対象にした軽量 minify。
+  // 任意の CSS を受ける場合は PostCSS / csso などのパーサを使う。
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*([\{\}:;,])\s*/g, "$1")
+    .trim();
+}
+
+function minifySvg(svg) {
+  // XML として意味を変えない範囲でタグ間の空白と連続空白を落とす。
+  // path 化した SVG ではないため、属性名の短縮や構造変更までは行わない。
+  return svg
+    .replace(/&gt;\s+&lt;/g, "&gt;&lt;")
+    .replace(/\s+/g, " ")
+    .trim();
+}</code></pre>
+
+    <p>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model" target="_blank" rel="noopener">CSSOM</a> を使う理由は、コメントや空白だけでなく「使っていないセレクタ」そのものを落とすため。
+        その後の文字列 minify は、残った CSS を SVG 内に埋め込む前の仕上げとして使う。
+        今回のデモでは、フォントのサブセット化だけでなく、この CSS pruning によって最終 SVG もさらに小さくなる。
+    </p>
+    </section>
+
+    <section class="article-section" aria-labelledby="demo">
+    <h2 id="demo">7. 実測結果（デモ）</h2>
+    <p>
+        このデモは HTML だけで完結させるため、KaTeX、KaTeX CSS、KaTeX WOFF2 は CDN から読み込む。
+        Glypht は module worker と WASM を使うため、worker と WASM ファイルだけは記事と同じ origin の <code>katex2svg-vendor/</code> に置いている。
+        ボタンを押すと、ブラウザ内で WOFF2 を TTF に展開し、DOM 解析で得たフォントごとのコードポイントだけをサブセット化し、WOFF2 として再圧縮した SVG を生成する。
+    </p>
+
+    <div class="article-demo">
+        <div class="demo-panel">
+            <div>
+                <p>
+                    固定サイズの SVG に、通常の数式、AMS 記号、カリグラフィ、フラクトゥール、サンセリフ、タイプライタ、大きな区切り記号を混ぜて配置する。
+                    説明ラベルは <code>&lt;text&gt;</code> として追加し、数式部分だけを <code>foreignObject</code> に入れる。
+                </p>
+                <div class="button-row">
+                    <button class="button" id="optimize-button" type="button">最適化SVGを生成</button>
+                    <button class="button" id="download-button" type="button" disabled>SVGを保存</button>
+                </div>
+                <!-- 生成後に、フォント単体と最終 SVG のサイズを即座に比較できるようにする。 -->
+                <div class="metric-grid">
+                    <div class="metric">
+                        <strong>元WOFF2合計</strong>
+                        <span id="stat-original-size">-</span>
+                    </div>
+                    <div class="metric">
+                        <strong>サブセット合計</strong>
+                        <span id="stat-subset-size">-</span>
+                    </div>
+                    <div class="metric">
+                        <strong>生成SVGサイズ</strong>
+                        <span id="stat-svg-size">-</span>
+                    </div>
+                    <div class="metric">
+                        <strong>サブセットフォント数</strong>
+                        <span id="stat-font-count">-</span>
+                    </div>
+                </div>
+                <!-- 各フェーズの圧縮効果を横棒グラフで描く。値は JS 側で実測して埋める。 -->
+                <div class="phase-chart" id="phase-chart" aria-label="圧縮フェーズ別サイズ"></div>
+                <div class="status-box" id="demo-status" aria-live="polite">Glyphtのworker/wasmとCDN上のKaTeXフォントを読み込みます。初回は少し時間がかかります。</div>
+            </div>
+            <div>
+                <!--
+                    SVG 化する前の HTML プレビュー。ここで生成した KaTeX DOM を解析し、
+                    同じ DOM を foreignObject として最終 SVG に入れる。
+                -->
+                <div class="collage-preview" id="demo-collage">
+                    <span class="collage-title">KaTeX collage source</span>
+                    <div class="collage-grid" id="collage-grid"></div>
+                </div>
+                <h3>生成SVGプレビュー</h3>
+                <!-- Blob URL にした生成 SVG を img として表示し、実際に単体表示できるか確認する。 -->
+                <div class="generated-preview" id="generated-preview">未生成</div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section class="article-section" aria-labelledby="limitations">
+    <h2 id="limitations">8. 制限事項と改善点</h2>
+    <ul>
+        <li><code>foreignObject</code> に依存するため、ブラウザ以外の SVG レンダラでは表示できないことがある。</li>
+        <li>DOM クラスからのフォント判定は KaTeX の内部構造に依存する。KaTeX のバージョンを固定し、更新時にマッピングを確認する。</li>
+        <li>すべての KaTeX コマンドを網羅するには、<code>mathscr</code>, <code>mathsf</code>, <code>boldsymbol</code>, サイズ付き区切り記号などのテストケースを増やす必要がある。</li>
+        <li>正規表現ベースの CSS minify は固定入力向け。一般化するなら CSS パーサや SVGO を使う。</li>
+        <li>生成 SVG のアクセシビリティを重視するなら、元の LaTeX を <code>&lt;title&gt;</code> や <code>&lt;desc&gt;</code> に入れる処理を追加する。</li>
+        <li>フォントのサブセット化と WOFF2 再圧縮は重い処理なので、複数数式を扱う場合はフォントの展開結果とサブセット結果をキャッシュする。</li>
+    </ul>
+    </section>
+
+    <section class="article-section" aria-labelledby="references">
+    <h2 id="references">参考</h2>
+    <ul>
+        <li><a href="https://katex.org/docs/browser" target="_blank" rel="noopener">KaTeX browser usage</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model" target="_blank" rel="noopener">MDN: CSS Object Model (CSSOM)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/foreignObject" target="_blank" rel="noopener">MDN: &lt;foreignObject&gt;</a></li>
+        <li><a href="https://www.mathjax.org/" target="_blank" rel="noopener">MathJax</a></li>
+        <li><a href="https://github.com/valadaptive/glypht" target="_blank" rel="noopener">Glypht</a></li>
+        <li><a href="https://docs.mathjax.org/en/latest/output/svg.html" target="_blank" rel="noopener">MathJax SVG output</a></li>
+    </ul>
+    </section>
+</article>
+</main>
+
+<script type="module">
+    // KaTeX 本体とフォントは CDN から取得する。
+    // worker / WASM だけは import map で同一 origin の vendor に向けている。
+    const katexVersion = "0.16.22";
+    const katexCssUrl = `https://cdn.jsdelivr.net/npm/katex@${katexVersion}/dist/katex.min.css`;
+    const katexFontBaseUrl = `https://cdn.jsdelivr.net/npm/katex@${katexVersion}/dist/fonts/`;
+    const katexFontFiles = [
+        "KaTeX_AMS-Regular.woff2",
+        "KaTeX_Caligraphic-Bold.woff2",
+        "KaTeX_Caligraphic-Regular.woff2",
+        "KaTeX_Fraktur-Bold.woff2",
+        "KaTeX_Fraktur-Regular.woff2",
+        "KaTeX_Main-Bold.woff2",
+        "KaTeX_Main-BoldItalic.woff2",
+        "KaTeX_Main-Italic.woff2",
+        "KaTeX_Main-Regular.woff2",
+        "KaTeX_Math-BoldItalic.woff2",
+        "KaTeX_Math-Italic.woff2",
+        "KaTeX_SansSerif-Bold.woff2",
+        "KaTeX_SansSerif-Italic.woff2",
+        "KaTeX_SansSerif-Regular.woff2",
+        "KaTeX_Script-Regular.woff2",
+        "KaTeX_Size1-Regular.woff2",
+        "KaTeX_Size2-Regular.woff2",
+        "KaTeX_Size3-Regular.woff2",
+        "KaTeX_Size4-Regular.woff2",
+        "KaTeX_Typewriter-Regular.woff2",
+    ];
+
+    const collageGrid = document.getElementById("collage-grid");
+    const generatedPreview = document.getElementById("generated-preview");
+    const phaseChart = document.getElementById("phase-chart");
+    const optimizeButton = document.getElementById("optimize-button");
+    const downloadButton = document.getElementById("download-button");
+    const statusBox = document.getElementById("demo-status");
+    const statOriginalSize = document.getElementById("stat-original-size");
+    const statSubsetSize = document.getElementById("stat-subset-size");
+    const statSvgSize = document.getElementById("stat-svg-size");
+    const statFontCount = document.getElementById("stat-font-count");
+
+    let glyphtModulePromise = null;
+    let fontContext = null;
+    let compressionContext = null;
+    let katexCssPromise = null;
+    let originalWoff2BytesList = null;
+    let decompressedFontBytesList = null;
+    let currentSvg = "";
+    let currentPreviewUrl = "";
+
+    const collageWidth = 640;
+    const collageHeight = 360;
+
+    // デモ用の固定コラージュ。複数の KaTeX クラスを意図的に混ぜることで、
+    // Main / Math / AMS / Caligraphic / Fraktur / SansSerif / Size / Typewriter を使わせる。
+    const demoCases = [
+        {
+            label: "integral / size fonts",
+            tex: "\\int_0^\\infty e^{-x^2}\\,dx=\\frac{\\sqrt{\\pi}}{2}",
+            x: 32,
+            y: 70,
+            width: 286,
+            height: 78,
+        },
+        {
+            label: "AMS / calligraphic",
+            tex: "\\mathbb{R}\\subset\\mathbb{C},\\quad \\mathcal{F}(X)",
+            x: 334,
+            y: 70,
+            width: 274,
+            height: 78,
+        },
+        {
+            label: "fraktur / sans / mono",
+            tex: "\\mathfrak{g}\\oplus\\mathsf{V}\\to\\mathtt{code}",
+            x: 32,
+            y: 218,
+            width: 286,
+            height: 72,
+        },
+        {
+            label: "delimiters / radicals",
+            tex: "\\left\\langle\\frac{a+b}{c},\\sqrt{\\pi}\\right\\rangle",
+            x: 334,
+            y: 218,
+            width: 274,
+            height: 72,
+        },
+    ];
+
+    function setStatus(lines) {
+        statusBox.textContent = Array.isArray(lines) ? lines.join("\n") : lines;
+    }
+
+    function renderCollagePreview() {
+        collageGrid.innerHTML = "";
+
+        for (const item of demoCases) {
+            // 画面上のプレビューと、後で SVG に埋める foreignObject の座標を同じデータから作る。
+            const card = document.createElement("div");
+            card.className = "collage-card";
+
+            const label = document.createElement("span");
+            label.className = "collage-label";
+            label.textContent = item.label;
+
+            const formula = document.createElement("div");
+            formula.className = "collage-formula";
+            formula.dataset.label = item.label;
+            formula.dataset.x = String(item.x);
+            formula.dataset.y = String(item.y);
+            formula.dataset.width = String(item.width);
+            formula.dataset.height = String(item.height);
+
+            katex.render(item.tex, formula, {
+                displayMode: false,
+                throwOnError: false,
+                strict: "ignore",
+                output: "html",
+            });
+
+            card.append(label, formula);
+            collageGrid.appendChild(card);
+        }
+    }
+
+    async function loadGlyphtModule() {
+        if (!glyphtModulePromise) {
+            glyphtModulePromise = import("@glypht/core");
+        }
+        return glyphtModulePromise;
+    }
+
+    async function ensureFontData() {
+        if (decompressedFontBytesList) {
+            return;
+        }
+
+        // Glypht の context は worker pool を持つため、初回生成時に一度だけ作る。
+        setStatus("Glyphtを読み込んでいます...");
+        const { GlyphtContext, WoffCompressionContext } = await loadGlyphtModule();
+        fontContext = new GlyphtContext();
+        compressionContext = new WoffCompressionContext(1);
+
+        // まず KaTeX が配布している全 WOFF2 を取得する。
+        // この時点ではまだサブセット化せず、元サイズの比較にも使う。
+        setStatus("CDNからKaTeX WOFF2を読み込んでいます...");
+        originalWoff2BytesList = await Promise.all(
+            katexFontFiles.map(async (fileName) => {
+                const response = await fetch(katexFontBaseUrl + fileName);
+                if (!response.ok) {
+                    throw new Error(`${fileName} を取得できませんでした。`);
+                }
+                return new Uint8Array(await response.arrayBuffer());
+            }),
+        );
+
+        // Glypht の subset() は TTF を入力にするため、WOFF2 をいったん展開する。
+        // 展開結果は重いので、次回以降の生成ではキャッシュを再利用する。
+        setStatus("WOFF2をTTFへ展開しています...");
+        decompressedFontBytesList = await Promise.all(
+            originalWoff2BytesList.map((bytes) => {
+                return compressionContext.decompressToTTF(bytes.slice(), { transfer: true });
+            }),
+        );
+
+        statOriginalSize.textContent = formatBytes(getTotalBytes(originalWoff2BytesList));
+    }
+
+    async function fetchKatexCss() {
+        if (!katexCssPromise) {
+            katexCssPromise = fetch(katexCssUrl).then(async (response) => {
+                if (!response.ok) {
+                    throw new Error("KaTeX CSS を取得できませんでした。");
+                }
+                return response.text();
+            });
+        }
+        return katexCssPromise;
+    }
+
+    function collectFontToCharactersMap(katexHtmlRoot) {
+        const fontToCharactersMap = new Map();
+
+        function traverse(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.nodeValue;
+                if (!text) return;
+
+                // テキストノード単体からは使用フォントが分からない。
+                // 親方向に KaTeX の class を見て、実際に描画されるフォントキーへ変換する。
+                const fontInfo = getFontForElement(node.parentElement);
+                const key = `${fontInfo.family}-${fontInfo.style}`;
+
+                if (!fontToCharactersMap.has(key)) {
+                    fontToCharactersMap.set(key, new Set());
+                }
+
+                for (const char of text) {
+                    const codePoint = char.codePointAt(0);
+                    if (codePoint !== 0x0a && codePoint !== 0x0d) {
+                        fontToCharactersMap.get(key).add(codePoint);
+                    }
+                }
+                return;
+            }
+
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                // 根号や伸縮記号の一部は KaTeX 内部の SVG として生成される。
+                // これらはフォントのグリフではないため、文字集合の解析対象から外す。
+                if (node.tagName.toLowerCase() === "svg") return;
+                for (const child of node.childNodes) {
+                    traverse(child);
+                }
+            }
+        }
+
+        traverse(katexHtmlRoot);
+        return fontToCharactersMap;
+    }
+
+    function getFontForElement(element) {
+        let family = "KaTeX_Main";
+        let hasItalic = false;
+        let hasBold = false;
+
+        let current = element;
+        while (current && !current.classList.contains("katex-html")) {
+            const cl = current.classList;
+
+            // KaTeX の class は、フォントファミリーと太字/イタリックを別々に表す。
+            // 先に装飾フラグを拾い、最後に subfamily 名へ正規化する。
+            if (cl.contains("textit") || cl.contains("mathit")) hasItalic = true;
+            if (cl.contains("mathbf")) hasBold = true;
+
+            if (cl.contains("mathnormal")) {
+                family = "KaTeX_Math";
+                hasItalic = true;
+            } else if (cl.contains("amsrm") || cl.contains("mathbb") || cl.contains("textbb")) {
+                family = "KaTeX_AMS";
+            } else if (cl.contains("mathcal")) {
+                family = "KaTeX_Caligraphic";
+            } else if (cl.contains("mathfrak") || cl.contains("textfrak")) {
+                family = "KaTeX_Fraktur";
+            } else if (cl.contains("mathboldfrak") || cl.contains("textboldfrak")) {
+                family = "KaTeX_Fraktur";
+                hasBold = true;
+            } else if (cl.contains("mathtt") || cl.contains("texttt")) {
+                family = "KaTeX_Typewriter";
+            } else if (cl.contains("mathscr") || cl.contains("textscr")) {
+                family = "KaTeX_Script";
+            } else if (cl.contains("mathsf") || cl.contains("textsf")) {
+                family = "KaTeX_SansSerif";
+            } else if (cl.contains("mathboldsf") || cl.contains("textboldsf")) {
+                family = "KaTeX_SansSerif";
+                hasBold = true;
+            } else if (cl.contains("mathsfit") || cl.contains("mathitsf") || cl.contains("textitsf")) {
+                family = "KaTeX_SansSerif";
+                hasItalic = true;
+            } else if (cl.contains("mainrm") || cl.contains("mathrm")) {
+                family = "KaTeX_Main";
+            } else if (cl.contains("boldsymbol")) {
+                family = "KaTeX_Math";
+                hasBold = true;
+                hasItalic = true;
+            } else if (cl.contains("delimsizing")) {
+                if (cl.contains("size1")) family = "KaTeX_Size1";
+                else if (cl.contains("size2")) family = "KaTeX_Size2";
+                else if (cl.contains("size3")) family = "KaTeX_Size3";
+                else if (cl.contains("size4")) family = "KaTeX_Size4";
+            } else if (cl.contains("delim-size1")) {
+                family = "KaTeX_Size1";
+            } else if (cl.contains("delim-size4")) {
+                family = "KaTeX_Size4";
+            } else if (cl.contains("op-symbol")) {
+                if (cl.contains("small-op")) family = "KaTeX_Size1";
+                else if (cl.contains("large-op")) family = "KaTeX_Size2";
+            }
+
+            current = current.parentElement;
+        }
+
+        let style = "Regular";
+        if (hasBold && hasItalic) style = "Bold Italic";
+        else if (hasBold) style = "Bold";
+        else if (hasItalic) style = "Italic";
+
+        return { family, style };
+    }
+
+    async function subsetFonts(fontToCharactersMap, fontWeight) {
+        // 全フォントを読み込んでから、DOM 解析で必要と分かったフォントだけ subset() する。
+        // 文字集合だけで判定すると、複数フォントに含まれる文字で不要フォントが混ざる。
+        const fonts = await fontContext.loadFonts(
+            decompressedFontBytesList.map((bytes) => bytes.slice()),
+            { transfer: true },
+        );
+
+        const subsetWoff2Parts = [];
+        let attemptedSubsetCount = 0;
+
+        try {
+            for (const font of fonts) {
+                const key = `${font.familyName}-${font.subfamilyName}`;
+                if (!fontToCharactersMap.has(key)) continue;
+
+                // Glypht には Unicode コードポイントの配列で必要グリフを渡す。
+                const fontCodePoints = Array.from(fontToCharactersMap.get(key)).sort((a, b) => a - b);
+                const subset = await withTimeout(font.subset({
+                    axisValues: [{
+                        type: "single",
+                        tag: "wght",
+                        value: fontWeight,
+                    }],
+                    unicodeRanges: {
+                        named: [],
+                        custom: fontCodePoints,
+                    },
+                    dropTables: ["DSIG", "gasp", "hdmx", "LTSH", "VDMX", "META", "MVAR", "PCLT"],
+                    preprocess: true,
+                }), `${key} のサブセット化がタイムアウトしました。worker 内の import / WASM 初期化に失敗している可能性があります。`);
+                attemptedSubsetCount++;
+
+                if (!subset?.data || subset.data.length === 0) continue;
+
+                const subsetWoff2 = await withTimeout(compressionContext.compressFromTTF(subset.data, {
+                    algorithm: "woff2",
+                    level: 11,
+                    transfer: true,
+                }), `${key} のWOFF2再圧縮がタイムアウトしました。`);
+
+                if (subsetWoff2.length > 0) {
+                    subsetWoff2Parts.push({
+                        bytes: subsetWoff2,
+                        unicodeRange: fontCodePoints.map((c) => `U+${c.toString(16).toUpperCase()}`).join(", "),
+                        familyName: font.familyName,
+                        subfamilyName: font.subfamilyName,
+                        key,
+                    });
+                }
+            }
+        } finally {
+            await Promise.all(fonts.map((font) => font.destroy()));
+        }
+
+        if (subsetWoff2Parts.length === 0) {
+            throw new Error(`入力文字に対応するサブセットフォントを作れませんでした。試行: ${attemptedSubsetCount}/${fonts.length}`);
+        }
+
+        return subsetWoff2Parts;
+    }
+
+    function buildSvg({ container, subsetWoff2Parts, katexCss }) {
+        // サブセット化した各フォントを Data URL の @font-face に変換する。
+        // familyName は KaTeX CSS が参照している名前をそのまま使う。
+        const fontFaces = subsetWoff2Parts
+            .map(({ bytes, unicodeRange, familyName, subfamilyName }) => {
+                const { weight, style } = getFontStyleAndWeight(subfamilyName);
+                return `
+@font-face {
+  font-family: "${familyName}";
+  src: url("data:font/woff2;base64,${bytesToBase64(bytes)}") format("woff2");
+  font-weight: ${weight};
+  font-style: ${style};
+  unicode-range: ${unicodeRange};
+}`;
+            })
+            .join("\n");
+
+        // 画面上の DOM を直接変更しないように clone してから加工する。
+        const sourceClone = container.cloneNode(true);
+        sourceClone.querySelectorAll(".katex-mathml").forEach((mathml) => mathml.remove());
+
+        const pieces = Array.from(sourceClone.querySelectorAll(".collage-formula")).map((formula) => {
+            const x = Number(formula.dataset.x);
+            const y = Number(formula.dataset.y);
+            const width = Number(formula.dataset.width);
+            const height = Number(formula.dataset.height);
+            const label = escapeXml(formula.dataset.label || "");
+            const htmlMarkup = formula.innerHTML
+                .replaceAll("&nbsp;", "&#160;")
+                .replaceAll("&middot;", "&#183;")
+                .replaceAll("&times;", "&#215;");
+
+            // ラベルは SVG の text、数式は KaTeX HTML を foreignObject として配置する。
+            return `
+  <text x="${x}" y="${y - 14}" fill="#54616f" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700">${label}</text>
+  <foreignObject x="${x}" y="${y}" width="${width}" height="${height}">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:26px;line-height:1.3;box-sizing:border-box;width:${width}px;height:${height}px;overflow:hidden;">
+      ${htmlMarkup}
+    </div>
+  </foreignObject>`;
+        }).join("");
+
+        // CDN フォントの @font-face は使わず、上で作った Data URL 版に置き換える。
+        const cleanKatexCss = katexCss.replace(/@font-face\s*\{[\s\S]*?\}/g, "");
+        const usedKatexCss = pruneKatexCss(cleanKatexCss, sourceClone);
+        const minifiedCss = minifyCss(usedKatexCss + "\n" + fontFaces);
+        const desc = demoCases.map((item) => item.tex).join(" / ");
+
+        const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${collageWidth}" height="${collageHeight}" viewBox="0 0 ${collageWidth} ${collageHeight}" role="img" aria-labelledby="title desc">
+  <title id="title">KaTeX collage</title>
+  <desc id="desc">${escapeXml(desc)}</desc>
+  <defs>
+    <style>${minifiedCss}</style>
+  </defs>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <text x="28" y="30" fill="#243447" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="700">KaTeX fragments as embedded HTML</text>
+  <text x="28" y="334" fill="#6c7783" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12">labels are native SVG text; equations are foreignObject + subset WOFF2</text>
+  ${pieces}
+</svg>`;
+
+        return minifySvg(svg);
+    }
+
+    function getFontStyleAndWeight(subfamilyName) {
+        let weight = "normal";
+        let style = "normal";
+
+        if (subfamilyName.includes("Bold")) weight = "bold";
+        if (subfamilyName.includes("Italic")) style = "italic";
+
+        return { weight, style };
+    }
+
+    function pruneKatexCss(css, katexRoot) {
+        // CSSOM に通して selectorText をブラウザに正規化させる。
+        // 正規表現だけで CSS のセレクタ構文を扱うより壊れにくい。
+        const style = document.createElement("style");
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        try {
+            const rules = Array.from(style.sheet?.cssRules || []);
+            const kept = [];
+
+            for (const rule of rules) {
+                if (rule.type === CSSRule.STYLE_RULE) {
+                    const selectors = rule.selectorText.split(",").map((selector) => selector.trim());
+                    const usedSelectors = selectors.filter((selector) => selectorAppliesToKatex(selector, katexRoot));
+
+                    if (usedSelectors.length > 0) {
+                        kept.push(`${usedSelectors.join(",")}{${rule.style.cssText}}`);
+                    }
+                } else if (rule.type === CSSRule.MEDIA_RULE) {
+                    const nested = pruneRuleList(Array.from(rule.cssRules || []), katexRoot);
+                    if (nested) {
+                        kept.push(`@media ${rule.conditionText}{${nested}}`);
+                    }
+                } else if (rule.type !== CSSRule.FONT_FACE_RULE) {
+                    kept.push(rule.cssText);
+                }
+            }
+
+            return kept.join("");
+        } finally {
+            style.remove();
+        }
+    }
+
+    function pruneRuleList(rules, katexRoot) {
+        return rules
+            .map((rule) => {
+                if (rule.type !== CSSRule.STYLE_RULE) return rule.cssText;
+
+                const selectors = rule.selectorText.split(",").map((selector) => selector.trim());
+                const usedSelectors = selectors.filter((selector) => selectorAppliesToKatex(selector, katexRoot));
+                return usedSelectors.length > 0 ? `${usedSelectors.join(",")}{${rule.style.cssText}}` : "";
+            })
+            .filter(Boolean)
+            .join("");
+    }
+
+    function selectorAppliesToKatex(selector, katexRoot) {
+        // 疑似要素は querySelector/matches できないため、判定時だけ取り除く。
+        // ルールを残す場合は元の selectorText を使うので、CSS としての意味は保持される。
+        const normalized = selector
+            .replace(/::?(before|after|selection|placeholder|marker)/g, "")
+            .trim();
+
+        if (!normalized || !normalized.includes(".katex")) {
+            return false;
+        }
+
+        try {
+            return katexRoot.matches(normalized) || katexRoot.querySelector(normalized) !== null;
+        } catch {
+            return true;
+        }
+    }
+
+    async function generateOptimizedSvg() {
+        optimizeButton.disabled = true;
+        optimizeButton.setAttribute("aria-busy", "true");
+        const originalButtonText = optimizeButton.textContent;
+        optimizeButton.textContent = "処理中...";
+        downloadButton.disabled = true;
+        currentSvg = "";
+        phaseChart.innerHTML = "";
+        setGeneratedPreview("");
+
+        try {
+            // 生成直前にプレビューを描き直し、解析対象 DOM と表示を一致させる。
+            renderCollagePreview();
+            await ensureFontData();
+
+            const katexHtmlRoots = Array.from(collageGrid.querySelectorAll(".katex-html"));
+            if (katexHtmlRoots.length === 0) {
+                throw new Error("KaTeX のHTML出力が見つかりませんでした。");
+            }
+
+            setStatus("KaTeX DOMからフォントごとの文字集合を解析しています...");
+            const fontToCharactersMap = collectFontToCharactersMap(collageGrid);
+            const fontWeight = 400;
+
+            // fontToCharactersMap に含まれるフォントだけを glyph subset し、WOFF2 へ再圧縮する。
+            setStatus("必要なグリフだけをサブセット化し、WOFF2へ再圧縮しています...");
+            const subsetWoff2Parts = await subsetFonts(fontToCharactersMap, fontWeight);
+            const katexCss = await fetchKatexCss();
+
+            currentSvg = buildSvg({
+                container: collageGrid,
+                subsetWoff2Parts,
+                katexCss,
+            });
+
+            const originalWoff2Size = getTotalBytes(originalWoff2BytesList);
+            const usedOriginalWoff2Size = getUsedOriginalFontSize(fontToCharactersMap);
+            const subsetWoff2Size = subsetWoff2Parts.reduce((sum, part) => sum + part.bytes.length, 0);
+            const svgSize = new TextEncoder().encode(currentSvg).length;
+            const reduction = ((1 - subsetWoff2Size / originalWoff2Size) * 100).toFixed(1);
+
+            // 数値カードとフェーズグラフを、実際に生成したバイト数で更新する。
+            statOriginalSize.textContent = formatBytes(originalWoff2Size);
+            statSubsetSize.textContent = formatBytes(subsetWoff2Size);
+            statSvgSize.textContent = formatBytes(svgSize);
+            statFontCount.textContent = String(subsetWoff2Parts.length);
+            renderPhaseChart([
+                { label: "全KaTeX", size: originalWoff2Size },
+                { label: "使用フォント", size: usedOriginalWoff2Size },
+                { label: "グリフsubset", size: subsetWoff2Size },
+                { label: "最終SVG", size: svgSize },
+            ]);
+            setGeneratedPreview(currentSvg);
+            downloadButton.disabled = false;
+
+            setStatus([
+                "生成完了。",
+                `削減率: ${reduction}%`,
+                `サブセットフォント: ${subsetWoff2Parts.map((part) => part.key).join(", ")}`,
+            ]);
+        } catch (error) {
+            console.error(error);
+            setStatus([
+                "生成に失敗しました。",
+                error?.message || String(error),
+                "CDN版は module worker と WASM を使うため、ブラウザやCSPによってはブロックされます。",
+            ]);
+        } finally {
+            optimizeButton.disabled = false;
+            optimizeButton.removeAttribute("aria-busy");
+            optimizeButton.textContent = originalButtonText;
+        }
+    }
+
+    function downloadSvg() {
+        if (!currentSvg) return;
+
+        const blob = new Blob([currentSvg], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "optimized-formula.svg";
+        anchor.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function setGeneratedPreview(svg) {
+        if (currentPreviewUrl) {
+            URL.revokeObjectURL(currentPreviewUrl);
+            currentPreviewUrl = "";
+        }
+
+        generatedPreview.textContent = "";
+
+        if (!svg) {
+            generatedPreview.textContent = "未生成";
+            return;
+        }
+
+        // 生成した SVG を img として再読込する。
+        // SVG テキストを見せるより、単体画像として成立しているかを確認しやすい。
+        const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+        currentPreviewUrl = URL.createObjectURL(blob);
+
+        const image = document.createElement("img");
+        image.alt = "生成されたKaTeX SVG";
+        image.src = currentPreviewUrl;
+        generatedPreview.appendChild(image);
+    }
+
+    function renderPhaseChart(phases) {
+        const maxSize = Math.max(...phases.map((phase) => phase.size));
+        phaseChart.innerHTML = "";
+
+        for (const phase of phases) {
+            const row = document.createElement("div");
+            row.className = "phase-row";
+
+            const label = document.createElement("span");
+            label.className = "phase-label";
+            label.textContent = phase.label;
+
+            const track = document.createElement("span");
+            track.className = "phase-track";
+
+            const bar = document.createElement("span");
+            bar.className = "phase-bar";
+            bar.style.width = `${Math.max(2, (phase.size / maxSize) * 100)}%`;
+            track.appendChild(bar);
+
+            const size = document.createElement("span");
+            size.className = "phase-size";
+            size.textContent = formatBytes(phase.size);
+
+            row.append(label, track, size);
+            phaseChart.appendChild(row);
+        }
+    }
+
+    function getUsedOriginalFontSize(fontToCharactersMap) {
+        // 「DOM 解析で使うと分かったフォント」を、サブセット前の WOFF2 サイズで合計する。
+        // これにより、フォント選別だけの効果と glyph subset の効果を分けて見られる。
+        return katexFontFiles.reduce((sum, fileName, index) => {
+            const key = getFontKeyFromFileName(fileName);
+            return fontToCharactersMap.has(key) ? sum + originalWoff2BytesList[index].length : sum;
+        }, 0);
+    }
+
+    function getFontKeyFromFileName(fileName) {
+        // CDNのファイル名に含まれる「-BoldItalic」（ハイフン連結）を、
+        // GlyphtやDOMクラス判定で用いる「-Bold Italic」（空白区切り）に補正してキーを一致させる。
+        return fileName.replace(/\.woff2$/, "").replace(/-BoldItalic$/, "-Bold Italic");
+    }
+
+    function withTimeout(promise, message, timeoutMs = 30000) {
+        // worker 内 import や WASM 初期化で失敗した場合、Promise が戻らないことがある。
+        // デモ UI が永久に「処理中」で止まらないよう、明示的にタイムアウトさせる。
+        return new Promise((resolve, reject) => {
+            const timer = window.setTimeout(() => {
+                reject(new Error(message));
+            }, timeoutMs);
+
+            promise.then(
+                (value) => {
+                    window.clearTimeout(timer);
+                    resolve(value);
+                },
+                (error) => {
+                    window.clearTimeout(timer);
+                    reject(error);
+                },
+            );
+        });
+    }
+
+    function bytesToBase64(bytes) {
+        let binary = "";
+        const chunkSize = 0x8000;
+
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+        }
+
+        return btoa(binary);
+    }
+
+    function minifyCss(css) {
+        return css
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/\s+/g, " ")
+            .replace(/\s*([\{\}:;,])\s*/g, "$1")
+            .trim();
+    }
+
+    function minifySvg(svg) {
+        return svg
+            .replace(/>\s+</g, "><")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    function escapeXml(value) {
+        return value
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;");
+    }
+
+    function getTotalBytes(byteArrays) {
+        return byteArrays.reduce((sum, bytes) => sum + bytes.length, 0);
+    }
+
+    function formatBytes(bytes) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+    }
+
+    optimizeButton.addEventListener("click", generateOptimizedSvg);
+    downloadButton.addEventListener("click", downloadSvg);
+
+    window.addEventListener("beforeunload", () => {
+        if (currentPreviewUrl) URL.revokeObjectURL(currentPreviewUrl);
+        fontContext?.destroy();
+        compressionContext?.destroy();
+    });
+
+    renderCollagePreview();
+
+    hljs.highlightAll();
+</script>
+</body>
+</html>
