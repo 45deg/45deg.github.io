@@ -2,17 +2,15 @@ title: 45deg
 site_url: https://45deg.github.io
 profile_url: https://x.com/zakurozakuro
 seo_title:
-  ja: 45deg - 個人制作と実験のログ
-  en: 45deg - Personal Projects and Experiments
+  ja: 45deg.
+  en: 45deg.
 description:
   ja: 45degは、個人で作ったWebツール、可視化、ブラウザアプリ、技術記事をまとめた制作ログです。
   en: 45deg is a personal collection of web tools, visualizations, browser apps, and technical notes.
 og_image: ./images/i25.jpg
 about:
-  ja: 個人で作ったWebツール、可視化、記事を置いています。作品集というより、試したことや後から見返したいもののログです。
-  en: >-
-    A collection of small web tools, visualizations, and notes I made for myself. This is less a polished
-    portfolio than a log of things I tried and want to be able to revisit.
+  ja: 個人で作ったWebツール、可視化、記事を置いています。
+  en: A collection of small web tools, visualizations, and notes I made for myself.
 filters:
   - key: all
     label:
