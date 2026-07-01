@@ -1,0 +1,19 @@
+{
+  "dim": 384,
+  "count": 1744,
+  "model": "Xenova/bge-small-en-v1.5",
+  "model_file": "onnx/model_int8.onnx",
+  "model_path": "/root/.cache/huggingface/hub/models--Xenova--bge-small-en-v1.5/snapshots/ea104dacec62c0de699686887e3f920caeb4f3e3/onnx/model_int8.onnx",
+  "quantized": "int8",
+  "normalized": true,
+  "dtype": "float32",
+  "vector_file": "vectors.f32",
+  "icons_file": "icons.json",
+  "layout": "row-major",
+  "version": {
+    "format": 1,
+    "lucide": "1.22.0",
+    "lucide_commit": "ce2d598d96dc2d1053b4a30dd012c4d0cdc617d2"
+  },
+  "created_at": "2026-06-30T17:14:23.493916+00:00"
+}

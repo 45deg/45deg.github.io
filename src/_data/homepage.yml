@@ -170,11 +170,11 @@ works:
     image:
       src: ./images/i28.png
       alt: Vibe Design Gallery
-  - href: ./lucide-search/
+  - href: ./lucide-shape-search/
     featured: true
     title:
-      ja: Lucide Icon Search
-      en: Lucide Icon Search
+      ja: Lucide Shape Search
+      en: Lucide Shape Search
     year: 2026
     description_html:
       ja: Lucideアイコンを手書きで検索できるツール
@@ -185,7 +185,23 @@ works:
       - Visualization
     image:
       src: ./images/i27.png
-      alt: Lucide Icon Search
+      alt: Lucide Shape Search
+  - href: ./lucide-text-search/
+    featured: true
+    title:
+      ja: Lucide Text Search
+      en: Lucide Text Search
+    year: 2026
+    description_html:
+      ja: テキスト入力からLucideアイコンを意味検索できるツール。
+      en: A tool for semantically searching Lucide icons from text queries.
+    tags:
+      - Icon
+      - Search
+      - NLP
+    image:
+      src: ./images/i35.png
+      alt: Lucide Text Search
   - href: ./punct/
     featured: false
     title:
