@@ -16,8 +16,8 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>テキスト句読点付与 (軽量Transformerモデル)</title>
-  <script type="module" crossorigin src="./assets/index-kPGlR3eD.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CyYDNdCA.css">
+  <script type="module" crossorigin src="./assets/index-BG6eWtfp.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Dwfmer6d.css">
 </head>
 
 <body>
@@ -35,10 +35,12 @@
 </textarea>
       </label>
 
-      <div  aria-label="操作">
+      <div class="actions" aria-label="操作">
         <button id="run" type="button">句読点を付与</button>
+        <button id="speech" type="button">音声入力</button>
         <button id="copy" type="button" disabled>コピー</button>
       </div>
+      <p id="speech-status" class="speech-status">音声入力: 未開始</p>
 
       <section aria-labelledby="result-title" class="result-title">
         <header>
@@ -57,18 +59,26 @@
         <summary>仕組みの説明</summary>
 
         <section aria-labelledby="structure-title">
-          <h3 id="structure-title">1. モデルの構造: キャラクターレベル・トランスフォーマー</h3>
+          <h3 id="structure-title">1. モデルの構造</h3>
           <p>
-            このモデルは、文字を最小単位として扱う Transformer を使っています。
-            入力の文字列をベクトルに変換し、位置情報を足してから、自己注意機構で文脈を読み取り、2つの出力ヘッドで判定します。
+            サブワード分割（BPE など）を使わず、<strong>1文字を最小単位として扱う Transformer</strong> です。
+            日本語はスペース区切りがないため、文字単位のアプローチがシンプルかつ軽量に動作します。
           </p>
 
-          <ul>
-            <li><strong>文字埋め込み</strong>: 1文字ずつを意味を持つベクトルへ変換します。</li>
-            <li><strong>位置エンコーディング</strong>: 文字の順番をモデルに伝えます。</li>
-            <li><strong>エンコーダー層</strong>: 自己注意機構と SwiGLU で文脈を処理します。</li>
-            <li><strong>デュアル・出力ヘッド</strong>: 句読点と改行を別々に予測します。</li>
-          </ul>
+          <p>入力テキストは次の流れで処理されます。</p>
+
+          <ol>
+            <li><strong>文字埋め込み</strong> — 各文字を 384 次元のベクトルに変換します。</li>
+            <li><strong>位置エンコーディング</strong> — 文字の並び順をモデルに伝えます（最大 192 文字）。</li>
+            <li><strong>Transformer エンコーダー</strong>（4 層）— 自己注意機構と SwiGLU FFN で周囲の文脈を読み取ります。</li>
+            <li>
+              <strong>2 つの出力ヘッド</strong>で、文字ごとに独立して判定します。
+              <ul>
+                <li><strong>句読点ヘッド</strong>: 「なし / 、 / 。」の 3 クラス分類</li>
+                <li><strong>改行ヘッド</strong>: 改行すべきかどうかの確率（0〜1）を出力</li>
+              </ul>
+            </li>
+          </ol>
 
           <figure>
             <svg width="500" height="720" viewBox="0 0 500 720" xmlns="http://www.w3.org/2000/svg">
@@ -135,42 +145,123 @@
         </section>
 
         <section aria-labelledby="inference-title">
-          <h3 id="inference-title">2. 推論の仕組み: スライディングウィンドウと重み付け</h3>
+          <h3 id="inference-title">2. 推論の流れ</h3>
           <p>
-            長い文章は、そのままだとモデルの最大文字数を超えてしまいます。
-            そこで少しずつ重ねながら読み、窓の中央に近い予測を少し強く扱って、境界でのブレを抑えます。
+            入力テキストは<strong>前処理 → スライディングウィンドウ推論 → 判定</strong>の 3 ステップで処理されます。
           </p>
 
-          <ol>
-            <li>前処理で既存の句読点、改行、余分な空白を取り除き、文字だけの列にします。</li>
-            <li>最大文字数ごとに切り出し、少しずつずらしながら重ねて見せます。</li>
-            <li>窓の中央に近い予測をより信頼し、重なった部分を平均化します。</li>
-            <li>句読点はマージン、改行はしきい値で最終判断します。</li>
-          </ol>
+          <h4 id="inference-step1-title">ステップ 1: 前処理</h4>
+          <p>
+            既存の句読点（「、」「。」「？」）、改行、全角スペース、タブ、半角スペースをすべて取り除き、
+            プレーンな文字の列にします。モデルは「ここに句読点があるべきか」を文脈だけから判断します。
+          </p>
 
+          <h4 id="inference-step2-title">ステップ 2: スライディングウィンドウ</h4>
+          <p>
+            モデルが一度に処理できるのは最大 192 文字です。長い文章は 144 文字ずつずらしながら
+            <strong>重なりを持たせた窓（ウィンドウ）</strong>で切り出し、それぞれをモデルに通します。
+          </p>
+          <p>
+            複数の窓で重なった文字には、<strong>窓の中央に近いほど高い重み</strong>を与えます（Center Weighting）。
+            窓の端では文脈が不完全になりやすいため、中央の予測を優先することで境界のブレを抑えます。
+            すべての窓の結果を重み付き平均で統合し、各文字の最終的なスコアを得ます。
+          </p>
 
-          <h4 id="inference-figure-title">推論のステップ</h4>
+          <figure>
+            <svg width="560" height="440" viewBox="0 0 560 440" xmlns="http://www.w3.org/2000/svg">
+              <rect width="560" height="440" fill="white" />
 
-          <ol>
-            <li>
-              <strong>前処理</strong>: 入力されたテキストから、既存の句読点や改行、余分な空白をすべて取り除き、プレーンな文字の列にします。
-            </li>
-            <li>
-              <strong>スライディングウィンドウ（重なりあり）</strong>:
-              最大文字数（例：192文字）ごとに区切ってモデルに入力しますが、少しずつずらしながら（ストライド）重ねて処理します。
-              これにより、ある文字が「文章の端」に来ることで文脈が途切れてしまい、予測精度が落ちるのを防ぎます。
-            </li>
-            <li>
-              <strong>中心重視の重み付け（Center Weighting）</strong>:
-              窓の端にある文字よりも、<strong>「窓の中央」にある文字の予測結果をより信頼する</strong>アルゴリズムを採用しています。
-              重なり合った部分の予測結果を、この重みに基づいて平均化することで、非常に滑らかで精度の高い統合を可能にしています。
-            </li>
-          </ol>
+              <defs>
+                <marker id="arrow-sw" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="#000" />
+                </marker>
+                <marker id="arrow-sw-left" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+                  <polygon points="8 0, 0 3, 8 6" fill="#000" />
+                </marker>
+              </defs>
 
-          <h4 id="inference-decision-title">最終的な判定</h4>
+              <!-- タイトル -->
+              <text x="280" y="22" text-anchor="middle" class="text title">スライディングウィンドウ</text>
+
+              <!-- 入力テキスト全体 -->
+              <text x="20" y="52" class="label">入力テキスト（句読点除去済み）</text>
+              <rect x="20" y="58" width="520" height="24" rx="3" fill="#f0f0f0" stroke="#999" stroke-width="0.8" />
+              <text x="30" y="75" font-size="11" fill="#666">あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も ...</text>
+
+              <!-- ウィンドウ 1: x=20, width=336 (192文字分) → 20〜356 -->
+              <text x="20" y="106" class="label">ウィンドウ 1</text>
+              <rect x="20" y="112" width="336" height="28" rx="4" fill="#dbeafe" fill-opacity="0.8" stroke="#3b82f6" stroke-width="1.2" />
+              <text x="164" y="131" text-anchor="middle" font-size="12" fill="#1e40af">192 文字</text>
+
+              <!-- ウィンドウ 2: x=272, width=336 (192文字分) → 272〜540 (ストライド 144文字 = 252px) -->
+              <text x="380" y="158" class="label">ウィンドウ 2</text>
+              <rect x="272" y="164" width="268" height="28" rx="4" fill="#dcfce7" fill-opacity="0.8" stroke="#22c55e" stroke-width="1.2" />
+              <text x="440" y="183" text-anchor="middle" font-size="12" fill="#166534">192 文字</text>
+
+              <!-- 重なり領域のハイライト (272〜356 = 84px = 48文字分) -->
+              <rect x="272" y="112" width="84" height="28" rx="0" fill="#3b82f6" fill-opacity="0.15" />
+              <rect x="272" y="164" width="84" height="28" rx="0" fill="#3b82f6" fill-opacity="0.15" />
+
+              <!-- 重なり範囲のブレース -->
+              <line x1="272" y1="140" x2="272" y2="164" stroke="#ef4444" stroke-width="1" stroke-dasharray="3 2" />
+              <line x1="356" y1="140" x2="356" y2="164" stroke="#ef4444" stroke-width="1" stroke-dasharray="3 2" />
+              <text x="314" y="157" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="600">重なり</text>
+              <text x="314" y="210" text-anchor="middle" font-size="10" fill="#ef4444">48 文字</text>
+
+              <!-- ストライド寸法線 -->
+              <line x1="20" y1="225" x2="20" y2="235" stroke="#000" stroke-width="0.8" />
+              <line x1="272" y1="225" x2="272" y2="235" stroke="#000" stroke-width="0.8" />
+              <line x1="20" y1="230" x2="272" y2="230" stroke="#000" stroke-width="0.8"
+                marker-end="url(#arrow-sw)" marker-start="url(#arrow-sw-left)" />
+              <text x="146" y="248" text-anchor="middle" class="text">ストライド: 144 文字</text>
+
+              <!-- 区切り線 -->
+              <line x1="40" y1="270" x2="520" y2="270" stroke="#ddd" stroke-width="0.8" />
+
+              <!-- Center Weighting セクション -->
+              <text x="280" y="292" text-anchor="middle" class="text title">Center Weighting（中心重視の重み付け）</text>
+              <text x="280" y="308" text-anchor="middle" class="label">窓の中央ほど予測を信頼し、端ほど控えめに扱います</text>
+
+              <!-- 重みバーの背景 -->
+              <rect x="80" y="322" width="400" height="36" rx="4" fill="none" stroke="#999" stroke-width="1" />
+
+              <!-- グラデーションバー: 5 段階で表現 -->
+              <rect x="80"  y="322" width="80" height="36" rx="4" fill="#93c5fd" fill-opacity="0.35" />
+              <rect x="160" y="322" width="80" height="36" fill="#93c5fd" fill-opacity="0.55" />
+              <rect x="240" y="322" width="80" height="36" fill="#3b82f6" fill-opacity="0.75" />
+              <rect x="320" y="322" width="80" height="36" fill="#93c5fd" fill-opacity="0.55" />
+              <rect x="400" y="322" width="80" height="36" rx="4" fill="#93c5fd" fill-opacity="0.35" />
+
+              <!-- 端の角を丸く見せるためのオーバーレイ -->
+              <rect x="80" y="322" width="400" height="36" rx="4" fill="none" stroke="#999" stroke-width="1" />
+
+              <!-- 重み数値 -->
+              <text x="120" y="345" text-anchor="middle" font-size="12" fill="#1e3a5f" font-weight="600">0.25</text>
+              <text x="200" y="345" text-anchor="middle" font-size="12" fill="#1e3a5f" font-weight="600">0.63</text>
+              <text x="280" y="345" text-anchor="middle" font-size="14" fill="#1e3a8a" font-weight="700">1.00</text>
+              <text x="360" y="345" text-anchor="middle" font-size="12" fill="#1e3a5f" font-weight="600">0.63</text>
+              <text x="440" y="345" text-anchor="middle" font-size="12" fill="#1e3a5f" font-weight="600">0.25</text>
+
+              <!-- ラベル -->
+              <text x="120" y="374" text-anchor="middle" class="label">端</text>
+              <text x="280" y="374" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="600">中央</text>
+              <text x="440" y="374" text-anchor="middle" class="label">端</text>
+
+              <!-- 重なり領域の統合説明 -->
+              <text x="280" y="400" text-anchor="middle" class="label">重なった文字は、各窓の重みに基づいて加重平均されます</text>
+
+              <!-- 数式 -->
+              <text x="280" y="425" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+                最終スコア = Σ(重み × 予測) / Σ(重み)
+              </text>
+
+            </svg>
+          </figure>
+
+          <h4 id="inference-step3-title">ステップ 3: 判定</h4>
           <ul>
-            <li><strong>句読点の挿入</strong>: 各文字に対して算出されたスコアを比較し、特定の基準（マージン）を超えた場合にのみ句読点を挿入します。</li>
-            <li><strong>改行の挿入</strong>: 改行については確率を算 出し、設定されたしきい値（デフォルト30%など）を超えた場合に改行を挟み込みます。</li>
+            <li><strong>句読点</strong>: 「、」や「。」のスコアが「なし」のスコアをマージン以上に上回った場合に挿入します。</li>
+            <li><strong>改行</strong>: 改行確率がしきい値（デフォルト 30%）を超えた場合に挿入します。</li>
           </ul>
         </section>
 
