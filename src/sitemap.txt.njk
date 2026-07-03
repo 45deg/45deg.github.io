@@ -1,0 +1,6 @@
+---
+permalink: sitemap.txt
+eleventyExcludeFromCollections: true
+---
+{% for url in sitemap.urls %}{{ url | absoluteUrl(sitemap.baseUrl) }}
+{% endfor %}
