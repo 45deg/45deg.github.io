@@ -239,6 +239,7 @@ works:
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
     featured: true
+    homeButton: false
     title:
       ja: ScreenCast Editor
       en: ScreenCast Editor
@@ -324,6 +325,7 @@ works:
       alt: mozaic-app
   - href: ./nanotation/
     featured: false
+    homeButton: false
     title:
       ja: nanotation
       en: nanotation
@@ -458,6 +460,8 @@ works:
       alt: pdf-toc-tool
   - href: ./misc/toritsu.html
     featured: false
+    homeButton:
+      position: bottom-left
     title:
       ja: 倒立振子シミュレータ
       en: Inverted Pendulum Simulator
@@ -658,6 +662,8 @@ works:
       alt: PDFUnbinder
   - href: ./RGBCloud
     featured: false
+    homeButton:
+      position: bottom-left
     title:
       ja: RGBCloud
       en: RGBCloud
