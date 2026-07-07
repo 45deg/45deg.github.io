@@ -272,6 +272,22 @@ works:
     image:
       src: ./images/i23.png
       alt: Compression Leaderboard
+  - href: ./bkcrack-wasm/
+    featured: false
+    title:
+      ja: bkcrack.wasm
+      en: bkcrack.wasm
+    year: 2026
+    description_html:
+      ja: ZIPの既知平文攻撃で暗号を解析するbkcrackをWebAssemblyに移植したブラウザツール。
+      en: A browser port of bkcrack to WebAssembly for cracking ZIP encryption via known-plaintext attack.
+    tags:
+      - WASM
+      - Security
+      - Cryptography
+    placeholder:
+      class: placeholder-code
+      emoji: 🔓
   - href: ./quickcalc/
     featured: false
     title:
