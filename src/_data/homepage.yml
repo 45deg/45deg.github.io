@@ -186,6 +186,22 @@ works:
     image:
       src: ./images/i27.png
       alt: Lucide Shape Search
+  - href: ./lucide-icons-map/
+    featured: true
+    title:
+      ja: Lucide Icons Map
+      en: Lucide Icons Map
+    year: 2026
+    description_html:
+      ja: Lucideアイコンをベクトル埋め込みし、UMAP で2次元に配置したインタラクティブマップ。
+      en: An interactive 2D map of Lucide icons laid out by vector embeddings with UMAP.
+    tags:
+      - Icon
+      - UMAP
+      - Visualization
+    image:
+      src: ./images/i36.png
+      alt: Lucide Icons Map
   - href: ./lucide-text-search/
     featured: true
     title:
