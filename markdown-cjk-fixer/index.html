@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="日本語のMarkdownで、アスタリスクが残って太字・強調にならない問題をブラウザ上で修正。ファイルを送信せず、CommonMarkの強調境界を補正できます。" />
+    <meta name="keywords" content="Markdown,日本語Markdown,Markdown 太字 反映されない,Markdown 強調 表示されない,Markdown アスタリスクが残る,Markdown アスタリスク 修正,Markdown修正,CommonMark,太字,強調,アスタリスク" />
+    <meta name="robots" content="index,follow" />
+    <meta name="application-name" content="CJK Markdown Fixer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:site_name" content="CJK Markdown Fixer" />
+    <meta property="og:title" content="Markdownの太字・強調が反映されない問題を修正 | CJK Markdown Fixer" />
+    <meta property="og:description" content="日本語文章でアスタリスクが残るMarkdownの強調境界を、ファイルを外部送信せずブラウザ上で補正します。" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Markdownの太字・強調が反映されない問題を修正" />
+    <meta name="twitter:description" content="日本語文章でアスタリスクが残るMarkdownの強調境界をブラウザ上で補正します。" />
+    <meta name="theme-color" content="#f7f6f1" />
+    <title>Markdownの太字・強調が反映されない問題を修正 | CJK Markdown Fixer</title>
+    <script type="module" crossorigin src="./assets/index-ByISpt1R.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BxCM4eyq.css">
+  </head>
+  <body>
+    <main class="container">
+      <h1>CJK Markdown Fixer</h1>
+
+      <article class="problem-note" aria-label="このツールの説明">
+        <p>通常のMarkdownレンダラーでは、強調記号の内側が「。」や「）」などの約物で、外側に日本語等のCJK文字が続くと、<code>**</code> を強調として認識できないことがあります。このツールは問題になる境界へ空白相当の文字を挿入し、テキストを修正します。処理はブラウザ内で完結し、入力したファイルや文章が外部へ送信されることはありません。 <a href="https://github.com/tats-u/markdown-cjk-friendly" target="_blank" rel="noreferrer">参考: tats-u/markdown-cjk-friendly</a></p>
+      </article>
+
+      <fieldset>
+        <legend>挿入する文字</legend>
+        <div class="grid method-options">
+          <label><input type="radio" name="method" value="none"><strong>無変換</strong><br><small>比較用</small></label>
+          <label><input type="radio" name="method" value="space"><strong>スペース</strong><br><small>見える空白</small></label>
+          <label><input type="radio" name="method" value="entity" checked><strong>実体参照</strong><br><small>&amp;#8203;</small></label>
+          <label><input type="radio" name="method" value="comment"><strong>コメント</strong><br><small>&lt;!-- --&gt;</small></label>
+          <label><input type="radio" name="method" value="zwsp"><strong>不可視文字</strong><br><small>U+200B</small></label>
+        </div>
+      </fieldset>
+
+      <section class="grid workspace" id="workspace" aria-label="Markdown変換エリア">
+        <article class="editor-panel input-panel" id="drop-zone">
+          <header class="panel-heading">
+            <strong id="source-label">入力</strong>
+            <input id="file-input" type="file" hidden accept=".md,.markdown,text/markdown,text/plain">
+            <button class="secondary outline icon-button" id="file-button" type="button">📂 ファイルを開く</button>
+          </header>
+          <textarea id="source" rows="15" spellcheck="false" aria-labelledby="source-label" aria-describedby="drop-help"></textarea>
+          <footer class="panel-footer"><small>ここに .md をドロップ</small></footer>
+          <span class="sr-only" id="drop-help">Markdownを入力するか、Markdownファイルをこの入力欄へドロップできます。</span>
+        </article>
+
+        <article class="editor-panel output-panel">
+          <header class="panel-heading">
+            <strong id="result-label">変換結果</strong>
+            <button class="secondary outline icon-button" id="copy-button" type="button">📋 コピー</button>
+          </header>
+          <textarea id="result" rows="15" readonly spellcheck="false" aria-labelledby="result-label"></textarea>
+          <footer class="panel-footer"><small><strong id="fix-count" role="status" aria-live="polite" aria-atomic="true">修正なし</strong></small></footer>
+        </article>
+      </section>
+
+      <details>
+        <summary>Marked.js レンダリングプレビュー</summary>
+        <iframe id="preview" title="Marked.jsによる変換結果のプレビュー" sandbox=""></iframe>
+      </details>
+
+      <p class="sr-only" id="announcer" role="status" aria-live="polite" aria-atomic="true"></p>
+    </main>
+
+  </body>
+</html>

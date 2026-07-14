@@ -25,6 +25,22 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./markdown-cjk-fixer/
+    featured: false
+    title:
+      ja: CJK Markdown Fixer
+      en: CJK Markdown Fixer
+    year: 2026
+    description_html:
+      ja: 日本語Markdownで太字・強調が反映されない境界を、ブラウザ内で補正するツール。
+      en: A browser-based tool that fixes emphasis boundaries that fail to render in CJK Markdown text.
+    tags:
+      - Markdown
+      - Editor
+      - Language
+    image:
+      src: ./images/i37.png
+      alt: CJK Markdown Fixer
   - href: ./carta/
     featured: true
     title:
