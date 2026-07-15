@@ -525,6 +525,26 @@ works:
     image:
       src: ./images/i34.png
       alt: Inverted Pendulum Simulator
+  - href:
+      ja: ./hitchhikers-guide-to-agentic-ai-ja/
+      en: ./hitchhikers-guide-to-agentic-ai-ja/en/
+    featured: false
+    title:
+      ja: The Hitchhiker's Guide to Agentic AI 日本語版
+      en: The Hitchhiker's Guide to Agentic AI (mdbook Edition)
+    year: 2026
+    description_html:
+      ja: >-
+        Haggai Roitman著『The Hitchhiker's Guide to Agentic AI: From Foundations to Systems』を日本語に翻訳・編集し、mdBook形式に変換した日本語版。
+      en: >-
+        A derivative of Haggai Roitman's <em>The Hitchhiker's Guide to Agentic AI: From Foundations to Systems</em>, converted to mdBook.
+    tags:
+      - Article
+      - AI
+      - Agent
+    placeholder:
+      class: placeholder-article
+      emoji: 🤖
   - href: ./flowtimer/
     featured: false
     title:

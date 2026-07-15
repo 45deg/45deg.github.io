@@ -82,7 +82,7 @@
                 <div class="works-grid" id="works-grid">
                     {% for work in homepage.works %}
                     <article class="card{% if work.featured %} is-featured{% endif %}" data-featured="{{ 'true' if work.featured else 'false' }}" data-tags="{{ work.tags | join(',') }}">
-                        <a class="card-link" href="{{ work.href | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }}">
+                        <a class="card-link" href="{{ work.href | locale(lang) | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }}">
                             <span class="visually-hidden">{{ work.title | locale(lang) }}</span>
                         </a>
                         <div class="card-img-wrapper">
