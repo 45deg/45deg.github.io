@@ -25,6 +25,21 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./serverless-pvp/
+    featured: false
+    title:
+      ja: P2P PONG
+      en: P2P PONG
+    year: 2026
+    description_html:
+      ja: 接続コードを手動で交換して遊ぶ、サーバーレスな2人対戦PONG。
+      en: A serverless two-player PONG game where players exchange connection codes directly.
+    tags:
+      - Game
+      - WebRTC
+    image:
+      src: ./images/i39.png
+      alt: P2P PONG の対戦画面
   - href: ./scene-analyzer/
     featured: true
     title:

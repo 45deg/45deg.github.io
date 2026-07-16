@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>P2P PONG</title>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0a0a09"/>
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="none" stroke="#333" stroke-width="2"/>
+  <path d="M32 9v7m0 7v7m0 7v7m0 7v4" stroke="#f2f0e8" stroke-width="2" opacity=".28"/>
+  <path d="m17 30 15-7 15 12" fill="none" stroke="#f2f0e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".52"/>
+  <rect x="11" y="17" width="7" height="27" rx="2.5" fill="#d8ff3e"/>
+  <rect x="46" y="22" width="7" height="27" rx="2.5" fill="#70e4ed"/>
+  <circle cx="32" cy="23" r="5" fill="#f2f0e8"/>
+</svg>
