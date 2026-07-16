@@ -1,0 +1,44 @@
+id: "01"
+name: "Transit Wayfinding"
+slug: "transit-wayfinding"
+category: "System"
+tone: "Directional, metropolitan, immediate"
+promptCues:
+  - "route map colors"
+  - "black wayfinding type"
+  - "yellow information panels"
+  - "hard grid"
+  - "at-a-glance navigation"
+tokens:
+  bg: "bg-neutral-200"
+  shell: "border-t-[10px] border-yellow-400 bg-white shadow-lg rounded-none"
+  card: "border-l-[6px] border-blue-600 bg-neutral-100 rounded-none"
+  title: "text-black font-bold tracking-tight"
+  text: "text-neutral-700"
+  label: "text-black font-bold uppercase tracking-wide text-xs"
+  input: "bg-white border-2 border-black text-black placeholder:text-neutral-500 focus:ring-4 focus:ring-yellow-300 focus:border-black rounded-none"
+  button: "bg-blue-700 text-white hover:bg-blue-800 rounded-none font-bold uppercase"
+  ghost: "bg-yellow-400 text-black hover:bg-yellow-300 rounded-none font-bold uppercase"
+  checkbox: "accent-blue-700"
+  progressTrack: "bg-neutral-300 rounded-none"
+  progressFill: "bg-green-600 rounded-none"
+  badge: "bg-black text-white rounded-none font-bold uppercase"
+  mono: "bg-yellow-300 text-black rounded-none font-mono font-bold"
+htmlExample: |-
+  <section class="bg-neutral-200 rounded-[2rem] p-4">
+    <div class="border-t-[10px] border-yellow-400 bg-white shadow-lg rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-700 text-[10px] uppercase tracking-[0.22em] mb-2">System</p>
+          <h2 class="text-black font-bold tracking-tight text-2xl">Transit Wayfinding</h2>
+          <p class="text-neutral-700 mt-1 text-sm">Directional, metropolitan, immediate</p>
+        </div>
+        <span class="bg-black text-white rounded-none font-bold uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-l-[6px] border-blue-600 bg-neutral-100 rounded-none mt-4 p-4">
+        <p class="text-black font-bold uppercase tracking-wide text-xs text-xs">Example content</p>
+        <p class="text-neutral-700 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-700 text-white hover:bg-blue-800 rounded-none font-bold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

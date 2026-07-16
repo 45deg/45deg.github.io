@@ -1,0 +1,44 @@
+id: "28"
+name: "Education Portal"
+slug: "education-portal"
+category: "System"
+tone: "Welcoming, structured, studious"
+promptCues:
+  - "ink indigo"
+  - "warm workbook paper"
+  - "clear lesson hierarchy"
+  - "supportive feedback"
+  - "calm academic UI"
+tokens:
+  bg: "bg-amber-50"
+  shell: "border border-indigo-200 bg-[#fffdf7] shadow-md rounded-2xl"
+  card: "border border-indigo-100 bg-indigo-50/50 rounded-xl"
+  title: "text-indigo-950 font-semibold tracking-tight"
+  text: "text-indigo-700/70"
+  label: "text-indigo-900 font-semibold"
+  input: "bg-white border border-indigo-200 text-indigo-950 placeholder:text-indigo-300 focus:ring-4 focus:ring-amber-200/60 focus:border-indigo-600 rounded-lg"
+  button: "bg-indigo-700 text-white hover:bg-indigo-800 rounded-lg font-semibold"
+  ghost: "bg-amber-100 text-amber-900 hover:bg-amber-200 rounded-lg font-semibold"
+  checkbox: "accent-indigo-700"
+  progressTrack: "bg-indigo-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-indigo-600 to-violet-500 rounded-full"
+  badge: "bg-amber-200 text-amber-900 rounded-full font-semibold"
+  mono: "bg-white text-indigo-700 rounded-lg border border-indigo-100"
+htmlExample: |-
+  <section class="bg-amber-50 rounded-[2rem] p-4">
+    <div class="border border-indigo-200 bg-[#fffdf7] shadow-md rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-indigo-700/70 text-[10px] uppercase tracking-[0.22em] mb-2">System</p>
+          <h2 class="text-indigo-950 font-semibold tracking-tight text-2xl">Education Portal</h2>
+          <p class="text-indigo-700/70 mt-1 text-sm">Welcoming, structured, studious</p>
+        </div>
+        <span class="bg-amber-200 text-amber-900 rounded-full font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-indigo-100 bg-indigo-50/50 rounded-xl mt-4 p-4">
+        <p class="text-indigo-900 font-semibold text-xs">Example content</p>
+        <p class="text-indigo-700/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-indigo-700 text-white hover:bg-indigo-800 rounded-lg font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

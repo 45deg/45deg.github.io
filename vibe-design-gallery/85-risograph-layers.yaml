@@ -1,0 +1,44 @@
+id: "85"
+name: "Risograph Layers"
+slug: "risograph-layers"
+category: "Experimental"
+tone: "Printed, imperfect, color-separated"
+promptCues:
+  - "fluorescent riso ink"
+  - "misregistered layers"
+  - "paper grain"
+  - "two-color overlap"
+  - "printmaking energy"
+tokens:
+  bg: "bg-[#f1e8d7]"
+  shell: "border-2 border-[#222] bg-[#fff4df] shadow-[8px_8px_0_#ff3d81,-8px_-8px_0_#2455ff] rounded-none"
+  card: "border-2 border-[#222] bg-[#ffdb4d] rounded-none mix-blend-multiply"
+  title: "text-[#111] font-black uppercase tracking-tight"
+  text: "text-[#2455ff] font-bold"
+  label: "text-[#d40055] font-black uppercase text-xs tracking-widest"
+  input: "bg-[#fff4df] border-2 border-[#222] text-[#111] placeholder:text-[#2455ff]/60 focus:ring-4 focus:ring-[#ff3d81]/30 focus:border-[#d40055] rounded-none font-bold"
+  button: "bg-[#ff3d81] text-[#111] hover:bg-[#ff6ba0] border-2 border-[#111] rounded-none shadow-[4px_4px_0_#2455ff] font-black uppercase"
+  ghost: "bg-[#2455ff] text-white hover:bg-[#416dff] border-2 border-[#111] rounded-none font-black uppercase"
+  checkbox: "accent-[#ff3d81]"
+  progressTrack: "bg-[#fff4df] border-2 border-[#111] rounded-none"
+  progressFill: "bg-[#2455ff] rounded-none"
+  badge: "bg-[#ffdb4d] text-[#111] border-2 border-[#111] rounded-none font-black uppercase"
+  mono: "bg-[#ff3d81]/40 text-[#111] border-2 border-[#2455ff] rounded-none font-mono"
+htmlExample: |-
+  <section class="bg-[#f1e8d7] rounded-[2rem] p-4">
+    <div class="border-2 border-[#222] bg-[#fff4df] shadow-[8px_8px_0_#ff3d81,-8px_-8px_0_#2455ff] rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#2455ff] font-bold text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-[#111] font-black uppercase tracking-tight text-2xl">Risograph Layers</h2>
+          <p class="text-[#2455ff] font-bold mt-1 text-sm">Printed, imperfect, color-separated</p>
+        </div>
+        <span class="bg-[#ffdb4d] text-[#111] border-2 border-[#111] rounded-none font-black uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-[#222] bg-[#ffdb4d] rounded-none mix-blend-multiply mt-4 p-4">
+        <p class="text-[#d40055] font-black uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-[#2455ff] font-bold mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#ff3d81] text-[#111] hover:bg-[#ff6ba0] border-2 border-[#111] rounded-none shadow-[4px_4px_0_#2455ff] font-black uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

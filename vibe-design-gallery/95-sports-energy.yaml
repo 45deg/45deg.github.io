@@ -1,0 +1,44 @@
+id: "95"
+name: "Sports Energy"
+slug: "sports-energy"
+category: "Commerce"
+tone: "Athletic, direct, punchy"
+promptCues:
+  - "orange energy"
+  - "italic sports type"
+  - "dark gym surfaces"
+  - "performance dashboard"
+  - "bold CTA"
+tokens:
+  bg: "bg-neutral-950"
+  shell: "border border-orange-500/40 bg-neutral-900 shadow-2xl rounded-2xl"
+  card: "border border-orange-500/30 bg-neutral-950 rounded-xl shadow-xl"
+  title: "text-white font-black uppercase italic tracking-tight"
+  text: "text-neutral-400"
+  label: "text-orange-300 font-black uppercase text-xs tracking-widest"
+  input: "bg-neutral-950 border-2 border-neutral-700 text-white placeholder:text-neutral-600 focus:ring-4 focus:ring-orange-500/20 focus:border-orange-400 rounded-lg"
+  button: "bg-orange-500 text-black hover:bg-orange-400 rounded-lg shadow-lg shadow-orange-900/20 font-black uppercase italic"
+  ghost: "bg-neutral-800 text-orange-300 border border-orange-500/30 hover:bg-neutral-700 rounded-lg font-black uppercase"
+  checkbox: "accent-orange-500"
+  progressTrack: "bg-neutral-800 rounded-full"
+  progressFill: "bg-orange-500 rounded-full"
+  badge: "bg-orange-500 text-black border border-orange-400 rounded-md font-black uppercase italic"
+  mono: "bg-orange-500/10 text-orange-300 rounded-md"
+htmlExample: |-
+  <section class="bg-neutral-950 rounded-[2rem] p-4">
+    <div class="border border-orange-500/40 bg-neutral-900 shadow-2xl rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-400 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-white font-black uppercase italic tracking-tight text-2xl">Sports Energy</h2>
+          <p class="text-neutral-400 mt-1 text-sm">Athletic, direct, punchy</p>
+        </div>
+        <span class="bg-orange-500 text-black border border-orange-400 rounded-md font-black uppercase italic px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-orange-500/30 bg-neutral-950 rounded-xl shadow-xl mt-4 p-4">
+        <p class="text-orange-300 font-black uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-neutral-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-orange-500 text-black hover:bg-orange-400 rounded-lg shadow-lg shadow-orange-900/20 font-black uppercase italic mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

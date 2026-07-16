@@ -1,0 +1,44 @@
+id: "31"
+name: "Ink Wash Minimal"
+slug: "ink-wash-minimal"
+category: "Minimal"
+tone: "Contemplative, soft-edged, monochrome"
+promptCues:
+  - "sumi ink gray"
+  - "rice paper warmth"
+  - "soft tonal edges"
+  - "restrained asymmetry"
+  - "quiet negative space"
+tokens:
+  bg: "bg-[#eeeae1]"
+  shell: "border border-stone-300/80 bg-[#f8f5ee] shadow-[0_18px_50px_rgba(41,37,36,0.08)] rounded-[2rem]"
+  card: "border-l-2 border-stone-700 bg-stone-100/70 rounded-r-2xl rounded-l-none"
+  title: "text-stone-950 font-serif font-medium tracking-tight"
+  text: "text-stone-600 font-serif"
+  label: "text-stone-800 font-medium"
+  input: "bg-transparent border-x-0 border-t-0 border-b border-stone-400 text-stone-950 placeholder:text-stone-400 focus:ring-0 focus:border-stone-900 rounded-none font-serif"
+  button: "bg-stone-900 text-stone-50 hover:bg-stone-700 rounded-full font-medium"
+  ghost: "bg-transparent text-stone-700 hover:bg-stone-200 rounded-full font-medium"
+  checkbox: "accent-stone-900"
+  progressTrack: "bg-stone-200 rounded-full"
+  progressFill: "bg-stone-700 rounded-full"
+  badge: "bg-stone-200/80 text-stone-700 rounded-full font-serif"
+  mono: "bg-transparent text-stone-600 border-t border-stone-300 rounded-none"
+htmlExample: |-
+  <section class="bg-[#eeeae1] rounded-[2rem] p-4">
+    <div class="border border-stone-300/80 bg-[#f8f5ee] shadow-[0_18px_50px_rgba(41,37,36,0.08)] rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-600 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-stone-950 font-serif font-medium tracking-tight text-2xl">Ink Wash Minimal</h2>
+          <p class="text-stone-600 font-serif mt-1 text-sm">Contemplative, soft-edged, monochrome</p>
+        </div>
+        <span class="bg-stone-200/80 text-stone-700 rounded-full font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-l-2 border-stone-700 bg-stone-100/70 rounded-r-2xl rounded-l-none mt-4 p-4">
+        <p class="text-stone-800 font-medium text-xs">Example content</p>
+        <p class="text-stone-600 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-stone-900 text-stone-50 hover:bg-stone-700 rounded-full font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

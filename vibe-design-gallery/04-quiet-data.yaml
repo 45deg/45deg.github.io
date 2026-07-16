@@ -1,0 +1,44 @@
+id: "04"
+name: "Quiet Data"
+slug: "quiet-data"
+category: "Minimal"
+tone: "Analytical, low-noise, airy"
+promptCues:
+  - "mist blue neutrals"
+  - "thin data rules"
+  - "tabular numerals"
+  - "subtle state color"
+  - "low cognitive load"
+tokens:
+  bg: "bg-slate-100"
+  shell: "border border-slate-200 bg-[#fbfdff] shadow-sm rounded-2xl"
+  card: "border border-slate-200 bg-white rounded-lg shadow-none"
+  title: "text-slate-900 font-medium tracking-tight tabular-nums"
+  text: "text-slate-500"
+  label: "text-slate-700 font-medium text-xs"
+  input: "bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-sky-100 focus:border-sky-600 rounded-md"
+  button: "bg-sky-700 text-white hover:bg-sky-800 rounded-md font-medium"
+  ghost: "bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-md font-medium"
+  checkbox: "accent-sky-700"
+  progressTrack: "bg-slate-200 rounded-sm"
+  progressFill: "bg-sky-600 rounded-sm"
+  badge: "bg-sky-50 text-sky-800 border border-sky-200 rounded-md tabular-nums"
+  mono: "bg-slate-50 text-slate-600 rounded-md border border-slate-200 tabular-nums"
+htmlExample: |-
+  <section class="bg-slate-100 rounded-[2rem] p-4">
+    <div class="border border-slate-200 bg-[#fbfdff] shadow-sm rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-500 text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-slate-900 font-medium tracking-tight tabular-nums text-2xl">Quiet Data</h2>
+          <p class="text-slate-500 mt-1 text-sm">Analytical, low-noise, airy</p>
+        </div>
+        <span class="bg-sky-50 text-sky-800 border border-sky-200 rounded-md tabular-nums px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-slate-200 bg-white rounded-lg shadow-none mt-4 p-4">
+        <p class="text-slate-700 font-medium text-xs text-xs">Example content</p>
+        <p class="text-slate-500 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-sky-700 text-white hover:bg-sky-800 rounded-md font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

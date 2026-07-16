@@ -1,0 +1,44 @@
+id: "129"
+name: "Neon Tokyo"
+slug: "neon-tokyo"
+category: "Futuristic"
+tone: "Nighttime metropolis, glowing signs, rainy streets"
+promptCues:
+  - "magenta and cyan"
+  - "black background"
+  - "neon glow"
+  - "midnight city"
+  - "high contrast digital"
+tokens:
+  bg: "bg-black"
+  shell: "border border-pink-500/50 bg-gray-950 shadow-[0_0_20px_rgba(236,72,153,0.3)] rounded-xl"
+  card: "border border-cyan-500/40 bg-black rounded-lg"
+  title: "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 font-black tracking-tight"
+  text: "text-gray-400"
+  label: "text-cyan-400 font-mono uppercase text-xs tracking-widest"
+  input: "bg-gray-900 border border-gray-700 text-white placeholder:text-gray-600 focus:ring-2 focus:ring-pink-500/40 focus:border-pink-500 rounded-md"
+  button: "bg-pink-600 text-white hover:bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.5)] rounded-md font-bold tracking-wider uppercase"
+  ghost: "bg-transparent text-cyan-400 border border-cyan-500 hover:bg-cyan-900/50 rounded-md font-bold uppercase"
+  checkbox: "accent-pink-500"
+  progressTrack: "bg-gray-800 rounded-full"
+  progressFill: "bg-gradient-to-r from-cyan-400 to-pink-500 rounded-full shadow-[0_0_10px_rgba(236,72,153,0.5)]"
+  badge: "bg-black text-pink-400 border border-pink-500 rounded-full font-mono text-xs"
+  mono: "bg-gray-900 text-cyan-300 rounded-md"
+htmlExample: |-
+  <section class="bg-black rounded-[2rem] p-4">
+    <div class="border border-pink-500/50 bg-gray-950 shadow-[0_0_20px_rgba(236,72,153,0.3)] rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-gray-400 text-[10px] uppercase tracking-[0.22em] mb-2">Futuristic</p>
+          <h2 class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 font-black tracking-tight text-2xl">Neon Tokyo</h2>
+          <p class="text-gray-400 mt-1 text-sm">Nighttime metropolis, glowing signs, rainy streets</p>
+        </div>
+        <span class="bg-black text-pink-400 border border-pink-500 rounded-full font-mono text-xs px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-cyan-500/40 bg-black rounded-lg mt-4 p-4">
+        <p class="text-cyan-400 font-mono uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-gray-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-pink-600 text-white hover:bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.5)] rounded-md font-bold tracking-wider uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

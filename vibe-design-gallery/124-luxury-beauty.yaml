@@ -1,0 +1,44 @@
+id: "124"
+name: "Luxury Beauty"
+slug: "luxury-beauty"
+category: "Luxury"
+tone: "Beauty brand, premium, soft"
+promptCues:
+  - "pink noir"
+  - "beauty brand"
+  - "soft serif"
+  - "premium cosmetics"
+  - "delicate translucent panels"
+tokens:
+  bg: "bg-pink-950"
+  shell: "border border-pink-200/20 bg-pink-900/40 shadow-2xl rounded-[2rem]"
+  card: "border border-pink-200/20 bg-pink-950/70 rounded-[1.75rem] shadow-xl"
+  title: "text-pink-50 font-serif tracking-tight"
+  text: "text-pink-100/60 font-serif"
+  label: "text-pink-100 font-serif"
+  input: "bg-pink-950/70 border border-pink-200/30 text-pink-50 placeholder:text-pink-200/30 focus:ring-4 focus:ring-pink-200/10 focus:border-pink-100 rounded-full font-serif"
+  button: "bg-pink-100 text-pink-950 hover:bg-white rounded-full shadow-lg shadow-black/20 font-serif"
+  ghost: "bg-pink-100/10 text-pink-100 border border-pink-200/20 hover:bg-pink-100/20 rounded-full font-serif"
+  checkbox: "accent-pink-100"
+  progressTrack: "bg-pink-100/10 rounded-full"
+  progressFill: "bg-pink-100 rounded-full"
+  badge: "bg-pink-100/10 text-pink-100 border border-pink-100/20 rounded-full font-serif"
+  mono: "bg-pink-100/10 text-pink-200 rounded-full"
+htmlExample: |-
+  <section class="bg-pink-950 rounded-[2rem] p-4">
+    <div class="border border-pink-200/20 bg-pink-900/40 shadow-2xl rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-pink-100/60 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-pink-50 font-serif tracking-tight text-2xl">Luxury Beauty</h2>
+          <p class="text-pink-100/60 font-serif mt-1 text-sm">Beauty brand, premium, soft</p>
+        </div>
+        <span class="bg-pink-100/10 text-pink-100 border border-pink-100/20 rounded-full font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-pink-200/20 bg-pink-950/70 rounded-[1.75rem] shadow-xl mt-4 p-4">
+        <p class="text-pink-100 font-serif text-xs">Example content</p>
+        <p class="text-pink-100/60 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-pink-100 text-pink-950 hover:bg-white rounded-full shadow-lg shadow-black/20 font-serif mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

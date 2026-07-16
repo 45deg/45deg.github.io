@@ -1,0 +1,44 @@
+id: "88"
+name: "Candy Pop"
+slug: "candy-pop"
+category: "Playful"
+tone: "Bright, friendly, rounded"
+promptCues:
+  - "bubble radii"
+  - "pink and cyan"
+  - "friendly contrast"
+  - "soft candy colors"
+  - "playful badges"
+tokens:
+  bg: "bg-pink-50"
+  shell: "border border-pink-200 bg-white shadow-xl shadow-pink-200/40 rounded-[2rem]"
+  card: "border border-pink-100 bg-white rounded-[1.75rem] shadow-lg shadow-pink-200/30"
+  title: "text-pink-950 font-extrabold tracking-tight"
+  text: "text-pink-500"
+  label: "text-pink-700 font-bold"
+  input: "bg-pink-50 border-2 border-pink-200 text-pink-950 placeholder:text-pink-300 focus:ring-4 focus:ring-pink-100 focus:border-pink-400 rounded-2xl"
+  button: "bg-pink-500 text-white hover:bg-pink-400 rounded-2xl shadow-lg shadow-pink-300/50 font-bold"
+  ghost: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200 rounded-2xl font-bold"
+  checkbox: "accent-pink-500"
+  progressTrack: "bg-pink-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-pink-400 to-cyan-300 rounded-full"
+  badge: "bg-yellow-100 text-yellow-800 border border-yellow-200 rounded-full font-bold"
+  mono: "bg-pink-100 text-pink-500 rounded-full"
+htmlExample: |-
+  <section class="bg-pink-50 rounded-[2rem] p-4">
+    <div class="border border-pink-200 bg-white shadow-xl shadow-pink-200/40 rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-pink-500 text-[10px] uppercase tracking-[0.22em] mb-2">Playful</p>
+          <h2 class="text-pink-950 font-extrabold tracking-tight text-2xl">Candy Pop</h2>
+          <p class="text-pink-500 mt-1 text-sm">Bright, friendly, rounded</p>
+        </div>
+        <span class="bg-yellow-100 text-yellow-800 border border-yellow-200 rounded-full font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-pink-100 bg-white rounded-[1.75rem] shadow-lg shadow-pink-200/30 mt-4 p-4">
+        <p class="text-pink-700 font-bold text-xs">Example content</p>
+        <p class="text-pink-500 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-pink-500 text-white hover:bg-pink-400 rounded-2xl shadow-lg shadow-pink-300/50 font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

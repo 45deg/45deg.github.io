@@ -1,0 +1,44 @@
+id: "108"
+name: "Dark Product"
+slug: "dark-product"
+category: "Minimal"
+tone: "Modern app, dark-first"
+promptCues:
+  - "dark neutrals"
+  - "zinc surfaces"
+  - "low glare"
+  - "clean app shell"
+  - "compact SaaS controls"
+tokens:
+  bg: "bg-zinc-950"
+  shell: "border border-zinc-800 bg-zinc-900 shadow-2xl rounded-3xl"
+  card: "border border-zinc-800 bg-zinc-950 rounded-2xl shadow-xl"
+  title: "text-zinc-50 font-semibold tracking-tight"
+  text: "text-zinc-400"
+  label: "text-zinc-300"
+  input: "bg-zinc-900 border border-zinc-700 text-zinc-50 placeholder:text-zinc-600 focus:ring-4 focus:ring-zinc-700/40 focus:border-zinc-500 rounded-xl"
+  button: "bg-zinc-50 text-zinc-950 hover:bg-zinc-200 rounded-xl shadow-sm font-medium"
+  ghost: "bg-zinc-800 text-zinc-200 hover:bg-zinc-700 rounded-xl"
+  checkbox: "accent-zinc-50"
+  progressTrack: "bg-zinc-800 rounded-full"
+  progressFill: "bg-zinc-50 rounded-full"
+  badge: "bg-zinc-800 text-zinc-200 border border-zinc-700 rounded-full"
+  mono: "bg-zinc-800 text-zinc-400 rounded-lg"
+htmlExample: |-
+  <section class="bg-zinc-950 rounded-[2rem] p-4">
+    <div class="border border-zinc-800 bg-zinc-900 shadow-2xl rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-zinc-400 text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-zinc-50 font-semibold tracking-tight text-2xl">Dark Product</h2>
+          <p class="text-zinc-400 mt-1 text-sm">Modern app, dark-first</p>
+        </div>
+        <span class="bg-zinc-800 text-zinc-200 border border-zinc-700 rounded-full px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-zinc-800 bg-zinc-950 rounded-2xl shadow-xl mt-4 p-4">
+        <p class="text-zinc-300 text-xs">Example content</p>
+        <p class="text-zinc-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-zinc-50 text-zinc-950 hover:bg-zinc-200 rounded-xl shadow-sm font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "114"
+name: "Restaurant Menu"
+slug: "restaurant-menu"
+category: "Commerce"
+tone: "Warm, artisanal, inviting"
+promptCues:
+  - "rose warmth"
+  - "menu typography"
+  - "artisan feel"
+  - "soft food-brand controls"
+  - "rounded tags"
+tokens:
+  bg: "bg-rose-50"
+  shell: "border border-rose-100 bg-[#fff7f2] shadow-md rounded-[2rem]"
+  card: "border border-rose-100 bg-white rounded-[1.5rem] shadow-sm"
+  title: "text-rose-950 font-serif tracking-tight"
+  text: "text-rose-700/70 font-serif"
+  label: "text-rose-900 font-serif"
+  input: "bg-[#fff7f2] border border-rose-200 text-rose-950 placeholder:text-rose-300 focus:ring-4 focus:ring-rose-100 focus:border-rose-400 rounded-xl font-serif"
+  button: "bg-rose-800 text-white hover:bg-rose-900 rounded-full shadow-sm font-serif"
+  ghost: "bg-rose-100 text-rose-800 hover:bg-rose-200 rounded-full font-serif"
+  checkbox: "accent-rose-800"
+  progressTrack: "bg-rose-100 rounded-full"
+  progressFill: "bg-rose-800 rounded-full"
+  badge: "bg-rose-100 text-rose-800 border border-rose-200 rounded-full font-serif"
+  mono: "bg-rose-100 text-rose-600 rounded-full"
+htmlExample: |-
+  <section class="bg-rose-50 rounded-[2rem] p-4">
+    <div class="border border-rose-100 bg-[#fff7f2] shadow-md rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-rose-700/70 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-rose-950 font-serif tracking-tight text-2xl">Restaurant Menu</h2>
+          <p class="text-rose-700/70 font-serif mt-1 text-sm">Warm, artisanal, inviting</p>
+        </div>
+        <span class="bg-rose-100 text-rose-800 border border-rose-200 rounded-full font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-rose-100 bg-white rounded-[1.5rem] shadow-sm mt-4 p-4">
+        <p class="text-rose-900 font-serif text-xs">Example content</p>
+        <p class="text-rose-700/70 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-rose-800 text-white hover:bg-rose-900 rounded-full shadow-sm font-serif mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

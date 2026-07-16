@@ -1,0 +1,44 @@
+id: "101"
+name: "Deconstructed Type"
+slug: "deconstructed-type"
+category: "Experimental"
+tone: "Disruptive, typographic, off-axis"
+promptCues:
+  - "oversized letterforms"
+  - "off-axis alignment"
+  - "acid orange"
+  - "cropped typography"
+  - "anti-grid tension"
+tokens:
+  bg: "bg-[#e9ff4a]"
+  shell: "border-4 border-black bg-[#f4f0e8] shadow-[12px_-12px_0_#ff5a1f] rounded-none -rotate-1"
+  card: "border-y-4 border-black bg-[#7dd3fc] rounded-none rotate-1"
+  title: "text-black font-black uppercase tracking-[-0.08em] italic"
+  text: "text-black font-bold"
+  label: "text-[#d52b00] font-black uppercase tracking-[0.22em] text-xs"
+  input: "bg-transparent border-x-0 border-t-0 border-b-4 border-black text-black placeholder:text-black/40 focus:ring-0 focus:border-[#d52b00] rounded-none font-black"
+  button: "bg-black text-[#e9ff4a] hover:bg-[#d52b00] rounded-none font-black uppercase -skew-x-6"
+  ghost: "bg-[#ff5a1f] text-black border-4 border-black hover:bg-[#ff7b4a] rounded-none font-black uppercase skew-x-3"
+  checkbox: "accent-black"
+  progressTrack: "bg-white border-4 border-black rounded-none rotate-1"
+  progressFill: "bg-[#d52b00] rounded-none"
+  badge: "bg-black text-white rounded-none font-black uppercase rotate-2"
+  mono: "bg-white text-black border-4 border-black rounded-none font-mono -rotate-1"
+htmlExample: |-
+  <section class="bg-[#e9ff4a] rounded-[2rem] p-4">
+    <div class="border-4 border-black bg-[#f4f0e8] shadow-[12px_-12px_0_#ff5a1f] rounded-none -rotate-1 p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-black font-bold text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-black font-black uppercase tracking-[-0.08em] italic text-2xl">Deconstructed Type</h2>
+          <p class="text-black font-bold mt-1 text-sm">Disruptive, typographic, off-axis</p>
+        </div>
+        <span class="bg-black text-white rounded-none font-black uppercase rotate-2 px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-y-4 border-black bg-[#7dd3fc] rounded-none rotate-1 mt-4 p-4">
+        <p class="text-[#d52b00] font-black uppercase tracking-[0.22em] text-xs text-xs">Example content</p>
+        <p class="text-black font-bold mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-black text-[#e9ff4a] hover:bg-[#d52b00] rounded-none font-black uppercase -skew-x-6 mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

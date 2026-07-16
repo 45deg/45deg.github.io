@@ -1,0 +1,44 @@
+id: "35"
+name: "Monastic White"
+slug: "monastic-white"
+category: "Minimal"
+tone: "Austere, luminous, disciplined"
+promptCues:
+  - "pure white field"
+  - "hairline dividers"
+  - "precise spacing"
+  - "small black type"
+  - "zero ornament"
+tokens:
+  bg: "bg-neutral-100"
+  shell: "border border-neutral-200 bg-white shadow-none rounded-none"
+  card: "border-y border-neutral-200 bg-white rounded-none"
+  title: "text-neutral-950 font-sans font-medium tracking-[-0.03em]"
+  text: "text-neutral-500"
+  label: "text-neutral-950 font-medium text-[11px] uppercase tracking-[0.18em]"
+  input: "bg-white border border-neutral-300 text-neutral-950 placeholder:text-neutral-400 focus:ring-1 focus:ring-neutral-950 focus:border-neutral-950 rounded-none"
+  button: "bg-neutral-950 text-white hover:bg-neutral-800 rounded-none font-medium"
+  ghost: "bg-white text-neutral-700 hover:text-neutral-950 border border-neutral-300 rounded-none"
+  checkbox: "accent-neutral-950"
+  progressTrack: "bg-neutral-200 rounded-none h-px"
+  progressFill: "bg-neutral-950 rounded-none"
+  badge: "bg-white text-neutral-600 border border-neutral-300 rounded-none uppercase tracking-widest"
+  mono: "bg-white text-neutral-700 border-l border-neutral-300 rounded-none"
+htmlExample: |-
+  <section class="bg-neutral-100 rounded-[2rem] p-4">
+    <div class="border border-neutral-200 bg-white shadow-none rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-500 text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-neutral-950 font-sans font-medium tracking-[-0.03em] text-2xl">Monastic White</h2>
+          <p class="text-neutral-500 mt-1 text-sm">Austere, luminous, disciplined</p>
+        </div>
+        <span class="bg-white text-neutral-600 border border-neutral-300 rounded-none uppercase tracking-widest px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-y border-neutral-200 bg-white rounded-none mt-4 p-4">
+        <p class="text-neutral-950 font-medium text-[11px] uppercase tracking-[0.18em] text-xs">Example content</p>
+        <p class="text-neutral-500 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-neutral-950 text-white hover:bg-neutral-800 rounded-none font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "68"
+name: "Generative Grid"
+slug: "generative-grid"
+category: "Experimental"
+tone: "Algorithmic, modular, kinetic"
+promptCues:
+  - "algorithmic grid"
+  - "variable cell sizes"
+  - "electric green"
+  - "coded rhythm"
+  - "procedural composition"
+tokens:
+  bg: "bg-neutral-950"
+  shell: "border border-lime-500 bg-black shadow-[0_0_30px_rgba(132,204,22,0.16)] rounded-none"
+  card: "border-x-4 border-lime-400 border-y border-y-neutral-700 bg-neutral-900 rounded-none"
+  title: "text-lime-300 font-mono font-bold tracking-tighter"
+  text: "text-neutral-400 font-mono"
+  label: "text-cyan-300 font-mono uppercase text-xs tracking-[0.2em]"
+  input: "bg-black border border-lime-700 text-lime-100 placeholder:text-lime-900 focus:ring-0 focus:border-cyan-300 rounded-none font-mono"
+  button: "bg-lime-400 text-black hover:bg-cyan-300 rounded-none font-mono font-bold uppercase"
+  ghost: "bg-neutral-900 text-cyan-300 border border-cyan-600 hover:bg-neutral-800 rounded-none font-mono uppercase"
+  checkbox: "accent-lime-400"
+  progressTrack: "bg-neutral-900 border border-neutral-700 rounded-none"
+  progressFill: "bg-[repeating-linear-gradient(90deg,#a3e635_0_8px,#22d3ee_8px_12px)] rounded-none"
+  badge: "bg-black text-lime-300 border border-lime-500 rounded-none font-mono uppercase"
+  mono: "bg-neutral-900 text-cyan-300 border-l-4 border-lime-400 rounded-none font-mono"
+htmlExample: |-
+  <section class="bg-neutral-950 rounded-[2rem] p-4">
+    <div class="border border-lime-500 bg-black shadow-[0_0_30px_rgba(132,204,22,0.16)] rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-400 font-mono text-[10px] uppercase tracking-[0.22em] mb-2">Experimental</p>
+          <h2 class="text-lime-300 font-mono font-bold tracking-tighter text-2xl">Generative Grid</h2>
+          <p class="text-neutral-400 font-mono mt-1 text-sm">Algorithmic, modular, kinetic</p>
+        </div>
+        <span class="bg-black text-lime-300 border border-lime-500 rounded-none font-mono uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-x-4 border-lime-400 border-y border-y-neutral-700 bg-neutral-900 rounded-none mt-4 p-4">
+        <p class="text-cyan-300 font-mono uppercase text-xs tracking-[0.2em] text-xs">Example content</p>
+        <p class="text-neutral-400 font-mono mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-lime-400 text-black hover:bg-cyan-300 rounded-none font-mono font-bold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

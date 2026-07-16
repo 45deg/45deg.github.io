@@ -1,0 +1,44 @@
+id: "103"
+name: "Tropical Vibe"
+slug: "tropical-vibe"
+category: "Commerce"
+tone: "Vacation, fruity, vibrant, energetic"
+promptCues:
+  - "teal and flamingo pink"
+  - "summer vacation"
+  - "lush leaves"
+  - "tropical juice"
+  - "bright commerce"
+tokens:
+  bg: "bg-teal-50"
+  shell: "border border-teal-200 bg-white shadow-[0_20px_50px_rgba(20,184,166,0.15)] rounded-[2.5rem]"
+  card: "border border-pink-100 bg-pink-50/30 rounded-[2rem] shadow-sm"
+  title: "text-teal-900 font-black tracking-tight"
+  text: "text-teal-700/80"
+  label: "text-pink-500 font-bold uppercase tracking-widest text-xs"
+  input: "bg-white border-2 border-teal-100 text-teal-900 placeholder:text-teal-300 focus:ring-4 focus:ring-pink-100 focus:border-pink-400 rounded-2xl"
+  button: "bg-pink-500 text-white hover:bg-pink-400 rounded-2xl shadow-[0_8px_20px_rgba(236,72,153,0.3)] font-black tracking-wide"
+  ghost: "bg-teal-100 text-teal-800 hover:bg-teal-200 rounded-2xl font-bold"
+  checkbox: "accent-pink-500"
+  progressTrack: "bg-teal-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-teal-400 to-pink-400 rounded-full"
+  badge: "bg-yellow-300 text-yellow-900 border border-yellow-400 rounded-full font-black uppercase text-[10px]"
+  mono: "bg-teal-50 text-teal-600 rounded-2xl border border-teal-100"
+htmlExample: |-
+  <section class="bg-teal-50 rounded-[2rem] p-4">
+    <div class="border border-teal-200 bg-white shadow-[0_20px_50px_rgba(20,184,166,0.15)] rounded-[2.5rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-teal-700/80 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-teal-900 font-black tracking-tight text-2xl">Tropical Vibe</h2>
+          <p class="text-teal-700/80 mt-1 text-sm">Vacation, fruity, vibrant, energetic</p>
+        </div>
+        <span class="bg-yellow-300 text-yellow-900 border border-yellow-400 rounded-full font-black uppercase text-[10px] px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-pink-100 bg-pink-50/30 rounded-[2rem] shadow-sm mt-4 p-4">
+        <p class="text-pink-500 font-bold uppercase tracking-widest text-xs text-xs">Example content</p>
+        <p class="text-teal-700/80 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-pink-500 text-white hover:bg-pink-400 rounded-2xl shadow-[0_8px_20px_rgba(236,72,153,0.3)] font-black tracking-wide mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

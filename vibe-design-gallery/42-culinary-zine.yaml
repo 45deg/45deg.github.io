@@ -1,0 +1,44 @@
+id: "42"
+name: "Culinary Zine"
+slug: "culinary-zine"
+category: "Editorial"
+tone: "Seasonal, tactile, independently published"
+promptCues:
+  - "tomato red"
+  - "olive ink"
+  - "uncoated paper"
+  - "recipe marginalia"
+  - "indie food magazine"
+tokens:
+  bg: "bg-[#e8dfca]"
+  shell: "border border-[#867a5f] bg-[#fff6df] shadow-[8px_8px_0_#6b6a3b] rounded-sm"
+  card: "border-2 border-[#6b6a3b] bg-[#f4e6bd] rounded-none"
+  title: "text-[#3f4424] font-serif font-bold tracking-tight"
+  text: "text-[#71684f] font-serif"
+  label: "text-[#b43a2f] font-bold uppercase text-xs tracking-widest"
+  input: "bg-[#fffaf0] border-2 border-[#867a5f] text-[#3f4424] placeholder:text-[#a39a83] focus:ring-4 focus:ring-red-200 focus:border-[#b43a2f] rounded-none font-serif"
+  button: "bg-[#b43a2f] text-white hover:bg-[#943027] rounded-none font-bold uppercase"
+  ghost: "bg-[#6b6a3b] text-white hover:bg-[#56562f] rounded-none font-bold uppercase"
+  checkbox: "accent-[#b43a2f]"
+  progressTrack: "bg-[#d4c8a9] rounded-none"
+  progressFill: "bg-[#6b6a3b] rounded-none"
+  badge: "bg-[#f0c45a] text-[#3f4424] border border-[#867a5f] rounded-full font-bold"
+  mono: "bg-[#fffaf0] text-[#71684f] border border-[#c3b795] rounded-none"
+htmlExample: |-
+  <section class="bg-[#e8dfca] rounded-[2rem] p-4">
+    <div class="border border-[#867a5f] bg-[#fff6df] shadow-[8px_8px_0_#6b6a3b] rounded-sm p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#71684f] font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-[#3f4424] font-serif font-bold tracking-tight text-2xl">Culinary Zine</h2>
+          <p class="text-[#71684f] font-serif mt-1 text-sm">Seasonal, tactile, independently published</p>
+        </div>
+        <span class="bg-[#f0c45a] text-[#3f4424] border border-[#867a5f] rounded-full font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-[#6b6a3b] bg-[#f4e6bd] rounded-none mt-4 p-4">
+        <p class="text-[#b43a2f] font-bold uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-[#71684f] font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#b43a2f] text-white hover:bg-[#943027] rounded-none font-bold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

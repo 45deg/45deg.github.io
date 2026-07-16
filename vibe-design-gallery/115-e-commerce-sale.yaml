@@ -1,0 +1,44 @@
+id: "115"
+name: "E-commerce Sale"
+slug: "e-commerce-sale"
+category: "Commerce"
+tone: "Direct, energetic, retail"
+promptCues:
+  - "red sale palette"
+  - "retail urgency"
+  - "bold CTA"
+  - "discount-badge mood"
+  - "direct hierarchy"
+tokens:
+  bg: "bg-red-50"
+  shell: "border border-red-200 bg-white shadow-lg rounded-2xl"
+  card: "border border-red-100 bg-white rounded-xl shadow-md"
+  title: "text-red-950 font-extrabold tracking-tight"
+  text: "text-red-700/70"
+  label: "text-red-900 font-bold uppercase text-xs tracking-wide"
+  input: "bg-white border-2 border-red-200 text-red-950 placeholder:text-red-300 focus:ring-4 focus:ring-red-100 focus:border-red-500 rounded-lg"
+  button: "bg-red-600 text-white hover:bg-red-700 rounded-lg shadow-md shadow-red-200 font-extrabold uppercase"
+  ghost: "bg-yellow-100 text-yellow-900 hover:bg-yellow-200 rounded-lg font-extrabold uppercase"
+  checkbox: "accent-red-600"
+  progressTrack: "bg-red-100 rounded-full"
+  progressFill: "bg-red-600 rounded-full"
+  badge: "bg-red-600 text-white border border-red-700 rounded-md font-extrabold uppercase"
+  mono: "bg-red-100 text-red-600 rounded-md"
+htmlExample: |-
+  <section class="bg-red-50 rounded-[2rem] p-4">
+    <div class="border border-red-200 bg-white shadow-lg rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-red-700/70 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-red-950 font-extrabold tracking-tight text-2xl">E-commerce Sale</h2>
+          <p class="text-red-700/70 mt-1 text-sm">Direct, energetic, retail</p>
+        </div>
+        <span class="bg-red-600 text-white border border-red-700 rounded-md font-extrabold uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-red-100 bg-white rounded-xl shadow-md mt-4 p-4">
+        <p class="text-red-900 font-bold uppercase text-xs tracking-wide text-xs">Example content</p>
+        <p class="text-red-700/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-red-600 text-white hover:bg-red-700 rounded-lg shadow-md shadow-red-200 font-extrabold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "90"
+name: "Handwritten Notebook"
+slug: "handwritten-notebook"
+category: "Editorial"
+tone: "Notebook, study notes, human and informal"
+promptCues:
+  - "paper feel"
+  - "ink-like text"
+  - "blue-line notebook"
+  - "casual annotations"
+  - "soft educational UI"
+tokens:
+  bg: "bg-blue-50"
+  shell: "border border-blue-200 bg-[#fffefb] shadow-sm rounded-2xl"
+  card: "border border-blue-200 bg-[#fffefb] rounded-xl shadow-sm"
+  title: "text-slate-900 font-serif italic tracking-tight"
+  text: "text-slate-600"
+  label: "text-blue-800 font-medium"
+  input: "bg-[#fffefb] border-x-0 border-t-0 border-b-2 border-blue-300 text-slate-900 placeholder:text-blue-300 focus:ring-0 focus:border-blue-600 rounded-none"
+  button: "bg-blue-600 text-white hover:bg-blue-700 rounded-full shadow-sm font-medium"
+  ghost: "bg-amber-100 text-amber-900 hover:bg-amber-200 rounded-full font-medium"
+  checkbox: "accent-blue-600"
+  progressTrack: "bg-blue-100 rounded-full"
+  progressFill: "bg-blue-600 rounded-full"
+  badge: "bg-amber-100 text-amber-900 border border-amber-200 rounded-full font-medium"
+  mono: "bg-blue-100 text-blue-700 rounded-lg"
+htmlExample: |-
+  <section class="bg-blue-50 rounded-[2rem] p-4">
+    <div class="border border-blue-200 bg-[#fffefb] shadow-sm rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600 text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-slate-900 font-serif italic tracking-tight text-2xl">Handwritten Notebook</h2>
+          <p class="text-slate-600 mt-1 text-sm">Notebook, study notes, human and informal</p>
+        </div>
+        <span class="bg-amber-100 text-amber-900 border border-amber-200 rounded-full font-medium px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-blue-200 bg-[#fffefb] rounded-xl shadow-sm mt-4 p-4">
+        <p class="text-blue-800 font-medium text-xs">Example content</p>
+        <p class="text-slate-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-600 text-white hover:bg-blue-700 rounded-full shadow-sm font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

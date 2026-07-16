@@ -1,0 +1,44 @@
+id: "06"
+name: "Legal Casework"
+slug: "legal-casework"
+category: "Enterprise"
+tone: "Authoritative, evidence-led, discreet"
+promptCues:
+  - "midnight legal navy"
+  - "burgundy case accents"
+  - "document hierarchy"
+  - "evidence metadata"
+  - "confidential restraint"
+tokens:
+  bg: "bg-slate-200"
+  shell: "border border-slate-400 bg-white shadow-lg rounded-lg"
+  card: "border-l-4 border-[#741b2d] bg-slate-50 rounded-r-md rounded-l-none"
+  title: "text-slate-950 font-serif font-bold tracking-tight"
+  text: "text-slate-600"
+  label: "text-[#741b2d] font-semibold uppercase text-xs tracking-wider"
+  input: "bg-white border border-slate-400 text-slate-950 placeholder:text-slate-400 focus:ring-2 focus:ring-[#741b2d]/20 focus:border-[#741b2d] rounded-sm"
+  button: "bg-slate-900 text-white hover:bg-slate-800 rounded-sm font-semibold"
+  ghost: "bg-white text-[#741b2d] border border-[#741b2d] hover:bg-[#fff5f6] rounded-sm font-semibold"
+  checkbox: "accent-[#741b2d]"
+  progressTrack: "bg-slate-200 rounded-none"
+  progressFill: "bg-[#741b2d] rounded-none"
+  badge: "bg-[#741b2d]/10 text-[#741b2d] border border-[#741b2d]/30 rounded-sm font-semibold"
+  mono: "bg-slate-100 text-slate-700 rounded-sm border border-slate-300 font-mono"
+htmlExample: |-
+  <section class="bg-slate-200 rounded-[2rem] p-4">
+    <div class="border border-slate-400 bg-white shadow-lg rounded-lg p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600 text-[10px] uppercase tracking-[0.22em] mb-2">Enterprise</p>
+          <h2 class="text-slate-950 font-serif font-bold tracking-tight text-2xl">Legal Casework</h2>
+          <p class="text-slate-600 mt-1 text-sm">Authoritative, evidence-led, discreet</p>
+        </div>
+        <span class="bg-[#741b2d]/10 text-[#741b2d] border border-[#741b2d]/30 rounded-sm font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-l-4 border-[#741b2d] bg-slate-50 rounded-r-md rounded-l-none mt-4 p-4">
+        <p class="text-[#741b2d] font-semibold uppercase text-xs tracking-wider text-xs">Example content</p>
+        <p class="text-slate-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-slate-900 text-white hover:bg-slate-800 rounded-sm font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

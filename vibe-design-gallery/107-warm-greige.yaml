@@ -1,0 +1,44 @@
+id: "107"
+name: "Warm Greige"
+slug: "warm-greige"
+category: "Minimal"
+tone: "Domestic, muted, quietly premium"
+promptCues:
+  - "warm greige palette"
+  - "linen-like surfaces"
+  - "taupe details"
+  - "gentle depth"
+  - "comfortable restraint"
+tokens:
+  bg: "bg-[#e9e4dc]"
+  shell: "border border-[#d2c9bd] bg-[#f7f4ef] shadow-[0_12px_36px_rgba(87,72,57,0.1)] rounded-3xl"
+  card: "border border-[#ded6cc] bg-[#ede8e1] rounded-2xl"
+  title: "text-[#342f2a] font-medium tracking-tight"
+  text: "text-[#746a60]"
+  label: "text-[#574d43] font-medium"
+  input: "bg-[#fffdf9] border border-[#c9bfb3] text-[#342f2a] placeholder:text-[#a79d92] focus:ring-4 focus:ring-[#8b735b]/10 focus:border-[#8b735b] rounded-xl"
+  button: "bg-[#51473e] text-white hover:bg-[#342f2a] rounded-xl shadow-sm"
+  ghost: "bg-[#ded6cc] text-[#51473e] hover:bg-[#d2c9bd] rounded-xl"
+  checkbox: "accent-[#6b5d50]"
+  progressTrack: "bg-[#d8d0c6] rounded-full"
+  progressFill: "bg-[#8b735b] rounded-full"
+  badge: "bg-[#e5ded5] text-[#665a4f] rounded-full"
+  mono: "bg-[#fffdf9] text-[#746a60] rounded-lg"
+htmlExample: |-
+  <section class="bg-[#e9e4dc] rounded-[2rem] p-4">
+    <div class="border border-[#d2c9bd] bg-[#f7f4ef] shadow-[0_12px_36px_rgba(87,72,57,0.1)] rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#746a60] text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-[#342f2a] font-medium tracking-tight text-2xl">Warm Greige</h2>
+          <p class="text-[#746a60] mt-1 text-sm">Domestic, muted, quietly premium</p>
+        </div>
+        <span class="bg-[#e5ded5] text-[#665a4f] rounded-full px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#ded6cc] bg-[#ede8e1] rounded-2xl mt-4 p-4">
+        <p class="text-[#574d43] font-medium text-xs">Example content</p>
+        <p class="text-[#746a60] mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#51473e] text-white hover:bg-[#342f2a] rounded-xl shadow-sm mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "27"
+name: "Accessible Plain"
+slug: "accessible-plain"
+category: "Minimal"
+tone: "Direct, readable, cognitively gentle"
+promptCues:
+  - "warm reading background"
+  - "plain language feel"
+  - "generous text rhythm"
+  - "underlined actions"
+  - "unambiguous controls"
+tokens:
+  bg: "bg-[#f1eee4]"
+  shell: "border-2 border-[#17324d] bg-[#fffdf7] shadow-none rounded-xl"
+  card: "border-l-4 border-[#147d75] bg-[#f5f3ea] rounded-r-lg rounded-l-none"
+  title: "text-[#172b3a] font-semibold tracking-normal"
+  text: "text-[#465862] leading-relaxed"
+  label: "text-[#172b3a] font-semibold"
+  input: "bg-white border-2 border-[#526873] text-[#172b3a] placeholder:text-[#667984] focus:ring-4 focus:ring-orange-300 focus:border-[#17324d] rounded-lg"
+  button: "bg-[#17324d] text-white hover:bg-[#264b6a] rounded-lg font-semibold underline underline-offset-2"
+  ghost: "bg-[#dcece8] text-[#0f5f59] border-2 border-[#147d75] hover:bg-[#cbe2dc] rounded-lg font-semibold underline underline-offset-2"
+  checkbox: "accent-[#147d75]"
+  progressTrack: "bg-[#e1ddd2] border border-[#8a948f] rounded-md"
+  progressFill: "bg-[#147d75] rounded-sm"
+  badge: "bg-orange-100 text-[#703b13] border border-orange-400 rounded-md font-semibold"
+  mono: "bg-white text-[#465862] border border-[#b9c2bd] rounded-md"
+htmlExample: |-
+  <section class="bg-[#f1eee4] rounded-[2rem] p-4">
+    <div class="border-2 border-[#17324d] bg-[#fffdf7] shadow-none rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#465862] leading-relaxed text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-[#172b3a] font-semibold tracking-normal text-2xl">Accessible Plain</h2>
+          <p class="text-[#465862] leading-relaxed mt-1 text-sm">Direct, readable, cognitively gentle</p>
+        </div>
+        <span class="bg-orange-100 text-[#703b13] border border-orange-400 rounded-md font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-l-4 border-[#147d75] bg-[#f5f3ea] rounded-r-lg rounded-l-none mt-4 p-4">
+        <p class="text-[#172b3a] font-semibold text-xs">Example content</p>
+        <p class="text-[#465862] leading-relaxed mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#17324d] text-white hover:bg-[#264b6a] rounded-lg font-semibold underline underline-offset-2 mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "79"
+name: "Quiet Luxury"
+slug: "quiet-luxury"
+category: "Luxury"
+tone: "Elegant, spacious, restrained"
+promptCues:
+  - "dark stone palette"
+  - "fine borders"
+  - "serif typography"
+  - "amber accents"
+  - "generous spacing"
+tokens:
+  bg: "bg-stone-950"
+  shell: "border border-stone-800 bg-stone-900 shadow-2xl rounded-[2rem]"
+  card: "border border-stone-800 bg-stone-950 rounded-[1.75rem] shadow-xl"
+  title: "text-stone-100 font-serif tracking-tight"
+  text: "text-stone-400"
+  label: "text-stone-300 font-serif"
+  input: "bg-stone-950 border border-stone-700 text-stone-100 placeholder:text-stone-600 focus:ring-4 focus:ring-amber-900/20 focus:border-amber-500 rounded-full"
+  button: "bg-amber-200 text-stone-950 hover:bg-amber-100 rounded-full shadow-lg shadow-black/30 font-medium"
+  ghost: "bg-stone-800 text-stone-200 hover:bg-stone-700 rounded-full border border-stone-700"
+  checkbox: "accent-amber-200"
+  progressTrack: "bg-stone-800 rounded-full"
+  progressFill: "bg-amber-200 rounded-full"
+  badge: "bg-amber-200/10 text-amber-100 border border-amber-200/30 rounded-full font-serif"
+  mono: "bg-stone-800 text-stone-400 rounded-full"
+htmlExample: |-
+  <section class="bg-stone-950 rounded-[2rem] p-4">
+    <div class="border border-stone-800 bg-stone-900 shadow-2xl rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-stone-400 text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-stone-100 font-serif tracking-tight text-2xl">Quiet Luxury</h2>
+          <p class="text-stone-400 mt-1 text-sm">Elegant, spacious, restrained</p>
+        </div>
+        <span class="bg-amber-200/10 text-amber-100 border border-amber-200/30 rounded-full font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-stone-800 bg-stone-950 rounded-[1.75rem] shadow-xl mt-4 p-4">
+        <p class="text-stone-300 font-serif text-xs">Example content</p>
+        <p class="text-stone-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-amber-200 text-stone-950 hover:bg-amber-100 rounded-full shadow-lg shadow-black/30 font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

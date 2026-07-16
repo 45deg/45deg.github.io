@@ -1,0 +1,44 @@
+id: "105"
+name: "Social Creator"
+slug: "social-creator"
+category: "Mobile"
+tone: "Expressive, creator-led, energetic"
+promptCues:
+  - "violet creator gradient"
+  - "content-first cards"
+  - "bright action pills"
+  - "social engagement"
+  - "camera-ready polish"
+tokens:
+  bg: "bg-gradient-to-br from-fuchsia-200 via-violet-100 to-cyan-100"
+  shell: "border border-white bg-white/85 backdrop-blur-xl shadow-2xl rounded-[3rem]"
+  card: "border-0 bg-gradient-to-br from-violet-600 to-fuchsia-500 rounded-[2rem] shadow-lg shadow-violet-300/40"
+  title: "text-slate-950 font-extrabold tracking-tight"
+  text: "text-slate-600"
+  label: "text-violet-800 font-bold"
+  input: "bg-white border-2 border-violet-100 text-slate-950 placeholder:text-slate-400 focus:ring-4 focus:ring-fuchsia-100 focus:border-fuchsia-500 rounded-2xl"
+  button: "bg-violet-700 text-white hover:bg-violet-600 rounded-full shadow-lg shadow-violet-300 font-bold"
+  ghost: "bg-cyan-100 text-cyan-900 hover:bg-cyan-200 rounded-full font-bold"
+  checkbox: "accent-fuchsia-500"
+  progressTrack: "bg-violet-100 rounded-full"
+  progressFill: "bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full"
+  badge: "bg-white/90 text-fuchsia-700 rounded-full font-bold shadow-sm"
+  mono: "bg-white/20 text-white rounded-2xl backdrop-blur"
+htmlExample: |-
+  <section class="bg-gradient-to-br from-fuchsia-200 via-violet-100 to-cyan-100 rounded-[2rem] p-4">
+    <div class="border border-white bg-white/85 backdrop-blur-xl shadow-2xl rounded-[3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600 text-[10px] uppercase tracking-[0.22em] mb-2">Mobile</p>
+          <h2 class="text-slate-950 font-extrabold tracking-tight text-2xl">Social Creator</h2>
+          <p class="text-slate-600 mt-1 text-sm">Expressive, creator-led, energetic</p>
+        </div>
+        <span class="bg-white/90 text-fuchsia-700 rounded-full font-bold shadow-sm px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-0 bg-gradient-to-br from-violet-600 to-fuchsia-500 rounded-[2rem] shadow-lg shadow-violet-300/40 mt-4 p-4">
+        <p class="text-violet-800 font-bold text-xs">Example content</p>
+        <p class="text-slate-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-violet-700 text-white hover:bg-violet-600 rounded-full shadow-lg shadow-violet-300 font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

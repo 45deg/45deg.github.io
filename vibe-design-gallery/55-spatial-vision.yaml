@@ -1,0 +1,44 @@
+id: "55"
+name: "Spatial Vision"
+slug: "spatial-vision"
+category: "Futuristic"
+tone: "Weightless, ambient, spatial"
+promptCues:
+  - "soft spatial layers"
+  - "pearl translucent panels"
+  - "depth through scale"
+  - "ambient blue light"
+  - "floating pill controls"
+tokens:
+  bg: "bg-gradient-to-br from-sky-100 via-white to-violet-100"
+  shell: "border border-white/80 bg-white/55 backdrop-blur-3xl shadow-[0_30px_80px_rgba(76,91,150,0.18)] rounded-[3rem]"
+  card: "border border-white bg-white/60 backdrop-blur-xl rounded-[2.5rem] shadow-[0_16px_40px_rgba(99,102,241,0.1)]"
+  title: "text-slate-900 font-semibold tracking-tight"
+  text: "text-slate-600/80"
+  label: "text-indigo-700 font-medium"
+  input: "bg-white/70 border border-indigo-200/70 text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-indigo-300/20 focus:border-indigo-400 rounded-full backdrop-blur"
+  button: "bg-indigo-600/90 text-white hover:bg-indigo-500 rounded-full shadow-[0_8px_24px_rgba(79,70,229,0.25)] font-medium"
+  ghost: "bg-white/70 text-slate-700 border border-white hover:bg-white rounded-full shadow-sm"
+  checkbox: "accent-indigo-600"
+  progressTrack: "bg-white/60 border border-white rounded-full"
+  progressFill: "bg-gradient-to-r from-sky-400 to-violet-500 rounded-full"
+  badge: "bg-white/70 text-indigo-700 border border-white rounded-full shadow-sm"
+  mono: "bg-white/50 text-slate-600 rounded-2xl border border-white/80"
+htmlExample: |-
+  <section class="bg-gradient-to-br from-sky-100 via-white to-violet-100 rounded-[2rem] p-4">
+    <div class="border border-white/80 bg-white/55 backdrop-blur-3xl shadow-[0_30px_80px_rgba(76,91,150,0.18)] rounded-[3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600/80 text-[10px] uppercase tracking-[0.22em] mb-2">Futuristic</p>
+          <h2 class="text-slate-900 font-semibold tracking-tight text-2xl">Spatial Vision</h2>
+          <p class="text-slate-600/80 mt-1 text-sm">Weightless, ambient, spatial</p>
+        </div>
+        <span class="bg-white/70 text-indigo-700 border border-white rounded-full shadow-sm px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-white bg-white/60 backdrop-blur-xl rounded-[2.5rem] shadow-[0_16px_40px_rgba(99,102,241,0.1)] mt-4 p-4">
+        <p class="text-indigo-700 font-medium text-xs">Example content</p>
+        <p class="text-slate-600/80 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-indigo-600/90 text-white hover:bg-indigo-500 rounded-full shadow-[0_8px_24px_rgba(79,70,229,0.25)] font-medium mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

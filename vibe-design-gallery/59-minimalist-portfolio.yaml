@@ -1,0 +1,44 @@
+id: "59"
+name: "Minimalist Portfolio"
+slug: "minimalist-portfolio"
+category: "Minimal"
+tone: "Art gallery, severe restraint, stark contrast"
+promptCues:
+  - "pure white and black"
+  - "extreme negative space"
+  - "gallery wall"
+  - "no decorative elements"
+  - "content-first"
+tokens:
+  bg: "bg-white"
+  shell: "border-none bg-white rounded-none"
+  card: "border-none bg-white rounded-none pt-8"
+  title: "text-black font-sans font-light tracking-tighter text-3xl"
+  text: "text-gray-500 font-light leading-relaxed"
+  label: "text-black font-medium uppercase text-xs tracking-widest"
+  input: "bg-transparent border-b border-gray-200 text-black placeholder:text-gray-300 focus:ring-0 focus:border-black rounded-none transition-colors"
+  button: "bg-black text-white hover:bg-gray-800 rounded-none px-8 py-3 font-medium text-sm tracking-widest uppercase transition-colors"
+  ghost: "bg-transparent text-gray-500 hover:text-black rounded-none font-medium text-sm tracking-widest uppercase transition-colors"
+  checkbox: "accent-black"
+  progressTrack: "bg-gray-100 rounded-none h-1"
+  progressFill: "bg-black rounded-none"
+  badge: "bg-transparent text-gray-400 border border-gray-200 rounded-none font-medium text-[10px] tracking-widest uppercase"
+  mono: "bg-gray-50 text-gray-500 rounded-none border-none"
+htmlExample: |-
+  <section class="bg-white rounded-[2rem] p-4">
+    <div class="border-none bg-white rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-gray-500 font-light leading-relaxed text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-black font-sans font-light tracking-tighter text-3xl text-2xl">Minimalist Portfolio</h2>
+          <p class="text-gray-500 font-light leading-relaxed mt-1 text-sm">Art gallery, severe restraint, stark contrast</p>
+        </div>
+        <span class="bg-transparent text-gray-400 border border-gray-200 rounded-none font-medium text-[10px] tracking-widest uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-none bg-white rounded-none pt-8 mt-4 p-4">
+        <p class="text-black font-medium uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-gray-500 font-light leading-relaxed mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-black text-white hover:bg-gray-800 rounded-none px-8 py-3 font-medium text-sm tracking-widest uppercase transition-colors mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

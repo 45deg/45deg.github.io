@@ -1,0 +1,44 @@
+id: "52"
+name: "Fantasy Quest"
+slug: "fantasy-quest"
+category: "Gaming"
+tone: "Mythic, ornate, adventurous"
+promptCues:
+  - "aged quest parchment"
+  - "emerald jewel"
+  - "engraved gold"
+  - "fantasy inventory"
+  - "heroic serif type"
+tokens:
+  bg: "bg-[#20170f]"
+  shell: "border-[3px] border-amber-700 bg-[#ede0bd] shadow-[0_0_40px_rgba(217,119,6,0.2)] rounded-[1rem_3rem_1rem_3rem]"
+  card: "border-2 border-amber-800 bg-[#d9c493] rounded-[0.5rem_2rem_0.5rem_2rem] shadow-inner"
+  title: "text-[#3b2514] font-serif font-black tracking-tight"
+  text: "text-[#715638] font-serif"
+  label: "text-emerald-900 font-serif font-bold uppercase tracking-wider"
+  input: "bg-[#f8eccb] border-2 border-amber-800 text-[#3b2514] placeholder:text-[#9d825f] focus:ring-4 focus:ring-emerald-700/20 focus:border-emerald-800 rounded-sm font-serif"
+  button: "bg-emerald-900 text-amber-100 hover:bg-emerald-800 border-2 border-amber-700 rounded-sm shadow-[0_4px_0_#713f12] font-serif font-bold uppercase"
+  ghost: "bg-[#c49a52] text-[#3b2514] border-2 border-amber-900 hover:bg-[#d4ad68] rounded-sm font-serif font-bold"
+  checkbox: "accent-emerald-900"
+  progressTrack: "bg-[#8c6a3d] border border-amber-950 rounded-full"
+  progressFill: "bg-gradient-to-r from-emerald-800 to-emerald-500 rounded-full"
+  badge: "bg-amber-700 text-amber-50 border border-amber-950 rounded-sm font-serif font-bold"
+  mono: "bg-[#f8eccb]/60 text-[#715638] rounded-sm border border-amber-800 font-serif"
+htmlExample: |-
+  <section class="bg-[#20170f] rounded-[2rem] p-4">
+    <div class="border-[3px] border-amber-700 bg-[#ede0bd] shadow-[0_0_40px_rgba(217,119,6,0.2)] rounded-[1rem_3rem_1rem_3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#715638] font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Gaming</p>
+          <h2 class="text-[#3b2514] font-serif font-black tracking-tight text-2xl">Fantasy Quest</h2>
+          <p class="text-[#715638] font-serif mt-1 text-sm">Mythic, ornate, adventurous</p>
+        </div>
+        <span class="bg-amber-700 text-amber-50 border border-amber-950 rounded-sm font-serif font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-amber-800 bg-[#d9c493] rounded-[0.5rem_2rem_0.5rem_2rem] shadow-inner mt-4 p-4">
+        <p class="text-emerald-900 font-serif font-bold uppercase tracking-wider text-xs">Example content</p>
+        <p class="text-[#715638] font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-emerald-900 text-amber-100 hover:bg-emerald-800 border-2 border-amber-700 rounded-sm shadow-[0_4px_0_#713f12] font-serif font-bold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

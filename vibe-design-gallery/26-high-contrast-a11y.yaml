@@ -1,0 +1,44 @@
+id: "26"
+name: "High Contrast A11y"
+slug: "high-contrast-a11y"
+category: "System"
+tone: "Accessible, explicit, readable"
+promptCues:
+  - "maximum contrast"
+  - "strong focus rings"
+  - "black outlines"
+  - "readability first"
+  - "clear interaction states"
+tokens:
+  bg: "bg-white"
+  shell: "border-4 border-black bg-white rounded-xl"
+  card: "border-4 border-black bg-white rounded-lg"
+  title: "text-black font-bold tracking-tight"
+  text: "text-black"
+  label: "text-black font-bold"
+  input: "bg-white border-4 border-black text-black placeholder:text-black/50 focus:ring-4 focus:ring-yellow-300 focus:border-black rounded-lg"
+  button: "bg-black text-white hover:bg-blue-900 rounded-lg font-bold"
+  ghost: "bg-yellow-300 text-black border-4 border-black hover:bg-yellow-200 rounded-lg font-bold"
+  checkbox: "accent-black"
+  progressTrack: "bg-white border-4 border-black rounded-lg"
+  progressFill: "bg-black rounded-sm"
+  badge: "bg-yellow-300 text-black border-4 border-black rounded-lg font-bold"
+  mono: "bg-black text-white rounded-md"
+htmlExample: |-
+  <section class="bg-white rounded-[2rem] p-4">
+    <div class="border-4 border-black bg-white rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-black text-[10px] uppercase tracking-[0.22em] mb-2">System</p>
+          <h2 class="text-black font-bold tracking-tight text-2xl">High Contrast A11y</h2>
+          <p class="text-black mt-1 text-sm">Accessible, explicit, readable</p>
+        </div>
+        <span class="bg-yellow-300 text-black border-4 border-black rounded-lg font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-4 border-black bg-white rounded-lg mt-4 p-4">
+        <p class="text-black font-bold text-xs">Example content</p>
+        <p class="text-black mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-black text-white hover:bg-blue-900 rounded-lg font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

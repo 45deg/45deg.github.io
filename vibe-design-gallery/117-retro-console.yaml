@@ -1,0 +1,44 @@
+id: "117"
+name: "Retro Console"
+slug: "retro-console"
+category: "Retro"
+tone: "Old screen, pixel mood"
+promptCues:
+  - "CRT terminal"
+  - "lime phosphor"
+  - "pixel-era styling"
+  - "monospace controls"
+  - "low-fi screen glow"
+tokens:
+  bg: "bg-lime-950"
+  shell: "border-2 border-lime-500 bg-lime-900 shadow-[0_0_30px_rgba(132,204,22,.18)] rounded-md"
+  card: "border-2 border-lime-500/70 bg-lime-950 rounded-md"
+  title: "text-lime-300 font-mono uppercase tracking-widest"
+  text: "text-lime-500 font-mono"
+  label: "text-lime-300 font-mono uppercase text-xs tracking-widest"
+  input: "bg-lime-950 border-2 border-lime-500 text-lime-200 placeholder:text-lime-700 focus:ring-0 focus:border-lime-300 rounded-sm font-mono"
+  button: "bg-lime-300 text-lime-950 hover:bg-lime-200 rounded-sm font-mono uppercase"
+  ghost: "bg-transparent text-lime-300 border-2 border-lime-500 hover:bg-lime-500/10 rounded-sm font-mono"
+  checkbox: "accent-lime-300"
+  progressTrack: "bg-lime-950 border-2 border-lime-500 rounded-sm"
+  progressFill: "bg-lime-300 rounded-sm"
+  badge: "bg-lime-300 text-lime-950 border border-lime-200 rounded-sm font-mono uppercase"
+  mono: "bg-lime-300/10 text-lime-300 rounded-sm"
+htmlExample: |-
+  <section class="bg-lime-950 rounded-[2rem] p-4">
+    <div class="border-2 border-lime-500 bg-lime-900 shadow-[0_0_30px_rgba(132,204,22,.18)] rounded-md p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-lime-500 font-mono text-[10px] uppercase tracking-[0.22em] mb-2">Retro</p>
+          <h2 class="text-lime-300 font-mono uppercase tracking-widest text-2xl">Retro Console</h2>
+          <p class="text-lime-500 font-mono mt-1 text-sm">Old screen, pixel mood</p>
+        </div>
+        <span class="bg-lime-300 text-lime-950 border border-lime-200 rounded-sm font-mono uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-lime-500/70 bg-lime-950 rounded-md mt-4 p-4">
+        <p class="text-lime-300 font-mono uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-lime-500 font-mono mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-lime-300 text-lime-950 hover:bg-lime-200 rounded-sm font-mono uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

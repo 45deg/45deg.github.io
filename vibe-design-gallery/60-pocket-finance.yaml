@@ -1,0 +1,44 @@
+id: "60"
+name: "Pocket Finance"
+slug: "pocket-finance"
+category: "Mobile"
+tone: "Compact, confident, money-smart"
+promptCues:
+  - "mint financial palette"
+  - "bold balance figures"
+  - "thumb-sized actions"
+  - "compact cards"
+  - "friendly trust cues"
+tokens:
+  bg: "bg-emerald-100"
+  shell: "border border-emerald-200 bg-[#f8fff9] shadow-xl rounded-[2.75rem]"
+  card: "border-0 bg-emerald-900 text-white rounded-[2rem] shadow-lg"
+  title: "text-emerald-950 font-bold tracking-tight"
+  text: "text-emerald-800/65"
+  label: "text-emerald-950 font-semibold"
+  input: "bg-white border border-emerald-200 text-emerald-950 placeholder:text-emerald-300 focus:ring-4 focus:ring-emerald-200 focus:border-emerald-600 rounded-2xl"
+  button: "bg-emerald-950 text-white hover:bg-emerald-800 rounded-2xl font-bold shadow-sm"
+  ghost: "bg-lime-200 text-emerald-950 hover:bg-lime-300 rounded-2xl font-bold"
+  checkbox: "accent-emerald-800"
+  progressTrack: "bg-emerald-200 rounded-full"
+  progressFill: "bg-emerald-800 rounded-full"
+  badge: "bg-lime-200 text-emerald-950 rounded-full font-bold"
+  mono: "bg-emerald-800 text-emerald-50 rounded-2xl"
+htmlExample: |-
+  <section class="bg-emerald-100 rounded-[2rem] p-4">
+    <div class="border border-emerald-200 bg-[#f8fff9] shadow-xl rounded-[2.75rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-emerald-800/65 text-[10px] uppercase tracking-[0.22em] mb-2">Mobile</p>
+          <h2 class="text-emerald-950 font-bold tracking-tight text-2xl">Pocket Finance</h2>
+          <p class="text-emerald-800/65 mt-1 text-sm">Compact, confident, money-smart</p>
+        </div>
+        <span class="bg-lime-200 text-emerald-950 rounded-full font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-0 bg-emerald-900 text-white rounded-[2rem] shadow-lg mt-4 p-4">
+        <p class="text-emerald-950 font-semibold text-xs">Example content</p>
+        <p class="text-emerald-800/65 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-emerald-950 text-white hover:bg-emerald-800 rounded-2xl font-bold shadow-sm mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

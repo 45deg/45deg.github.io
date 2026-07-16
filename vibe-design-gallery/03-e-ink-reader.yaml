@@ -1,0 +1,44 @@
+id: "03"
+name: "E-ink Reader"
+slug: "e-ink-reader"
+category: "System"
+tone: "Grayscale, eye-friendly, distraction-free"
+promptCues:
+  - "e-ink display"
+  - "pure grayscale"
+  - "no anti-aliasing feel"
+  - "high legibility"
+  - "monochrome ink"
+tokens:
+  bg: "bg-neutral-100"
+  shell: "border border-neutral-300 bg-white shadow-sm rounded-lg"
+  card: "border border-neutral-300 bg-white rounded-md"
+  title: "text-neutral-900 font-serif tracking-tight"
+  text: "text-neutral-700 font-serif"
+  label: "text-neutral-600 font-serif uppercase text-xs tracking-widest"
+  input: "bg-white border border-neutral-400 text-neutral-900 placeholder:text-neutral-400 focus:ring-0 focus:border-neutral-900 rounded-none font-serif"
+  button: "bg-neutral-900 text-white hover:bg-neutral-700 rounded-none font-serif uppercase tracking-widest"
+  ghost: "bg-transparent text-neutral-900 border border-neutral-900 hover:bg-neutral-100 rounded-none font-serif"
+  checkbox: "accent-neutral-900"
+  progressTrack: "bg-neutral-200 rounded-none"
+  progressFill: "bg-neutral-900 rounded-none"
+  badge: "bg-neutral-100 text-neutral-900 border border-neutral-400 rounded-none font-serif uppercase"
+  mono: "bg-white text-neutral-800 border border-neutral-300 rounded-none font-mono"
+htmlExample: |-
+  <section class="bg-neutral-100 rounded-[2rem] p-4">
+    <div class="border border-neutral-300 bg-white shadow-sm rounded-lg p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-700 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">System</p>
+          <h2 class="text-neutral-900 font-serif tracking-tight text-2xl">E-ink Reader</h2>
+          <p class="text-neutral-700 font-serif mt-1 text-sm">Grayscale, eye-friendly, distraction-free</p>
+        </div>
+        <span class="bg-neutral-100 text-neutral-900 border border-neutral-400 rounded-none font-serif uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-neutral-300 bg-white rounded-md mt-4 p-4">
+        <p class="text-neutral-600 font-serif uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-neutral-700 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-neutral-900 text-white hover:bg-neutral-700 rounded-none font-serif uppercase tracking-widest mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

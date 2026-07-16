@@ -1,0 +1,44 @@
+id: "14"
+name: "Data Dense"
+slug: "data-dense"
+category: "Enterprise"
+tone: "Compact, technical, analytical"
+promptCues:
+  - "dense analytics"
+  - "compact spacing"
+  - "monospace labels"
+  - "small-radius controls"
+  - "data-table temperament"
+tokens:
+  bg: "bg-slate-100"
+  shell: "border border-slate-300 bg-white shadow-sm rounded-lg"
+  card: "border border-slate-300 bg-white rounded-md"
+  title: "text-slate-950 font-semibold tracking-tight"
+  text: "text-slate-600 text-sm"
+  label: "text-slate-700 font-mono uppercase text-[10px] tracking-widest"
+  input: "bg-white border border-slate-300 text-slate-950 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-200 focus:border-slate-500 rounded-md font-mono text-sm"
+  button: "bg-slate-700 text-white hover:bg-slate-800 rounded-md font-mono text-sm"
+  ghost: "bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-md border border-slate-300 font-mono text-sm"
+  checkbox: "accent-slate-700"
+  progressTrack: "bg-slate-200 rounded-sm"
+  progressFill: "bg-slate-700 rounded-sm"
+  badge: "bg-slate-100 text-slate-700 border border-slate-300 rounded-md font-mono uppercase"
+  mono: "bg-slate-100 text-slate-500 rounded-md"
+htmlExample: |-
+  <section class="bg-slate-100 rounded-[2rem] p-4">
+    <div class="border border-slate-300 bg-white shadow-sm rounded-lg p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600 text-sm text-[10px] uppercase tracking-[0.22em] mb-2">Enterprise</p>
+          <h2 class="text-slate-950 font-semibold tracking-tight text-2xl">Data Dense</h2>
+          <p class="text-slate-600 text-sm mt-1 text-sm">Compact, technical, analytical</p>
+        </div>
+        <span class="bg-slate-100 text-slate-700 border border-slate-300 rounded-md font-mono uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-slate-300 bg-white rounded-md mt-4 p-4">
+        <p class="text-slate-700 font-mono uppercase text-[10px] tracking-widest text-xs">Example content</p>
+        <p class="text-slate-600 text-sm mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-slate-700 text-white hover:bg-slate-800 rounded-md font-mono text-sm mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

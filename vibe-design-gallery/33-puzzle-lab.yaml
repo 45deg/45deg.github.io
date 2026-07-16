@@ -1,0 +1,44 @@
+id: "33"
+name: "Puzzle Lab"
+slug: "puzzle-lab"
+category: "Gaming"
+tone: "Clever, geometric, brightly logical"
+promptCues:
+  - "primary puzzle blocks"
+  - "white laboratory field"
+  - "modular geometry"
+  - "logic-game clarity"
+  - "playful problem solving"
+tokens:
+  bg: "bg-sky-100"
+  shell: "border-4 border-slate-950 bg-white shadow-[8px_8px_0_#0f172a] rounded-3xl"
+  card: "border-4 border-slate-950 bg-yellow-300 rounded-xl shadow-[4px_4px_0_#0f172a]"
+  title: "text-slate-950 font-black tracking-tight"
+  text: "text-slate-700 font-medium"
+  label: "text-blue-700 font-black uppercase text-xs"
+  input: "bg-white border-4 border-slate-950 text-slate-950 placeholder:text-slate-400 focus:ring-4 focus:ring-pink-300 focus:border-slate-950 rounded-xl font-bold"
+  button: "bg-blue-600 text-white hover:bg-blue-500 border-4 border-slate-950 rounded-xl shadow-[4px_4px_0_#0f172a] font-black"
+  ghost: "bg-pink-400 text-slate-950 hover:bg-pink-300 border-4 border-slate-950 rounded-xl font-black"
+  checkbox: "accent-blue-600"
+  progressTrack: "bg-white border-4 border-slate-950 rounded-full"
+  progressFill: "bg-green-500 rounded-full"
+  badge: "bg-pink-400 text-slate-950 border-4 border-slate-950 rounded-full font-black"
+  mono: "bg-white text-slate-950 border-4 border-slate-950 rounded-lg font-mono"
+htmlExample: |-
+  <section class="bg-sky-100 rounded-[2rem] p-4">
+    <div class="border-4 border-slate-950 bg-white shadow-[8px_8px_0_#0f172a] rounded-3xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-700 font-medium text-[10px] uppercase tracking-[0.22em] mb-2">Gaming</p>
+          <h2 class="text-slate-950 font-black tracking-tight text-2xl">Puzzle Lab</h2>
+          <p class="text-slate-700 font-medium mt-1 text-sm">Clever, geometric, brightly logical</p>
+        </div>
+        <span class="bg-pink-400 text-slate-950 border-4 border-slate-950 rounded-full font-black px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-4 border-slate-950 bg-yellow-300 rounded-xl shadow-[4px_4px_0_#0f172a] mt-4 p-4">
+        <p class="text-blue-700 font-black uppercase text-xs text-xs">Example content</p>
+        <p class="text-slate-700 font-medium mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-600 text-white hover:bg-blue-500 border-4 border-slate-950 rounded-xl shadow-[4px_4px_0_#0f172a] font-black mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

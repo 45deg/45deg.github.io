@@ -1,0 +1,44 @@
+id: "97"
+name: "Paris Fashion"
+slug: "paris-fashion"
+category: "Luxury"
+tone: "Editorial luxury, fashion-house restraint"
+promptCues:
+  - "black and ivory"
+  - "fashion editorial"
+  - "fine borders"
+  - "serif elegance"
+  - "ample negative space"
+tokens:
+  bg: "bg-neutral-100"
+  shell: "border border-neutral-300 bg-[#fffdf8] shadow-sm rounded-none"
+  card: "border border-neutral-300 bg-white rounded-none"
+  title: "text-black font-serif tracking-tight"
+  text: "text-neutral-600 font-serif"
+  label: "text-neutral-700 font-serif uppercase text-[10px] tracking-[0.3em]"
+  input: "bg-white border-x-0 border-t-0 border-b border-black text-black placeholder:text-neutral-400 focus:ring-0 focus:border-black rounded-none font-serif"
+  button: "bg-black text-white hover:bg-neutral-800 rounded-none font-serif uppercase tracking-[0.2em]"
+  ghost: "bg-transparent text-black border border-black hover:bg-black hover:text-white rounded-none font-serif uppercase tracking-[0.2em]"
+  checkbox: "accent-black"
+  progressTrack: "bg-neutral-200 rounded-none"
+  progressFill: "bg-black rounded-none"
+  badge: "bg-transparent text-black border border-black rounded-none font-serif uppercase tracking-[0.2em]"
+  mono: "bg-neutral-100 text-neutral-600 rounded-none"
+htmlExample: |-
+  <section class="bg-neutral-100 rounded-[2rem] p-4">
+    <div class="border border-neutral-300 bg-[#fffdf8] shadow-sm rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-neutral-600 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-black font-serif tracking-tight text-2xl">Paris Fashion</h2>
+          <p class="text-neutral-600 font-serif mt-1 text-sm">Editorial luxury, fashion-house restraint</p>
+        </div>
+        <span class="bg-transparent text-black border border-black rounded-none font-serif uppercase tracking-[0.2em] px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-neutral-300 bg-white rounded-none mt-4 p-4">
+        <p class="text-neutral-700 font-serif uppercase text-[10px] tracking-[0.3em] text-xs">Example content</p>
+        <p class="text-neutral-600 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-black text-white hover:bg-neutral-800 rounded-none font-serif uppercase tracking-[0.2em] mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "02"
+name: "Technical Manual"
+slug: "technical-manual"
+category: "Editorial"
+tone: "Instructional, diagrammatic, exact"
+promptCues:
+  - "manual cream"
+  - "technical blue"
+  - "numbered callouts"
+  - "diagram labels"
+  - "industrial documentation"
+tokens:
+  bg: "bg-[#dfe6e9]"
+  shell: "border border-slate-500 bg-[#f8f4e8] shadow-md rounded-none"
+  card: "border-l-4 border-blue-800 bg-[#eef1ec] rounded-none"
+  title: "text-slate-950 font-sans font-bold tracking-tight"
+  text: "text-slate-700 font-serif"
+  label: "text-blue-900 font-mono font-bold uppercase text-xs"
+  input: "bg-[#fffdf7] border border-slate-600 text-slate-950 placeholder:text-slate-500 focus:ring-2 focus:ring-blue-700/20 focus:border-blue-800 rounded-none font-mono"
+  button: "bg-blue-800 text-white hover:bg-blue-900 rounded-none font-mono font-bold uppercase"
+  ghost: "bg-transparent text-slate-950 border border-slate-700 hover:bg-slate-200 rounded-none font-mono font-bold"
+  checkbox: "accent-blue-800"
+  progressTrack: "bg-slate-300 border border-slate-500 rounded-none"
+  progressFill: "bg-blue-800 rounded-none"
+  badge: "bg-yellow-300 text-slate-950 border border-slate-700 rounded-full font-mono font-bold"
+  mono: "bg-white text-blue-900 border border-slate-400 rounded-none font-mono"
+htmlExample: |-
+  <section class="bg-[#dfe6e9] rounded-[2rem] p-4">
+    <div class="border border-slate-500 bg-[#f8f4e8] shadow-md rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-700 font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-slate-950 font-sans font-bold tracking-tight text-2xl">Technical Manual</h2>
+          <p class="text-slate-700 font-serif mt-1 text-sm">Instructional, diagrammatic, exact</p>
+        </div>
+        <span class="bg-yellow-300 text-slate-950 border border-slate-700 rounded-full font-mono font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-l-4 border-blue-800 bg-[#eef1ec] rounded-none mt-4 p-4">
+        <p class="text-blue-900 font-mono font-bold uppercase text-xs text-xs">Example content</p>
+        <p class="text-slate-700 font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-800 text-white hover:bg-blue-900 rounded-none font-mono font-bold uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

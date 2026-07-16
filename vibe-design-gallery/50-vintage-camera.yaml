@@ -1,0 +1,44 @@
+id: "50"
+name: "Vintage Camera"
+slug: "vintage-camera"
+category: "Retro"
+tone: "Mechanical, textured leather, precise silver dials"
+promptCues:
+  - "black pebbled leather"
+  - "brushed silver"
+  - "red dot accent"
+  - "rangefinder"
+  - "photographic instrument"
+tokens:
+  bg: "bg-stone-200"
+  shell: "border-y-[8px] border-gray-300 bg-zinc-900 shadow-xl rounded-sm"
+  card: "border border-zinc-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMThxOGE4YSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwbDRsNCIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] rounded-sm"
+  title: "text-gray-100 font-sans tracking-widest font-bold"
+  text: "text-gray-400"
+  label: "text-red-500 font-sans font-bold uppercase text-[10px] tracking-widest"
+  input: "bg-zinc-800 border-2 border-zinc-600 text-gray-100 placeholder:text-zinc-500 focus:ring-0 focus:border-red-500 rounded-full font-mono"
+  button: "bg-gray-300 text-zinc-900 hover:bg-white border-b-2 border-gray-500 active:border-b-0 active:translate-y-[2px] rounded-full font-bold uppercase tracking-wider text-xs"
+  ghost: "bg-zinc-800 text-gray-300 hover:text-white border border-zinc-600 rounded-full font-bold uppercase text-xs"
+  checkbox: "accent-red-600"
+  progressTrack: "bg-zinc-800 rounded-full shadow-inner"
+  progressFill: "bg-red-600 rounded-full"
+  badge: "bg-red-600 text-white rounded-full font-bold uppercase text-[10px] tracking-wider shadow-sm"
+  mono: "bg-zinc-800 text-gray-400 rounded-md border border-zinc-700"
+htmlExample: |-
+  <section class="bg-stone-200 rounded-[2rem] p-4">
+    <div class="border-y-[8px] border-gray-300 bg-zinc-900 shadow-xl rounded-sm p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-gray-400 text-[10px] uppercase tracking-[0.22em] mb-2">Retro</p>
+          <h2 class="text-gray-100 font-sans tracking-widest font-bold text-2xl">Vintage Camera</h2>
+          <p class="text-gray-400 mt-1 text-sm">Mechanical, textured leather, precise silver dials</p>
+        </div>
+        <span class="bg-red-600 text-white rounded-full font-bold uppercase text-[10px] tracking-wider shadow-sm px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-zinc-700 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMThxOGE4YSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwbDRsNCIgc3Ryb2tlPSIjMjIyIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] rounded-sm mt-4 p-4">
+        <p class="text-red-500 font-sans font-bold uppercase text-[10px] tracking-widest text-xs">Example content</p>
+        <p class="text-gray-400 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gray-300 text-zinc-900 hover:bg-white border-b-2 border-gray-500 active:border-b-0 active:translate-y-[2px] rounded-full font-bold uppercase tracking-wider text-xs mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

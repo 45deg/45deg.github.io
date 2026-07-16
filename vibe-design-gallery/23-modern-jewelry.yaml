@@ -1,0 +1,44 @@
+id: "23"
+name: "Modern Jewelry"
+slug: "modern-jewelry"
+category: "Luxury"
+tone: "Precious, sculptural, gallery-clean"
+promptCues:
+  - "pearl white"
+  - "graphite linework"
+  - "champagne metal"
+  - "jewelry display spacing"
+  - "sculptural restraint"
+tokens:
+  bg: "bg-[#e8e6e1]"
+  shell: "border border-[#c7c1b7] bg-[#fcfbf8] shadow-[0_20px_60px_rgba(46,42,37,0.12)] rounded-[3rem]"
+  card: "border border-[#dedad2] bg-white rounded-[2.5rem] shadow-sm"
+  title: "text-[#272522] font-light tracking-[0.04em]"
+  text: "text-[#77716a] font-light"
+  label: "text-[#8a7046] font-medium uppercase tracking-[0.2em] text-[10px]"
+  input: "bg-transparent border-x-0 border-t-0 border-b border-[#aaa39a] text-[#272522] placeholder:text-[#aaa39a] focus:ring-0 focus:border-[#8a7046] rounded-none"
+  button: "bg-[#272522] text-white hover:bg-[#48433e] rounded-full font-medium tracking-wide"
+  ghost: "bg-[#eeeae3] text-[#48433e] hover:bg-[#e2ddd5] rounded-full font-medium"
+  checkbox: "accent-[#8a7046]"
+  progressTrack: "bg-[#e2ddd5] rounded-full"
+  progressFill: "bg-gradient-to-r from-[#bca77f] to-[#8a7046] rounded-full"
+  badge: "bg-[#f3efe8] text-[#8a7046] border border-[#d7cdbb] rounded-full uppercase tracking-widest"
+  mono: "bg-[#f7f5f1] text-[#77716a] rounded-2xl"
+htmlExample: |-
+  <section class="bg-[#e8e6e1] rounded-[2rem] p-4">
+    <div class="border border-[#c7c1b7] bg-[#fcfbf8] shadow-[0_20px_60px_rgba(46,42,37,0.12)] rounded-[3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#77716a] font-light text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-[#272522] font-light tracking-[0.04em] text-2xl">Modern Jewelry</h2>
+          <p class="text-[#77716a] font-light mt-1 text-sm">Precious, sculptural, gallery-clean</p>
+        </div>
+        <span class="bg-[#f3efe8] text-[#8a7046] border border-[#d7cdbb] rounded-full uppercase tracking-widest px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#dedad2] bg-white rounded-[2.5rem] shadow-sm mt-4 p-4">
+        <p class="text-[#8a7046] font-medium uppercase tracking-[0.2em] text-[10px] text-xs">Example content</p>
+        <p class="text-[#77716a] font-light mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#272522] text-white hover:bg-[#48433e] rounded-full font-medium tracking-wide mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

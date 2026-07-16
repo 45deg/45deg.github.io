@@ -1,0 +1,44 @@
+id: "45"
+name: "Habit Streak"
+slug: "habit-streak"
+category: "Mobile"
+tone: "Motivating, warm, everyday"
+promptCues:
+  - "cream habit journal"
+  - "forest green"
+  - "orange streak accent"
+  - "daily check-ins"
+  - "rewarding progress"
+tokens:
+  bg: "bg-[#f3ead8]"
+  shell: "border border-[#d9cdb8] bg-[#fffaf0] shadow-xl rounded-[3rem]"
+  card: "border border-[#d9cdb8] bg-[#f0eadc] rounded-[2rem]"
+  title: "text-[#173d2b] font-bold tracking-tight"
+  text: "text-[#647064]"
+  label: "text-[#24533b] font-semibold"
+  input: "bg-[#fffdf7] border border-[#cfc2ad] text-[#173d2b] placeholder:text-[#9e9587] focus:ring-4 focus:ring-orange-100 focus:border-orange-500 rounded-2xl"
+  button: "bg-[#24533b] text-white hover:bg-[#173d2b] rounded-2xl font-bold"
+  ghost: "bg-orange-200 text-orange-900 hover:bg-orange-300 rounded-2xl font-bold"
+  checkbox: "accent-[#24533b]"
+  progressTrack: "bg-[#ddd3c2] rounded-full"
+  progressFill: "bg-gradient-to-r from-[#24533b] to-orange-500 rounded-full"
+  badge: "bg-orange-200 text-orange-900 rounded-full font-bold"
+  mono: "bg-[#fffdf7] text-[#647064] rounded-xl border border-[#e0d7c8]"
+htmlExample: |-
+  <section class="bg-[#f3ead8] rounded-[2rem] p-4">
+    <div class="border border-[#d9cdb8] bg-[#fffaf0] shadow-xl rounded-[3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#647064] text-[10px] uppercase tracking-[0.22em] mb-2">Mobile</p>
+          <h2 class="text-[#173d2b] font-bold tracking-tight text-2xl">Habit Streak</h2>
+          <p class="text-[#647064] mt-1 text-sm">Motivating, warm, everyday</p>
+        </div>
+        <span class="bg-orange-200 text-orange-900 rounded-full font-bold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#d9cdb8] bg-[#f0eadc] rounded-[2rem] mt-4 p-4">
+        <p class="text-[#24533b] font-semibold text-xs">Example content</p>
+        <p class="text-[#647064] mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#24533b] text-white hover:bg-[#173d2b] rounded-2xl font-bold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

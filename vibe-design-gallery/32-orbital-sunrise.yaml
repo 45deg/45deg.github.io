@@ -1,0 +1,44 @@
+id: "32"
+name: "Orbital Sunrise"
+slug: "orbital-sunrise"
+category: "Futuristic"
+tone: "Hopeful, cinematic, aerospace"
+promptCues:
+  - "midnight indigo"
+  - "sunrise orange rim"
+  - "orbital horizon"
+  - "aerospace typography"
+  - "calm mission optimism"
+tokens:
+  bg: "bg-gradient-to-b from-indigo-950 via-slate-950 to-orange-950"
+  shell: "border border-orange-300/20 bg-slate-950/80 shadow-[0_24px_80px_rgba(249,115,22,0.14)] rounded-[3rem]"
+  card: "border-t border-orange-300/30 bg-gradient-to-b from-indigo-950/80 to-slate-950 rounded-[2rem]"
+  title: "text-orange-50 font-light tracking-wide"
+  text: "text-indigo-200/65"
+  label: "text-orange-300 font-medium uppercase tracking-[0.16em] text-xs"
+  input: "bg-indigo-950/60 border border-indigo-500/40 text-orange-50 placeholder:text-indigo-400 focus:ring-4 focus:ring-orange-400/15 focus:border-orange-300 rounded-full"
+  button: "bg-gradient-to-r from-orange-400 to-amber-300 text-slate-950 hover:from-orange-300 hover:to-amber-200 rounded-full font-semibold"
+  ghost: "bg-indigo-900/50 text-indigo-100 border border-indigo-600/40 hover:bg-indigo-800/60 rounded-full"
+  checkbox: "accent-orange-400"
+  progressTrack: "bg-indigo-950 border border-indigo-700 rounded-full"
+  progressFill: "bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-orange-300 rounded-full"
+  badge: "bg-orange-400/10 text-orange-200 border border-orange-300/30 rounded-full uppercase tracking-widest"
+  mono: "bg-indigo-950/70 text-indigo-200 rounded-2xl border border-indigo-800"
+htmlExample: |-
+  <section class="bg-gradient-to-b from-indigo-950 via-slate-950 to-orange-950 rounded-[2rem] p-4">
+    <div class="border border-orange-300/20 bg-slate-950/80 shadow-[0_24px_80px_rgba(249,115,22,0.14)] rounded-[3rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-indigo-200/65 text-[10px] uppercase tracking-[0.22em] mb-2">Futuristic</p>
+          <h2 class="text-orange-50 font-light tracking-wide text-2xl">Orbital Sunrise</h2>
+          <p class="text-indigo-200/65 mt-1 text-sm">Hopeful, cinematic, aerospace</p>
+        </div>
+        <span class="bg-orange-400/10 text-orange-200 border border-orange-300/30 rounded-full uppercase tracking-widest px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-t border-orange-300/30 bg-gradient-to-b from-indigo-950/80 to-slate-950 rounded-[2rem] mt-4 p-4">
+        <p class="text-orange-300 font-medium uppercase tracking-[0.16em] text-xs text-xs">Example content</p>
+        <p class="text-indigo-200/65 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-gradient-to-r from-orange-400 to-amber-300 text-slate-950 hover:from-orange-300 hover:to-amber-200 rounded-full font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

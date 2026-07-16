@@ -1,0 +1,44 @@
+id: "86"
+name: "Inflatable UI"
+slug: "inflatable-ui"
+category: "Playful"
+tone: "Bouncy, glossy, oversized"
+promptCues:
+  - "inflated pill shapes"
+  - "pool-toy colors"
+  - "soft specular shine"
+  - "oversized rounded controls"
+  - "buoyant depth"
+tokens:
+  bg: "bg-gradient-to-br from-cyan-200 via-blue-100 to-pink-200"
+  shell: "border-4 border-white/80 bg-white/55 backdrop-blur shadow-[0_20px_0_#93c5fd] rounded-[3.5rem]"
+  card: "border-4 border-white/80 bg-pink-300 shadow-[inset_0_6px_10px_rgba(255,255,255,0.5),0_10px_0_#f472b6] rounded-[3rem]"
+  title: "text-blue-950 font-black tracking-tight"
+  text: "text-blue-800/70 font-semibold"
+  label: "text-fuchsia-800 font-black"
+  input: "bg-white/80 border-4 border-white text-blue-950 placeholder:text-blue-300 focus:ring-4 focus:ring-yellow-300 focus:border-cyan-300 rounded-full shadow-inner font-bold"
+  button: "bg-cyan-400 text-blue-950 hover:bg-cyan-300 border-4 border-white rounded-full shadow-[0_7px_0_#0891b2] font-black"
+  ghost: "bg-yellow-300 text-amber-950 hover:bg-yellow-200 border-4 border-white rounded-full shadow-[0_7px_0_#eab308] font-black"
+  checkbox: "accent-fuchsia-500"
+  progressTrack: "bg-white/60 border-4 border-white rounded-full shadow-inner"
+  progressFill: "bg-gradient-to-r from-cyan-400 to-fuchsia-400 rounded-full"
+  badge: "bg-lime-300 text-green-950 border-4 border-white rounded-full shadow-md font-black"
+  mono: "bg-white/60 text-blue-800 rounded-[2rem] border-4 border-white/80"
+htmlExample: |-
+  <section class="bg-gradient-to-br from-cyan-200 via-blue-100 to-pink-200 rounded-[2rem] p-4">
+    <div class="border-4 border-white/80 bg-white/55 backdrop-blur shadow-[0_20px_0_#93c5fd] rounded-[3.5rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-blue-800/70 font-semibold text-[10px] uppercase tracking-[0.22em] mb-2">Playful</p>
+          <h2 class="text-blue-950 font-black tracking-tight text-2xl">Inflatable UI</h2>
+          <p class="text-blue-800/70 font-semibold mt-1 text-sm">Bouncy, glossy, oversized</p>
+        </div>
+        <span class="bg-lime-300 text-green-950 border-4 border-white rounded-full shadow-md font-black px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-4 border-white/80 bg-pink-300 shadow-[inset_0_6px_10px_rgba(255,255,255,0.5),0_10px_0_#f472b6] rounded-[3rem] mt-4 p-4">
+        <p class="text-fuchsia-800 font-black text-xs">Example content</p>
+        <p class="text-blue-800/70 font-semibold mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-cyan-400 text-blue-950 hover:bg-cyan-300 border-4 border-white rounded-full shadow-[0_7px_0_#0891b2] font-black mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

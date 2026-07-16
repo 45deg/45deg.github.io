@@ -1,0 +1,44 @@
+id: "104"
+name: "Mediterranean"
+slug: "mediterranean"
+category: "Commerce"
+tone: "Travel, hospitality, sunlit"
+promptCues:
+  - "coastal blue"
+  - "sunlit orange"
+  - "hospitality warmth"
+  - "rounded booking cards"
+  - "travel landing page"
+tokens:
+  bg: "bg-orange-50"
+  shell: "border border-orange-100 bg-white shadow-lg shadow-orange-200/30 rounded-[2rem]"
+  card: "border border-orange-100 bg-white rounded-[1.5rem] shadow-md shadow-orange-200/20"
+  title: "text-blue-950 font-serif tracking-tight"
+  text: "text-blue-700/70"
+  label: "text-blue-900 font-medium"
+  input: "bg-orange-50 border border-orange-200 text-blue-950 placeholder:text-orange-300 focus:ring-4 focus:ring-orange-100 focus:border-orange-400 rounded-xl"
+  button: "bg-blue-700 text-white hover:bg-blue-800 rounded-xl shadow-md font-semibold"
+  ghost: "bg-orange-100 text-orange-800 hover:bg-orange-200 rounded-xl font-semibold"
+  checkbox: "accent-blue-700"
+  progressTrack: "bg-orange-100 rounded-full"
+  progressFill: "bg-blue-700 rounded-full"
+  badge: "bg-orange-100 text-orange-800 border border-orange-200 rounded-full font-medium"
+  mono: "bg-blue-50 text-blue-600 rounded-lg"
+htmlExample: |-
+  <section class="bg-orange-50 rounded-[2rem] p-4">
+    <div class="border border-orange-100 bg-white shadow-lg shadow-orange-200/30 rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-blue-700/70 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-blue-950 font-serif tracking-tight text-2xl">Mediterranean</h2>
+          <p class="text-blue-700/70 mt-1 text-sm">Travel, hospitality, sunlit</p>
+        </div>
+        <span class="bg-orange-100 text-orange-800 border border-orange-200 rounded-full font-medium px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-orange-100 bg-white rounded-[1.5rem] shadow-md shadow-orange-200/20 mt-4 p-4">
+        <p class="text-blue-900 font-medium text-xs">Example content</p>
+        <p class="text-blue-700/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-700 text-white hover:bg-blue-800 rounded-xl shadow-md font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

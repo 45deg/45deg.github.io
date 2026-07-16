@@ -1,0 +1,44 @@
+id: "29"
+name: "Research Lab"
+slug: "research-lab"
+category: "Enterprise"
+tone: "Methodical, scientific, collaborative"
+promptCues:
+  - "laboratory white"
+  - "cobalt protocol blue"
+  - "precise annotations"
+  - "experiment status"
+  - "clean research workspace"
+tokens:
+  bg: "bg-blue-50"
+  shell: "border border-blue-200 bg-white shadow-md rounded-xl"
+  card: "border border-blue-200 bg-[#f8fbff] rounded-md"
+  title: "text-slate-950 font-semibold tracking-tight"
+  text: "text-slate-600"
+  label: "text-blue-900 font-mono font-semibold text-xs uppercase"
+  input: "bg-white border border-blue-300 text-slate-950 placeholder:text-slate-400 focus:ring-4 focus:ring-blue-100 focus:border-blue-700 rounded-md font-mono"
+  button: "bg-blue-700 text-white hover:bg-blue-800 rounded-md font-semibold"
+  ghost: "bg-cyan-50 text-cyan-900 border border-cyan-300 hover:bg-cyan-100 rounded-md font-semibold"
+  checkbox: "accent-blue-700"
+  progressTrack: "bg-blue-100 border border-blue-200 rounded-sm"
+  progressFill: "bg-blue-700 rounded-sm"
+  badge: "bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-sm font-mono"
+  mono: "bg-slate-100 text-blue-900 rounded-sm border border-slate-200 font-mono"
+htmlExample: |-
+  <section class="bg-blue-50 rounded-[2rem] p-4">
+    <div class="border border-blue-200 bg-white shadow-md rounded-xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-slate-600 text-[10px] uppercase tracking-[0.22em] mb-2">Enterprise</p>
+          <h2 class="text-slate-950 font-semibold tracking-tight text-2xl">Research Lab</h2>
+          <p class="text-slate-600 mt-1 text-sm">Methodical, scientific, collaborative</p>
+        </div>
+        <span class="bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-sm font-mono px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-blue-200 bg-[#f8fbff] rounded-md mt-4 p-4">
+        <p class="text-blue-900 font-mono font-semibold text-xs uppercase text-xs">Example content</p>
+        <p class="text-slate-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-blue-700 text-white hover:bg-blue-800 rounded-md font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

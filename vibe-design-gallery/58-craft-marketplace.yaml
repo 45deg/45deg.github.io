@@ -1,0 +1,44 @@
+id: "58"
+name: "Craft Marketplace"
+slug: "craft-marketplace"
+category: "Commerce"
+tone: "Handmade, friendly, creator-commerce oriented"
+promptCues:
+  - "handmade marketplace"
+  - "warm tan"
+  - "soft teal"
+  - "creator commerce"
+  - "artisan cards"
+tokens:
+  bg: "bg-amber-50"
+  shell: "border border-amber-200 bg-white shadow-md shadow-amber-200/30 rounded-[2rem]"
+  card: "border border-amber-100 bg-[#fffaf0] rounded-[1.5rem] shadow-sm"
+  title: "text-amber-950 font-serif tracking-tight"
+  text: "text-amber-800/70"
+  label: "text-amber-900 font-semibold"
+  input: "bg-white border border-amber-200 text-amber-950 placeholder:text-amber-300 focus:ring-4 focus:ring-amber-100 focus:border-teal-500 rounded-xl"
+  button: "bg-teal-700 text-white hover:bg-teal-800 rounded-xl shadow-sm font-semibold"
+  ghost: "bg-amber-100 text-amber-900 hover:bg-amber-200 rounded-xl font-semibold"
+  checkbox: "accent-teal-700"
+  progressTrack: "bg-amber-100 rounded-full"
+  progressFill: "bg-teal-700 rounded-full"
+  badge: "bg-teal-50 text-teal-800 border border-teal-200 rounded-full font-semibold"
+  mono: "bg-amber-100 text-amber-700 rounded-lg"
+htmlExample: |-
+  <section class="bg-amber-50 rounded-[2rem] p-4">
+    <div class="border border-amber-200 bg-white shadow-md shadow-amber-200/30 rounded-[2rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-amber-800/70 text-[10px] uppercase tracking-[0.22em] mb-2">Commerce</p>
+          <h2 class="text-amber-950 font-serif tracking-tight text-2xl">Craft Marketplace</h2>
+          <p class="text-amber-800/70 mt-1 text-sm">Handmade, friendly, creator-commerce oriented</p>
+        </div>
+        <span class="bg-teal-50 text-teal-800 border border-teal-200 rounded-full font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-amber-100 bg-[#fffaf0] rounded-[1.5rem] shadow-sm mt-4 p-4">
+        <p class="text-amber-900 font-semibold text-xs">Example content</p>
+        <p class="text-amber-800/70 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-teal-700 text-white hover:bg-teal-800 rounded-xl shadow-sm font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

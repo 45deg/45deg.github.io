@@ -23,140 +23,175 @@ After choosing a theme, use its `tokens` as the styling vocabulary. Preserve the
 
 ### Commerce
 
-- [07 Banking Pro](./07-banking-pro.yaml): Trustworthy, corporate, crisp. Cues: blue trust palette, clean inputs, financial dashboard, reserved tone, crisp cards.
-- [13 Fintech Gradient](./13-fintech-gradient.yaml): Premium conversion UI. Cues: gradient CTAs, premium fintech, indigo and fuchsia, conversion-focused, smooth cards.
-- [16 E-commerce Sale](./16-e-commerce-sale.yaml): Direct, energetic, retail. Cues: red sale palette, retail urgency, bold CTA, discount-badge mood, direct hierarchy.
-- [22 Mediterranean](./22-mediterranean.yaml): Travel, hospitality, sunlit. Cues: coastal blue, sunlit orange, hospitality warmth, rounded booking cards, travel landing page.
-- [26 Restaurant Menu](./26-restaurant-menu.yaml): Warm, artisanal, inviting. Cues: rose warmth, menu typography, artisan feel, soft food-brand controls, rounded tags.
-- [30 Sports Energy](./30-sports-energy.yaml): Athletic, direct, punchy. Cues: orange energy, italic sports type, dark gym surfaces, performance dashboard, bold CTA.
-- [34 Startup Coral](./34-startup-coral.yaml): Landing page, optimistic, warm. Cues: coral-orange CTA, startup landing page, optimistic tone, clean cards, growth-product warmth.
-- [46 Crypto Neon Grid](./46-crypto-neon-grid.yaml): Speculative, high-energy, dark finance. Cues: dark finance, green and violet glow, terminal price board, speculative energy, neon controls.
-- [47 Travel Postcard](./47-travel-postcard.yaml): Sunny, relaxed, travel-booking friendly. Cues: coastal sky, orange sun, postcard warmth, booking UI, vacation-friendly controls.
-- [62 Craft Marketplace](./62-craft-marketplace.yaml): Handmade, friendly, creator-commerce oriented. Cues: handmade marketplace, warm tan, soft teal, creator commerce, artisan cards.
-- [80 Denim Workwear](./80-denim-workwear.yaml): Rugged, durable, blue-collar chic. Cues: denim blue, orange stitching, sturdy fabric, apparel commerce, copper rivets.
-- [99 Tropical Vibe](./99-tropical-vibe.yaml): Vacation, fruity, vibrant, energetic. Cues: teal and flamingo pink, summer vacation, lush leaves, tropical juice, bright commerce.
+- [49 Denim Workwear](./49-denim-workwear.yaml): Rugged, durable, blue-collar chic. Cues: denim blue, orange stitching, sturdy fabric, apparel commerce, copper rivets.
+- [58 Craft Marketplace](./58-craft-marketplace.yaml): Handmade, friendly, creator-commerce oriented. Cues: handmade marketplace, warm tan, soft teal, creator commerce, artisan cards.
+- [92 Banking Pro](./92-banking-pro.yaml): Trustworthy, corporate, crisp. Cues: blue trust palette, clean inputs, financial dashboard, reserved tone, crisp cards.
+- [95 Sports Energy](./95-sports-energy.yaml): Athletic, direct, punchy. Cues: orange energy, italic sports type, dark gym surfaces, performance dashboard, bold CTA.
+- [103 Tropical Vibe](./103-tropical-vibe.yaml): Vacation, fruity, vibrant, energetic. Cues: teal and flamingo pink, summer vacation, lush leaves, tropical juice, bright commerce.
+- [104 Mediterranean](./104-mediterranean.yaml): Travel, hospitality, sunlit. Cues: coastal blue, sunlit orange, hospitality warmth, rounded booking cards, travel landing page.
+- [114 Restaurant Menu](./114-restaurant-menu.yaml): Warm, artisanal, inviting. Cues: rose warmth, menu typography, artisan feel, soft food-brand controls, rounded tags.
+- [115 E-commerce Sale](./115-e-commerce-sale.yaml): Direct, energetic, retail. Cues: red sale palette, retail urgency, bold CTA, discount-badge mood, direct hierarchy.
+- [118 Fintech Gradient](./118-fintech-gradient.yaml): Premium conversion UI. Cues: gradient CTAs, premium fintech, indigo and fuchsia, conversion-focused, smooth cards.
+- [122 Travel Postcard](./122-travel-postcard.yaml): Sunny, relaxed, travel-booking friendly. Cues: coastal sky, orange sun, postcard warmth, booking UI, vacation-friendly controls.
 
 ### Editorial
 
-- [06 Editorial Serif](./06-editorial-serif.yaml): Magazine-like, typographic. Cues: serif text, paper background, thin rules, magazine hierarchy, classic editorial rhythm.
-- [17 Monochrome Agency](./17-monochrome-agency.yaml): Portfolio, decisive, graphic. Cues: black and white, agency portfolio, strong typographic contrast, hard edges, graphic composition.
-- [20 Pastel Academic](./20-pastel-academic.yaml): Notes, study, gentle hierarchy. Cues: pastel purple, study notes, gentle academic UI, soft badges, low-stress controls.
-- [24 Paper Ledger](./24-paper-ledger.yaml): Archive, invoices, documentation. Cues: aged paper, ledger forms, warm amber, document archive, invoice-style controls.
-- [37 Swiss Grid](./37-swiss-grid.yaml): Precise, modular, typographic. Cues: Swiss typography, red accent, grid discipline, modular panels, objective editorial tone.
-- [42 Handwritten Notebook](./42-handwritten-notebook.yaml): Notebook, study notes, human and informal. Cues: paper feel, ink-like text, blue-line notebook, casual annotations, soft educational UI.
-- [48 Academic Journal](./48-academic-journal.yaml): Dense, scholarly, reserved. Cues: formal serif, paper neutrality, scholarly density, quiet borders, research publication.
-- [84 Typewriter Paper](./84-typewriter-paper.yaml): Analog writing, ink ribbon, imperfect alignment. Cues: typewriter font, cream paper, smudged black ink, author draft, raw manuscript.
+- [00 Swiss Grid](./00-swiss-grid.yaml): Precise, modular, typographic. Cues: Swiss typography, red accent, grid discipline, modular panels, objective editorial tone.
+- [02 Technical Manual](./02-technical-manual.yaml): Instructional, diagrammatic, exact. Cues: manual cream, technical blue, numbered callouts, diagram labels, industrial documentation.
+- [11 Newsroom Broadsheet](./11-newsroom-broadsheet.yaml): Urgent, factual, typographically assertive. Cues: newsprint white, heavy black headlines, signal red rule, column logic, breaking-news hierarchy.
+- [24 Editorial Serif](./24-editorial-serif.yaml): Magazine-like, typographic. Cues: serif text, paper background, thin rules, magazine hierarchy, classic editorial rhythm.
+- [34 Monochrome Agency](./34-monochrome-agency.yaml): Portfolio, decisive, graphic. Cues: black and white, agency portfolio, strong typographic contrast, hard edges, graphic composition.
+- [42 Culinary Zine](./42-culinary-zine.yaml): Seasonal, tactile, independently published. Cues: tomato red, olive ink, uncoated paper, recipe marginalia, indie food magazine.
+- [53 Paper Ledger](./53-paper-ledger.yaml): Archive, invoices, documentation. Cues: aged paper, ledger forms, warm amber, document archive, invoice-style controls.
+- [76 Academic Journal](./76-academic-journal.yaml): Dense, scholarly, reserved. Cues: formal serif, paper neutrality, scholarly density, quiet borders, research publication.
+- [90 Handwritten Notebook](./90-handwritten-notebook.yaml): Notebook, study notes, human and informal. Cues: paper feel, ink-like text, blue-line notebook, casual annotations, soft educational UI.
+- [119 Pastel Academic](./119-pastel-academic.yaml): Notes, study, gentle hierarchy. Cues: pastel purple, study notes, gentle academic UI, soft badges, low-stress controls.
 
 ### Enterprise
 
-- [21 Data Dense](./21-data-dense.yaml): Compact, technical, analytical. Cues: dense analytics, compact spacing, monospace labels, small-radius controls, data-table temperament.
-- [33 Command Center](./33-command-center.yaml): Mission control, dense, serious. Cues: mission control, dark enterprise, cyan status, operational density, technical monitoring.
-- [44 Industrial Ops](./44-industrial-ops.yaml): Operational, heavy-duty, utilitarian. Cues: hazard amber, machine-room UI, dense operations, robust controls, utilitarian hierarchy.
-- [52 Blueprint Enterprise](./52-blueprint-enterprise.yaml): Structured, architectural, planning-oriented. Cues: blueprint blues, technical labels, precise spacing, planning UI, architectural grid.
-- [59 Executive Boardroom](./59-executive-boardroom.yaml): Formal, composed, C-suite reporting. Cues: executive dashboard, navy palette, formal hierarchy, subtle gold, boardroom restraint.
-- [63 Warehouse Scanner](./63-warehouse-scanner.yaml): Barcode scanner, logistics, rugged mobile workflow. Cues: warehouse operations, scanner UI, yellow black safety, large touch targets, rugged workflow.
-- [74 Space Station](./74-space-station.yaml): Aerospace, utilitarian, high-reliability. Cues: NASA aesthetic, pure white panels, red hazard accents, technical sans-serif, aeronautical displays.
-- [88 Aviation Control](./88-aviation-control.yaml): Air traffic control, high-stakes visibility. Cues: radar screen, amber and cyan on dark, aviation dashboard, high visibility, critical readouts.
+- [06 Legal Casework](./06-legal-casework.yaml): Authoritative, evidence-led, discreet. Cues: midnight legal navy, burgundy case accents, document hierarchy, evidence metadata, confidential restraint.
+- [09 Space Station](./09-space-station.yaml): Aerospace, utilitarian, high-reliability. Cues: NASA aesthetic, pure white panels, red hazard accents, technical sans-serif, aeronautical displays.
+- [14 Data Dense](./14-data-dense.yaml): Compact, technical, analytical. Cues: dense analytics, compact spacing, monospace labels, small-radius controls, data-table temperament.
+- [15 Warehouse Scanner](./15-warehouse-scanner.yaml): Barcode scanner, logistics, rugged mobile workflow. Cues: warehouse operations, scanner UI, yellow black safety, large touch targets, rugged workflow.
+- [16 Aviation Control](./16-aviation-control.yaml): Air traffic control, high-stakes visibility. Cues: radar screen, amber and cyan on dark, aviation dashboard, high visibility, critical readouts.
+- [25 Industrial Ops](./25-industrial-ops.yaml): Operational, heavy-duty, utilitarian. Cues: hazard amber, machine-room UI, dense operations, robust controls, utilitarian hierarchy.
+- [29 Research Lab](./29-research-lab.yaml): Methodical, scientific, collaborative. Cues: laboratory white, cobalt protocol blue, precise annotations, experiment status, clean research workspace.
+- [30 Supply Chain](./30-supply-chain.yaml): Connected, logistical, exception-focused. Cues: freight navy, signal orange, route status, dense logistics data, exception-first workflow.
+- [38 People Ops](./38-people-ops.yaml): Human, organized, supportive. Cues: soft plum, peach warmth, people-centered cards, clear HR workflows, supportive enterprise tone.
+- [77 Blueprint Enterprise](./77-blueprint-enterprise.yaml): Structured, architectural, planning-oriented. Cues: blueprint blues, technical labels, precise spacing, planning UI, architectural grid.
+- [132 Executive Boardroom](./132-executive-boardroom.yaml): Formal, composed, C-suite reporting. Cues: executive dashboard, navy palette, formal hierarchy, subtle gold, boardroom restraint.
 
 ### Experimental
 
-- [38 Bauhaus Grid](./38-bauhaus-grid.yaml): Geometric, poster-like, primary-color driven. Cues: strict geometry, primary accents, modular layout, hard edges, Bauhaus poster language.
-- [39 Memphis Party](./39-memphis-party.yaml): Chaotic, playful, decorative, high-energy. Cues: confetti accents, asymmetry, bold color pops, graphic contrast, fun rounded forms.
-- [57 Noir Detective](./57-noir-detective.yaml): Moody, monochrome, cinematic investigation UI. Cues: film noir, high contrast grayscale, typewriter feel, shadow-heavy cards, case-file mood.
-- [67 Cyberpunk Street](./67-cyberpunk-street.yaml): Gritty, glowing, rebellious. Cues: neon yellow, dark grunge, high-tech low-life, street style, asymmetrical borders.
-- [69 Clay Brutalism](./69-clay-brutalism.yaml): Chunky, heavy, thick yet soft. Cues: thick rounded borders, heavy shadows, clay colors, bold but soft, tactile heft.
-- [73 Biomechanical](./73-biomechanical.yaml): Alien, organic machinery, dark, unsettling. Cues: dark green tones, organic curves mixed with sharp edges, alien UI, Giger-esque, dark metallic.
-- [92 Brutalist Web](./92-brutalist-web.yaml): Raw HTML, default styles, anti-design. Cues: standard blue links, Times New Roman, pure white background, no rounded corners, raw early web.
-- [94 Pop Art Comic](./94-pop-art-comic.yaml): Lichtenstein, halftone dots, primary colors, loud. Cues: halftone dots, primary red and blue, thick black outlines, pop art, comic strip panels.
+- [65 Bauhaus Grid](./65-bauhaus-grid.yaml): Geometric, poster-like, primary-color driven. Cues: strict geometry, primary accents, modular layout, hard edges, Bauhaus poster language.
+- [68 Generative Grid](./68-generative-grid.yaml): Algorithmic, modular, kinetic. Cues: algorithmic grid, variable cell sizes, electric green, coded rhythm, procedural composition.
+- [73 Brutalist Web](./73-brutalist-web.yaml): Raw HTML, default styles, anti-design. Cues: standard blue links, Times New Roman, pure white background, no rounded corners, raw early web.
+- [85 Risograph Layers](./85-risograph-layers.yaml): Printed, imperfect, color-separated. Cues: fluorescent riso ink, misregistered layers, paper grain, two-color overlap, printmaking energy.
+- [94 Noir Detective](./94-noir-detective.yaml): Moody, monochrome, cinematic investigation UI. Cues: film noir, high contrast grayscale, typewriter feel, shadow-heavy cards, case-file mood.
+- [101 Deconstructed Type](./101-deconstructed-type.yaml): Disruptive, typographic, off-axis. Cues: oversized letterforms, off-axis alignment, acid orange, cropped typography, anti-grid tension.
+- [116 Cyberpunk Street](./116-cyberpunk-street.yaml): Gritty, glowing, rebellious. Cues: neon yellow, dark grunge, high-tech low-life, street style, asymmetrical borders.
+- [126 Memphis Party](./126-memphis-party.yaml): Chaotic, playful, decorative, high-energy. Cues: confetti accents, asymmetry, bold color pops, graphic contrast, fun rounded forms.
+- [128 Biomechanical](./128-biomechanical.yaml): Alien, organic machinery, dark, unsettling. Cues: dark green tones, organic curves mixed with sharp edges, alien UI, Giger-esque, dark metallic.
 
 ### Futuristic
 
-- [02 Glass Aurora](./02-glass-aurora.yaml): Blurred, luminous, layered. Cues: frosted glass, deep gradients, aurora glow, transparent surfaces, soft luminous CTAs.
-- [04 Cyber Terminal](./04-cyber-terminal.yaml): Command-line, sharp, electric. Cues: black terminal, green phosphor, monospace, scanline mood, thin glowing borders.
-- [36 AI Glow](./36-ai-glow.yaml): AI product, luminous, smooth. Cues: AI product, violet cyan gradient, soft glow, dark intelligence surface, smooth rounded controls.
-- [61 Holographic Lab](./61-holographic-lab.yaml): Scientific, translucent, holographic interface. Cues: holographic panels, scientific UI, cyan violet shimmer, thin glass borders, lab console.
-- [71 Neon Tokyo](./71-neon-tokyo.yaml): Nighttime metropolis, glowing signs, rainy streets. Cues: magenta and cyan, black background, neon glow, midnight city, high contrast digital.
-- [77 Holographic HUD](./77-holographic-hud.yaml): Sci-fi interface, glowing projections, transparent. Cues: pure cyan, hologram projection, no solid backgrounds, thin glowing lines, sci-fi helmet UI.
+- [32 Orbital Sunrise](./32-orbital-sunrise.yaml): Hopeful, cinematic, aerospace. Cues: midnight indigo, sunrise orange rim, orbital horizon, aerospace typography, calm mission optimism.
+- [40 Biotech Interface](./40-biotech-interface.yaml): Clinical, organic, computational. Cues: dark lab green, acid lime signals, cellular curves, scientific readouts, bio-digital precision.
+- [51 Infrared Console](./51-infrared-console.yaml): Thermal, tactical, high-alert. Cues: black thermal field, infrared red, amber heat scale, scanline precision, alert-driven hierarchy.
+- [55 Spatial Vision](./55-spatial-vision.yaml): Weightless, ambient, spatial. Cues: soft spatial layers, pearl translucent panels, depth through scale, ambient blue light, floating pill controls.
+- [63 Glass Aurora](./63-glass-aurora.yaml): Blurred, luminous, layered. Cues: frosted glass, deep gradients, aurora glow, transparent surfaces, soft luminous CTAs.
+- [64 Cyber Terminal](./64-cyber-terminal.yaml): Command-line, sharp, electric. Cues: black terminal, green phosphor, monospace, scanline mood, thin glowing borders.
+- [74 Quantum Blueprint](./74-quantum-blueprint.yaml): Mathematical, deep-space, diagrammatic. Cues: navy blueprint field, cyan construction lines, coordinate labels, quantum diagrams, precise luminous grid.
+- [84 Liquid Metal](./84-liquid-metal.yaml): Reflective, sculpted, precision industrial. Cues: brushed titanium, liquid chrome edges, cold graphite, machined controls, specular highlights.
+- [120 Holographic Lab](./120-holographic-lab.yaml): Scientific, translucent, holographic interface. Cues: holographic panels, scientific UI, cyan violet shimmer, thin glass borders, lab console.
+- [129 Neon Tokyo](./129-neon-tokyo.yaml): Nighttime metropolis, glowing signs, rainy streets. Cues: magenta and cyan, black background, neon glow, midnight city, high contrast digital.
+- [134 AI Glow](./134-ai-glow.yaml): AI product, luminous, smooth. Cues: AI product, violet cyan gradient, soft glow, dark intelligence surface, smooth rounded controls.
 
 ### Gaming
 
-- [19 Gaming HUD](./19-gaming-hud.yaml): Angular, high contrast, competitive. Cues: HUD interface, angular clipped panels, cyan glow, competitive game UI, sharp technical labels.
-- [51 Arcade Cabinet](./51-arcade-cabinet.yaml): Arcade machine, bold gaming nostalgia. Cues: deep navy, purple, cyan, yellow, fuchsia, pixel-era energy.
-- [55 Tactical Military](./55-tactical-military.yaml): Rugged, mission-oriented, olive interface. Cues: olive drab, military HUD, rugged controls, stencil typography, mission dashboard.
-- [76 Pixel Art RPG](./76-pixel-art-rpg.yaml): 16-bit, nostalgic, fantasy adventure. Cues: chunky borders, pixelated fonts, RPG menu box, white inside black, fantasy game UI.
-- [90 Racing Dashboard](./90-racing-dashboard.yaml): Motorsport, carbon fiber, high speed, adrenaline. Cues: carbon fiber dark, racing red, italic speedometer font, bold斜体, track telemetry.
+- [22 Strategy Map](./22-strategy-map.yaml): Calculated, cartographic, command-led. Cues: night map grid, territory cyan, unit markers, strategic overlays, measured command density.
+- [33 Puzzle Lab](./33-puzzle-lab.yaml): Clever, geometric, brightly logical. Cues: primary puzzle blocks, white laboratory field, modular geometry, logic-game clarity, playful problem solving.
+- [37 Sports Manager](./37-sports-manager.yaml): Competitive, statistical, club-focused. Cues: stadium navy, pitch lime, league statistics, scoreboard hierarchy, manager dashboard.
+- [39 Racing Dashboard](./39-racing-dashboard.yaml): Motorsport, carbon fiber, high speed, adrenaline. Cues: carbon fiber dark, racing red, italic speedometer font, bold斜体, track telemetry.
+- [41 Survival Craft](./41-survival-craft.yaml): Weathered, resourceful, rugged. Cues: charcoal camp gear, rust orange, canvas textures, resource counters, survival utility.
+- [47 Gaming HUD](./47-gaming-hud.yaml): Angular, high contrast, competitive. Cues: HUD interface, angular clipped panels, cyan glow, competitive game UI, sharp technical labels.
+- [52 Fantasy Quest](./52-fantasy-quest.yaml): Mythic, ornate, adventurous. Cues: aged quest parchment, emerald jewel, engraved gold, fantasy inventory, heroic serif type.
+- [57 Cozy Farming](./57-cozy-farming.yaml): Wholesome, handcrafted, pastoral. Cues: meadow green, butter cream, wooden sign shapes, gentle game rewards, cozy farm warmth.
+- [66 Pixel Art RPG](./66-pixel-art-rpg.yaml): 16-bit, nostalgic, fantasy adventure. Cues: chunky borders, pixelated fonts, RPG menu box, white inside black, fantasy game UI.
+- [75 Card Battler](./75-card-battler.yaml): Dramatic, collectible, competitive. Cues: crimson arena, antique gold frame, collectible card depth, mana-like meters, dramatic rarity cues.
+- [99 Arcade Cabinet](./99-arcade-cabinet.yaml): Arcade machine, bold gaming nostalgia. Cues: deep navy, purple, cyan, yellow, fuchsia, pixel-era energy.
 
 ### Luxury
 
-- [03 Quiet Luxury](./03-quiet-luxury.yaml): Elegant, spacious, restrained. Cues: dark stone palette, fine borders, serif typography, amber accents, generous spacing.
-- [29 Luxury Beauty](./29-luxury-beauty.yaml): Beauty brand, premium, soft. Cues: pink noir, beauty brand, soft serif, premium cosmetics, delicate translucent panels.
-- [35 Museum Wall](./35-museum-wall.yaml): Gallery, quiet, cultured. Cues: gallery wall, neutral plinth, fine serif, museum labels, quiet cultural restraint.
-- [45 Paris Fashion](./45-paris-fashion.yaml): Editorial luxury, fashion-house restraint. Cues: black and ivory, fashion editorial, fine borders, serif elegance, ample negative space.
-- [49 Art Deco Gold](./49-art-deco-gold.yaml): Ornamental, cinematic, gilded. Cues: black lacquer, gold accents, vintage glamour, fine line detail, cinematic luxury.
-- [64 Luxury Watch](./64-luxury-watch.yaml): Precision, black steel, premium instrument feel. Cues: black steel, precision instrument, premium watch UI, fine tick marks, metallic restraint.
-- [83 High-end Audio](./83-high-end-audio.yaml): Audiophile equipment, brushed metal, glowing LEDs. Cues: brushed aluminum, dark grey amp, orange LED glow, knobs and switches, premium hardware.
-- [85 Tarot Card](./85-tarot-card.yaml): Mystical, ornate, deeply colored, occult. Cues: deep indigo, gold leaf borders, mystical symmetry, arcane symbols, esoteric aesthetic.
-- [93 Gothic Architecture](./93-gothic-architecture.yaml): Dark, vaulted, stained glass, solemn. Cues: dark stone, crimson red, arched geometry, solemn atmosphere, cathedral aesthetics.
+- [23 Modern Jewelry](./23-modern-jewelry.yaml): Precious, sculptural, gallery-clean. Cues: pearl white, graphite linework, champagne metal, jewelry display spacing, sculptural restraint.
+- [43 Boutique Hotel](./43-boutique-hotel.yaml): Intimate, cultivated, quietly hospitable. Cues: deep hotel green, ivory stationery, antique brass, serif hospitality, soft concierge polish.
+- [67 High-end Audio](./67-high-end-audio.yaml): Audiophile equipment, brushed metal, glowing LEDs. Cues: brushed aluminum, dark grey amp, orange LED glow, knobs and switches, premium hardware.
+- [79 Quiet Luxury](./79-quiet-luxury.yaml): Elegant, spacious, restrained. Cues: dark stone palette, fine borders, serif typography, amber accents, generous spacing.
+- [80 Art Deco Gold](./80-art-deco-gold.yaml): Ornamental, cinematic, gilded. Cues: black lacquer, gold accents, vintage glamour, fine line detail, cinematic luxury.
+- [96 Museum Wall](./96-museum-wall.yaml): Gallery, quiet, cultured. Cues: gallery wall, neutral plinth, fine serif, museum labels, quiet cultural restraint.
+- [97 Paris Fashion](./97-paris-fashion.yaml): Editorial luxury, fashion-house restraint. Cues: black and ivory, fashion editorial, fine borders, serif elegance, ample negative space.
+- [109 Tarot Card](./109-tarot-card.yaml): Mystical, ornate, deeply colored, occult. Cues: deep indigo, gold leaf borders, mystical symmetry, arcane symbols, esoteric aesthetic.
+- [110 Gothic Architecture](./110-gothic-architecture.yaml): Dark, vaulted, stained glass, solemn. Cues: dark stone, crimson red, arched geometry, solemn atmosphere, cathedral aesthetics.
+- [124 Luxury Beauty](./124-luxury-beauty.yaml): Beauty brand, premium, soft. Cues: pink noir, beauty brand, soft serif, premium cosmetics, delicate translucent panels.
 
 ### Minimal
 
-- [00 Soft SaaS](./00-soft-saas.yaml): Calm dashboard UI. Cues: light neutrals, quiet hierarchy, rounded cards, subtle shadows, enterprise SaaS polish.
-- [09 Dark Product](./09-dark-product.yaml): Modern app, dark-first. Cues: dark neutrals, zinc surfaces, low glare, clean app shell, compact SaaS controls.
-- [11 Nordic Frost](./11-nordic-frost.yaml): Cold, airy, subdued. Cues: pale sky tones, lightweight typography, minimal borders, cold airiness, restrained controls.
-- [32 Desert Minimal](./32-desert-minimal.yaml): Warm, spacious, subdued. Cues: sand palette, warm neutrals, quiet luxury-lite, large radii, spacious cards.
-- [97 Minimalist Portfolio](./97-minimalist-portfolio.yaml): Art gallery, severe restraint, stark contrast. Cues: pure white and black, extreme negative space, gallery wall, no decorative elements, content-first.
+- [04 Quiet Data](./04-quiet-data.yaml): Analytical, low-noise, airy. Cues: mist blue neutrals, thin data rules, tabular numerals, subtle state color, low cognitive load.
+- [10 Modular Monochrome](./10-modular-monochrome.yaml): Systematic, graphic, grid-led. Cues: strict modular grid, black gray white, square components, numeric labels, functional composition.
+- [27 Accessible Plain](./27-accessible-plain.yaml): Direct, readable, cognitively gentle. Cues: warm reading background, plain language feel, generous text rhythm, underlined actions, unambiguous controls.
+- [31 Ink Wash Minimal](./31-ink-wash-minimal.yaml): Contemplative, soft-edged, monochrome. Cues: sumi ink gray, rice paper warmth, soft tonal edges, restrained asymmetry, quiet negative space.
+- [35 Monastic White](./35-monastic-white.yaml): Austere, luminous, disciplined. Cues: pure white field, hairline dividers, precise spacing, small black type, zero ornament.
+- [36 Soft Geometry](./36-soft-geometry.yaml): Friendly, architectural, softly structured. Cues: cream canvas, muted primary shapes, large simple geometry, balanced whitespace, rounded architecture.
+- [46 Soft SaaS](./46-soft-saas.yaml): Calm dashboard UI. Cues: light neutrals, quiet hierarchy, rounded cards, subtle shadows, enterprise SaaS polish.
+- [59 Minimalist Portfolio](./59-minimalist-portfolio.yaml): Art gallery, severe restraint, stark contrast. Cues: pure white and black, extreme negative space, gallery wall, no decorative elements, content-first.
+- [107 Warm Greige](./107-warm-greige.yaml): Domestic, muted, quietly premium. Cues: warm greige palette, linen-like surfaces, taupe details, gentle depth, comfortable restraint.
+- [108 Dark Product](./108-dark-product.yaml): Modern app, dark-first. Cues: dark neutrals, zinc surfaces, low glare, clean app shell, compact SaaS controls.
+- [123 Nordic Frost](./123-nordic-frost.yaml): Cold, airy, subdued. Cues: pale sky tones, lightweight typography, minimal borders, cold airiness, restrained controls.
+- [125 Desert Minimal](./125-desert-minimal.yaml): Warm, spacious, subdued. Cues: sand palette, warm neutrals, quiet luxury-lite, large radii, spacious cards.
 
 ### Mobile
 
-- [15 Translucent Mobile](./15-translucent-mobile.yaml): Native, translucent, polished. Cues: translucent mobile surfaces, frosted panels, rounded controls, blue accents, soft native depth.
-- [53 Adaptive Mobile](./53-adaptive-mobile.yaml): Personalized, rounded, adaptive mobile feel. Cues: adaptive rounded UI, large rounded shapes, muted adaptive color, soft mobile surfaces, friendly system UI.
-- [54 Pro Productivity App](./54-pro-productivity-app.yaml): Native desktop and tablet productivity polish. Cues: native platform app, soft gray chrome, blue accent, translucent toolbar feel, precise typography.
+- [19 Mobility Map](./19-mobility-map.yaml): Urban, navigational, in-motion. Cues: cobalt map blue, lime route signal, floating map controls, travel time emphasis, street-level clarity.
+- [20 Field Service](./20-field-service.yaml): Rugged, practical, outdoor-ready. Cues: safety yellow, utility navy, large touch targets, offline field forms, weatherproof contrast.
+- [21 Camera Control](./21-camera-control.yaml): Professional, tactile, viewfinder-focused. Cues: matte camera black, exposure yellow, viewfinder framing, dial-like controls, pro capture workflow.
+- [44 Health Tracker](./44-health-tracker.yaml): Personal, active, encouraging. Cues: coral activity accent, clean health cards, rounded biometrics, encouraging progress, soft wearable feel.
+- [45 Habit Streak](./45-habit-streak.yaml): Motivating, warm, everyday. Cues: cream habit journal, forest green, orange streak accent, daily check-ins, rewarding progress.
+- [56 Audio Player](./56-audio-player.yaml): Immersive, rhythmic, album-led. Cues: near-black player, electric purple, album art glow, large playback controls, immersive audio mood.
+- [60 Pocket Finance](./60-pocket-finance.yaml): Compact, confident, money-smart. Cues: mint financial palette, bold balance figures, thumb-sized actions, compact cards, friendly trust cues.
+- [61 Food Delivery](./61-food-delivery.yaml): Appetizing, quick, friendly. Cues: paprika orange, warm cream, menu card rhythm, fast checkout actions, rounded food labels.
+- [91 Adaptive Mobile](./91-adaptive-mobile.yaml): Personalized, rounded, adaptive mobile feel. Cues: adaptive rounded UI, large rounded shapes, muted adaptive color, soft mobile surfaces, friendly system UI.
+- [105 Social Creator](./105-social-creator.yaml): Expressive, creator-led, energetic. Cues: violet creator gradient, content-first cards, bright action pills, social engagement, camera-ready polish.
+- [112 Translucent Mobile](./112-translucent-mobile.yaml): Native, translucent, polished. Cues: translucent mobile surfaces, frosted panels, rounded controls, blue accents, soft native depth.
 
 ### Nature
 
-- [18 Nature Organic](./18-nature-organic.yaml): Warm, sustainable, soft. Cues: organic greens, sustainable product, rounded natural forms, soft earth contrast, botanical calm.
-- [43 Zen Garden](./43-zen-garden.yaml): Quiet, breathable, natural, low-stimulus. Cues: earthy neutrals, soft green, ample whitespace, low contrast, calm rounded forms.
-- [50 Oceanic Dashboard](./50-oceanic-dashboard.yaml): Marine, clean, research-instrument calm. Cues: marine blues, aqua accents, research instrument, fluid gradients, scientific calm.
-- [58 Solarpunk Civic](./58-solarpunk-civic.yaml): Optimistic, ecological, civic technology. Cues: solarpunk, warm green, civic dashboard, optimistic sustainability, sunlit gradients.
-- [68 Glassmorphic Winter](./68-glassmorphic-winter.yaml): Cold, icy, translucent, pristine. Cues: frosted ice, winter blues, blur effects, white borders, crisp translucent cards.
-- [79 Matcha Minimal](./79-matcha-minimal.yaml): Japanese tea ceremony, tranquil, balanced. Cues: matcha green, off-white paper, wabi-sabi, extreme minimalism, peaceful space.
-- [87 Terracotta Desert](./87-terracotta-desert.yaml): Earthy, baked clay, warm arid climate. Cues: burnt orange, baked clay, arid earth, warm rust, organic rough texture.
-- [95 Underwater Deep](./95-underwater-deep.yaml): Abyssal, bioluminescent, mysterious, flowing. Cues: deep ocean blue, bioluminescent cyan, flowing gradients, dark aquatic, abyssal calm.
-- [98 Golden Hour](./98-golden-hour.yaml): Warm, luminous, fading sunlight, romantic. Cues: golden hour light, amber to orange gradients, soft long shadows, warmth, evening sun.
+- [08 Solarpunk Civic](./08-solarpunk-civic.yaml): Optimistic, ecological, civic technology. Cues: solarpunk, warm green, civic dashboard, optimistic sustainability, sunlit gradients.
+- [12 Alpine Trail](./12-alpine-trail.yaml): Crisp, outdoorsy, altitude-inspired. Cues: glacier blue, pine green, trail marker orange, topographic lines, clear mountain air.
+- [13 Botanical Lab](./13-botanical-lab.yaml): Scientific, verdant, specimen-led. Cues: herbarium paper, chlorophyll green, specimen labels, botanical annotations, natural science order.
+- [54 Matcha Minimal](./54-matcha-minimal.yaml): Japanese tea ceremony, tranquil, balanced. Cues: matcha green, off-white paper, wabi-sabi, extreme minimalism, peaceful space.
+- [102 Underwater Deep](./102-underwater-deep.yaml): Abyssal, bioluminescent, mysterious, flowing. Cues: deep ocean blue, bioluminescent cyan, flowing gradients, dark aquatic, abyssal calm.
+- [106 Nature Organic](./106-nature-organic.yaml): Warm, sustainable, soft. Cues: organic greens, sustainable product, rounded natural forms, soft earth contrast, botanical calm.
+- [113 Golden Hour](./113-golden-hour.yaml): Warm, luminous, fading sunlight, romantic. Cues: golden hour light, amber to orange gradients, soft long shadows, warmth, evening sun.
+- [121 Zen Garden](./121-zen-garden.yaml): Quiet, breathable, natural, low-stimulus. Cues: earthy neutrals, soft green, ample whitespace, low contrast, calm rounded forms.
+- [131 Oceanic Dashboard](./131-oceanic-dashboard.yaml): Marine, clean, research-instrument calm. Cues: marine blues, aqua accents, research instrument, fluid gradients, scientific calm.
 
 ### Playful
 
-- [01 Neo Brutalist](./01-neo-brutalist.yaml): Bold, loud, tactile. Cues: heavy black outlines, offset shadows, flat bright color, no subtlety, poster-like controls.
-- [05 Candy Pop](./05-candy-pop.yaml): Bright, friendly, rounded. Cues: bubble radii, pink and cyan, friendly contrast, soft candy colors, playful badges.
-- [10 Claymorphism](./10-claymorphism.yaml): Soft, puffy, physical. Cues: puffy controls, warm orange, inner shadows, soft plastic, rounded tactile components.
-- [28 Kids Learning](./28-kids-learning.yaml): Friendly, chunky, educational. Cues: chunky controls, primary classroom palette, friendly buttons, large radii, educational app mood.
-- [56 Kawaii Mascot UI](./56-kawaii-mascot-ui.yaml): Cute, soft, friendly, sticker-like. Cues: kawaii softness, pastel stickers, rounded pill controls, friendly badges, gentle playful hierarchy.
-- [60 Comic Panel](./60-comic-panel.yaml): Graphic-novel UI with energetic interaction. Cues: comic book, thick ink outlines, speech-bubble badges, yellow panels, action-oriented typography.
-- [81 Pastel Goth](./81-pastel-goth.yaml): Cute but dark, spooky pastel, alternative. Cues: black and pastel pink, creepy cute, sharp dark edges with soft colors, alternative teen, gothic lolita.
-- [82 Candy Glass](./82-candy-glass.yaml): Sweet, hyper-glossy, semi-transparent pops. Cues: glossy candy, translucent pastels, jelly UI, hyper-friendly, rounded highlights.
-- [89 Anime Cel](./89-anime-cel.yaml): Flat colors, cel-shaded, animated sky. Cues: Studio Ghibli sky, flat cel shading, pure bright colors, clean line art, anime aesthetic.
+- [07 Neo Brutalist](./07-neo-brutalist.yaml): Bold, loud, tactile. Cues: heavy black outlines, offset shadows, flat bright color, no subtlety, poster-like controls.
+- [69 Sticker Scrapbook](./69-sticker-scrapbook.yaml): Layered, handmade, exuberant. Cues: die-cut stickers, notebook paper, tape details, mixed bright colors, scrapbook layering.
+- [72 Comic Panel](./72-comic-panel.yaml): Graphic-novel UI with energetic interaction. Cues: comic book, thick ink outlines, speech-bubble badges, yellow panels, action-oriented typography.
+- [78 Anime Cel](./78-anime-cel.yaml): Flat colors, cel-shaded, animated sky. Cues: Studio Ghibli sky, flat cel shading, pure bright colors, clean line art, anime aesthetic.
+- [82 Pastel Goth](./82-pastel-goth.yaml): Cute but dark, spooky pastel, alternative. Cues: black and pastel pink, creepy cute, sharp dark edges with soft colors, alternative teen, gothic lolita.
+- [86 Inflatable UI](./86-inflatable-ui.yaml): Bouncy, glossy, oversized. Cues: inflated pill shapes, pool-toy colors, soft specular shine, oversized rounded controls, buoyant depth.
+- [87 Kawaii Mascot UI](./87-kawaii-mascot-ui.yaml): Cute, soft, friendly, sticker-like. Cues: kawaii softness, pastel stickers, rounded pill controls, friendly badges, gentle playful hierarchy.
+- [88 Candy Pop](./88-candy-pop.yaml): Bright, friendly, rounded. Cues: bubble radii, pink and cyan, friendly contrast, soft candy colors, playful badges.
+- [89 Kids Learning](./89-kids-learning.yaml): Friendly, chunky, educational. Cues: chunky controls, primary classroom palette, friendly buttons, large radii, educational app mood.
+- [111 Claymorphism](./111-claymorphism.yaml): Soft, puffy, physical. Cues: puffy controls, warm orange, inner shadows, soft plastic, rounded tactile components.
 
 ### Retro
 
-- [12 Retro Console](./12-retro-console.yaml): Old screen, pixel mood. Cues: CRT terminal, lime phosphor, pixel-era styling, monospace controls, low-fi screen glow.
-- [23 Vaporwave](./23-vaporwave.yaml): Neon, nostalgic, surreal. Cues: pink cyan neon, retro-futurism, surreal gradient, synthwave mood, glowing dark panels.
-- [40 Skeuomorphic Desktop](./40-skeuomorphic-desktop.yaml): Physical controls, raised surfaces, classic app chrome. Cues: raised buttons, inset shadows, desktop-era UI, tactile gray panels, classic application chrome.
-- [41 Y2K Chrome](./41-y2k-chrome.yaml): Chrome, glossy, futuristic nostalgia. Cues: metallic surfaces, bubble radii, icy gradients, late-90s futurism, glossy buttons.
-- [65 80s Synthpop](./65-80s-synthpop.yaml): Vibrant, nostalgic, energetic. Cues: fuchsia and cyan, neon grids, 80s nostalgia, high contrast, vibrant synthetic palette.
-- [70 Medieval Parchment](./70-medieval-parchment.yaml): Historical, lore-rich, worn paper. Cues: parchment paper, brown ink, serif typography, fantasy lore, ancient documents.
-- [72 Retro Diner](./72-retro-diner.yaml): 1950s Americana, upbeat, classic food joint. Cues: cherry red, mint green, chrome accents, 50s diner, cheerful nostalgia.
-- [75 Steampunk Brass](./75-steampunk-brass.yaml): Victorian machinery, brass and leather, intricate. Cues: brass gold, dark leather brown, clockwork, ornate borders, Victorian industrial.
-- [78 Sunset Synthwave](./78-sunset-synthwave.yaml): Warm gradients, 80s dusk, driving arcade. Cues: orange to purple gradient, synthwave sun, warm neon, retro arcade dusk, grid lines.
-- [86 Classic Desktop 95](./86-classic-desktop-95.yaml): Classic OS, nostalgic, functional gray. Cues: teal background, gray dialogs, bevel borders, pixelated functionalism, 1995 PC.
-- [96 Vintage Camera](./96-vintage-camera.yaml): Mechanical, textured leather, precise silver dials. Cues: black pebbled leather, brushed silver, red dot accent, rangefinder, photographic instrument.
+- [48 Retro Diner](./48-retro-diner.yaml): 1950s Americana, upbeat, classic food joint. Cues: cherry red, mint green, chrome accents, 50s diner, cheerful nostalgia.
+- [50 Vintage Camera](./50-vintage-camera.yaml): Mechanical, textured leather, precise silver dials. Cues: black pebbled leather, brushed silver, red dot accent, rangefinder, photographic instrument.
+- [81 Medieval Parchment](./81-medieval-parchment.yaml): Historical, lore-rich, worn paper. Cues: parchment paper, brown ink, serif typography, fantasy lore, ancient documents.
+- [83 Classic Desktop 95](./83-classic-desktop-95.yaml): Classic OS, nostalgic, functional gray. Cues: teal background, gray dialogs, bevel borders, pixelated functionalism, 1995 PC.
+- [98 Vaporwave](./98-vaporwave.yaml): Neon, nostalgic, surreal. Cues: pink cyan neon, retro-futurism, surreal gradient, synthwave mood, glowing dark panels.
+- [100 Steampunk Brass](./100-steampunk-brass.yaml): Victorian machinery, brass and leather, intricate. Cues: brass gold, dark leather brown, clockwork, ornate borders, Victorian industrial.
+- [117 Retro Console](./117-retro-console.yaml): Old screen, pixel mood. Cues: CRT terminal, lime phosphor, pixel-era styling, monospace controls, low-fi screen glow.
+- [127 Y2K Chrome](./127-y2k-chrome.yaml): Chrome, glossy, futuristic nostalgia. Cues: metallic surfaces, bubble radii, icy gradients, late-90s futurism, glossy buttons.
+- [133 80s Synthpop](./133-80s-synthpop.yaml): Vibrant, nostalgic, energetic. Cues: fuchsia and cyan, neon grids, 80s nostalgia, high contrast, vibrant synthetic palette.
 
 ### System
 
-- [08 Healthcare Calm](./08-healthcare-calm.yaml): Clean, accessible, clinical. Cues: teal accents, clinical calm, high readability, soft white surfaces, accessible controls.
-- [14 Material Clean](./14-material-clean.yaml): Familiar, structured, practical. Cues: material design, standard elevation, blue focus, functional controls, straightforward hierarchy.
-- [25 High Contrast A11y](./25-high-contrast-a11y.yaml): Accessible, explicit, readable. Cues: maximum contrast, strong focus rings, black outlines, readability first, clear interaction states.
-- [27 Developer Docs](./27-developer-docs.yaml): Technical, readable, reference-style. Cues: developer docs, dark reference UI, monospace labels, violet accents, code-adjacent hierarchy.
-- [31 Desktop Fluent](./31-desktop-fluent.yaml): Desktop-like, neutral, efficient. Cues: desktop shell, neutral grays, blue action color, efficient density, familiar enterprise UI.
-- [66 E-ink Reader](./66-e-ink-reader.yaml): Grayscale, eye-friendly, distraction-free. Cues: e-ink display, pure grayscale, no anti-aliasing feel, high legibility, monochrome ink.
-- [91 Neumorphic Light](./91-neumorphic-light.yaml): Soft plastic, extruded surfaces, uniform color. Cues: neumorphism, same color background and surface, drop shadow and inner shadow, soft extruded plastic, minimalist pop.
+- [01 Transit Wayfinding](./01-transit-wayfinding.yaml): Directional, metropolitan, immediate. Cues: route map colors, black wayfinding type, yellow information panels, hard grid, at-a-glance navigation.
+- [03 E-ink Reader](./03-e-ink-reader.yaml): Grayscale, eye-friendly, distraction-free. Cues: e-ink display, pure grayscale, no anti-aliasing feel, high legibility, monochrome ink.
+- [05 Public Service](./05-public-service.yaml): Official, accessible, reassuring. Cues: civic blue, service yellow, plain typography, prominent help states, government clarity.
+- [17 Emergency Console](./17-emergency-console.yaml): Urgent, legible, operational. Cues: white command surface, signal red, large status labels, redundant alert cues, glove-friendly controls.
+- [18 DevOps Status](./18-devops-status.yaml): Observable, dependable, incident-ready. Cues: charcoal operations UI, status green, amber incident states, monospace metadata, compact monitoring rhythm.
+- [26 High Contrast A11y](./26-high-contrast-a11y.yaml): Accessible, explicit, readable. Cues: maximum contrast, strong focus rings, black outlines, readability first, clear interaction states.
+- [28 Education Portal](./28-education-portal.yaml): Welcoming, structured, studious. Cues: ink indigo, warm workbook paper, clear lesson hierarchy, supportive feedback, calm academic UI.
+- [62 Developer Docs](./62-developer-docs.yaml): Technical, readable, reference-style. Cues: developer docs, dark reference UI, monospace labels, violet accents, code-adjacent hierarchy.
+- [70 Healthcare Calm](./70-healthcare-calm.yaml): Clean, accessible, clinical. Cues: teal accents, clinical calm, high readability, soft white surfaces, accessible controls.
+- [71 Material Clean](./71-material-clean.yaml): Familiar, structured, practical. Cues: material design, standard elevation, blue focus, functional controls, straightforward hierarchy.
+- [93 Desktop Fluent](./93-desktop-fluent.yaml): Desktop-like, neutral, efficient. Cues: desktop shell, neutral grays, blue action color, efficient density, familiar enterprise UI.
+- [130 Neumorphic Light](./130-neumorphic-light.yaml): Soft plastic, extruded surfaces, uniform color. Cues: neumorphism, same color background and surface, drop shadow and inner shadow, soft extruded plastic, minimalist pop.
 

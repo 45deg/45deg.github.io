@@ -1,0 +1,44 @@
+id: "43"
+name: "Boutique Hotel"
+slug: "boutique-hotel"
+category: "Luxury"
+tone: "Intimate, cultivated, quietly hospitable"
+promptCues:
+  - "deep hotel green"
+  - "ivory stationery"
+  - "antique brass"
+  - "serif hospitality"
+  - "soft concierge polish"
+tokens:
+  bg: "bg-[#172b25]"
+  shell: "border border-[#a88b55] bg-[#f3ede0] shadow-2xl rounded-[2rem_0.5rem_2rem_0.5rem]"
+  card: "border border-[#c7b68f] bg-[#fffaf0] rounded-[1.5rem_0.25rem_1.5rem_0.25rem]"
+  title: "text-[#17352b] font-serif font-semibold tracking-tight"
+  text: "text-[#6e6658] font-serif"
+  label: "text-[#8a6a32] font-serif font-semibold uppercase tracking-widest text-xs"
+  input: "bg-[#fffaf0] border-x-0 border-t-0 border-b border-[#a88b55] text-[#17352b] placeholder:text-[#aa9e89] focus:ring-0 focus:border-[#17352b] rounded-none font-serif"
+  button: "bg-[#17352b] text-[#f3ede0] hover:bg-[#254b3c] rounded-sm font-serif uppercase tracking-wider"
+  ghost: "bg-transparent text-[#17352b] border border-[#a88b55] hover:bg-[#eee3cc] rounded-sm font-serif"
+  checkbox: "accent-[#17352b]"
+  progressTrack: "bg-[#ded2ba] rounded-none"
+  progressFill: "bg-[#a88b55] rounded-none"
+  badge: "bg-[#eee3cc] text-[#73582b] border border-[#c7b68f] rounded-full font-serif"
+  mono: "bg-[#f3ede0] text-[#6e6658] rounded-sm border border-[#ded2ba]"
+htmlExample: |-
+  <section class="bg-[#172b25] rounded-[2rem] p-4">
+    <div class="border border-[#a88b55] bg-[#f3ede0] shadow-2xl rounded-[2rem_0.5rem_2rem_0.5rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#6e6658] font-serif text-[10px] uppercase tracking-[0.22em] mb-2">Luxury</p>
+          <h2 class="text-[#17352b] font-serif font-semibold tracking-tight text-2xl">Boutique Hotel</h2>
+          <p class="text-[#6e6658] font-serif mt-1 text-sm">Intimate, cultivated, quietly hospitable</p>
+        </div>
+        <span class="bg-[#eee3cc] text-[#73582b] border border-[#c7b68f] rounded-full font-serif px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border border-[#c7b68f] bg-[#fffaf0] rounded-[1.5rem_0.25rem_1.5rem_0.25rem] mt-4 p-4">
+        <p class="text-[#8a6a32] font-serif font-semibold uppercase tracking-widest text-xs text-xs">Example content</p>
+        <p class="text-[#6e6658] font-serif mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#17352b] text-[#f3ede0] hover:bg-[#254b3c] rounded-sm font-serif uppercase tracking-wider mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "87"
+name: "Kawaii Mascot UI"
+slug: "kawaii-mascot-ui"
+category: "Playful"
+tone: "Cute, soft, friendly, sticker-like"
+promptCues:
+  - "kawaii softness"
+  - "pastel stickers"
+  - "rounded pill controls"
+  - "friendly badges"
+  - "gentle playful hierarchy"
+tokens:
+  bg: "bg-rose-100"
+  shell: "border-2 border-rose-200 bg-white shadow-xl shadow-rose-200/40 rounded-[2.4rem]"
+  card: "border-2 border-rose-100 bg-rose-50 rounded-[2rem] shadow-sm"
+  title: "text-rose-950 font-black tracking-tight"
+  text: "text-rose-600"
+  label: "text-rose-800 font-bold"
+  input: "bg-white border-2 border-rose-200 text-rose-950 placeholder:text-rose-300 focus:ring-4 focus:ring-rose-200/70 focus:border-rose-400 rounded-full"
+  button: "bg-rose-400 text-white hover:bg-rose-500 rounded-full shadow-md shadow-rose-200 font-black"
+  ghost: "bg-violet-100 text-violet-800 hover:bg-violet-200 rounded-full font-black"
+  checkbox: "accent-rose-400"
+  progressTrack: "bg-rose-200 rounded-full"
+  progressFill: "bg-violet-400 rounded-full"
+  badge: "bg-yellow-100 text-yellow-800 border border-yellow-200 rounded-full font-black"
+  mono: "bg-white text-rose-500 rounded-full"
+htmlExample: |-
+  <section class="bg-rose-100 rounded-[2rem] p-4">
+    <div class="border-2 border-rose-200 bg-white shadow-xl shadow-rose-200/40 rounded-[2.4rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-rose-600 text-[10px] uppercase tracking-[0.22em] mb-2">Playful</p>
+          <h2 class="text-rose-950 font-black tracking-tight text-2xl">Kawaii Mascot UI</h2>
+          <p class="text-rose-600 mt-1 text-sm">Cute, soft, friendly, sticker-like</p>
+        </div>
+        <span class="bg-yellow-100 text-yellow-800 border border-yellow-200 rounded-full font-black px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-rose-100 bg-rose-50 rounded-[2rem] shadow-sm mt-4 p-4">
+        <p class="text-rose-800 font-bold text-xs">Example content</p>
+        <p class="text-rose-600 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-rose-400 text-white hover:bg-rose-500 rounded-full shadow-md shadow-rose-200 font-black mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,44 @@
+id: "34"
+name: "Monochrome Agency"
+slug: "monochrome-agency"
+category: "Editorial"
+tone: "Portfolio, decisive, graphic"
+promptCues:
+  - "black and white"
+  - "agency portfolio"
+  - "strong typographic contrast"
+  - "hard edges"
+  - "graphic composition"
+tokens:
+  bg: "bg-white"
+  shell: "border-2 border-black bg-white rounded-none"
+  card: "border-2 border-black bg-white rounded-none"
+  title: "text-black font-black uppercase tracking-tighter"
+  text: "text-black/60"
+  label: "text-black font-black uppercase text-xs tracking-widest"
+  input: "bg-white border-2 border-black text-black placeholder:text-black/30 focus:ring-0 focus:border-black rounded-none"
+  button: "bg-black text-white hover:bg-neutral-800 rounded-none font-black uppercase tracking-wide"
+  ghost: "bg-white text-black border-2 border-black hover:bg-black hover:text-white rounded-none font-black uppercase"
+  checkbox: "accent-black"
+  progressTrack: "bg-white border-2 border-black rounded-none"
+  progressFill: "bg-black rounded-none"
+  badge: "bg-black text-white border-2 border-black rounded-none font-black uppercase"
+  mono: "bg-black text-white rounded-none"
+htmlExample: |-
+  <section class="bg-white rounded-[2rem] p-4">
+    <div class="border-2 border-black bg-white rounded-none p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-black/60 text-[10px] uppercase tracking-[0.22em] mb-2">Editorial</p>
+          <h2 class="text-black font-black uppercase tracking-tighter text-2xl">Monochrome Agency</h2>
+          <p class="text-black/60 mt-1 text-sm">Portfolio, decisive, graphic</p>
+        </div>
+        <span class="bg-black text-white border-2 border-black rounded-none font-black uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-2 border-black bg-white rounded-none mt-4 p-4">
+        <p class="text-black font-black uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-black/60 mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-black text-white hover:bg-neutral-800 rounded-none font-black uppercase tracking-wide mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

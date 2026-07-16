@@ -1,0 +1,45 @@
+id: "99"
+name: "Arcade Cabinet"
+slug: "arcade-cabinet"
+category: "Gaming"
+tone: "Arcade machine, bold gaming nostalgia"
+promptCues:
+  - "deep navy"
+  - "purple"
+  - "cyan"
+  - "yellow"
+  - "fuchsia"
+  - "pixel-era energy"
+tokens:
+  bg: "bg-purple-950"
+  shell: "border-4 border-cyan-300 bg-purple-900 shadow-[0_0_40px_rgba(34,211,238,.2)] rounded-2xl"
+  card: "border-4 border-fuchsia-400 bg-purple-950 rounded-xl shadow-lg"
+  title: "text-yellow-300 font-black uppercase tracking-wider"
+  text: "text-cyan-100/70 font-mono"
+  label: "text-cyan-200 font-mono uppercase text-xs tracking-widest"
+  input: "bg-purple-950 border-4 border-cyan-300 text-cyan-100 placeholder:text-cyan-500 focus:ring-0 focus:border-yellow-300 rounded-lg font-mono"
+  button: "bg-yellow-300 text-purple-950 hover:bg-yellow-200 rounded-lg font-black uppercase"
+  ghost: "bg-cyan-300 text-purple-950 hover:bg-cyan-200 rounded-lg font-black uppercase"
+  checkbox: "accent-yellow-300"
+  progressTrack: "bg-purple-800 border-4 border-cyan-300 rounded-full"
+  progressFill: "bg-fuchsia-400 rounded-full"
+  badge: "bg-fuchsia-400 text-white border-4 border-cyan-300 rounded-full font-black uppercase"
+  mono: "bg-purple-800 text-cyan-200 rounded-lg"
+htmlExample: |-
+  <section class="bg-purple-950 rounded-[2rem] p-4">
+    <div class="border-4 border-cyan-300 bg-purple-900 shadow-[0_0_40px_rgba(34,211,238,.2)] rounded-2xl p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-cyan-100/70 font-mono text-[10px] uppercase tracking-[0.22em] mb-2">Gaming</p>
+          <h2 class="text-yellow-300 font-black uppercase tracking-wider text-2xl">Arcade Cabinet</h2>
+          <p class="text-cyan-100/70 font-mono mt-1 text-sm">Arcade machine, bold gaming nostalgia</p>
+        </div>
+        <span class="bg-fuchsia-400 text-white border-4 border-cyan-300 rounded-full font-black uppercase px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-4 border-fuchsia-400 bg-purple-950 rounded-xl shadow-lg mt-4 p-4">
+        <p class="text-cyan-200 font-mono uppercase text-xs tracking-widest text-xs">Example content</p>
+        <p class="text-cyan-100/70 font-mono mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-yellow-300 text-purple-950 hover:bg-yellow-200 rounded-lg font-black uppercase mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>

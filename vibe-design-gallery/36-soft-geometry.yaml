@@ -1,0 +1,44 @@
+id: "36"
+name: "Soft Geometry"
+slug: "soft-geometry"
+category: "Minimal"
+tone: "Friendly, architectural, softly structured"
+promptCues:
+  - "cream canvas"
+  - "muted primary shapes"
+  - "large simple geometry"
+  - "balanced whitespace"
+  - "rounded architecture"
+tokens:
+  bg: "bg-[#f3efe5]"
+  shell: "border border-[#d8d0c0] bg-[#fffaf0] shadow-sm rounded-[2.25rem]"
+  card: "border-0 bg-[#e7e0d3] rounded-[1.5rem_0.5rem_1.5rem_0.5rem]"
+  title: "text-[#24221f] font-semibold tracking-tight"
+  text: "text-[#686158]"
+  label: "text-[#335c67] font-semibold"
+  input: "bg-[#fffaf0] border border-[#bbb2a2] text-[#24221f] placeholder:text-[#9b9284] focus:ring-4 focus:ring-[#9e2a2b]/10 focus:border-[#9e2a2b] rounded-xl"
+  button: "bg-[#9e2a2b] text-white hover:bg-[#7f1d1d] rounded-xl font-semibold"
+  ghost: "bg-[#335c67] text-white hover:bg-[#284b54] rounded-xl font-semibold"
+  checkbox: "accent-[#9e2a2b]"
+  progressTrack: "bg-[#d8d0c0] rounded-full"
+  progressFill: "bg-[#335c67] rounded-full"
+  badge: "bg-[#e09f3e]/20 text-[#7f4f16] rounded-lg font-semibold"
+  mono: "bg-[#fffaf0] text-[#686158] rounded-lg border border-[#d8d0c0]"
+htmlExample: |-
+  <section class="bg-[#f3efe5] rounded-[2rem] p-4">
+    <div class="border border-[#d8d0c0] bg-[#fffaf0] shadow-sm rounded-[2.25rem] p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[#686158] text-[10px] uppercase tracking-[0.22em] mb-2">Minimal</p>
+          <h2 class="text-[#24221f] font-semibold tracking-tight text-2xl">Soft Geometry</h2>
+          <p class="text-[#686158] mt-1 text-sm">Friendly, architectural, softly structured</p>
+        </div>
+        <span class="bg-[#e09f3e]/20 text-[#7f4f16] rounded-lg font-semibold px-3 py-1 text-xs">Pattern</span>
+      </div>
+      <div class="border-0 bg-[#e7e0d3] rounded-[1.5rem_0.5rem_1.5rem_0.5rem] mt-4 p-4">
+        <p class="text-[#335c67] font-semibold text-xs">Example content</p>
+        <p class="text-[#686158] mt-2 text-sm">Study these styling tokens as a reference, then apply the design language to the provided target HTML.</p>
+        <button class="bg-[#9e2a2b] text-white hover:bg-[#7f1d1d] rounded-xl font-semibold mt-4 px-4 py-2 text-sm transition">Continue</button>
+      </div>
+    </div>
+  </section>
