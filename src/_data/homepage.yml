@@ -37,8 +37,6 @@ works:
     tags:
       - Video
       - Analysis
-      - WebCodecs
-      - Media
     image:
       src: ./images/i38.jpg
       alt: Scene Analyzer の動画シーン解析画面
@@ -68,9 +66,8 @@ works:
       ja: 学習内容を構造化した知識ポスターとして変換・出力・印刷できるツール。
       en: A tool for turning learning content into structured knowledge posters for export and printing.
     tags:
-      - Knowledge
-      - Poster
       - Editor
+      - Design
     image:
       src: ./images/i33.png
       alt: Carta
@@ -99,8 +96,7 @@ works:
       ja: 月間カレンダー上で講義スケジュールを作成・編集するツール。
       en: A tool for creating and editing lecture schedules on a monthly calendar.
     tags:
-      - Calendar
-      - Scheduling
+      - Productivity
       - Editor
     image:
       src: ./images/i31.png
@@ -116,9 +112,7 @@ works:
       en: Notes on embedding KaTeX HTML output in SVG with foreignObject, DOM analysis, and WOFF2 glyph subsetting for compact standalone SVGs.
     tags:
       - Article
-      - KaTeX
-      - SVG
-      - JavaScript
+      - Web Development
     placeholder:
       class: placeholder-article
       emoji: π
@@ -133,9 +127,7 @@ works:
       en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
     tags:
       - Article
-      - Intl
-      - JavaScript
-      - Misc
+      - Web Development
     placeholder:
       class: placeholder-article
       emoji: 🌐
@@ -166,9 +158,7 @@ works:
       en: Practical notes on Zustand basics, selectors, typing, middleware, SSR, and design trade-offs in React.
     tags:
       - Article
-      - Zustand
-      - React
-      - JavaScript
+      - Web Development
     placeholder:
       class: placeholder-article
       emoji: 🐻
@@ -198,8 +188,7 @@ works:
       en: A design gallery using Tailwind CSS utility classes, with design prompts for vibe coding.
     tags:
       - Design
-      - LLM
-      - Visualization
+      - AI
     image:
       src: ./images/i28.png
       alt: Vibe Design Gallery
@@ -213,7 +202,7 @@ works:
       ja: Lucideアイコンを手書きで検索できるツール
       en: A tool for searching Lucide icons by handwriting
     tags:
-      - Icon
+      - Icons
       - Search
       - Visualization
     image:
@@ -229,8 +218,7 @@ works:
       ja: Lucideアイコンをベクトル埋め込みし、UMAP で2次元に配置したインタラクティブマップ。
       en: An interactive 2D map of Lucide icons laid out by vector embeddings with UMAP.
     tags:
-      - Icon
-      - UMAP
+      - Icons
       - Visualization
     image:
       src: ./images/i36.png
@@ -245,9 +233,8 @@ works:
       ja: テキスト入力からLucideアイコンを意味検索できるツール。
       en: A tool for semantically searching Lucide icons from text queries.
     tags:
-      - Icon
+      - Icons
       - Search
-      - NLP
     image:
       src: ./images/i35.png
       alt: Lucide Text Search
@@ -263,9 +250,8 @@ works:
         A browser tool that automatically adds punctuation and line breaks to Japanese text using a
         lightweight Transformer exported to ONNX.
     tags:
-      - NLP
-      - ONNX
       - Language
+      - AI
     image:
       src: ./images/i26.png
       alt: 句読点補完ツール
@@ -279,9 +265,8 @@ works:
       ja: 画像や動画を読み込み、ブラウン管テレビのRGB蛍光体までズームして観察する3D/WebGL実験。
       en: A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.
     tags:
-      - WebGL
-      - CRT
-      - Media
+      - Image
+      - Video
       - Visualization
     image:
       src: ./images/i25.jpg
@@ -298,9 +283,7 @@ works:
       en: A simple browser video editor for cuts, joins, text overlays, and image overlays.
     tags:
       - Video
-      - WebCodecs
       - Editor
-      - Media
     image:
       src: ./images/i24.png
       alt: ScreenCastEditor
@@ -314,9 +297,7 @@ works:
       ja: 同じ入力を複数の可逆圧縮器にかけ、圧縮率・圧縮時間・展開時間をブラウザ上で比較するWASMベンチマーク。
       en: A WASM benchmark comparing lossless compressors by ratio, compression time, and decompression time.
     tags:
-      - WASM
       - Compression
-      - Benchmark
       - Visualization
     image:
       src: ./images/i23.png
@@ -331,9 +312,8 @@ works:
       ja: ZIPの既知平文攻撃で暗号を解析するbkcrackをWebAssemblyに移植したブラウザツール。
       en: A browser port of bkcrack to WebAssembly for cracking ZIP encryption via known-plaintext attack.
     tags:
-      - WASM
       - Security
-      - Cryptography
+      - WebAssembly
     placeholder:
       class: placeholder-code
       emoji: 🔓
@@ -347,8 +327,7 @@ works:
       ja: メモを書く感覚で式や変数を並べ、行ごとの計算結果を即時に更新するリアクティブな計算機。
       en: A note-like reactive calculator where expressions and variables update line by line.
     tags:
-      - Calculator
-      - Reactive
+      - Productivity
     image:
       src: ./images/i22.png
       alt: QuickCalc
@@ -382,9 +361,7 @@ works:
     tags:
       - Image
       - Video
-      - WASM
-      - Visualization
-      - Media
+      - Editor
     image:
       src: ./images/i19.jpg
       alt: mozaic-app
@@ -401,9 +378,8 @@ works:
         A lightweight browser annotation editor for layering notes over images or work targets, designed for
         quick review and sharing.
     tags:
-      - Annotation
+      - Image
       - Editor
-      - Media
     image:
       src: ./images/i16.png
       alt: nanotation
@@ -417,10 +393,8 @@ works:
       ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ
       en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
     tags:
-      - WebCodecs
       - Video
-      - Misc
-      - Media
+      - Converter
     placeholder:
       class: placeholder-video
       emoji: 🎞️
@@ -434,9 +408,8 @@ works:
       ja: アスキーアート等のテーブルを解析してプレーンにするツール
       en: A tool that parses ASCII-art style tables and turns them into plain structured text.
     tags:
-      - Parser
       - Text
-      - Misc
+      - Converter
     placeholder:
       class: placeholder-code
       emoji: ▦
@@ -452,7 +425,6 @@ works:
     tags:
       - Article
       - Compression
-      - Misc
     placeholder:
       class: placeholder-article
       emoji: 📦
@@ -467,9 +439,7 @@ works:
       en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
     tags:
       - Article
-      - MP4
-      - Misc
-      - Media
+      - Video
     placeholder:
       class: placeholder-article
       emoji: 🎬
@@ -486,8 +456,7 @@ works:
       en: A compiler experiment that lowers a higher-level syntax into the one-instruction SUBLEQ architecture.
     tags:
       - Compiler
-      - OISC
-      - SUBLEQ
+      - Programming
     image:
       src: ./images/i18.png
       alt: Subleq Compiler
@@ -501,9 +470,9 @@ works:
       ja: PDFをローカルで解析し、本文のMarkdown化と画像抽出を行う変換ツール。
       en: A local browser tool for converting PDFs to Markdown and extracting images as part of the same flow.
     tags:
-      - Media
+      - PDF
       - Markdown
-      - Local
+      - Converter
     image:
       src: ./images/i21.png
       alt: pdf2md
@@ -517,9 +486,8 @@ works:
       ja: PDFの目次をもとに、確認・抽出・分割・結合をまとめて扱うローカル動作のツールキット。
       en: A local PDF toolkit for viewing, extracting, splitting, and merging by table-of-contents entries.
     tags:
-      - Media
-      - TOC
-      - Toolkit
+      - PDF
+      - Editor
     image:
       src: ./images/i17.png
       alt: pdf-toc-tool
@@ -536,8 +504,6 @@ works:
       en: A browser-based real-time simulation of an inverted pendulum on a cart. Compare classical control (PID/PD cascade), modern control (LQR), and non-linear control (Sliding Mode Control) with dynamic visualizations and charts.
     tags:
       - Simulation
-      - Physics
-      - Control Theory
       - Visualization
     image:
       src: ./images/i34.png
@@ -558,7 +524,6 @@ works:
     tags:
       - Article
       - AI
-      - Agent
     placeholder:
       class: placeholder-article
       emoji: 🤖
@@ -574,7 +539,7 @@ works:
         A minimal presentation timer focused on the remaining time and progress state a speaker needs while
         presenting.
     tags:
-      - Timer
+      - Productivity
       - Presentation
     image:
       src: ./images/i15.png
@@ -589,8 +554,7 @@ works:
       ja: PDFのしおり構造を読み取り、章や節ごとにファイル分割するWeb版PDFUnbinder。
       en: A browser version of PDFUnbinder that reads PDF outlines and splits files by chapter or section.
     tags:
-      - Media
-      - Browser
+      - PDF
     image:
       src: ./images/i14.png
       alt: PDFUnbinder in Browser
@@ -604,9 +568,7 @@ works:
       ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト
       en: A WebGL image effect tool that processes images into a CRT television look.
     tags:
-      - WebGL
       - Image
-      - Misc
       - Visualization
     placeholder:
       class: placeholder-image
@@ -622,9 +584,7 @@ works:
       en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
     tags:
       - Image
-      - Effect
-      - Misc
-      - Visualization
+      - Editor
     placeholder:
       class: placeholder-image
       emoji: 🖼️
@@ -638,9 +598,9 @@ works:
       ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
       en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
     tags:
-      - Media
+      - PDF
       - Image
-      - Misc
+      - Converter
     placeholder:
       class: placeholder-data
       emoji: 🧾
@@ -658,8 +618,7 @@ works:
         A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and
         overlap easy to explore.
     tags:
-      - UMAP
-      - MNIST
+      - AI
       - Visualization
     image:
       src: ./images/i13.png
@@ -676,7 +635,6 @@ works:
     tags:
       - Editor
       - Language
-      - Misc
     placeholder:
       class: placeholder-text
       emoji: ✍️
@@ -691,8 +649,7 @@ works:
       en: A viewer for inspecting metadata inside safetensors files.
     tags:
       - Viewer
-      - Metadata
-      - Misc
+      - Data
     placeholder:
       class: placeholder-data
       emoji: 🧬
@@ -706,9 +663,8 @@ works:
       ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー
       en: A browser renderer that runs Jinja2 templates on Pyodide.
     tags:
-      - Pyodide
-      - Template
-      - Misc
+      - Web Development
+      - Programming
     placeholder:
       class: placeholder-code
       emoji: 🧩
@@ -724,7 +680,6 @@ works:
         A Chinese reading aid using CEDICT. Hover or tap characters to quickly check word and character
         meanings in English.
     tags:
-      - Chinese
       - Dictionary
       - Language
     image:
@@ -740,8 +695,7 @@ works:
       ja: PDFの目次をもとにファイルを章単位で分割するJavaFXデスクトップアプリ。
       en: A JavaFX desktop app for splitting bookmarked PDFs by chapter.
     tags:
-      - Media
-      - JavaFX
+      - PDF
     image:
       src: ./images/i11.png
       alt: PDFUnbinder
@@ -759,9 +713,7 @@ works:
         A 3D viewer that plots image pixels in RGB or HSL color space so the color distribution can be
         inspected directly.
     tags:
-      - Three.js
-      - Color
-      - 3D
+      - Image
       - Visualization
     image:
       src: ./images/i9.png
@@ -779,7 +731,7 @@ works:
       en: A Scheme-like sound programming language made as a lab assignment. It plays sound.
     tags:
       - Audio
-      - Scheme
+      - Programming
     image:
       src: ./images/i7.png
       alt: Kantele
@@ -798,8 +750,7 @@ works:
         A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for
         observing training behavior.
     tags:
-      - Neural Net
-      - ConvnetJS
+      - AI
       - Visualization
     image:
       src: ./images/i3.png
@@ -819,7 +770,7 @@ works:
         rogy Advent Calendar.
     tags:
       - Article
-      - Functional Programming
+      - Programming
     image:
       src: ./images/i6.png
       alt: dynamorphism の紹介
@@ -835,7 +786,7 @@ works:
         。BPNNの重みやノード状態を描画し、学習プロセスを追う初期の可視化実験。
       en: An early browser visualization of BPNN weights, node states, and the learning process.
     tags:
-      - BPNN
+      - AI
       - Visualization
     image:
       src: ./images/i2.jpg
