@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./scene-analyzer/
+    featured: true
+    title:
+      ja: Scene Analyzer
+      en: Scene Analyzer
+    year: 2026
+    description_html:
+      ja: 動画をフレーム単位で解析し、変化スコアからシーン境界を見つけるブラウザツール。
+      en: A browser tool that analyzes video frame by frame and finds scene boundaries from change scores.
+    tags:
+      - Video
+      - Analysis
+      - WebCodecs
+      - Media
+    image:
+      src: ./images/i38.jpg
+      alt: Scene Analyzer の動画シーン解析画面
   - href: ./markdown-cjk-fixer/
     featured: false
     title:
