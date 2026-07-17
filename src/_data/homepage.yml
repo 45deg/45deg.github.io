@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./bagh-chal/
+    featured: false
+    title:
+      ja: Bagh-Chal
+      en: Bagh-Chal
+    year: 2026
+    description_html:
+      ja: ネパールの伝統的な非対称戦略ゲーム「Bagh-Chal」を、AIまたは2人で遊べるブラウザゲーム。
+      en: A browser version of Nepal's traditional asymmetric strategy game, playable against AI or another player.
+    tags:
+      - Game
+      - AI
+    image:
+      src: ./images/i40.png
+      alt:
+        ja: Bagh-Chal のゲーム紹介画面
+        en: Bagh-Chal game introduction screen
   - href: ./serverless-pvp/
     featured: false
     title:
