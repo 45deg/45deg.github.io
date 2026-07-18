@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./llm-token-map/
+    featured: false
+    title:
+      ja: LLM Token Map
+      en: LLM Token Map
+    year: 2026
+    description_html:
+      ja: 言語モデルが学習したトークン埋め込みを、銀河のようなマップで探索できる可視化ツール。
+      en: An interactive galaxy map for exploring token embeddings learned by a language model.
+    tags:
+      - AI
+      - Visualization
+    image:
+      src: ./images/i41.jpg
+      alt:
+        ja: LLM Token Map のトークン埋め込み可視化画面
+        en: LLM Token Map token embedding visualization
   - href: ./bagh-chal/
     featured: false
     title:
