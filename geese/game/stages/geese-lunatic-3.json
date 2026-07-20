@@ -1,0 +1,371 @@
+{
+  "format_version": 3,
+  "id": 23,
+  "key": "geese-lunatic-3",
+  "level": "lunatic",
+  "role": "geese",
+  "number": 3,
+  "topology": "grid-3x4",
+  "board": {
+    "node_count": 12,
+    "points": [
+      [
+        0.08,
+        0.08
+      ],
+      [
+        0.5,
+        0.08
+      ],
+      [
+        0.91999996,
+        0.08
+      ],
+      [
+        0.08,
+        0.36
+      ],
+      [
+        0.5,
+        0.36
+      ],
+      [
+        0.91999996,
+        0.36
+      ],
+      [
+        0.08,
+        0.64
+      ],
+      [
+        0.5,
+        0.64
+      ],
+      [
+        0.91999996,
+        0.64
+      ],
+      [
+        0.08,
+        0.91999996
+      ],
+      [
+        0.5,
+        0.91999996
+      ],
+      [
+        0.91999996,
+        0.91999996
+      ]
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        7,
+        10
+      ],
+      [
+        8,
+        10
+      ],
+      [
+        8,
+        11
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ]
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1
+      },
+      {
+        "from": 0,
+        "to": 3
+      },
+      {
+        "from": 1,
+        "to": 2
+      },
+      {
+        "from": 1,
+        "to": 4
+      },
+      {
+        "from": 2,
+        "to": 4
+      },
+      {
+        "from": 2,
+        "to": 5
+      },
+      {
+        "from": 3,
+        "to": 4
+      },
+      {
+        "from": 3,
+        "to": 6
+      },
+      {
+        "from": 3,
+        "to": 7
+      },
+      {
+        "from": 4,
+        "to": 5
+      },
+      {
+        "from": 4,
+        "to": 6
+      },
+      {
+        "from": 4,
+        "to": 7
+      },
+      {
+        "from": 4,
+        "to": 8
+      },
+      {
+        "from": 5,
+        "to": 8
+      },
+      {
+        "from": 6,
+        "to": 7
+      },
+      {
+        "from": 7,
+        "to": 8
+      },
+      {
+        "from": 7,
+        "to": 10
+      },
+      {
+        "from": 8,
+        "to": 10
+      },
+      {
+        "from": 8,
+        "to": 11
+      },
+      {
+        "from": 9,
+        "to": 10
+      },
+      {
+        "from": 10,
+        "to": 11
+      }
+    ],
+    "jumps": [
+      {
+        "from": 0,
+        "over": 1,
+        "to": 2
+      },
+      {
+        "from": 0,
+        "over": 3,
+        "to": 6
+      },
+      {
+        "from": 1,
+        "over": 4,
+        "to": 7
+      },
+      {
+        "from": 2,
+        "over": 1,
+        "to": 0
+      },
+      {
+        "from": 2,
+        "over": 4,
+        "to": 6
+      },
+      {
+        "from": 2,
+        "over": 5,
+        "to": 8
+      },
+      {
+        "from": 3,
+        "over": 4,
+        "to": 5
+      },
+      {
+        "from": 4,
+        "over": 7,
+        "to": 10
+      },
+      {
+        "from": 5,
+        "over": 4,
+        "to": 3
+      },
+      {
+        "from": 5,
+        "over": 8,
+        "to": 11
+      },
+      {
+        "from": 6,
+        "over": 3,
+        "to": 0
+      },
+      {
+        "from": 6,
+        "over": 4,
+        "to": 2
+      },
+      {
+        "from": 6,
+        "over": 7,
+        "to": 8
+      },
+      {
+        "from": 7,
+        "over": 4,
+        "to": 1
+      },
+      {
+        "from": 8,
+        "over": 5,
+        "to": 2
+      },
+      {
+        "from": 8,
+        "over": 7,
+        "to": 6
+      },
+      {
+        "from": 9,
+        "over": 10,
+        "to": 11
+      },
+      {
+        "from": 10,
+        "over": 7,
+        "to": 4
+      },
+      {
+        "from": 11,
+        "over": 8,
+        "to": 5
+      },
+      {
+        "from": 11,
+        "over": 10,
+        "to": 9
+      }
+    ]
+  },
+  "rules": {
+    "fox_win_at_most_geese": 3,
+    "goal_nodes": [],
+    "multi_capture": true,
+    "mandatory_capture": false
+  },
+  "initial": {
+    "fox": 6,
+    "geese": [
+      0,
+      3,
+      4,
+      7,
+      9
+    ],
+    "side_to_move": "geese"
+  },
+  "analysis": {
+    "winner": "geese",
+    "optimal_plies": 45,
+    "reachable_states": 19507
+  },
+  "strategy": {
+    "optimal_tree_states": 5061,
+    "critical_decisions": 55,
+    "opponent_branch_points": 967,
+    "difficulty_score": 92
+  },
+  "curation": {
+    "source": "old:geese-hard-2",
+    "capture_states": 0,
+    "sacrifice_setups": 0,
+    "player_branch_choices": 18496,
+    "opponent_branch_choices": 1378
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "format_version": 3,
+  "levels": [
+    "simple",
+    "mid",
+    "hard",
+    "expert",
+    "lunatic"
+  ],
+  "stages": [
+    {
+      "id": 1,
+      "key": "geese-simple-1",
+      "level": "simple",
+      "role": "geese",
+      "number": 1,
+      "stage_url": "./game/stages/geese-simple-1.json",
+      "tablebase_url": "./game/tablebases/geese-simple-1.bin"
+    },
+    {
+      "id": 2,
+      "key": "geese-simple-2",
+      "level": "simple",
+      "role": "geese",
+      "number": 2,
+      "stage_url": "./game/stages/geese-simple-2.json",
+      "tablebase_url": "./game/tablebases/geese-simple-2.bin"
+    },
+    {
+      "id": 3,
+      "key": "geese-simple-3",
+      "level": "simple",
+      "role": "geese",
+      "number": 3,
+      "stage_url": "./game/stages/geese-simple-3.json",
+      "tablebase_url": "./game/tablebases/geese-simple-3.bin"
+    },
+    {
+      "id": 4,
+      "key": "geese-simple-4",
+      "level": "simple",
+      "role": "geese",
+      "number": 4,
+      "stage_url": "./game/stages/geese-simple-4.json",
+      "tablebase_url": "./game/tablebases/geese-simple-4.bin"
+    },
+    {
+      "id": 5,
+      "key": "geese-simple-5",
+      "level": "simple",
+      "role": "geese",
+      "number": 5,
+      "stage_url": "./game/stages/geese-simple-5.json",
+      "tablebase_url": "./game/tablebases/geese-simple-5.bin"
+    },
+    {
+      "id": 6,
+      "key": "geese-mid-1",
+      "level": "mid",
+      "role": "geese",
+      "number": 1,
+      "stage_url": "./game/stages/geese-mid-1.json",
+      "tablebase_url": "./game/tablebases/geese-mid-1.bin"
+    },
+    {
+      "id": 7,
+      "key": "geese-mid-2",
+      "level": "mid",
+      "role": "geese",
+      "number": 2,
+      "stage_url": "./game/stages/geese-mid-2.json",
+      "tablebase_url": "./game/tablebases/geese-mid-2.bin"
+    },
+    {
+      "id": 8,
+      "key": "geese-mid-3",
+      "level": "mid",
+      "role": "geese",
+      "number": 3,
+      "stage_url": "./game/stages/geese-mid-3.json",
+      "tablebase_url": "./game/tablebases/geese-mid-3.bin"
+    },
+    {
+      "id": 9,
+      "key": "geese-mid-4",
+      "level": "mid",
+      "role": "geese",
+      "number": 4,
+      "stage_url": "./game/stages/geese-mid-4.json",
+      "tablebase_url": "./game/tablebases/geese-mid-4.bin"
+    },
+    {
+      "id": 10,
+      "key": "geese-mid-5",
+      "level": "mid",
+      "role": "geese",
+      "number": 5,
+      "stage_url": "./game/stages/geese-mid-5.json",
+      "tablebase_url": "./game/tablebases/geese-mid-5.bin"
+    },
+    {
+      "id": 11,
+      "key": "geese-hard-1",
+      "level": "hard",
+      "role": "geese",
+      "number": 1,
+      "stage_url": "./game/stages/geese-hard-1.json",
+      "tablebase_url": "./game/tablebases/geese-hard-1.bin"
+    },
+    {
+      "id": 12,
+      "key": "geese-hard-2",
+      "level": "hard",
+      "role": "geese",
+      "number": 2,
+      "stage_url": "./game/stages/geese-hard-2.json",
+      "tablebase_url": "./game/tablebases/geese-hard-2.bin"
+    },
+    {
+      "id": 13,
+      "key": "geese-hard-3",
+      "level": "hard",
+      "role": "geese",
+      "number": 3,
+      "stage_url": "./game/stages/geese-hard-3.json",
+      "tablebase_url": "./game/tablebases/geese-hard-3.bin"
+    },
+    {
+      "id": 14,
+      "key": "geese-hard-4",
+      "level": "hard",
+      "role": "geese",
+      "number": 4,
+      "stage_url": "./game/stages/geese-hard-4.json",
+      "tablebase_url": "./game/tablebases/geese-hard-4.bin"
+    },
+    {
+      "id": 15,
+      "key": "geese-hard-5",
+      "level": "hard",
+      "role": "geese",
+      "number": 5,
+      "stage_url": "./game/stages/geese-hard-5.json",
+      "tablebase_url": "./game/tablebases/geese-hard-5.bin"
+    },
+    {
+      "id": 16,
+      "key": "geese-expert-1",
+      "level": "expert",
+      "role": "geese",
+      "number": 1,
+      "stage_url": "./game/stages/geese-expert-1.json",
+      "tablebase_url": "./game/tablebases/geese-expert-1.bin"
+    },
+    {
+      "id": 17,
+      "key": "geese-expert-2",
+      "level": "expert",
+      "role": "geese",
+      "number": 2,
+      "stage_url": "./game/stages/geese-expert-2.json",
+      "tablebase_url": "./game/tablebases/geese-expert-2.bin"
+    },
+    {
+      "id": 18,
+      "key": "geese-expert-3",
+      "level": "expert",
+      "role": "geese",
+      "number": 3,
+      "stage_url": "./game/stages/geese-expert-3.json",
+      "tablebase_url": "./game/tablebases/geese-expert-3.bin"
+    },
+    {
+      "id": 19,
+      "key": "geese-expert-4",
+      "level": "expert",
+      "role": "geese",
+      "number": 4,
+      "stage_url": "./game/stages/geese-expert-4.json",
+      "tablebase_url": "./game/tablebases/geese-expert-4.bin"
+    },
+    {
+      "id": 20,
+      "key": "geese-expert-5",
+      "level": "expert",
+      "role": "geese",
+      "number": 5,
+      "stage_url": "./game/stages/geese-expert-5.json",
+      "tablebase_url": "./game/tablebases/geese-expert-5.bin"
+    },
+    {
+      "id": 21,
+      "key": "geese-lunatic-1",
+      "level": "lunatic",
+      "role": "geese",
+      "number": 1,
+      "stage_url": "./game/stages/geese-lunatic-1.json",
+      "tablebase_url": "./game/tablebases/geese-lunatic-1.bin"
+    },
+    {
+      "id": 22,
+      "key": "geese-lunatic-2",
+      "level": "lunatic",
+      "role": "geese",
+      "number": 2,
+      "stage_url": "./game/stages/geese-lunatic-2.json",
+      "tablebase_url": "./game/tablebases/geese-lunatic-2.bin"
+    },
+    {
+      "id": 23,
+      "key": "geese-lunatic-3",
+      "level": "lunatic",
+      "role": "geese",
+      "number": 3,
+      "stage_url": "./game/stages/geese-lunatic-3.json",
+      "tablebase_url": "./game/tablebases/geese-lunatic-3.bin"
+    },
+    {
+      "id": 24,
+      "key": "geese-lunatic-4",
+      "level": "lunatic",
+      "role": "geese",
+      "number": 4,
+      "stage_url": "./game/stages/geese-lunatic-4.json",
+      "tablebase_url": "./game/tablebases/geese-lunatic-4.bin"
+    },
+    {
+      "id": 25,
+      "key": "geese-lunatic-5",
+      "level": "lunatic",
+      "role": "geese",
+      "number": 5,
+      "stage_url": "./game/stages/geese-lunatic-5.json",
+      "tablebase_url": "./game/tablebases/geese-lunatic-5.bin"
+    }
+  ]
+}

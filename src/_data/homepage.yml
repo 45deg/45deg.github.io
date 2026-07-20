@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./geese/
+    featured: false
+    title:
+      ja: GEESE
+      en: GEESE
+    year: 2026
+    description_html:
+      ja: ガチョウを動かしてキツネを包囲する、伝統的なボードゲームをもとにしたステージ制パズル。
+      en: "A stage-based puzzle inspired by a traditional board game: move the geese and surround the fox."
+    tags:
+      - Game
+      - Puzzle
+    image:
+      src: ./images/i42.jpg
+      alt:
+        ja: GEESEのパズルゲーム画面
+        en: GEESE puzzle game board
   - href: ./llm-token-map/
     featured: false
     title:

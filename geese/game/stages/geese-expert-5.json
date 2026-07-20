@@ -1,0 +1,308 @@
+{
+  "format_version": 3,
+  "id": 20,
+  "key": "geese-expert-5",
+  "level": "expert",
+  "role": "geese",
+  "number": 5,
+  "topology": "grid-4x3",
+  "board": {
+    "node_count": 12,
+    "points": [
+      [
+        0.08,
+        0.08
+      ],
+      [
+        0.36,
+        0.08
+      ],
+      [
+        0.64,
+        0.08
+      ],
+      [
+        0.91999996,
+        0.08
+      ],
+      [
+        0.08,
+        0.5
+      ],
+      [
+        0.36,
+        0.5
+      ],
+      [
+        0.64,
+        0.5
+      ],
+      [
+        0.91999996,
+        0.5
+      ],
+      [
+        0.08,
+        0.91999996
+      ],
+      [
+        0.36,
+        0.91999996
+      ],
+      [
+        0.64,
+        0.91999996
+      ],
+      [
+        0.91999996,
+        0.91999996
+      ]
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        5,
+        10
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        10
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ]
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1
+      },
+      {
+        "from": 0,
+        "to": 5
+      },
+      {
+        "from": 1,
+        "to": 2
+      },
+      {
+        "from": 1,
+        "to": 6
+      },
+      {
+        "from": 2,
+        "to": 3
+      },
+      {
+        "from": 3,
+        "to": 6
+      },
+      {
+        "from": 3,
+        "to": 7
+      },
+      {
+        "from": 4,
+        "to": 5
+      },
+      {
+        "from": 4,
+        "to": 8
+      },
+      {
+        "from": 5,
+        "to": 6
+      },
+      {
+        "from": 5,
+        "to": 8
+      },
+      {
+        "from": 5,
+        "to": 10
+      },
+      {
+        "from": 6,
+        "to": 7
+      },
+      {
+        "from": 7,
+        "to": 10
+      },
+      {
+        "from": 8,
+        "to": 9
+      },
+      {
+        "from": 9,
+        "to": 10
+      },
+      {
+        "from": 10,
+        "to": 11
+      }
+    ],
+    "jumps": [
+      {
+        "from": 0,
+        "over": 1,
+        "to": 2
+      },
+      {
+        "from": 0,
+        "over": 5,
+        "to": 10
+      },
+      {
+        "from": 1,
+        "over": 2,
+        "to": 3
+      },
+      {
+        "from": 2,
+        "over": 1,
+        "to": 0
+      },
+      {
+        "from": 3,
+        "over": 2,
+        "to": 1
+      },
+      {
+        "from": 4,
+        "over": 5,
+        "to": 6
+      },
+      {
+        "from": 5,
+        "over": 6,
+        "to": 7
+      },
+      {
+        "from": 6,
+        "over": 5,
+        "to": 4
+      },
+      {
+        "from": 7,
+        "over": 6,
+        "to": 5
+      },
+      {
+        "from": 8,
+        "over": 9,
+        "to": 10
+      },
+      {
+        "from": 9,
+        "over": 10,
+        "to": 11
+      },
+      {
+        "from": 10,
+        "over": 5,
+        "to": 0
+      },
+      {
+        "from": 10,
+        "over": 9,
+        "to": 8
+      },
+      {
+        "from": 11,
+        "over": 10,
+        "to": 9
+      }
+    ]
+  },
+  "rules": {
+    "fox_win_at_most_geese": 2,
+    "goal_nodes": [],
+    "multi_capture": true,
+    "mandatory_capture": false
+  },
+  "initial": {
+    "fox": 11,
+    "geese": [
+      1,
+      4,
+      5,
+      10
+    ],
+    "side_to_move": "geese"
+  },
+  "analysis": {
+    "winner": "geese",
+    "optimal_plies": 23,
+    "reachable_states": 11959
+  },
+  "strategy": {
+    "optimal_tree_states": 4161,
+    "critical_decisions": 224,
+    "opponent_branch_points": 579,
+    "difficulty_score": 76
+  },
+  "curation": {
+    "source": "old:geese-mid-5",
+    "capture_states": 47,
+    "sacrifice_setups": 116,
+    "player_branch_choices": 11665,
+    "opponent_branch_choices": 752
+  }
+}

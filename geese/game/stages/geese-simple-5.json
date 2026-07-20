@@ -1,0 +1,199 @@
+{
+  "format_version": 3,
+  "id": 5,
+  "key": "geese-simple-5",
+  "level": "simple",
+  "role": "geese",
+  "number": 5,
+  "topology": "grid-3x3",
+  "board": {
+    "node_count": 9,
+    "points": [
+      [
+        0.08,
+        0.08
+      ],
+      [
+        0.5,
+        0.08
+      ],
+      [
+        0.91999996,
+        0.08
+      ],
+      [
+        0.08,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.91999996,
+        0.5
+      ],
+      [
+        0.08,
+        0.91999996
+      ],
+      [
+        0.5,
+        0.91999996
+      ],
+      [
+        0.91999996,
+        0.91999996
+      ]
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ]
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1
+      },
+      {
+        "from": 0,
+        "to": 4
+      },
+      {
+        "from": 1,
+        "to": 2
+      },
+      {
+        "from": 2,
+        "to": 5
+      },
+      {
+        "from": 3,
+        "to": 4
+      },
+      {
+        "from": 3,
+        "to": 6
+      },
+      {
+        "from": 4,
+        "to": 5
+      },
+      {
+        "from": 4,
+        "to": 7
+      },
+      {
+        "from": 6,
+        "to": 7
+      },
+      {
+        "from": 7,
+        "to": 8
+      }
+    ],
+    "jumps": [
+      {
+        "from": 0,
+        "over": 1,
+        "to": 2
+      },
+      {
+        "from": 2,
+        "over": 1,
+        "to": 0
+      },
+      {
+        "from": 3,
+        "over": 4,
+        "to": 5
+      },
+      {
+        "from": 5,
+        "over": 4,
+        "to": 3
+      },
+      {
+        "from": 6,
+        "over": 7,
+        "to": 8
+      },
+      {
+        "from": 8,
+        "over": 7,
+        "to": 6
+      }
+    ]
+  },
+  "rules": {
+    "fox_win_at_most_geese": 1,
+    "goal_nodes": [],
+    "multi_capture": true,
+    "mandatory_capture": false
+  },
+  "initial": {
+    "fox": 2,
+    "geese": [
+      0,
+      1,
+      8
+    ],
+    "side_to_move": "geese"
+  },
+  "analysis": {
+    "winner": "geese",
+    "optimal_plies": 15,
+    "reachable_states": 1472
+  },
+  "strategy": {
+    "optimal_tree_states": 829,
+    "critical_decisions": 34,
+    "opponent_branch_points": 118,
+    "difficulty_score": 20
+  },
+  "curation": {
+    "source": "old:geese-simple-2",
+    "capture_states": 19,
+    "sacrifice_setups": 33,
+    "player_branch_choices": 1212,
+    "opponent_branch_choices": 132
+  }
+}

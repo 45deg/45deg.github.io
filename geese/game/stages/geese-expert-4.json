@@ -1,0 +1,287 @@
+{
+  "format_version": 3,
+  "id": 19,
+  "key": "geese-expert-4",
+  "level": "expert",
+  "role": "geese",
+  "number": 4,
+  "topology": "grid-3x4",
+  "board": {
+    "node_count": 12,
+    "points": [
+      [
+        0.08,
+        0.08
+      ],
+      [
+        0.5,
+        0.08
+      ],
+      [
+        0.91999996,
+        0.08
+      ],
+      [
+        0.08,
+        0.36
+      ],
+      [
+        0.5,
+        0.36
+      ],
+      [
+        0.91999996,
+        0.36
+      ],
+      [
+        0.08,
+        0.64
+      ],
+      [
+        0.5,
+        0.64
+      ],
+      [
+        0.91999996,
+        0.64
+      ],
+      [
+        0.08,
+        0.91999996
+      ],
+      [
+        0.5,
+        0.91999996
+      ],
+      [
+        0.91999996,
+        0.91999996
+      ]
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        8,
+        10
+      ],
+      [
+        8,
+        11
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ]
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 1
+      },
+      {
+        "from": 0,
+        "to": 3
+      },
+      {
+        "from": 1,
+        "to": 2
+      },
+      {
+        "from": 1,
+        "to": 3
+      },
+      {
+        "from": 1,
+        "to": 4
+      },
+      {
+        "from": 1,
+        "to": 5
+      },
+      {
+        "from": 2,
+        "to": 5
+      },
+      {
+        "from": 3,
+        "to": 4
+      },
+      {
+        "from": 3,
+        "to": 6
+      },
+      {
+        "from": 3,
+        "to": 7
+      },
+      {
+        "from": 4,
+        "to": 5
+      },
+      {
+        "from": 6,
+        "to": 7
+      },
+      {
+        "from": 7,
+        "to": 8
+      },
+      {
+        "from": 8,
+        "to": 10
+      },
+      {
+        "from": 8,
+        "to": 11
+      },
+      {
+        "from": 9,
+        "to": 10
+      },
+      {
+        "from": 10,
+        "to": 11
+      }
+    ],
+    "jumps": [
+      {
+        "from": 0,
+        "over": 1,
+        "to": 2
+      },
+      {
+        "from": 0,
+        "over": 3,
+        "to": 6
+      },
+      {
+        "from": 2,
+        "over": 1,
+        "to": 0
+      },
+      {
+        "from": 3,
+        "over": 4,
+        "to": 5
+      },
+      {
+        "from": 5,
+        "over": 4,
+        "to": 3
+      },
+      {
+        "from": 6,
+        "over": 3,
+        "to": 0
+      },
+      {
+        "from": 6,
+        "over": 7,
+        "to": 8
+      },
+      {
+        "from": 8,
+        "over": 7,
+        "to": 6
+      },
+      {
+        "from": 9,
+        "over": 10,
+        "to": 11
+      },
+      {
+        "from": 11,
+        "over": 10,
+        "to": 9
+      }
+    ]
+  },
+  "rules": {
+    "fox_win_at_most_geese": 0,
+    "goal_nodes": [],
+    "multi_capture": true,
+    "mandatory_capture": false
+  },
+  "initial": {
+    "fox": 6,
+    "geese": [
+      1,
+      5,
+      7
+    ],
+    "side_to_move": "geese"
+  },
+  "analysis": {
+    "winner": "geese",
+    "optimal_plies": 35,
+    "reachable_states": 5448
+  },
+  "strategy": {
+    "optimal_tree_states": 2833,
+    "critical_decisions": 16,
+    "opponent_branch_points": 490,
+    "difficulty_score": 74
+  },
+  "curation": {
+    "source": "new:geese-lunatic-4",
+    "capture_states": 1,
+    "sacrifice_setups": 1,
+    "player_branch_choices": 6516,
+    "opponent_branch_choices": 711
+  }
+}
