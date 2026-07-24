@@ -27,12 +27,24 @@
     />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <title>Jelly — Interactive 3D Soft-Body Simulation</title>
-    <script type="module" crossorigin src="./assets/index-CXag41AJ.js"></script>
+    <script type="module" crossorigin src="./assets/index-B5ewe5Ej.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/xpbd-prototype-vxyhHLYr.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-C6FfSuz9.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-CUr39s1b.css">
   </head>
   <body>
-    <main id="app" aria-label="Interactive 3D jelly scene">
+    <main id="app" aria-label="Interactive 3D jelly scene" aria-busy="true">
+      <div id="loading-screen" class="loading-screen" role="status" aria-live="polite">
+        <div class="loading-jelly" aria-hidden="true">
+          <svg viewBox="0 0 112 88">
+            <path d="M25 72 31 24c.8-7 5.8-12 13-12h24c7.2 0 12.2 5 13 12l6 48H25Z" />
+            <path class="loading-jelly-fold" d="M29 59h54" />
+          </svg>
+        </div>
+        <p id="loading-label" class="loading-label">Preparing the jelly</p>
+        <span class="loading-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </div>
       <div class="brand" aria-hidden="true">JELLY</div>
       <div class="controls">
         <fieldset id="stage-switch" class="stage-switch" aria-label="Jelly shape">
