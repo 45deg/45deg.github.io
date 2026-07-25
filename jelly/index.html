@@ -27,9 +27,9 @@
     />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <title>Jelly — Interactive 3D Soft-Body Simulation</title>
-    <script type="module" crossorigin src="./assets/index-QSDWG-8I.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/xpbd-prototype-3WnlJn5Z.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-CUr39s1b.css">
+    <script type="module" crossorigin src="./assets/index-Bvr5y0Fa.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/xpbd-solver-D7kr0fWk.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-BPSNnGfI.css">
   </head>
   <body>
     <main id="app" aria-label="Interactive 3D jelly scene" aria-busy="true">
@@ -45,9 +45,17 @@
           <span></span><span></span><span></span>
         </span>
       </div>
-      <div class="brand" aria-hidden="true">JELLY</div>
+      <div class="brand">
+        <a class="home-link" href="/" aria-label="Home" data-tooltip="Home">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m4 10 8-6 8 6v9H4v-9Z" />
+            <path d="M9.5 19v-5h5v5" />
+          </svg>
+        </a>
+        <span aria-hidden="true">JELLY</span>
+      </div>
       <div class="controls">
-        <fieldset id="stage-switch" class="stage-switch" aria-label="Jelly shape">
+        <fieldset id="stage-switch" class="stage-switch" aria-label="Jelly shape" data-tooltip="Stage">
           <legend>Jelly shape</legend>
           <button class="stage-option" type="button" data-stage="box" aria-label="Box-shaped jelly" aria-pressed="true">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 7-3 7 3v10l-7 3-7-3V7Z" /><path d="m5 7 7 3 7-3M12 10v10" /></svg>
@@ -67,14 +75,14 @@
           </button>
         </fieldset>
         <div class="material-settings" aria-label="Material settings for the next jelly">
-          <label class="stiffness-control">
+          <label class="stiffness-control" data-tooltip="Stiffness">
             <span class="stiffness-endpoint" aria-hidden="true">
               <svg class="stiffness-icon" viewBox="0 0 24 24">
                 <path d="M3.5 17c2-1.2 2.6-4.4 4.6-4.4 1.5 0 2.2 1.5 3.9 1.5s2.4-1.5 3.9-1.5c2 0 2.6 3.2 4.6 4.4-4.3 1.7-12.7 1.7-17 0Z" />
               </svg>
               <span class="stiffness-label">SOFT</span>
             </span>
-            <input id="stiffness" type="range" min="0" max="100" value="62" aria-label="Stiffness of the next jelly" />
+            <input id="stiffness" type="range" min="0" max="100" value="62" aria-label="Stiffness of the next jelly" data-tooltip="Stiffness 62%" />
             <span class="stiffness-endpoint" aria-hidden="true">
               <svg class="stiffness-icon" viewBox="0 0 24 24">
                 <path d="M7 18 8 7.2c.1-1.1 1-2 2.1-2h3.8c1.1 0 2 .9 2.1 2L17 18H7Z" />
@@ -83,22 +91,22 @@
             </span>
           </label>
         </div>
-        <button id="add-jelly" class="control add" type="button" aria-label="Add jelly">
+        <button id="add-jelly" class="control add" type="button" aria-label="Add jelly" data-tooltip="Add Box">
           <span class="color-orb"></span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
         </button>
-        <button id="cut-mode" class="control" type="button" aria-label="Cut mode" aria-pressed="false">
+        <button id="cut-mode" class="control" type="button" aria-label="Cut mode" aria-pressed="false" data-tooltip="Cut">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21h5l.9-9H16V3c-4.4 1.3-6.9 4.4-7 9l-3 9Z" /><path d="M9 12h2.9" /></svg>
         </button>
-        <button id="fork-mode" class="control" type="button" aria-label="Fork mode. Drag to grab, then release to throw" aria-pressed="false">
+        <button id="fork-mode" class="control" type="button" aria-label="Fork mode. Drag to grab, then release to throw" aria-pressed="false" data-tooltip="Pinch">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v5M11 3v5M15 3v5M19 3v5M7 6v2a6 6 0 0 0 6 6v7M19 6v2a6 6 0 0 1-6 6" /></svg>
         </button>
-        <button id="reset" class="control" type="button" aria-label="Reset">
+        <button id="reset" class="control" type="button" aria-label="Reset" data-tooltip="Reset">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 8.4A8 8 0 1 1 4 13M4.8 8.4V3.8M4.8 8.4h4.6" /></svg>
         </button>
       </div>
       <div id="cut-stroke" aria-hidden="true"></div>
-      <button id="render-style" class="render-style" type="button">
+      <button id="render-style" class="render-style" type="button" data-tooltip="Change Style">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5.2 17.5 7.3 7.3c.3-1.3 1.4-2.2 2.7-2.2h4c1.3 0 2.4.9 2.7 2.2l2.1 10.2c-3.9 1.7-9.7 1.7-13.6 0Z" />
           <path d="M7 13.2c2.8 1.2 7.2 1.2 10 0M8.2 8.5c2.2.8 5.4.8 7.6 0" />
@@ -109,5 +117,96 @@
       <output id="webgpu-benchmark" hidden aria-live="polite"></output>
       <div id="webgpu-error" role="alert" hidden>WebGPU is unavailable</div>
     </main>
+    <!--
+      # Technical Overview
+
+      ## Physics Model
+
+      - **Volume representation**: The interior is discretized as a tetrahedral mesh. Each element stores its rest-edge matrix and rest volume, while vertices store positions, velocities, and inverse masses.
+      - **Material model**: Constraint-based stable Neo-Hookean elasticity using the deformation gradient \(F = D_s D_m^{-1}\).
+      - **Elastic parameters**: Young's modulus and Poisson's ratio determine the compliance of the shape and volume constraints.
+      - **Mass**: Vertex masses are distributed from a density of \(1{,}000\,\mathrm{kg/m^3}\) and the rest volumes of the tetrahedra.
+      - **Viscoelasticity**: An equilibrium spring and one Maxwell branch model stress relaxation according to the jiggle and recovery controls.
+      - **Plasticity**: A simplified J2 viscoplastic model based on the multiplicative decomposition \(F = F_e F_p\) and von Mises equivalent stress. Plastic deformation is normalized to preserve volume.
+      - **Fracture history**: Maximum principal stress and cohesive damage are retained for optional self-fracture.
+      - **Stabilization**: Tetrahedral edge lengths are limited to 1.65 times their rest lengths.
+      - **Contact**: Surface vertex–triangle and edge–edge contact, a Coulomb-style friction limit, and swept crossing tests based on previous positions.
+      - **Self-contact**: Limited to the area around cut surfaces, excluding vertices within two surface-mesh edges.
+      - **Plate**: Collision is evaluated against an analytic surface whose height is determined by radial distance.
+
+      ## Simulation and Cutting
+
+      - **Time integration**: A fixed 60 Hz timestep with four substeps per physics step.
+      - **Constraint solver**: Small Steps XPBD. Constraints are projected once per substep without carrying constraint multipliers forward.
+      - **Substep sequence**: Position prediction → fork constraint → elasticity → material-state update on the final substep → contact → cut-surface separation → plate contact → velocity update.
+      - **Parallel elasticity**: Tetrahedra that do not share vertices are graph-colored, then processed by color with Gauss–Seidel updates inside one workgroup per body.
+      - **Contact broad phase**: Swept axis-aligned bounding boxes covering current and previous positions are inserted into a spatial hash.
+      - **Contact solver**: Five compute passes clear and build the hash, generate vertex–triangle and edge–edge contacts, and aggregate corrections per vertex. Atomic reference lists support the final Jacobi update.
+      - **Sleeping**: Elasticity and contact searches are skipped for stationary bodies and resumed in response to collisions or approaching motion.
+      - **Cut input**: Pointer motion and camera rays form a finite-width blade sweep, and the connected component containing the seed tetrahedron is selected.
+      - **Remeshing**: Intersection with the blade sweep triggers CPU-side splitting of the selected tetrahedra by a representative plane, including intersection vertices, duplicated cut-surface vertices, and child tetrahedra.
+      - **State transfer**: New vertex positions and velocities are interpolated, while Maxwell, plastic, and damage states are inherited by child tetrahedra.
+      - **Post-cut contact**: A dedicated constraint briefly separates paired cut-surface vertices before normal self-contact takes over.
+      - **Limits**: 3,500 tetrahedra in total; 2,400 tetrahedra and five cuts per body; up to six bodies.
+
+      ## WebGPU and Rendering
+
+      - **GPU API**: WebGPU compute pipelines and WGSL. Rendering uses Three.js `WebGPUBackend` and TSL node materials.
+      - **GPU residency**: Normal frames remain on the GPU from position prediction through render-vertex and normal updates. Physics and rendering share the same storage buffers.
+      - **Data layout**: Positions, velocities, and material states use contiguous attribute arrays; tetrahedra use fixed-size records. Multiple bodies are packed into shared arrays.
+      - **CPU readback**: Ray picking, sleeping, and fall detection retrieve only small results. The complete physics state is synchronized only when a cut changes topology.
+      - **Resource management**: Compute pipelines, bind groups, and precomputed topology data are cached, with a capacity-based GPU buffer pool for reuse.
+      - **Render mesh**: The coarse physics tetrahedra are separate from the detailed render surface. Barycentric weights embed render vertices in tetrahedra, and normals are updated by compute shaders.
+      - **Embedded geometry**: The Stanford Bunny PLY surface is embedded in voxel tetrahedra. Cut boundaries are clipped against a plane and closed with ear clipping.
+      - **Transparency**: The high-quality path uses Weighted Blended OIT with 16-bit floating-point multiple render targets, combining thickness, Beer–Lambert-style absorption, and screen-space refraction in multiple passes.
+      - **Performance fallback**: Estimated logical CPU count, memory, and rendered pixel count determine whether to fall back to simple alpha blending.
+      - **Supporting technologies**: TypeScript, Vite, Three.js, PLY assets, and optional GPU timestamp queries for pass timing.
+
+      ---
+
+      # 技術概要
+
+      ## 物理モデル
+
+      - **体積表現**: 内部を四面体メッシュで離散化。各要素の静止辺行列・静止体積と、頂点の位置・速度・逆質量を保持
+      - **材料モデル**: 変形勾配 \(F = D_s D_m^{-1}\) を用いた、拘束ベースの安定化 Neo-Hookean 弾性
+      - **弾性パラメータ**: Young 率と Poisson 比から、形状変形と体積変化に対する拘束の柔らかさを算出
+      - **質量**: 密度 \(1{,}000\,\mathrm{kg/m^3}\) と四面体の静止体積から頂点質量を分配
+      - **粘弾性**: 平衡ばねと 1 本の Maxwell 分枝を組み合わせ、揺れやすさと回復速度を応力緩和へ反映
+      - **塑性**: 乗算分解 \(F = F_e F_p\) と von Mises 相当応力に基づく簡略 J2 粘塑性。塑性変形は等容に正規化
+      - **破壊履歴**: 最大主応力と結合損傷度を保持し、任意設定で自己破断に利用
+      - **安定化**: 四面体辺の伸長を静止長の 1.65 倍までに制限
+      - **接触**: 表面の頂点–三角形接触と辺–辺接触、Coulomb 型の摩擦上限、直前位置を使う移動軌跡上の交差判定
+      - **自己接触**: 切断面周辺だけを対象にし、表面メッシュ上で 2 辺以内の近傍を除外
+      - **皿**: 半径から高さを返す解析的な曲面として衝突処理
+
+      ## シミュレーション／切断
+
+      - **時間積分**: 60 Hz の固定刻みとし、1 回の物理計算を 4 回の副ステップに分割
+      - **拘束ソルバー**: Small Steps 方式の XPBD。各副ステップで拘束を投影し、拘束乗数は次へ持ち越さない
+      - **副ステップの構成**: 位置予測 → フォーク拘束 → 弾性 → 材料状態更新（最後のみ）→ 接触 → 切断面分離 → 皿接触 → 速度更新
+      - **弾性の並列化**: 頂点を共有しない四面体をグラフ彩色し、物体ごとの作業グループ内で色順に Gauss–Seidel 更新
+      - **接触候補の絞り込み**: 現在位置と直前位置を囲む軸平行境界箱を空間ハッシュへ登録
+      - **接触計算**: 5 回のコンピュート処理で、ハッシュ初期化・登録・頂点–三角形生成・辺–辺生成・頂点別集約を実行。補正はアトミック操作で作る参照リストを介して Jacobi 更新
+      - **休止処理**: 静止物体の弾性計算と接触探索を休止し、衝突や接近速度に応じて再開
+      - **切断入力**: ポインター軌跡とカメラからの半直線により有限幅の刃の通過領域を構築し、起点の四面体につながる連結成分を選択
+      - **再メッシュ**: 刃の通過領域との交差を開始条件に、代表平面で対象四面体を分割。交差頂点の生成、断面頂点の複製、子四面体化は CPU で実行
+      - **状態継承**: 新頂点の位置・速度を補間し、子四面体へ Maxwell・塑性・損傷状態を継承
+      - **切断後接触**: 対応する断面頂点を専用拘束で短時間押し離した後、通常の自己接触へ移行
+      - **上限**: 全体で 3,500 四面体、1 物体につき 2,400 四面体・5 回の切断、同時配置は最大 6 物体
+
+      ## WebGPU／レンダリング
+
+      - **GPU API**: WebGPU のコンピュートパイプラインと WGSL を使用。描画は Three.js の `WebGPUBackend` と TSL のノードマテリアル
+      - **GPU 常駐**: 通常フレームは位置予測から描画頂点・法線更新まで GPU 内で完結し、同じストレージバッファを物理計算と描画で共有
+      - **データ配置**: 位置・速度・材料状態は属性別の連続バッファ、四面体は固定長レコード。複数物体を一つの配列へ格納
+      - **CPU への読み戻し**: 半直線による選択、休止・落下判定は小さい結果だけを取得。切断時のみ全物理状態を同期して接続構造を再構築
+      - **資源管理**: コンピュートパイプライン、バインドグループ、接続構造の事前計算結果をキャッシュし、余裕を持って確保する GPU バッファープールを使用
+      - **表示メッシュ**: 粗い物理四面体と細かい描画面を分離。重心座標の重みで描画頂点を四面体へ埋め込み、法線もコンピュートシェーダーで更新
+      - **埋め込み形状**: Stanford Bunny は PLY 表面をボクセル四面体へ埋め込み、切断境界を平面で切り抜いた後、耳切り法で閉じる
+      - **透明表現**: 高品質時は 16 ビット浮動小数点の複数描画先を使う Weighted Blended OIT を採用。厚み取得、Beer–Lambert 型吸収、画面空間屈折を複数段で合成
+      - **負荷対策**: CPU の論理コア数、推定メモリー、描画画素数に応じて単純なアルファ合成へ切り替え
+      - **周辺技術**: TypeScript、Vite、Three.js、PLY 形式、GPU タイムスタンプクエリーによる任意の処理時間計測
+    -->
   </body>
 </html>

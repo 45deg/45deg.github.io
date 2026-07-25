@@ -25,6 +25,24 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./jelly/
+    featured: true
+    homeButton: false
+    title:
+      ja: JELLY
+      en: JELLY
+    year: 2026
+    description_html:
+      ja: ゼリーの形や柔らかさ、色を変えて触れる、インタラクティブな3Dソフトボディシミュレーション。
+      en: An interactive 3D soft-body simulation for shaping, coloring, and playing with jelly-like objects.
+    tags:
+      - 3D
+      - Simulation
+    image:
+      src: ./images/i43.jpg
+      alt:
+        ja: カラフルなゼリーを表示したJELLYの3Dシミュレーション画面
+        en: JELLY 3D simulation showing colorful jelly objects
   - href: ./geese/
     featured: false
     title:
