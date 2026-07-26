@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./har-tools/
+    featured: false
+    title:
+      ja: HAR Tools
+      en: HAR Tools
+    year: 2026
+    description_html:
+      ja: HARファイルに保存された画像、コード、その他のレスポンスをブラウザ内で抽出・確認できるツール。
+      en: A browser tool for extracting and inspecting images, code, and other responses stored in HAR files.
+    tags:
+      - Web
+      - Utility
+    image:
+      src: ./images/i44.jpg
+      alt:
+        ja: HAR ToolsでHARファイル内のリソースを一覧表示している画面
+        en: HAR Tools displaying a list of resources from a HAR file
   - href: ./jelly/
     featured: true
     homeButton: false
