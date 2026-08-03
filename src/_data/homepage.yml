@@ -25,6 +25,22 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./bandit-arena/
+    featured: false
+    title:
+      ja: 多腕バンディット・デモ
+      en: Multi-Armed Bandit Demo
+    year: 2026
+    description_html:
+      ja: 多腕バンディットの6手法と報酬モデルを、1ラウンドのステップ解説と学習推移で比較できるインタラクティブデモ。
+      en: An interactive demo for comparing six multi-armed bandit algorithms and reward models through step-by-step rounds and learning curves.
+    tags:
+      - AI
+      - Visualization
+      - Education
+    placeholder:
+      class: placeholder-data
+      emoji: 🎰
   - href: ./har-tools/
     featured: false
     title:
