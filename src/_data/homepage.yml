@@ -25,6 +25,24 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./colorange/
+    featured: false
+    title:
+      ja: Colorange
+      en: Colorange
+    year: 2026
+    description_html:
+      ja: 画像から主要色と使用率を抽出し、それぞれの色が使われている場所まで確認できるカラー分析ツール。
+      en: A color analysis tool for extracting an image’s dominant colors and usage ratios, and seeing where each color appears.
+    tags:
+      - Image
+      - Analysis
+      - Utility
+    image:
+      src: ./images/i45.jpg
+      alt:
+        ja: Colorangeで画像の主要色と使用率を分析している画面
+        en: Colorange analyzing an image’s dominant colors and usage ratios
   - href: ./bandit-arena/
     featured: false
     title:

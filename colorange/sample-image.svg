@@ -1,0 +1,26 @@
+<svg width="1400" height="1000" viewBox="0 0 1400 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">カラフルな幾何学構成</title>
+  <desc id="desc">黒い格子線で区切られた赤、青、黄、緑、紫、空色などの長方形によるモンドリアン風の構成。</desc>
+  <rect width="1400" height="1000" fill="#FFFFFF"/>
+  <g stroke="#111111" stroke-width="22">
+    <rect x="-11" y="-11" width="315" height="270" fill="#FF4B00"/>
+    <rect x="304" y="-11" width="485" height="160" fill="#FFFFFF"/>
+    <rect x="789" y="-11" width="370" height="355" fill="#FFF100"/>
+    <rect x="1159" y="-11" width="252" height="205" fill="#005AFF"/>
+    <rect x="-11" y="259" width="198" height="415" fill="#4DC4FF"/>
+    <rect x="187" y="259" width="345" height="230" fill="#FFFFFF"/>
+    <rect x="304" y="149" width="485" height="110" fill="#03AF7A"/>
+    <rect x="532" y="259" width="257" height="415" fill="#990099"/>
+    <rect x="789" y="344" width="185" height="330" fill="#FFFFFF"/>
+    <rect x="974" y="344" width="437" height="186" fill="#FF8082"/>
+    <rect x="1159" y="194" width="252" height="150" fill="#F6AA00"/>
+    <rect x="-11" y="674" width="400" height="337" fill="#FFF100"/>
+    <rect x="187" y="489" width="345" height="185" fill="#804000"/>
+    <rect x="389" y="674" width="215" height="337" fill="#005AFF"/>
+    <rect x="604" y="674" width="370" height="180" fill="#FFFFFF"/>
+    <rect x="604" y="854" width="370" height="157" fill="#03AF7A"/>
+    <rect x="974" y="530" width="250" height="481" fill="#4DC4FF"/>
+    <rect x="1224" y="530" width="187" height="280" fill="#FF4B00"/>
+    <rect x="1224" y="810" width="187" height="201" fill="#FFFFFF"/>
+  </g>
+</svg>
