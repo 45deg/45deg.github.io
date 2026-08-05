@@ -27,6 +27,8 @@ filters:
 works:
   - href: ./colorange/
     featured: false
+    homeButton:
+      position: bottom-left
     title:
       ja: Colorange
       en: Colorange
