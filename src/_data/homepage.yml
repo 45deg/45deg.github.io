@@ -44,6 +44,7 @@ works:
         ja: UI Pattern AtlasでWelcome screenパターンを表示している画面
         en: UI Pattern Atlas displaying the Welcome screen pattern
   - href: ./a-tour-of-succinct-data-structure/
+    homeButton: false
     featured: false
     title:
       ja: A Tour of Succinct Data Structures
