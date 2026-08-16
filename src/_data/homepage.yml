@@ -25,6 +25,40 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./ui-pattern-atlas/
+    featured: false
+    title:
+      ja: UI Pattern Atlas
+      en: UI Pattern Atlas
+    year: 2026
+    description_html:
+      ja: UIパターンを用途やカテゴリから検索し、具体例とともに参照できるインターフェース設計カタログ。
+      en: A searchable interface design catalog for exploring UI patterns by purpose and category, with concrete examples.
+    tags:
+      - UI
+      - Design
+      - Reference
+    image:
+      src: ./images/i46.jpg
+      alt:
+        ja: UI Pattern AtlasでWelcome screenパターンを表示している画面
+        en: UI Pattern Atlas displaying the Welcome screen pattern
+  - href: ./a-tour-of-succinct-data-structure/
+    featured: false
+    title:
+      ja: A Tour of Succinct Data Structures
+      en: A Tour of Succinct Data Structures
+    year: 2026
+    description_html:
+      ja: 情報理論的下限からrank・select、wavelet matrix、簡潔木までを、操作できる図で学ぶ簡潔データ構造の教材。
+      en: An interactive guide to succinct data structures, from information-theoretic lower bounds and rank/select to wavelet matrices and succinct trees.
+    tags:
+      - Data Structure
+      - Visualization
+      - Education
+    placeholder:
+      class: placeholder-data
+      emoji: "01"
   - href: ./colorange/
     featured: false
     homeButton:

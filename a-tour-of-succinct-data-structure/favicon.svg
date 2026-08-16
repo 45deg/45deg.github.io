@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Succinct Tour</title>
+  <rect x="4" y="4" width="56" height="56" fill="#fbfbfa" stroke="#17191b" stroke-width="4"/>
+  <path d="M44 17H25c-5 0-9 4-9 9s4 9 9 9h14c5 0 9 4 9 9s-4 9-9 9H18" fill="none" stroke="#1769aa" stroke-width="6" stroke-linecap="square"/>
+</svg>

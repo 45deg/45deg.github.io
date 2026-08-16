@@ -1,0 +1,1 @@
+function e(e,t){e(e=>e.map((e,n)=>n===t?1-e:e))}function t(e,t){if(t<0||t>e)return 0;let n=1;for(let r=1;r<=Math.min(t,e-t);r+=1)n=n*(e-r+1)/r;return Math.round(n)}export{e as n,t};
