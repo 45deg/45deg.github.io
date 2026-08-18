@@ -25,6 +25,25 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./sudoku-book/
+    homeButton: false
+    featured: false
+    title:
+      ja: 数独を解こう
+      en: Solving Sudoku
+    year: 2026
+    description_html:
+      ja: 同じ数独を探索、論理、数理最適化など異なる計算手法へ翻訳し、実行できるサンプルとともに解き方の違いをたどる連載。
+      en: A series that translates the same Sudoku puzzle into search, logic, mathematical optimization, and other computational methods, with runnable examples.
+    tags:
+      - Article
+      - Algorithms
+      - Education
+    image:
+      src: ./images/i47.png
+      alt:
+        ja: ヒント数字が配置された9×9の数独盤面
+        en: A 9×9 Sudoku board with clue digits
   - href: ./ui-pattern-atlas/
     featured: false
     title:
