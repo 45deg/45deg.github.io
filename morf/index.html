@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="画像の範囲をポイントで囲み、傾きやゆがみをブラウザ内で補正する画像変換ツールです。" />
+    <meta name="application-name" content="Morf" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111416" media="(prefers-color-scheme: dark)" />
+    <title>Morf</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com
+         License: https://fontawesome.com/license/free (Icons: CC BY 4.0) -->
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="fa-folder-open" viewBox="0 0 576 512"><path d="M56 225.6L32.4 296.2 32.4 96c0-35.3 28.7-64 64-64l138.7 0c13.8 0 27.3 4.5 38.4 12.8l38.4 28.8c5.5 4.2 12.3 6.4 19.2 6.4l117.3 0c35.3 0 64 28.7 64 64l0 16-365.4 0c-41.3 0-78 26.4-91.1 65.6zM477.8 448L99 448c-32.8 0-55.9-32.1-45.5-63.2l48-144C108 221.2 126.4 208 147 208l378.8 0c32.8 0 55.9 32.1 45.5 63.2l-48 144c-6.5 19.6-24.9 32.8-45.5 32.8z" /></symbol>
+      <symbol id="fa-image" viewBox="0 0 448 512"><path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm64 80a48 48 0 1 1 0 96 48 48 0 1 1 0-96zM272 224c8.4 0 16.1 4.4 20.5 11.5l88 144c4.5 7.4 4.7 16.7 .5 24.3S368.7 416 360 416L88 416c-8.9 0-17.2-5-21.3-12.9s-3.5-17.5 1.6-24.8l56-80c4.5-6.4 11.8-10.2 19.7-10.2s15.2 3.8 19.7 10.2l26.4 37.8 61.4-100.5c4.4-7.1 12.1-11.5 20.5-11.5z" /></symbol>
+      <symbol id="fa-wand-magic-sparkles" viewBox="0 0 576 512"><path d="M263.4-27L278.2 9.8 315 24.6c3 1.2 5 4.2 5 7.4s-2 6.2-5 7.4L278.2 54.2 263.4 91c-1.2 3-4.2 5-7.4 5s-6.2-2-7.4-5L233.8 54.2 197 39.4c-3-1.2-5-4.2-5-7.4s2-6.2 5-7.4L233.8 9.8 248.6-27c1.2-3 4.2-5 7.4-5s6.2 2 7.4 5zM110.7 41.7l21.5 50.1 50.1 21.5c5.9 2.5 9.7 8.3 9.7 14.7s-3.8 12.2-9.7 14.7l-50.1 21.5-21.5 50.1c-2.5 5.9-8.3 9.7-14.7 9.7s-12.2-3.8-14.7-9.7L59.8 164.2 9.7 142.7C3.8 140.2 0 134.4 0 128s3.8-12.2 9.7-14.7L59.8 91.8 81.3 41.7C83.8 35.8 89.6 32 96 32s12.2 3.8 14.7 9.7zM464 304c6.4 0 12.2 3.8 14.7 9.7l21.5 50.1 50.1 21.5c5.9 2.5 9.7 8.3 9.7 14.7s-3.8 12.2-9.7 14.7l-50.1 21.5-21.5 50.1c-2.5 5.9-8.3 9.7-14.7 9.7s-12.2-3.8-14.7-9.7l-21.5-50.1-50.1-21.5c-5.9-2.5-9.7-8.3-9.7-14.7s3.8-12.2 9.7-14.7l50.1-21.5 21.5-50.1c2.5-5.9 8.3-9.7 14.7-9.7zM460 0c11 0 21.6 4.4 29.5 12.2l42.3 42.3C539.6 62.4 544 73 544 84s-4.4 21.6-12.2 29.5l-88.2 88.2-101.3-101.3 88.2-88.2C438.4 4.4 449 0 460 0zM44.2 398.5L308.4 134.3 409.7 235.6 145.5 499.8C137.6 507.6 127 512 116 512s-21.6-4.4-29.5-12.2L44.2 457.5C36.4 449.6 32 439 32 428s4.4-21.6 12.2-29.5z" /></symbol>
+      <symbol id="fa-table-columns" viewBox="0 0 448 512"><path d="M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zm64 64l0 256 128 0 0-256-128 0zm320 0l-128 0 0 256 128 0 0-256z" /></symbol>
+      <symbol id="fa-expand" viewBox="0 0 448 512"><path d="M32 32C14.3 32 0 46.3 0 64l0 96c0 17.7 14.3 32 32 32s32-14.3 32-32l0-64 64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 32zM64 352c0-17.7-14.3-32-32-32S0 334.3 0 352l0 96c0 17.7 14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0 0-64zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0 0 64c0 17.7 14.3 32 32 32s32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-96 0zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32l0-96z" /></symbol>
+      <symbol id="fa-download" viewBox="0 0 448 512"><path d="M256 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 210.7-41.4-41.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 242.7 256 32zM64 320c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-46.9 0-56.6 56.6c-31.2 31.2-81.9 31.2-113.1 0L110.9 320 64 320zm304 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" /></symbol>
+      <symbol id="fa-rotate-left" viewBox="0 0 512 512"><path d="M24 192l144 0c9.7 0 18.5-5.8 22.2-14.8s1.7-19.3-5.2-26.2l-46.7-46.7c75.3-58.6 184.3-53.3 253.5 15.9 75 75 75 196.5 0 271.5s-196.5 75-271.5 0c-10.2-10.2-19-21.3-26.4-33-9.5-14.9-29.3-19.3-44.2-9.8s-19.3 29.3-9.8 44.2C49.7 408.7 61.4 423.5 75 437 175 537 337 537 437 437S537 175 437 75C342.8-19.3 193.3-24.7 92.7 58.8L41 7C34.1 .2 23.8-1.9 14.8 1.8S0 14.3 0 24L0 168c0 13.3 10.7 24 24 24z" /></symbol>
+      <symbol id="fa-rotate" viewBox="0 0 512 512"><path d="M480.1 192l7.9 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2S477.9 .2 471 7L419.3 58.8C375 22.1 318 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1C79.2 135.5 159.3 64 256 64 300.4 64 341.2 79 373.7 104.3L327 151c-6.9 6.9-8.9 17.2-5.2 26.2S334.3 192 344 192l136.1 0zm29.4 100.5c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-44.4 0-85.2-15-117.7-40.3L185 361c6.9-6.9 8.9-17.2 5.2-26.2S177.7 320 168 320L24 320c-13.3 0-24 10.7-24 24L0 488c0 9.7 5.8 18.5 14.8 22.2S34.1 511.8 41 505l51.8-51.8C137 489.9 194 512 256 512 385 512 491.7 416.6 509.4 292.5z" /></symbol>
+      <symbol id="fa-eraser" viewBox="0 0 576 512"><path d="M178.5 416l123 0 65.3-65.3-173.5-173.5-126.7 126.7 112 112zM224 480l-45.5 0c-17 0-33.3-6.7-45.3-18.7L17 345C6.1 334.1 0 319.4 0 304s6.1-30.1 17-41L263 17C273.9 6.1 288.6 0 304 0s30.1 6.1 41 17L527 199c10.9 10.9 17 25.6 17 41s-6.1 30.1-17 41l-135 135 120 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-288 0z" /></symbol>
+    </svg>
+    <header class="container">
+      <div>
+        <h1>Morf</h1>
+        <p data-i18n="tagline">補正したい範囲をポイントで囲むと、傾きやゆがみを整えて正面向きの画像にします。</p>
+      </div>
+      <label class="file-button">
+        <svg class="icon" aria-hidden="true"><use href="#fa-folder-open" /></svg>
+        <span data-i18n="openImage">画像を開く</span>
+        <input id="file-input" type="file" accept="image/*" />
+      </label>
+    </header>
+
+    <main class="container">
+      <section id="workspace" class="workspace" data-mobile-view="input" aria-label="射影変換ワークスペース" data-i18n-aria-label="workspace.label">
+        <div class="view-switch" role="group" aria-label="表示するキャンバス" data-i18n-aria-label="view.label">
+          <button class="secondary view-button" type="button" data-view="input" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#fa-image" /></svg><span data-i18n="view.input">入力</span></button>
+          <button class="secondary view-button" type="button" data-view="output" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#fa-wand-magic-sparkles" /></svg><span data-i18n="view.output">出力</span></button>
+          <button class="secondary view-button" type="button" data-view="both" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#fa-table-columns" /></svg><span data-i18n="view.both">両方</span></button>
+        </div>
+        <article class="input-panel">
+          <div class="panel-heading">
+            <div>
+              <h2 data-i18n="view.input">入力</h2>
+              <p id="input-instruction" data-i18n="instruction.drag">点をドラッグして範囲を合わせます</p>
+            </div>
+            <div class="panel-actions">
+              <span id="point-badge" class="badge" data-i18n="points.4">4点</span>
+              <button id="focus-edit-button" class="secondary compact mobile-only" type="button" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#fa-expand" /></svg><span data-button-label data-i18n="focus.expand">拡大編集</span></button>
+            </div>
+          </div>
+          <div id="input-stage" class="canvas-shell drop-zone">
+            <canvas id="input-canvas" tabindex="0" aria-describedby="canvas-help" aria-label="変換元画像。コントロールポイントをドラッグして範囲と歪みを指定できます" data-i18n-aria-label="canvas.inputLabel"></canvas>
+            <div class="drop-message" data-i18n="canvas.drop">画像をここにドロップ</div>
+          </div>
+          <p id="canvas-help" class="sr-only" data-i18n="canvas.help">ポイントをタップして選択できます。選択後は矢印キーでも移動できます。</p>
+        </article>
+
+        <article class="output-panel">
+          <div class="panel-heading">
+            <div>
+              <h2 data-i18n="view.output">出力</h2>
+              <p id="output-size" aria-live="polite">—</p>
+            </div>
+            <button id="export-button" class="secondary compact" type="button"><svg class="icon" aria-hidden="true"><use href="#fa-download" /></svg><span data-i18n="export.png">PNGで保存</span></button>
+          </div>
+          <div class="canvas-shell result-shell">
+            <canvas id="output-canvas" aria-label="射影変換後の画像" data-i18n-aria-label="canvas.outputLabel"></canvas>
+            <div id="rendering" class="rendering" hidden data-i18n="rendering">処理中…</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="controls" aria-label="変換オプション" data-i18n-aria-label="controls.label">
+        <div class="control-group">
+          <label for="aspect" data-i18n="aspect.label">アスペクト比</label>
+          <select id="aspect">
+            <option value="auto" selected data-i18n="aspect.auto">自動（選択範囲から推定）</option>
+            <option value="1">1:1</option>
+            <option value="1.333333">4:3</option>
+            <option value="1.5">3:2</option>
+            <option value="1.777778">16:9</option>
+            <option value="custom" data-i18n="aspect.custom">カスタム</option>
+          </select>
+        </div>
+        <div id="custom-aspect" class="control-group custom-aspect" hidden>
+          <label for="custom-width" data-i18n="aspect.ratio">幅 : 高さ</label>
+          <div class="ratio-fields">
+            <input id="custom-width" type="number" min="1" max="100" value="4" aria-label="比率の幅" data-i18n-aria-label="aspect.width" />
+            <span>:</span>
+            <input id="custom-height" type="number" min="1" max="100" value="3" aria-label="比率の高さ" data-i18n-aria-label="aspect.height" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="sampling" data-i18n="sampling.label">サンプリング</label>
+          <select id="sampling">
+            <option value="bilinear">Bilinear</option>
+            <option value="nearest">Nearest</option>
+            <option value="bicubic">Bicubic</option>
+            <option value="lanczos">Lanczos</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="mesh-size" data-i18n="mesh.label">コントロールポイント</label>
+          <select id="mesh-size">
+            <option value="2" data-i18n="mesh.4">4点（2 × 2）</option>
+            <option value="3" data-i18n="mesh.9">9点（3 × 3）</option>
+            <option value="4" data-i18n="mesh.16">16点（4 × 4）</option>
+            <option value="5" data-i18n="mesh.25">25点（5 × 5）</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="edge-snap" data-i18n="edge.label">エッジスナップ</label>
+          <select id="edge-snap">
+            <option value="none" data-i18n="edge.none">なし</option>
+            <option value="low" data-i18n="edge.low">低</option>
+            <option value="medium" data-i18n="edge.medium">中</option>
+            <option value="high" data-i18n="edge.high">高</option>
+          </select>
+        </div>
+        <div class="button-group">
+          <button id="undo-button" class="secondary" type="button" disabled><svg class="icon" aria-hidden="true"><use href="#fa-rotate-left" /></svg><span data-i18n="undo">元に戻す</span></button>
+          <button id="rotate-button" class="secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#fa-rotate" /></svg><span data-i18n="rotate">点を回転</span></button>
+          <button id="reset-button" class="secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#fa-eraser" /></svg><span data-i18n="reset">リセット</span></button>
+        </div>
+      </section>
+      <p class="hint" data-i18n="privacy">画像はブラウザ内だけで処理され、外部へ送信されません。</p>
+    </main>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/geometry.js"></script>
+    <script src="js/edge-snap.js"></script>
+    <script src="js/input-canvas.js"></script>
+    <script src="js/demo-image.js"></script>
+    <script src="app-worker.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

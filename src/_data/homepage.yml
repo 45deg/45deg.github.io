@@ -25,6 +25,23 @@ filters:
       ja: Article
       en: Article
 works:
+  - href: ./morf/
+    featured: false
+    title:
+      ja: Morf
+      en: Morf
+    year: 2026
+    description_html:
+      ja: 画像上のポイントを動かして傾きやゆがみを補正し、正面向きに変換できるブラウザツール。
+      en: A browser tool for straightening perspective and distortion by adjusting control points directly on an image.
+    tags:
+      - Image
+      - Utility
+    image:
+      src: ./images/i48.jpg
+      alt:
+        ja: Morfで画像の傾きとゆがみを補正している画面
+        en: Morf correcting the perspective and distortion of an image
   - href: ./sudoku-book/
     homeButton: false
     featured: false
