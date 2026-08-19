@@ -30,6 +30,8 @@
   const focusEditButton = $("#focus-edit-button");
   const viewButtons = [...document.querySelectorAll(".view-button")];
   const outputViewButton = $("[data-view='output']");
+  const exportButton = $("#export-button");
+  const exportStatus = $("#export-status");
 
   const sourceCanvas = document.createElement("canvas");
   const sourceCtx = sourceCanvas.getContext("2d", { willReadFrequently: true });
@@ -49,6 +51,7 @@
   let renderTimer = 0;
   let renderToken = 0;
   let dragDepth = 0;
+  let sourceFileStem = "";
 
   worker.addEventListener("message", ({ data }) => {
     if (data.type === "edges") {
@@ -167,6 +170,7 @@
       sourceCanvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
       sourceCanvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
       sourceCtx.drawImage(image, 0, 0, sourceCanvas.width, sourceCanvas.height);
+      sourceFileStem = safeFileStem(file.name);
       URL.revokeObjectURL(url);
       finishImageLoad();
     };
@@ -413,11 +417,90 @@
       undoButton.click();
     }
   });
-  $("#export-button").addEventListener("click", () => {
+  function canvasBlob(canvas) {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error("Could not encode the output canvas as PNG"));
+      }, "image/png");
+    });
+  }
+
+  function safeFileStem(filename) {
+    const withoutExtension = filename.replace(/\.[^.]*$/, "");
+    return withoutExtension
+      .normalize("NFKC")
+      .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-")
+      .replace(/[. ]+$/g, "")
+      .trim()
+      .slice(0, 80);
+  }
+
+  function exportFilename(date = new Date()) {
+    const pad = (value, length = 2) => String(value).padStart(length, "0");
+    const timestamp = [
+      date.getFullYear(),
+      pad(date.getMonth() + 1),
+      pad(date.getDate()),
+      "-",
+      pad(date.getHours()),
+      pad(date.getMinutes()),
+      pad(date.getSeconds()),
+      "-",
+      pad(date.getMilliseconds(), 3)
+    ].join("");
+    const sourcePrefix = sourceFileStem ? `${sourceFileStem}-` : "";
+    return `${sourcePrefix}morf-${timestamp}.png`;
+  }
+
+  function downloadBlob(blob, filename, openPreview = false) {
     const link = document.createElement("a");
-    link.download = "morf.png";
-    link.href = outputCanvas.toDataURL("image/png");
+    link.download = filename;
+    link.href = URL.createObjectURL(blob);
+    if (openPreview) {
+      // Older iOS versions ignore `download`, but can still show the PNG in a
+      // new tab where the system image menu offers Save Image / Save to Files.
+      link.target = "_blank";
+      link.rel = "noopener";
+    }
+    document.body.append(link);
     link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 60_000);
+  }
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  exportButton.addEventListener("click", async () => {
+    exportButton.disabled = true;
+    exportStatus.textContent = "";
+    try {
+      const blob = await canvasBlob(outputCanvas);
+      const filename = exportFilename();
+      const file = new File([blob], filename, { type: "image/png" });
+
+      // iOS does not reliably honor programmatic anchor downloads. Its native
+      // share sheet exposes system save/share destinations for the PNG file.
+      if (isIOS() && navigator.share && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file] });
+          return;
+        } catch (error) {
+          if (error.name === "AbortError") return;
+          // If sharing is unavailable at runtime, fall through to a preview.
+        }
+      }
+
+      downloadBlob(blob, filename, isIOS());
+    } catch (error) {
+      console.error(error);
+      exportStatus.textContent = t("export.error");
+    } finally {
+      exportButton.disabled = false;
+    }
   });
 
   new ResizeObserver(() => requestAnimationFrame(drawInput)).observe(inputCanvas);
