@@ -108,10 +108,9 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("absoluteUrl", absoluteUrl);
   eleventyConfig.addFilter("json", (value) => JSON.stringify(value));
 
-  eleventyConfig.addFilter("countByFilter", (works, key) => {
-    if (key === "all") return works.length;
-    if (key === "featured") return works.filter((work) => work.featured).length;
-    return works.filter((work) => work.tags?.includes(key[0].toUpperCase() + key.slice(1))).length;
+  eleventyConfig.addFilter("countByFilter", (works, filter) => {
+    if (filter.key === "all") return works.length;
+    return works.filter((work) => filter.tags.some((tag) => work.tags?.includes(tag))).length;
   });
 
   eleventyConfig.on("eleventy.after", () => {

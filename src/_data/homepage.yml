@@ -13,17 +13,82 @@ about:
   en: A collection of small web tools, visualizations, and notes I made for myself.
 filters:
   - key: all
+    tags: []
     label:
       ja: すべて
       en: All
-  - key: featured
+  - key: AI
+    tags:
+      - AI
     label:
-      ja: Featured
-      en: Featured
-  - key: article
+      ja: AI
+      en: AI
+  - key: Image
+    tags:
+      - Image
+    label:
+      ja: Image
+      en: Image
+  - key: Video
+    tags:
+      - Video
+    label:
+      ja: Video
+      en: Video
+  - key: PDF
+    tags:
+      - PDF
+    label:
+      ja: PDF
+      en: PDF
+  - key: Visualization
+    tags:
+      - Visualization
+      - 3D
+      - Simulation
+    label:
+      ja: Visualization
+      en: Visualization
+  - key: Game3D
+    tags:
+      - Game
+      - 3D
+    label:
+      ja: Game / 3D
+      en: Game / 3D
+  - key: Article
+    tags:
+      - Article
     label:
       ja: Article
       en: Article
+  - key: Tool
+    tags:
+      - Editor
+      - Utility
+      - Productivity
+      - Converter
+      - Search
+      - Viewer
+      - Reference
+      - Dictionary
+      - Text
+      - Markdown
+    label:
+      ja: Tool
+      en: Tool
+  - key: Code
+    tags:
+      - Programming
+      - Web Development
+      - Compiler
+      - Security
+      - WebAssembly
+      - Web
+      - Data
+    label:
+      ja: Code
+      en: Code
 works:
   - href: ./morf/
     featured: false
@@ -185,7 +250,7 @@ works:
         ja: GEESEのパズルゲーム画面
         en: GEESE puzzle game board
   - href: ./llm-token-map/
-    featured: false
+    featured: true
     title:
       ja: LLM Token Map
       en: LLM Token Map
@@ -265,7 +330,7 @@ works:
       src: ./images/i37.png
       alt: CJK Markdown Fixer
   - href: ./carta/
-    featured: true
+    featured: false
     title:
       ja: Carta
       en: Carta
@@ -371,7 +436,7 @@ works:
       class: placeholder-article
       emoji: 🐻
   - href: ./stitch/
-    featured: true
+    featured: false
     title:
       ja: Stitch
       en: Stitch
@@ -401,7 +466,7 @@ works:
       src: ./images/i28.png
       alt: Vibe Design Gallery
   - href: ./lucide-shape-search/
-    featured: true
+    featured: false
     title:
       ja: Lucide Shape Search
       en: Lucide Shape Search
@@ -417,7 +482,7 @@ works:
       src: ./images/i27.png
       alt: Lucide Shape Search
   - href: ./lucide-icons-map/
-    featured: true
+    featured: false
     title:
       ja: Lucide Icons Map
       en: Lucide Icons Map
@@ -432,7 +497,7 @@ works:
       src: ./images/i36.png
       alt: Lucide Icons Map
   - href: ./lucide-text-search/
-    featured: true
+    featured: false
     title:
       ja: Lucide Text Search
       en: Lucide Text Search
@@ -464,7 +529,7 @@ works:
       src: ./images/i26.png
       alt: 句読点補完ツール
   - href: ./crt/
-    featured: true
+    featured: false
     title:
       ja: CRT Phosphor Simulator
       en: CRT Phosphor Simulator
@@ -480,7 +545,7 @@ works:
       src: ./images/i25.jpg
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
-    featured: true
+    featured: false
     homeButton: false
     title:
       ja: ScreenCast Editor
@@ -558,7 +623,7 @@ works:
       src: ./images/i20.png
       alt: STICK GAME
   - href: ./mozaic-app/
-    featured: true
+    featured: false
     title:
       ja: mozaic-app
       en: mozaic-app
@@ -652,7 +717,7 @@ works:
       class: placeholder-article
       emoji: 🎬
   - href: ./subleq-ide/
-    featured: true
+    featured: false
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
@@ -944,7 +1009,7 @@ works:
       src: ./images/i7.png
       alt: Kantele
   - href: ./neural-network_v2
-    featured: true
+    featured: false
     title:
       ja: ニューラルネットワークの可視化 (ConvnetJS版)
       en: Neural Network Visualization (ConvnetJS)
@@ -964,7 +1029,7 @@ works:
       src: ./images/i3.png
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./rogyAdC2015
-    featured: true
+    featured: false
     title:
       ja: dynamorphism の紹介
       en: Introduction to Dynamorphism

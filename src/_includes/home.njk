@@ -1,3 +1,25 @@
+{% macro workCard(work, featured=false) %}
+<article class="card{% if featured %} is-featured{% endif %}" data-tags="{{ work.tags | join(',') }}">
+    <a class="card-link" href="{{ work.href | locale(lang) | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }}">
+        <span class="visually-hidden">{{ work.title | locale(lang) }}</span>
+    </a>
+    <div class="card-img-wrapper">
+        {% if work.image %}
+        <img src="{{ work.image.src | localPath(lang) }}" alt="{{ work.image.alt | locale(lang) }}">
+        {% else %}
+        <div class="placeholder-img {{ work.placeholder.class }}" data-emoji="{{ work.placeholder.emoji }}"></div>
+        {% endif %}
+    </div>
+    <div class="card-content">
+        <h3 class="card-title"><strong>{{ work.title | locale(lang) }}</strong> <span class="text-muted">({{ work.year }})</span></h3>
+        <p class="card-desc">{{ work.description_html | locale(lang) | safe }}</p>
+        <div class="card-tags" aria-label="{{ 'タグ' if lang == 'ja' else 'Tags' }}">
+            {% if featured %}<span class="featured-tag">Featured</span>{% endif %}
+            {% for tag in work.tags %}<span>{{ tag }}</span>{% endfor %}
+        </div>
+    </div>
+</article>
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 
@@ -51,7 +73,6 @@
 </head>
 
 <body>
-
     <header>
         <h1>{{ homepage.title }}</h1>
         <nav class="language-switch" aria-label="Language">
@@ -72,37 +93,42 @@
 
     <div class="page-flow">
         <main class="main">
-            <section>
-                <h2>Works</h2>
-                <div class="work-filters" id="work-filter-tags" aria-label="Work filters">
-                    {% for filter in homepage.filters %}
-                    <button class="tag-filter{% if filter.collapsible %} is-collapsible{% endif %}{% if loop.first %} is-active{% endif %}" type="button" data-filter="{{ filter.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ filter.label | locale(lang) }} ({{ homepage.works | countByFilter(filter.key) }})</button>
-                    {% endfor %}
-                </div>
-                <div class="works-grid" id="works-grid">
+            <section class="works-section featured-works">
+                <h2>Featured</h2>
+                <div class="works-grid showcase-grid">
                     {% for work in homepage.works %}
-                    <article class="card{% if work.featured %} is-featured{% endif %}" data-featured="{{ 'true' if work.featured else 'false' }}" data-tags="{{ work.tags | join(',') }}">
-                        <a class="card-link" href="{{ work.href | locale(lang) | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }}">
-                            <span class="visually-hidden">{{ work.title | locale(lang) }}</span>
-                        </a>
-                        <div class="card-img-wrapper">
-                            {% if work.image %}
-                            <img src="{{ work.image.src | localPath(lang) }}" alt="{{ work.image.alt | locale(lang) }}">
-                            {% else %}
-                            <div class="placeholder-img {{ work.placeholder.class }}" data-emoji="{{ work.placeholder.emoji }}"></div>
-                            {% endif %}
-                        </div>
-                        <div class="card-content">
-                            <h3 class="card-title"><strong>{{ work.title | locale(lang) }}</strong> <span class="text-muted">({{ work.year }})</span></h3>
-                            <p class="card-desc">{{ work.description_html | locale(lang) | safe }}</p>
-                            <div class="card-tags" aria-label="{{ 'タグ' if lang == 'ja' else 'Tags' }}">
-                                {% if work.featured %}<span class="featured-tag">Featured</span>{% endif %}
-                                {% for tag in work.tags %}<span>{{ tag }}</span>{% endfor %}
-                            </div>
-                        </div>
-                    </article>
+                    {% if work.featured %}{{ workCard(work, true) }}{% endif %}
                     {% endfor %}
                 </div>
+            </section>
+
+            <section class="works-section recent-works">
+                <h2>Recent</h2>
+                <div class="works-grid showcase-grid">
+                    {% for work in homepage.works %}
+                    {% if loop.index <= 6 %}{{ workCard(work) }}{% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="works-section all-works">
+                <h2>All Works <span class="text-muted">({{ homepage.works | length }})</span></h2>
+                <div class="work-tools">
+                    <div class="work-search" role="search">
+                        <label for="work-search-input">{{ '作品を検索' if lang == 'ja' else 'Search works' }}</label>
+                        <input id="work-search-input" type="search" autocomplete="off" placeholder="{{ 'タイトル・説明・タグ' if lang == 'ja' else 'Title, description, or tag' }}">
+                    </div>
+                    <div class="work-filters" id="work-filter-tags" aria-label="{{ 'カテゴリで絞り込む' if lang == 'ja' else 'Filter by category' }}">
+                        {% for filter in homepage.filters %}
+                        <button class="tag-filter{% if loop.first %} is-active{% endif %}" type="button" data-filter="{{ filter.key }}" data-filter-tags="{{ filter.tags | join(',') }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ filter.label | locale(lang) }} <span>({{ homepage.works | countByFilter(filter) }})</span></button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="filter-status" id="work-filter-status" aria-live="polite"></p>
+                <div class="works-grid" id="works-grid">
+                    {% for work in homepage.works %}{{ workCard(work) }}{% endfor %}
+                </div>
+                <p class="no-results" id="work-no-results" hidden>{{ '該当する作品がありません。' if lang == 'ja' else 'No works match your search.' }}</p>
             </section>
         </main>
     </div>
@@ -110,32 +136,50 @@
     <script>
         (() => {
             const filterRoot = document.querySelector("#work-filter-tags");
+            const searchInput = document.querySelector("#work-search-input");
             const cards = [...document.querySelectorAll("#works-grid .card")];
-            if (!filterRoot || !cards.length) return;
+            const status = document.querySelector("#work-filter-status");
+            const noResults = document.querySelector("#work-no-results");
+            if (!filterRoot || !searchInput || !cards.length) return;
 
             const filterButtons = [...filterRoot.querySelectorAll("[data-filter]")];
-            const applyFilter = (key) => {
-                for (const button of filterButtons) {
-                    const isActive = button.dataset.filter === key;
-                    button.classList.toggle("is-active", isActive);
-                    button.setAttribute("aria-pressed", String(isActive));
-                }
+            let activeFilter = "all";
+            let activeFilterTags = [];
+
+            const normalize = (value) => value.toLocaleLowerCase().normalize("NFKC");
+            const applyFilters = () => {
+                const query = normalize(searchInput.value.trim());
+                let visibleCount = 0;
 
                 for (const card of cards) {
                     const tags = card.dataset.tags.split(",").filter(Boolean);
-                    const isVisible = key === "all" ||
-                        (key === "featured" && card.dataset.featured === "true") ||
-                        tags.includes(key[0].toUpperCase() + key.slice(1));
+                    const matchesCategory = activeFilter === "all" || activeFilterTags.some((tag) => tags.includes(tag));
+                    const matchesQuery = !query || normalize(card.textContent).includes(query);
+                    const isVisible = matchesCategory && matchesQuery;
                     card.hidden = !isVisible;
+                    if (isVisible) visibleCount += 1;
                 }
+
+                status.textContent = {{ ('`${visibleCount} / ${cards.length} 件`' if lang == 'ja' else '`${visibleCount} / ${cards.length} works`') | safe }};
+                noResults.hidden = visibleCount !== 0;
             };
 
             filterRoot.addEventListener("click", (event) => {
                 const filterButton = event.target.closest("[data-filter]");
-                if (filterButton) {
-                    applyFilter(filterButton.dataset.filter);
+                if (!filterButton) return;
+
+                activeFilter = filterButton.dataset.filter;
+                activeFilterTags = filterButton.dataset.filterTags.split(",").filter(Boolean);
+                for (const button of filterButtons) {
+                    const isActive = button === filterButton;
+                    button.classList.toggle("is-active", isActive);
+                    button.setAttribute("aria-pressed", String(isActive));
                 }
+                applyFilters();
             });
+
+            searchInput.addEventListener("input", applyFilters);
+            applyFilters();
         })();
     </script>
 </body>
