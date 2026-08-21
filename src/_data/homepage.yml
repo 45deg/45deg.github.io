@@ -17,6 +17,12 @@ filters:
     label:
       ja: すべて
       en: All
+  - key: featured
+    featuredOnly: true
+    tags: []
+    label:
+      ja: Featured
+      en: Featured
   - key: AI
     tags:
       - AI
@@ -330,7 +336,7 @@ works:
       src: ./images/i37.png
       alt: CJK Markdown Fixer
   - href: ./carta/
-    featured: false
+    featured: true
     title:
       ja: Carta
       en: Carta
@@ -436,7 +442,7 @@ works:
       class: placeholder-article
       emoji: 🐻
   - href: ./stitch/
-    featured: false
+    featured: true
     title:
       ja: Stitch
       en: Stitch
@@ -466,7 +472,7 @@ works:
       src: ./images/i28.png
       alt: Vibe Design Gallery
   - href: ./lucide-shape-search/
-    featured: false
+    featured: true
     title:
       ja: Lucide Shape Search
       en: Lucide Shape Search
@@ -482,7 +488,7 @@ works:
       src: ./images/i27.png
       alt: Lucide Shape Search
   - href: ./lucide-icons-map/
-    featured: false
+    featured: true
     title:
       ja: Lucide Icons Map
       en: Lucide Icons Map
@@ -497,7 +503,7 @@ works:
       src: ./images/i36.png
       alt: Lucide Icons Map
   - href: ./lucide-text-search/
-    featured: false
+    featured: true
     title:
       ja: Lucide Text Search
       en: Lucide Text Search
@@ -529,7 +535,7 @@ works:
       src: ./images/i26.png
       alt: 句読点補完ツール
   - href: ./crt/
-    featured: false
+    featured: true
     title:
       ja: CRT Phosphor Simulator
       en: CRT Phosphor Simulator
@@ -545,7 +551,7 @@ works:
       src: ./images/i25.jpg
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
-    featured: false
+    featured: true
     homeButton: false
     title:
       ja: ScreenCast Editor
@@ -623,7 +629,7 @@ works:
       src: ./images/i20.png
       alt: STICK GAME
   - href: ./mozaic-app/
-    featured: false
+    featured: true
     title:
       ja: mozaic-app
       en: mozaic-app
@@ -717,7 +723,7 @@ works:
       class: placeholder-article
       emoji: 🎬
   - href: ./subleq-ide/
-    featured: false
+    featured: true
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
@@ -1009,7 +1015,7 @@ works:
       src: ./images/i7.png
       alt: Kantele
   - href: ./neural-network_v2
-    featured: false
+    featured: true
     title:
       ja: ニューラルネットワークの可視化 (ConvnetJS版)
       en: Neural Network Visualization (ConvnetJS)
@@ -1029,7 +1035,7 @@ works:
       src: ./images/i3.png
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./rogyAdC2015
-    featured: false
+    featured: true
     title:
       ja: dynamorphism の紹介
       en: Introduction to Dynamorphism

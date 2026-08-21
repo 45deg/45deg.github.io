@@ -1,5 +1,5 @@
 {% macro workCard(work, featured=false) %}
-<article class="card{% if featured %} is-featured{% endif %}" data-tags="{{ work.tags | join(',') }}">
+<article class="card{% if featured %} is-featured{% endif %}" data-tags="{{ work.tags | join(',') }}" data-featured="{{ 'true' if featured else 'false' }}">
     <a class="card-link" href="{{ work.href | locale(lang) | localPath(lang) }}" aria-label="{{ work.title | locale(lang) }}">
         <span class="visually-hidden">{{ work.title | locale(lang) }}</span>
     </a>
@@ -97,7 +97,7 @@
                 <h2>Works</h2>
                 <div class="work-filters" id="work-filter-tags" aria-label="{{ 'カテゴリで絞り込む' if lang == 'ja' else 'Filter by category' }}">
                     {% for filter in homepage.filters %}
-                    <button class="tag-filter{% if loop.first %} is-active{% endif %}" type="button" data-filter="{{ filter.key }}" data-filter-tags="{{ filter.tags | join(',') }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ filter.label | locale(lang) }} <span>({{ homepage.works | countByFilter(filter) }})</span></button>
+                    <button class="tag-filter{% if filter.featuredOnly %} featured-filter{% endif %}{% if loop.first %} is-active{% endif %}" type="button" data-filter="{{ filter.key }}" data-filter-tags="{{ filter.tags | join(',') }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ filter.label | locale(lang) }} <span>({{ homepage.works | countByFilter(filter) }})</span></button>
                     {% endfor %}
                 </div>
                 <div class="works-grid" id="works-grid">
@@ -120,7 +120,9 @@
 
                 for (const card of cards) {
                     const tags = card.dataset.tags.split(",").filter(Boolean);
-                    card.hidden = key !== "all" && !filterTags.some((tag) => tags.includes(tag));
+                    const matchesFeatured = key === "featured" && card.dataset.featured === "true";
+                    const matchesTags = filterTags.some((tag) => tags.includes(tag));
+                    card.hidden = key !== "all" && !matchesFeatured && !matchesTags;
                 }
 
                 for (const button of filterButtons) {

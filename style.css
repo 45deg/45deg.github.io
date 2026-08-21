@@ -154,6 +154,14 @@ a:hover {
     color: #fff;
 }
 
+.work-filters .featured-filter,
+.work-filters .featured-filter.is-active {
+    background: #f2c94c;
+    border-color: #8a6700;
+    color: #222;
+    font-weight: bold;
+}
+
 .work-filters .tag-filter.is-active::before {
     content: "[x] ";
 }
