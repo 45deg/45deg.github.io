@@ -126,56 +126,11 @@ a:hover {
     gap: 1.25rem 1rem;
 }
 
-.works-section + .works-section {
-    margin-top: 3.5rem;
-}
-
-.showcase-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.work-tools {
-    align-items: end;
-    display: grid;
-    gap: 0.8rem 1.25rem;
-    grid-template-columns: minmax(220px, 0.75fr) minmax(0, 2fr);
-    margin-bottom: 0.6rem;
-}
-
-.work-search {
-    display: grid;
-    gap: 0.3rem;
-}
-
-.work-search label {
-    font-size: 0.78rem;
-    font-weight: bold;
-}
-
-.work-search input {
-    appearance: none;
-    background: #fff;
-    border: 1px solid #222;
-    border-radius: 0;
-    color: #222;
-    font: inherit;
-    font-size: 0.82rem;
-    line-height: 1;
-    min-width: 0;
-    padding: 0.55rem 0.65rem;
-    width: 100%;
-}
-
-.work-search input:focus-visible {
-    outline: 3px solid #d94680;
-    outline-offset: 2px;
-}
-
 .work-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
 }
 
 .work-filters button {
@@ -206,20 +161,6 @@ a:hover {
 .work-filters button:focus-visible {
     outline: 3px solid #d94680;
     outline-offset: 2px;
-}
-
-.filter-status {
-    color: #666;
-    font-size: 0.78rem;
-    margin-bottom: 0.8rem;
-    min-height: 1.25rem;
-}
-
-.no-results {
-    border: 1px dashed #888;
-    color: #555;
-    padding: 2rem 1rem;
-    text-align: center;
 }
 
 /* Card Component */
@@ -406,11 +347,6 @@ a:hover {
     .works-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    .work-tools {
-        align-items: stretch;
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 600px) {
@@ -425,10 +361,6 @@ a:hover {
     .works-grid {
         grid-template-columns: 1fr;
         gap: 0.75rem;
-    }
-
-    .works-section + .works-section {
-        margin-top: 3rem;
     }
 
     .card {
