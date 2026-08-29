@@ -96,6 +96,21 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./crypto-demo/
+    featured: false
+    title:
+      ja: 公開鍵暗号・署名デモ
+      en: Public-Key Cryptography Demo
+    year: 2026
+    description_html:
+      ja: WebCrypto APIを使い、鍵生成、公開鍵暗号によるメッセージの暗号化・復号、デジタル署名をブラウザ内だけで試せるデモ。
+      en: A browser-only WebCrypto demo for generating keys, encrypting and decrypting messages with public-key cryptography, and creating digital signatures.
+    tags:
+      - Security
+      - Web
+    placeholder:
+      class: placeholder-data
+      emoji: 🔐
   - href: ./morf/
     featured: false
     title:
