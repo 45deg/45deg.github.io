@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebCryptoでの公開鍵暗号・署名デモ</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+<header class="container">
+  <h1>WebCryptoでの公開鍵暗号・署名デモ</h1>
+  <p>ブラウザ内だけでメッセージを暗号化・復号します。</p>
+</header>
+
+<main class="container">
+  <article id="usage">
+    <h2>使い方</h2>
+    <ol>
+      <li>「鍵を作る」で鍵ペアを作成し、公開鍵と秘密鍵を保存します。</li>
+      <li>暗号化してもらう相手に公開鍵を渡します。秘密鍵とパスフレーズは渡さないでください。</li>
+      <li>相手は公開鍵でメッセージを暗号化し、暗号文をあなたへ送ります。</li>
+      <li>受け取った暗号文を秘密鍵で復号します。設定した場合はパスフレーズも入力します。</li>
+    </ol>
+    <p><small>暗号処理は WebCrypto API で行います。入力内容や鍵を送信するコードはありません。GPG / OpenPGP との互換性はありません。</small></p>
+  </article>
+
+  <nav aria-label="機能">
+    <ul role="tablist">
+      <li><button id="tab-keys" role="tab" aria-controls="keys" aria-selected="true" data-tab="keys"><span aria-hidden="true">🔑</span> 鍵</button></li>
+      <li><button id="tab-encrypt" class="outline" role="tab" aria-controls="encrypt" aria-selected="false" data-tab="encrypt"><span aria-hidden="true">🔒</span> 暗号化</button></li>
+      <li><button id="tab-decrypt" class="outline" role="tab" aria-controls="decrypt" aria-selected="false" data-tab="decrypt"><span aria-hidden="true">🔓</span> 復号</button></li>
+      <li><button id="tab-sign" class="outline" role="tab" aria-controls="sign" aria-selected="false" data-tab="sign"><span aria-hidden="true">✍️</span> 署名</button></li>
+    </ul>
+  </nav>
+
+  <section id="keys" role="tabpanel" aria-labelledby="tab-keys">
+    <h2>鍵を作る</h2>
+    <div class="grid">
+      <label>名前<input id="key-name" type="text" autocomplete="name" required></label>
+      <label>メール（任意）<input id="key-email" type="email" autocomplete="email"></label>
+    </div>
+    <div class="grid">
+      <label>パスフレーズ（任意）<input id="key-passphrase" type="password" autocomplete="new-password"></label>
+      <label>パスフレーズを再入力<input id="key-passphrase-confirm" type="password" autocomplete="new-password"></label>
+    </div>
+    <p><small>設定する場合は10文字以上を推奨します。空欄の場合、復号時と署名時も空欄にします。</small></p>
+    <button id="generate-button" type="button"><span aria-hidden="true">🔑</span> 鍵ペアを作成</button>
+    <p id="key-progress" hidden aria-live="polite">鍵を生成しています…</p>
+    <div id="key-result" hidden>
+      <p><strong id="key-identity"></strong><br><code id="key-fingerprint"></code></p>
+      <label>公開鍵<textarea id="public-key-output" rows="6" readonly spellcheck="false"></textarea></label>
+      <p><button type="button" class="secondary" data-copy="#public-key-output"><span aria-hidden="true">📋</span> 公開鍵をコピー</button> <button type="button" class="secondary" data-download="#public-key-output" data-filename="webcrypto-public-key.asc"><span aria-hidden="true">💾</span> 公開鍵を保存</button> <button type="button" class="secondary" data-qr="#public-key-output" data-qr-type="PUBLIC KEY" data-qr-title="公開鍵"><span aria-hidden="true">📱</span> QR表示</button></p>
+      <label>暗号化された秘密鍵<textarea id="private-key-output" rows="6" readonly spellcheck="false"></textarea></label>
+      <button type="button" class="contrast" data-download="#private-key-output" data-filename="webcrypto-private-key.asc"><span aria-hidden="true">💾</span> 秘密鍵を保存</button>
+    </div>
+    <hr>
+    <h3>鍵をインポート</h3>
+    <p>保存した公開鍵または秘密鍵ファイルを選択します。両方を同時に選択できます。</p>
+    <label>鍵ファイル<input id="key-import-file" type="file" accept=".asc,.txt,text/plain" multiple></label>
+    <button id="import-key-button" type="button" class="secondary"><span aria-hidden="true">📥</span> インポート</button>
+    <p id="import-status" role="status"></p>
+  </section>
+
+  <section id="encrypt" role="tabpanel" aria-labelledby="tab-encrypt" hidden>
+    <h2>暗号化</h2>
+    <p>受信者の公開鍵でメッセージを暗号化します。</p>
+    <div class="field-heading">
+      <label for="encrypt-public-key">受信者の公開鍵</label>
+      <button type="button" class="outline compact" data-use-public><span aria-hidden="true">↩️</span> 読み込み済みの公開鍵を使う</button>
+    </div>
+    <textarea id="encrypt-public-key" rows="6" spellcheck="false" placeholder="-----BEGIN WEBCRYPTO PUBLIC KEY-----"></textarea>
+    <label>メッセージ <small id="message-count">0 bytes</small><textarea id="encrypt-message" rows="7"></textarea></label>
+    <button id="encrypt-button" type="button"><span aria-hidden="true">🔒</span> 暗号化</button>
+    <div id="encrypt-result" hidden>
+      <label>暗号文<textarea id="encrypted-output" rows="7" readonly spellcheck="false"></textarea></label>
+      <button type="button" class="secondary" data-copy="#encrypted-output"><span aria-hidden="true">📋</span> コピー</button>
+      <button type="button" class="secondary" data-download="#encrypted-output" data-filename="webcrypto-message.txt"><span aria-hidden="true">💾</span> 保存</button>
+      <button type="button" class="secondary" data-qr="#encrypted-output" data-qr-type="MESSAGE" data-qr-title="暗号文"><span aria-hidden="true">📱</span> QR表示</button>
+    </div>
+  </section>
+
+  <section id="decrypt" role="tabpanel" aria-labelledby="tab-decrypt" hidden>
+    <h2>復号</h2>
+    <p>受け取った暗号文を、自分の秘密鍵で復号します。</p>
+    <label>暗号文<textarea id="decrypt-message" rows="7" spellcheck="false" placeholder="-----BEGIN WEBCRYPTO MESSAGE-----"></textarea></label>
+    <div class="field-heading">
+      <label for="decrypt-private-key">秘密鍵</label>
+      <button type="button" class="outline compact" data-use-private="decrypt"><span aria-hidden="true">↩️</span> 読み込み済みの秘密鍵を使う</button>
+    </div>
+    <textarea id="decrypt-private-key" rows="6" spellcheck="false" placeholder="-----BEGIN WEBCRYPTO PRIVATE KEY-----"></textarea>
+    <label>パスフレーズ（任意）<input id="decrypt-passphrase" type="password" autocomplete="current-password"></label>
+    <button id="decrypt-button" type="button"><span aria-hidden="true">🔓</span> 復号</button>
+    <div id="decrypt-result" hidden>
+      <label>復号したメッセージ<textarea id="decrypted-output" rows="7" readonly></textarea></label>
+      <button type="button" class="secondary" data-copy="#decrypted-output"><span aria-hidden="true">📋</span> コピー</button>
+    </div>
+  </section>
+
+  <section id="sign" role="tabpanel" aria-labelledby="tab-sign" hidden>
+    <h2>署名</h2>
+    <p>署名は送信者の確認と改ざん検知に使います。</p>
+    <details open>
+      <summary>署名を作る</summary>
+      <label>メッセージ<textarea id="sign-message" rows="5"></textarea></label>
+      <div class="field-heading">
+        <label for="sign-private-key">秘密鍵</label>
+        <button type="button" class="outline compact" data-use-private="sign"><span aria-hidden="true">↩️</span> 読み込み済みの秘密鍵を使う</button>
+      </div>
+      <textarea id="sign-private-key" rows="5" spellcheck="false"></textarea>
+      <label>パスフレーズ（任意）<input id="sign-passphrase" type="password" autocomplete="current-password"></label>
+      <button id="sign-button" type="button"><span aria-hidden="true">✍️</span> 署名を作成</button>
+      <div id="sign-result" hidden><label>署名<textarea id="signature-output" rows="5" readonly spellcheck="false"></textarea></label><button type="button" class="secondary" data-copy="#signature-output"><span aria-hidden="true">📋</span> コピー</button> <button type="button" class="secondary" data-qr="#signature-output" data-qr-type="SIGNATURE" data-qr-title="署名"><span aria-hidden="true">📱</span> QR表示</button></div>
+    </details>
+    <details>
+      <summary>署名を検証する</summary>
+      <label>元のメッセージ<textarea id="verify-message" rows="5"></textarea></label>
+      <label>送信者の公開鍵<textarea id="verify-public-key" rows="5" spellcheck="false"></textarea></label>
+      <label>署名<textarea id="verify-signature" rows="5" spellcheck="false"></textarea></label>
+      <button id="verify-button" type="button"><span aria-hidden="true">✅</span> 検証</button>
+      <p id="verify-result" hidden role="status"></p>
+    </details>
+  </section>
+</main>
+
+<dialog id="qr-dialog">
+  <article>
+    <header><button type="button" aria-label="閉じる" rel="prev" data-close-qr></button><h3 id="qr-title">QRコード</h3></header>
+    <canvas id="qr-canvas" aria-label="生成したQRコード"></canvas>
+    <p id="qr-meta"></p>
+    <p><small>Binary modeで格納しています。Version 40を超えるデータは出力しません。</small></p>
+    <footer><button id="save-qr-button" type="button" class="secondary"><span aria-hidden="true">💾</span> PNG保存</button></footer>
+  </article>
+</dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
