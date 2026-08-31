@@ -83,8 +83,12 @@ button {
   background: #922;
 }
 
-.valid {
+.valid,
+.invalid {
   padding: 0.75rem;
   color: white;
+}
+
+.valid {
   background: #173;
 }
