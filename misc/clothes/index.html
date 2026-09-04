@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark"><title>Cloth Lab — 布の実験室</title><link rel="stylesheet" href="./src/style.css"></head>
+<body>
+  <header><a class="brand" href="./" aria-label="Cloth Lab ホーム"><span class="brand-icon">▧</span> Cloth Lab<span class="version">/ 01</span></a><span class="header-label">布の動きを、手の中に。</span><span id="gpu-status" class="status"><i></i> 初期化中</span></header>
+  <main>
+    <section class="viewport" aria-label="3D布シミュレーション">
+      <canvas id="canvas" tabindex="0" aria-label="3Dの布。ドラッグで引っ張るか切断。視点モードで回転。ホイールで拡大。キーボードでは矢印で回転、プラス・マイナスで拡大縮小。"></canvas>
+      <div class="scene-title"><h1>触れて、ほどく。</h1><p>風、重力、そしてあなたの手。</p></div>
+      <div class="view-label"><span class="cross">＋</span> PERSPECTIVE <span>3D</span></div>
+      <div class="metrics"><span><b id="fps">—</b> FPS</span><span><b id="particles">—</b> 粒子</span><span><b id="constraints">—</b> 拘束</span></div>
+      <div id="error" role="alert" hidden><h2>WebGPUを開始できませんでした</h2><p id="error-detail"></p><button onclick="location.reload()">再読み込み</button></div>
+      <div class="toolbar" role="group" aria-label="操作モード"><button data-tool="grab" aria-pressed="true"><span>↖</span> 引っ張る <kbd>1</kbd></button><button data-tool="cut" aria-pressed="false"><span>✂</span> 切断 <kbd>2</kbd></button><button data-tool="orbit" aria-pressed="false"><span>⌖</span> 視点 <kbd>3</kbd></button></div>
+      <p id="hint" class="hint">布をドラッグして引っ張る <span>·</span> ホイールでズーム</p>
+      <div class="axis"><span>Y</span><svg width="54" height="45" viewBox="0 0 54 45" aria-hidden="true"><path d="M26 28V3 M26 28L48 37 M26 28L6 39" fill="none" stroke="#789a9d"/><circle cx="26" cy="28" r="3" fill="#bdd7d9"/></svg><small>Z <span>X</span></small></div>
+    </section>
+    <aside aria-label="シミュレーション設定">
+      <div class="panel-heading"><h2>実験の設定</h2><span>PARAMETERS</span></div>
+      <section class="control-section"><h3>布の構成</h3><label for="resolution">メッシュの密度</label><select id="resolution"><option value="33">標準 · 33 × 33</option><option value="49" selected>高精細 · 49 × 49</option><option value="73">超高精細 · 73 × 73</option></select><div class="field-label">固定する位置</div><div class="segmented" role="group" aria-label="固定位置"><button data-pin="corners" aria-pressed="true">両端</button><button data-pin="top" aria-pressed="false">上辺</button><button data-pin="none" aria-pressed="false">なし</button></div><p class="muted">密度・固定位置を変えると布を再生成します。</p></section>
+      <section class="control-section"><h3>物理パラメータ</h3><label for="wind">風の強さ <output id="wind-out">1.8</output></label><input id="wind" type="range" min="0" max="5" step="0.1" value="1.8"><div class="range-captions"><span>無風</span><span>強風</span></div><label for="gravity">重力 <output id="gravity-out">9.8</output></label><input id="gravity" type="range" min="0" max="20" step="0.1" value="9.8"><label for="stiffness">拘束の反復回数 <output id="stiffness-out">24</output></label><input id="stiffness" type="range" min="8" max="48" step="2" value="24"><label for="damping">減衰 <output id="damping-out">0.8%</output></label><input id="damping" type="range" min="0" max="5" step="0.1" value="0.8"></section>
+      <section class="control-section"><h3>表示</h3><div class="display-row"><span>布の色</span><div class="swatches" role="group" aria-label="布の色"><button aria-label="アクア" aria-pressed="true" data-color="0.12,0.65,0.65" style="--swatch:#54bdba"></button><button aria-label="アイボリー" aria-pressed="false" data-color="0.78,0.70,0.53" style="--swatch:#d2c2a4"></button><button aria-label="ラベンダー" aria-pressed="false" data-color="0.46,0.36,0.72" style="--swatch:#a190ce"></button><button aria-label="コーラル" aria-pressed="false" data-color="0.8,0.28,0.22" style="--swatch:#d48173"></button></div></div><label class="toggle-label" for="wireframe">ワイヤーフレーム<input type="checkbox" id="wireframe" role="switch"></label></section>
+      <div class="actions"><button id="pause">Ⅱ <span>一時停止</span></button><button id="reset">↻ <span>リセット</span></button></div>
+      <div class="engine-note"><span class="engine-dot"></span><div><strong>GPU COMPUTE</strong><p>Verlet積分 / 距離拘束の反復緩和<br>物理計算から描画まで、GPU上で。</p></div></div>
+    </aside>
+  </main>
+  <footer><span>小さな粒子から、生まれる動き。</span><span>WEBGPU <i>·</i> VERLET <i>·</i> CONSTRAINT RELAXATION</span></footer>
+  <script type="module" src="./src/main.js"></script>
+</body></html>
