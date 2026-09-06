@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Multistage code generation</title>
+  <desc id="desc">With n set to 3, stage { $(n * 2) + x } generates the code 6 + x.</desc>
+  <rect width="1200" height="675" fill="#ffffff"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="65" y="85" width="620" height="505" rx="24" fill="#f8fafc" stroke="#334155" stroke-width="6"/>
+    <g fill="#111827" font-size="58" font-weight="700">
+      <text x="105" y="185">const n = 3;</text>
+      <text x="105" y="305"><tspan fill="#6d28d9">stage</tspan> {</text>
+      <text x="140" y="405"><tspan fill="#6d28d9">$(</tspan>n * 2<tspan fill="#6d28d9">)</tspan> + x</text>
+      <text x="105" y="505">}</text>
+    </g>
+    <path d="M730 338H810m-28-28 28 28-28 28" fill="none" stroke="#334155" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="855" y="85" width="280" height="505" rx="24" fill="#f8fafc" stroke="#334155" stroke-width="6"/>
+    <text x="995" y="360" fill="#111827" font-size="68" font-weight="800" text-anchor="middle">6 + x</text>
+  </g>
+</svg>

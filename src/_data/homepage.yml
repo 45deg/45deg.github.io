@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./multistage-js/
+    featured: false
+    title:
+      ja: Multistage JS
+      en: Multistage JS
+    year: 2026
+    description_html:
+      ja: JavaScriptに<code>stage {}</code>と<code>$()</code>を加え、コード生成・実行の段階を進めながら多段階計算を試せるブラウザIDE。
+      en: A browser IDE for exploring multistage computation by extending JavaScript with <code>stage {}</code> and <code>$()</code>, then stepping through code generation and execution.
+    tags:
+      - Programming
+      - Compiler
+      - Education
+    image:
+      src: ./images/i49.svg
+      alt:
+        ja: stageブロックとエスケープ式がL2からL1、L0へ変換されるMultistage JSの文法図
+        en: Multistage JS syntax diagram showing a stage block and escaped expression transforming from L2 to L1 to L0
   - href: ./crypto-demo/
     featured: false
     title:

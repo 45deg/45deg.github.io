@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>多段階計算 in JS</title>
+    <script type="module" crossorigin src="./assets/index-D4oGE7Wr.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CVbefLJ_.css">
+  </head>
+  <body>
+    <div class="ide-shell">
+    <header class="titlebar">
+      <div class="product-title">
+        <span>Multistage JS</span>
+      </div>
+      <nav class="titlebar-nav" aria-label="ヘルプ">
+      <details name="help-panel">
+        <summary>文法リファレンス</summary>
+        <div class="docs-popover">
+        <h2>文法リファレンス</h2>
+        <p>
+          通常のJavaScriptに <code>stage {}</code> と <code>$()</code> を追加し、Code値を
+          <code>run()</code>で実行する実験的な計算モデルです。
+          <code>stage</code> の本体はその場では実行されず、次の段階で使うコードとして保持されます。
+        </p>
+        <dl>
+          <dt><code>stage { ... }</code></dt>
+          <dd>
+            ブロックを内部のESTree ASTとして保持するCode値を作ります。ネストした <code>stage</code> は、さらに次の段階まで評価されません。
+          </dd>
+
+          <dt><code>$(expression)</code></dt>
+          <dd>
+            ひとつ外側のstageで式を評価し、結果を現在構築中のコードへ埋め込みます。
+            数値・文字列・真偽値・配列・単純なオブジェクトはリテラルASTになり、Code値は文字列化せずASTのまま接合されます。
+            <code>stage {}</code> の外側にある <code>$</code> は普通のJavaScript識別子です。
+          </dd>
+
+          <dt><code>run(code[, environment])</code></dt>
+          <dd>
+            Code値を1段実行します。自由変数がある場合は、第2引数のobjectまたは現在の実行環境から与えます。
+            Code以外の値と不足した自由変数は実行前に拒否されます。
+          </dd>
+
+          <dt><code>Code.simpleTco(code)</code></dt>
+          <dd>
+            名前付き関数式の直接自己末尾呼び出しを、一時変数による引数更新と
+            stack-safeな<code>while</code>ループへ変換します。対応subset外の関数は明示的に拒否します。
+          </dd>
+        </dl>
+
+        <h3>評価されるタイミング</h3>
+        <table border="1" cellpadding="6" cellspacing="0">
+          <thead>
+            <tr><th scope="col">位置</th><th scope="col">扱い</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">通常のJavaScript</th><td>現在のstageで実行します。</td></tr>
+            <tr><th scope="row"><code>stage { ... }</code></th><td>本体を実行せず、次段のCode値を作ります。</td></tr>
+            <tr><th scope="row"><code>$(...)</code></th><td>現在のstageで評価し、その結果を内側のコードへ埋め込みます。</td></tr>
+            <tr><th scope="row"><code>run(code)</code></th><td>Code値を現在のstageで実行し、最終式の値を返します。</td></tr>
+            <tr><th scope="row">ネストした <code>stage</code></th><td>次のstage操作までそのまま残ります。</td></tr>
+          </tbody>
+        </table>
+
+        <h3>例</h3>
+        <pre><code class="language-javascript">const n = 3;
+
+stage {
+  const k = $(n * 2);
+  stage {
+    console.log($(k) + x);
+  }
+}</code></pre>
+        <p>
+          最初の段階で <code>$(n * 2)</code> が <code>6</code>になり、次の段階で <code>$(k)</code> が
+          <code>6</code>になります。<code>x</code> はL0まで残る自由変数です。
+        </p>
+
+        <h3>Code値の構造を調べる</h3>
+        <p>
+          Code値はopaqueで、生のESTree ASTや内部の束縛表を公開しません。式を変換するときは
+          <code>Code.match</code>を使います。分解された左右の項もCode値なので、自由変数や捕捉した束縛を失わずに
+          <code>$()</code>で再び接合できます。
+        </p>
+        <pre><code class="language-javascript">function swap(code) {
+  return Code.match(code, {
+    binary(operator, left, right) {
+      if (operator !== "+") throw new Error("+ only");
+      return stage { $(right) + $(left) };
+    },
+    fallback(kind) {
+      throw new Error("unsupported: " + kind);
+    }
+  });
+}</code></pre>
+        <p>
+          <code>literal</code>、<code>identifier</code>、<code>binary</code>、<code>unary</code>、
+          <code>conditional</code>、<code>call</code>、<code>member</code>を扱えます。
+          対応しない式はAST種別名と式全体のCode値を<code>fallback</code>へ渡します。
+        </p>
+
+        <h3>安全性と現在の制約</h3>
+        <ul>
+          <li>式の位置へ埋め込むCode値は、単一の式を含む必要があります。</li>
+          <li><code>$()</code> は1段外側へ戻る操作です。<code>$$()</code> のような多段escapeは未定義です。</li>
+          <li>Code値は自由変数、捕捉した束縛ID、制御要求をメタデータとして持ちます。</li>
+          <li>公開メタデータは読み取り専用です。生ASTと捕捉値を保持する内部の束縛表にはアクセスできません。</li>
+          <li><code>run</code>はCode contractを検査し、必要な自由変数が不足している場合はコードを実行しません。</li>
+          <li>ASTの接合では名前ではなく束縛IDを保存するため、接合先の同名変数に捕獲されません。</li>
+          <li>消滅するローカルscopeへの参照と、stageをまたいだ不正な <code>return</code>・<code>break</code>・<code>continue</code> を生成時に拒否します。</li>
+          <li>top-level <code>await</code> は、明示的なasync stageをまだ持たないため拒否します。生成コード内のasync関数では使用できます。</li>
+        </ul>
+        </div>
+      </details>
+
+      <details name="help-panel">
+        <summary>使い方</summary>
+        <div class="docs-popover docs-popover-right">
+        <h2>IDEの使い方</h2>
+        <ol>
+          <li><strong>Source</strong>へgeneratorコードを書きます。Exampleからサンプルも選べます。</li>
+          <li><strong>Stage →</strong>を押すと、現在のstage境界だけを1段評価します。</li>
+          <li><strong>Current</strong>は残っているstage数です。たとえば <code>L2 → L1 → L0</code> と変化します。</li>
+          <li><strong>Bindings</strong>には、各stageを進めるときに必要な自由変数をJSON objectで指定します。同じobjectをL0の実行にも使います。</li>
+          <li><strong>Run L0</strong>はstage境界がなくなったときだけ押せます。実行結果はConsoleへ表示されます。</li>
+        </ol>
+        <dl>
+          <dt>Level tabs</dt>
+          <dd>Codeは編集可能な入力です。Stage後にL1、L0などの読み取り専用タブが追加され、各段階の残余プログラムへ戻れます。</dd>
+
+          <dt>Reset</dt>
+          <dd>選択中のExampleを最初のSourceへ戻します。</dd>
+
+          <dt>Clear</dt>
+          <dd>Consoleの表示だけを消します。コードや履歴は変更しません。</dd>
+
+          <dt>Code contract</dt>
+          <dd>現在選択しているCode値が次の実行で要求する自由変数と、前段から安全に持ち越した捕捉束縛を表示します。</dd>
+        </dl>
+        <p><kbd>⌘</kbd> + <kbd>Enter</kbd> または <kbd>Ctrl</kbd> + <kbd>Enter</kbd> でも1段進められます。</p>
+        </div>
+      </details>
+      </nav>
+    </header>
+
+    <main class="workbench">
+      <aside class="explorer-pane">
+        <div class="pane-heading">EXPLORER</div>
+        <section class="explorer-section">
+          <h2>MULTISTAGE WORKSPACE</h2>
+          <label for="example-select">Example</label>
+          <select id="example-select"></select>
+        </section>
+        <section class="example-summary">
+          <h2>README</h2>
+          <p id="example-description"></p>
+        </section>
+      </aside>
+
+      <section class="editor-pane" aria-labelledby="editor-title">
+        <div class="editor-tabbar">
+          <div class="editor-tabs" role="tablist" aria-label="Code and stage results">
+            <button id="code-tab" class="editor-tab editor-file-tab" type="button" role="tab" aria-selected="true">
+              <span class="js-badge" aria-hidden="true">JS</span>
+              <span id="editor-title">Code</span>
+            </button>
+            <div id="stage-tabs" class="stage-tabs"></div>
+          </div>
+          <div class="editor-actions" aria-live="polite">
+            <span>Current</span>
+            <strong id="current-level">L2</strong>
+            <span id="level-description">2 stages remain</span>
+          </div>
+        </div>
+        <div id="source-editor" class="source-editor"></div>
+        <div class="editor-toolbar">
+          <span class="shortcut"><kbd>⌘</kbd><kbd>Enter</kbd> to stage</span>
+          <div class="toolbar-actions">
+            <button id="reset-button" class="secondary-button" type="button">Reset</button>
+            <button id="stage-button" class="primary-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 7 6-7 6V4Z"/></svg>
+              Stage
+            </button>
+            <button id="run-button" class="primary-button run-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 7 6-7 6V4Z"/></svg>
+              Run L0
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="inspector-pane">
+        <div class="pane-heading">RUNTIME INSPECTOR</div>
+        <section class="inspector-section">
+          <div class="section-heading">
+            <label for="bindings-editor">Bindings</label>
+            <span>JSON · all stages</span>
+          </div>
+          <textarea id="bindings-editor" rows="8" spellcheck="false"></textarea>
+        </section>
+        <section class="inspector-section contract-section">
+          <h2>CODE CONTRACT</h2>
+          <dl>
+            <div><dt>Free variables</dt><dd id="free-variables">Stage後に表示</dd></div>
+            <div><dt>Captured bindings</dt><dd id="captured-bindings">Stage後に表示</dd></div>
+            <div><dt>Control</dt><dd><span class="contract-ok">Closed</span></dd></div>
+          </dl>
+        </section>
+        <section class="runtime-note">
+          <span class="info-icon" aria-hidden="true">i</span>
+          <p>不正な制御対象は生成時に拒否されます。</p>
+        </section>
+      </aside>
+
+      <section class="bottom-panel console-panel" aria-labelledby="console-title">
+        <div class="panel-tabbar">
+          <h2 id="console-title" class="panel-tab active">CONSOLE</h2>
+          <button id="clear-console" class="icon-text-button" type="button" aria-label="Consoleをクリア">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 2h6l1 2h3v2H3V4h3l1-2Zm-2 6h10l-1 10H6L5 8Zm2.2 2 .6 6h4.4l.6-6H7.2Z"/></svg>
+            Clear
+          </button>
+        </div>
+        <pre id="console-output" role="log" aria-live="polite">Ready</pre>
+      </section>
+    </main>
+    </div>
+
+  </body>
+</html>
