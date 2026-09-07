@@ -96,6 +96,25 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./scroll-stitch/
+    homeButton: false
+    featured: false
+    title:
+      ja: Scroll Stitch
+      en: Scroll Stitch
+    year: 2026
+    description_html:
+      ja: 縦スクロール動画をブラウザ内でつなぎ合わせ、必要な範囲を切り出してPNG画像として保存できるツール。
+      en: A browser tool for stitching vertical scrolling videos into images and saving selected regions as PNG files.
+    tags:
+      - Image
+      - Video
+      - Utility
+    image:
+      src: ./images/i50.jpg
+      alt:
+        ja: Scroll Stitchでスクロール動画を縦長画像に結合し、3枚のPNGに分割する画面
+        en: Scroll Stitch combining a scrolling video into a long image and splitting it into three PNG files
   - href: ./multistage-js/
     featured: false
     title:
