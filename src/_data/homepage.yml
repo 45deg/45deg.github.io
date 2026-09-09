@@ -96,6 +96,23 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./misc/c2pa-inspector.html
+    homeButton: false
+    featured: false
+    title:
+      ja: C2PA インスペクター
+      en: C2PA Inspector
+    year: 2026
+    description_html:
+      ja: PNG画像に埋め込まれたC2PAの生成ソフト、署名証明書、来歴を端末内で確認・比較するツール。
+      en: A local browser tool for inspecting and comparing C2PA provenance, signing certificates, and declared creation software embedded in PNG images.
+    tags:
+      - Image
+      - Security
+      - Viewer
+    placeholder:
+      class: placeholder-data
+      emoji: 🔎
   - href: ./scroll-stitch/
     homeButton: false
     featured: false
