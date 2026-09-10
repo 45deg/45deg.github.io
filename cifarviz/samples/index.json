@@ -1,0 +1,152 @@
+[
+  {
+    "id": 9017,
+    "label": 0,
+    "src": "samples/09017.png"
+  },
+  {
+    "id": 8800,
+    "label": 0,
+    "src": "samples/08800.png"
+  },
+  {
+    "id": 9565,
+    "label": 0,
+    "src": "samples/09565.png"
+  },
+  {
+    "id": 2645,
+    "label": 1,
+    "src": "samples/02645.png"
+  },
+  {
+    "id": 4663,
+    "label": 1,
+    "src": "samples/04663.png"
+  },
+  {
+    "id": 5323,
+    "label": 1,
+    "src": "samples/05323.png"
+  },
+  {
+    "id": 2318,
+    "label": 2,
+    "src": "samples/02318.png"
+  },
+  {
+    "id": 559,
+    "label": 2,
+    "src": "samples/00559.png"
+  },
+  {
+    "id": 1099,
+    "label": 2,
+    "src": "samples/01099.png"
+  },
+  {
+    "id": 664,
+    "label": 3,
+    "src": "samples/00664.png"
+  },
+  {
+    "id": 6825,
+    "label": 3,
+    "src": "samples/06825.png"
+  },
+  {
+    "id": 8279,
+    "label": 3,
+    "src": "samples/08279.png"
+  },
+  {
+    "id": 6622,
+    "label": 4,
+    "src": "samples/06622.png"
+  },
+  {
+    "id": 3545,
+    "label": 4,
+    "src": "samples/03545.png"
+  },
+  {
+    "id": 7325,
+    "label": 4,
+    "src": "samples/07325.png"
+  },
+  {
+    "id": 2936,
+    "label": 5,
+    "src": "samples/02936.png"
+  },
+  {
+    "id": 2864,
+    "label": 5,
+    "src": "samples/02864.png"
+  },
+  {
+    "id": 9180,
+    "label": 5,
+    "src": "samples/09180.png"
+  },
+  {
+    "id": 8150,
+    "label": 6,
+    "src": "samples/08150.png"
+  },
+  {
+    "id": 8247,
+    "label": 6,
+    "src": "samples/08247.png"
+  },
+  {
+    "id": 9614,
+    "label": 6,
+    "src": "samples/09614.png"
+  },
+  {
+    "id": 7658,
+    "label": 7,
+    "src": "samples/07658.png"
+  },
+  {
+    "id": 2328,
+    "label": 7,
+    "src": "samples/02328.png"
+  },
+  {
+    "id": 6324,
+    "label": 7,
+    "src": "samples/06324.png"
+  },
+  {
+    "id": 8379,
+    "label": 8,
+    "src": "samples/08379.png"
+  },
+  {
+    "id": 2399,
+    "label": 8,
+    "src": "samples/02399.png"
+  },
+  {
+    "id": 7678,
+    "label": 8,
+    "src": "samples/07678.png"
+  },
+  {
+    "id": 589,
+    "label": 9,
+    "src": "samples/00589.png"
+  },
+  {
+    "id": 545,
+    "label": 9,
+    "src": "samples/00545.png"
+  },
+  {
+    "id": 6207,
+    "label": 9,
+    "src": "samples/06207.png"
+  }
+]
