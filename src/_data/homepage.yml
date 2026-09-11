@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./cifarviz/
+    featured: false
+    title:
+      ja: CIFAR / VIZ
+      en: CIFAR / VIZ
+    year: 2026
+    description_html:
+      ja: CIFAR-10の画像分類を題材に、ニューラルネットワークの各層の活性値と予測結果を3Dで探索し、モデルを比較できる可視化ツール。
+      en: An interactive 3D explorer for CIFAR-10 image classification, with layer activations, predictions, and model comparisons.
+    tags:
+      - AI
+      - Visualization
+      - Education
+    image:
+      src: ./images/i51.jpg
+      alt:
+        ja: CIFAR / VIZで飛行機の画像を処理するTinyCNNの各層を3D表示した画面
+        en: CIFAR / VIZ showing a 3D view of TinyCNN layers processing an airplane image
   - href: ./misc/c2pa-inspector.html
     homeButton: false
     featured: false
