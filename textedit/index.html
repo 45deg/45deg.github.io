@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>a-b text</title><meta name="description" content="開始と終了をタップして長文を選択する、シンプルなエディタ。">
+  <link rel="icon" href="icons/favicon.svg">
+  <link rel="stylesheet" href="style.css"><script type="module" src="app.js"></script>
+</head>
+<body>
+<main class="app">
+  <div class="workspace">
+    <textarea id="editor" aria-label="文書本文" spellcheck="false" placeholder="ここから書き始める…"></textarea>
+    <div id="reader" tabindex="0" role="region" aria-label="本文。開始位置と終了位置をタップして選択" hidden></div>
+    <aside class="minimap" aria-label="文書内の高速移動"><canvas id="map" aria-hidden="true"></canvas><div id="map-selection"></div><div id="viewport"></div><input id="scroll" type="range" min="0" max="1000" value="0" orient="vertical" aria-label="文書内のスクロール位置"></aside>
+  </div>
+  <div class="mode-bar" hidden><strong id="selection-count" aria-live="polite" hidden></strong><span id="hint" aria-live="polite">開始位置をタップ</span><div class="edge-target"><button id="adjust-start" aria-pressed="false">開始</button><button id="adjust-end" aria-pressed="true">終了</button></div><button id="done" title="編集に戻る" aria-label="選択モードを終了して編集に戻る" hidden><span class="icon icon-arrow-left" aria-hidden="true"></span><span class="button-label">編集に戻る</span></button></div>
+  <section id="selection-tools" hidden aria-label="選択範囲の操作"><div class="edge-tools" role="group" aria-label="段落単位の移動"><button data-unit="paragraph" data-direction="-1"><span class="icon icon-arrow-up" aria-hidden="true"></span><span>前の段落</span></button><button data-unit="paragraph" data-direction="1"><span class="icon icon-arrow-down" aria-hidden="true"></span><span>次の段落</span></button></div><div class="actions"><button id="copy" aria-label="選択範囲をコピー" title="選択範囲をコピー"><span class="icon icon-copy" aria-hidden="true"></span><span class="button-label">コピー</span></button><button id="cut" aria-label="選択範囲を切り取り" title="選択範囲を切り取り"><span class="icon icon-scissors" aria-hidden="true"></span><span class="button-label">切り取り</span></button><button id="delete" aria-label="選択範囲を削除" title="選択範囲を削除" class="danger"><span class="icon icon-trash-2" aria-hidden="true"></span><span class="button-label">削除</span></button></div><button id="reset-selection" aria-label="終了位置の選択を取り消す" title="終了位置を戻す"><span class="icon icon-rotate-ccw" aria-hidden="true"></span><span class="button-label">終了位置を戻す</span></button></section>
+  <div class="floating-tools" role="group" aria-label="編集ツール"><button id="range-mode" aria-label="範囲選択" title="範囲選択"><span class="icon icon-text-select" aria-hidden="true"></span><span class="button-label">範囲選択</span></button><button id="copy-all" aria-label="全文をコピー" title="全文をコピー"><span class="icon icon-copy" aria-hidden="true"></span><span class="button-label">全文コピー</span></button><button id="undo" disabled aria-label="元に戻す"><span class="icon icon-undo-2" aria-hidden="true"></span></button><button id="font-settings" aria-label="文字サイズ" aria-haspopup="dialog">Aa</button></div>
+  <div id="notice" role="status" aria-live="polite"></div>
+</main><dialog id="font-dialog" aria-labelledby="font-title"><div class="font-heading"><h2 id="font-title">文字サイズ</h2><button id="font-close" aria-label="文字サイズ設定を閉じる">閉じる</button></div><label for="font-size">本文 <output id="font-value">18px</output></label><div class="font-adjust"><button id="font-smaller" aria-label="文字を小さくする">−</button><input id="font-size" type="range" min="14" max="28" step="1" value="18"><button id="font-larger" aria-label="文字を大きくする">＋</button></div><div class="font-limits"><span>小</span><span>大</span></div><p class="font-preview">読みやすい大きさで、<br>文章をゆっくり編集。</p></dialog></body></html>

@@ -1,0 +1,97 @@
+/* Base and shared controls */
+:root{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;font-size:16px;color:#252525;background:#fff;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,textarea{font:inherit}
+[hidden]{display:none!important}
+button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 12px;border:1px solid #e6e6e6;border-radius:6px;background:#fff;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:hover:not(:disabled){background:#f3f3f3}
+button:active:not(:disabled){background:#eaeaea}
+button:disabled{color:#939ba8;cursor:default}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid #005aff;outline-offset:2px}
+.icon{display:block;width:18px;height:18px;flex-shrink:0;background-color:currentColor;mask:var(--icon-url) center / contain no-repeat;-webkit-mask:var(--icon-url) center / contain no-repeat;pointer-events:none}
+/* Document */
+.app{position:relative;height:var(--app-height,100dvh);max-width:960px;margin:auto;display:flex;flex-direction:column;background:#fff;padding-top:env(safe-area-inset-top)}
+.workspace{position:relative;flex:1;min-height:0;margin:0 14px 0 24px;display:flex;gap:10px}
+#editor,#reader{flex:1;min-width:0;width:100%;margin:0;padding:24px 10px calc(110px + env(safe-area-inset-bottom)) 0;font-size:var(--editor-font-size,1.125rem);line-height:1.95;letter-spacing:.02em;font-family:inherit;tab-size:2;white-space:pre-wrap;overflow-wrap:anywhere;overflow-y:auto;border:0;resize:none;outline-offset:-3px;background:#fff;color:inherit;scrollbar-width:none;scroll-padding-bottom:100px}
+#reader{position:relative;cursor:text;user-select:none;padding-bottom:24px}
+#editor::-webkit-scrollbar,#reader::-webkit-scrollbar{display:none}
+mark{background:#e8edf6;color:inherit;border-bottom:1px solid #6c7b96}
+.minimap{width:30px;flex-shrink:0;position:relative;margin:24px 0 20px;border-radius:3px;overflow:hidden}
+#map{width:100%;height:100%;position:absolute;inset:0;opacity:.35}
+#viewport{position:absolute;width:100%;min-height:10px;border-right:3px solid #8c8c8c;background:#00000004;pointer-events:none}
+#map-selection{position:absolute;left:0;width:100%;background:#00000008;border-left:3px solid #555;pointer-events:none}
+#scroll{appearance:none;writing-mode:vertical-lr;direction:ltr;position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ns-resize;touch-action:none}
+#scroll:focus-visible{opacity:.7}
+/* Selection dock */
+.mode-bar{display:flex;align-items:center;justify-content:space-between;gap:4px;flex-shrink:0;min-height:52px;padding:4px 16px calc(4px + env(safe-area-inset-bottom));border-top:1px solid #e9e9e9}
+#hint{font-size:13px;line-height:1.6;color:#666}
+#selection-count{font-size:12px;font-weight:400;color:#666}
+#done{flex-shrink:0;border:0;font-size:13px;padding:8px 4px}
+#done .icon{width:16px;height:16px}
+.edge-target{display:flex;gap:0}
+.edge-target button{border:0;background:transparent;padding:8px 6px;border-radius:0;font-size:14px;color:#666}
+.edge-target button[aria-pressed=true]{box-shadow:inset 0 -2px #333;color:#222;font-weight:500}
+.app:has(#selection-tools[hidden]) .edge-target{display:none}
+.app:has(#selection-tools:not([hidden])) .mode-bar{padding-bottom:0}
+.app:has(#selection-tools:not([hidden])) #hint{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#selection-tools{flex-shrink:0;display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;column-gap:8px;padding:0 16px calc(8px + env(safe-area-inset-bottom))}
+.edge-tools{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0;border-bottom:1px solid #efefef}
+.edge-tools>button{width:100%;padding:10px;border:0;background:transparent;gap:8px;font-size:14px}
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+.actions button{border:0;font-size:13px;white-space:nowrap;padding:10px 3px;background:transparent;gap:5px}
+.actions .icon{width:16px;height:16px}
+.actions #copy{font-weight:600;color:#222}
+.actions .danger{color:#954747}
+#reset-selection{min-width:44px;margin-top:4px;border:0;background:transparent;padding:8px 0;color:#666}
+#reset-selection .button-label{display:none}
+/* Editing toolbar */
+.floating-tools{position:absolute;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:2px;padding:2px;max-width:calc(100% - 16px);border:1px solid #e8e8e8;border-radius:8px;background:#fff;z-index:2}
+.floating-tools button{border:0;min-width:44px;font-size:13px;white-space:nowrap;padding:8px;background:transparent}
+#font-settings{font-size:17px}
+.app:has(.mode-bar:not([hidden])) .floating-tools{display:none}
+/* Font dialog and feedback */
+dialog{width:calc(100% - 32px);max-width:360px;border:1px solid #dce2ed;border-radius:14px;padding:20px;color:inherit}
+dialog::backdrop{background:#202b4555}
+#font-dialog{max-height:calc(100dvh - 32px);overflow:auto}
+.font-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:8px}
+.font-heading h2{font-size:18px;margin:0}
+.font-heading button{font-size:13px}
+#font-dialog label{display:flex;justify-content:space-between;font-size:14px}
+.font-adjust{display:flex;align-items:center;gap:12px;margin-top:8px}
+.font-adjust button{flex-shrink:0;width:48px;min-height:48px;font-size:22px}
+#font-size{width:100%;min-width:0;height:44px;margin:0;accent-color:#005aff}
+.font-limits{display:flex;justify-content:space-between;color:#626e80;font-size:13px}
+.font-preview{font-size:var(--editor-font-size,1.125rem);line-height:1.8;margin:20px 0 0;padding-top:16px;border-top:1px solid #e4e7eb}
+#notice{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);border-radius:8px;background:#263044;color:white;padding:10px 16px;max-width:90vw;font-size:14px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:3}
+#notice.show{opacity:1}
+@media(max-width:600px){.workspace{margin:0 10px 0 18px;gap:7px}#editor,#reader{padding-top:18px;padding-right:3px}.minimap{margin-top:18px;width:28px}}
+@media(max-width:360px){.workspace{margin-left:14px}.floating-tools button{padding-inline:5px;gap:4px}.mode-bar,#selection-tools{padding-inline:10px}#done{font-size:12px;gap:3px}.edge-target button{padding-inline:4px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Screen RGB CUD accents; shape and labels also distinguish the endpoints. */
+:root{--ud-blue:#005aff;--ud-orange:#f6aa00}
+.selection-cursor{position:absolute;display:block;width:44px;min-height:44px;margin-left:-22px;margin-top:-12px;pointer-events:auto;touch-action:none;cursor:grab;z-index:2}
+.selection-cursor::before{content:"";position:absolute;top:12px;bottom:12px;left:50%;transform:translateX(-50%);width:2px;background:var(--cursor-color);box-shadow:0 0 0 .5px #333}
+.selection-cursor::after{content:"";position:absolute;left:50%;transform:translateX(-50%);box-sizing:border-box;width:10px;height:7px;background:var(--cursor-color);border:1px solid #333}
+.cursor-start{--cursor-color:var(--ud-blue)}
+.cursor-end{--cursor-color:var(--ud-orange)}
+.cursor-start::after{top:6px;border-radius:5px 5px 0 0}
+.cursor-end::after{bottom:6px}
+#adjust-start::before,#adjust-end::before{content:"";display:inline-block;width:8px;height:8px;border:1px solid #333;margin-right:5px;flex-shrink:0}
+#adjust-start::before{background:var(--ud-blue);border-radius:50%}
+#adjust-end::before{background:var(--ud-orange)}
+
+.selection-cursor:active{cursor:grabbing}
+#reader.cursor-hit-test .selection-cursor{pointer-events:none}
+
+/* External SVG masks inherit the button color, including disabled states. */
+.icon-arrow-left{--icon-url:url("icons/arrow-left.svg")}
+.icon-arrow-up{--icon-url:url("icons/arrow-up.svg")}
+.icon-arrow-down{--icon-url:url("icons/arrow-down.svg")}
+.icon-copy{--icon-url:url("icons/copy.svg")}
+.icon-scissors{--icon-url:url("icons/scissors.svg")}
+.icon-trash-2{--icon-url:url("icons/trash-2.svg")}
+.icon-rotate-ccw{--icon-url:url("icons/rotate-ccw.svg")}
+.icon-text-select{--icon-url:url("icons/text-select.svg")}
+.icon-undo-2{--icon-url:url("icons/undo-2.svg")}

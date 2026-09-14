@@ -96,6 +96,25 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./textedit/
+    homeButton: false
+    featured: false
+    title:
+      ja: a-b text
+      en: a-b text
+    year: 2026
+    description_html:
+      ja: 開始と終了をタップして長文を範囲選択できるテキストエディタ。ミニマップで移動し、選んだ文章をコピー・切り取り・削除。
+      en: A text editor for selecting long passages by tapping their start and end. Navigate with a minimap, then copy, cut, or delete the selected text.
+    tags:
+      - Editor
+      - Text
+      - Utility
+    image:
+      src: ./images/i52.jpg
+      alt:
+        ja: a-b textで日本語の文章を範囲選択し、開始・終了カーソルとコピーなどの操作を表示した画面
+        en: A Japanese passage selected in a-b text, with start and end cursors and copy, cut, and delete controls
   - href: ./cifarviz/
     featured: false
     title:
