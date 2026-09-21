@@ -109,9 +109,11 @@ works:
       - Programming
       - Compiler
       - WebAssembly
-    placeholder:
-      class: placeholder-data
-      emoji: λ
+    image:
+      src: ./images/frp-double-pendulum.png
+      alt:
+        ja: FRP IDEでJSX風のソースとDouble Pendulumの二重振り子・操作ボタンを表示した画面
+        en: FRP IDE showing JSX-style source and the Double Pendulum simulation with force controls
   - href: ./textedit/
     homeButton: false
     featured: false
