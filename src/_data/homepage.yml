@@ -96,6 +96,22 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./frp-wasm/
+    featured: false
+    title:
+      ja: frp-wasm
+      en: frp-wasm
+    year: 2026
+    description_html:
+      ja: 型と因果性を検査してWebAssemblyへコンパイルするFRP言語。ソース編集、グラフ表示、WASM実行をブラウザ内で試せるIDE。
+      en: An FRP language that checks types and causality before compiling to WebAssembly, with a browser IDE for editing, graph inspection, and execution.
+    tags:
+      - Programming
+      - Compiler
+      - WebAssembly
+    placeholder:
+      class: placeholder-data
+      emoji: λ
   - href: ./textedit/
     homeButton: false
     featured: false
