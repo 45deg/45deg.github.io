@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 -37.5 1200 750" role="img" aria-labelledby="title desc">
   <title id="title">Multistage code generation</title>
   <desc id="desc">With n set to 3, stage { $(n * 2) + x } generates the code 6 + x.</desc>
-  <rect width="1200" height="675" fill="#ffffff"/>
+  <rect y="-37.5" width="1200" height="750" fill="#ffffff"/>
   <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
     <rect x="65" y="85" width="620" height="505" rx="24" fill="#f8fafc" stroke="#334155" stroke-width="6"/>
     <g fill="#111827" font-size="58" font-weight="700">

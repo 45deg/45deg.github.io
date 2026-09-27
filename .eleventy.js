@@ -8,6 +8,7 @@ const passthroughExcludes = new Set([
   ".gitignore",
   ".DS_Store",
   ".eleventy.js",
+  "AGENTS.md",
   "_site",
   "node_modules",
   "index.html",

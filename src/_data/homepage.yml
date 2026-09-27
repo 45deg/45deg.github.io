@@ -110,7 +110,7 @@ works:
       - Compiler
       - WebAssembly
     image:
-      src: ./images/deppy-web.png
+      src: ./images/i53.png
       alt:
         ja: 黒背景に自然数の関数と等式の証明を記したDepPyコードを大きく表示した画像
         en: Close-up of DepPy code defining a natural number function and an equality proof on a black background
