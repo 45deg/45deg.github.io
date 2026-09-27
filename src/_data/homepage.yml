@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./deppy-web/
+    featured: false
+    title:
+      ja: DepPy Playground
+      en: DepPy Playground
+    year: 2026
+    description_html:
+      ja: Python風の依存型言語DepPyをブラウザで試せるデモ。コードを編集し、型・証明の検査結果と未解決のゴールを確認できる。
+      en: A browser playground for DepPy, a dependently typed language with Python syntax. Edit code and inspect type checks, proof results, and open goals.
+    tags:
+      - Programming
+      - Compiler
+      - WebAssembly
+    image:
+      src: ./images/deppy-web.png
+      alt:
+        ja: 黒背景に自然数の関数と等式の証明を記したDepPyコードを大きく表示した画像
+        en: Close-up of DepPy code defining a natural number function and an equality proof on a black background
   - href: ./frp-wasm/
     featured: false
     title:
