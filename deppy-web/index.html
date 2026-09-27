@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>DepPy Playground</title>
-  <link rel="stylesheet" href="./style.css?v=4">
+  <title>DependentTypedPython</title>
+  <link rel="stylesheet" href="./style.css?v=7">
   <script type="importmap">
   {
     "imports": {
@@ -33,49 +33,93 @@
     }
   }
   </script>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=8"></script>
 </head>
 <body>
   <header class="site-header">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">λ</span> DepPy</div>
+    <h1 class="brand"><span class="brand-mark" aria-hidden="true">λ</span> DependentTypedPython</h1>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#playground" data-route="playground" aria-current="page">Playground</a>
+      <a href="#about" data-route="about">About</a>
+    </nav>
     <div class="header-links">
       <span class="header-note">Runs in your browser</span>
-      <a class="github-link" href="https://github.com/45deg/DepPy" target="_blank" rel="noopener noreferrer" aria-label="DepPy on GitHub (opens in a new tab)">
+      <a class="github-link" href="https://github.com/45deg/DependentTypedPython" target="_blank" rel="noopener noreferrer" aria-label="DependentTypedPython on GitHub (opens in a new tab)">
         <img src="./github-invertocat-black.svg" alt="" width="24" height="24">
       </a>
     </div>
   </header>
   <main>
-    <div class="intro">
-      <h1>Playground</h1>
-      <p>Edit Python. Check types and proofs.</p>
-    </div>
-    <div class="workspace">
-      <section class="panel editor-panel" aria-labelledby="editor-title">
-        <div class="panel-head">
-          <h2 id="editor-title">Code</h2>
-          <label class="example-picker">Example
-            <select id="examples" aria-label="Example"><option value="">Loading…</option></select>
-          </label>
-        </div>
-        <div class="editor-wrap" id="editor-wrap">
-          <div id="fallback-editor" class="fallback-editor">
-            <div id="line-numbers" class="line-numbers" aria-hidden="true">1</div>
-            <textarea id="source" wrap="soft" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="DepPy code"></textarea>
+    <section id="playground-page" aria-label="Playground">
+      <p class="intro">Edit Python code, check its types and proofs, or run it in your browser.</p>
+      <div class="workspace">
+        <section class="panel editor-panel" aria-labelledby="editor-title">
+          <div class="panel-head">
+            <h2 id="editor-title">Code</h2>
+            <label class="example-picker">Example
+              <select id="examples" aria-label="Example"><option value="">Loading…</option></select>
+            </label>
           </div>
-          <div id="cm-editor" aria-label="DepPy code editor"></div>
-        </div>
-        <div class="panel-foot">
-          <span id="source-meta">0 lines</span>
-          <div class="actions"><span class="shortcut">⌘ / Ctrl + Enter</span><button id="check" type="button">Check</button></div>
-        </div>
-      </section>
-      <section class="panel result-panel" aria-labelledby="result-title">
-        <div class="panel-head"><h2 id="result-title">Results</h2><span id="status" class="status idle">Ready</span></div>
-        <div id="results" class="results" aria-live="polite"><div class="empty-state">Run a check to see results.</div></div>
-        <div class="panel-foot result-foot">Kernel terms use DepPy’s internal notation.</div>
-      </section>
-    </div>
+          <div class="editor-wrap" id="editor-wrap">
+            <div id="fallback-editor" class="fallback-editor">
+              <div id="line-numbers" class="line-numbers" aria-hidden="true">1</div>
+              <textarea id="source" wrap="soft" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="DepPy code"></textarea>
+            </div>
+            <div id="cm-editor" aria-label="DepPy code editor"></div>
+          </div>
+          <div class="panel-foot">
+            <span id="source-meta">0 lines</span>
+            <div class="actions"><span class="shortcut">⌘ / Ctrl + Enter</span><button id="check" class="action-button primary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Check</button><button id="run" class="action-button secondary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6.5 4.5 9 5.5-9 5.5v-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Run Python</button><button id="stop" class="action-button secondary" type="button" hidden>Stop</button></div>
+          </div>
+        </section>
+        <section class="panel result-panel" aria-labelledby="result-title">
+          <div class="panel-head"><h2 id="result-title">Results</h2><span id="status" class="status idle">Ready</span></div>
+          <div id="results" class="results" aria-live="polite"><div class="empty-state">Run a check to see results.</div></div>
+          <div class="panel-foot result-foot">Run executes Python without checking proofs. Use print() to display output.</div>
+        </section>
+      </div>
+    </section>
+    <article id="about-page" class="guide" hidden>
+      <h2>About DepPy</h2>
+      <p><strong>DependentTypedPython (DepPy)</strong> is an experimental dependently typed language built on Python syntax.</p>
+      <p>In DepPy, dependent types can directly reference values. An annotation can describe the exact length of a collection or assert an equality that the function body must prove. DepPy statically verifies declarations within its supported subset without executing the source code.</p>
+      <p>The <code>deppy</code> package also lets you run the original source code with standard Python. Proof checking is a separate step handled by DepPy's checker. Neither standard Python execution nor conventional Python type checkers verify these proofs.</p>
+
+      <h3>How Dependent Types Work</h3>
+      <p>A return annotation of <code>Nat</code> specifies that the result is a natural number. A dependent return type can also refer to an input value: if a function receives <code>n: Nat</code>, a return type of <code>Vec[Nat, n]</code> specifies a vector of natural numbers whose length is <code>n</code>. Here, <code>n</code> is a value used in a type, rather than a generic parameter representing another type.</p>
+      <p>DepPy checks that the function body meets this stronger specification for its supported inputs. It elaborates the source into explicit terms and checks those terms with its kernel. A declared length or equality is therefore an obligation to prove, not a comment attached to the code.</p>
+
+      <h3>Why Describe Values More Precisely?</h3>
+      <p>Standard annotations like <code>list[int]</code> specify the type of elements a list contains, but not its length. With <code>Vec[Nat, n]</code>, the length is part of the type, so the checker catches length mismatches before the program runs.</p>
+      <p>Types can also express claims about values, such as an equality. The type annotation states the claim, and the function body provides the proof:</p>
+      <pre><code>from deppy import dependent, Nat, Eq, refl
+
+@dependent
+def same(n: Nat) -&gt; Eq[Nat, n, n]:
+    return refl(n)</code></pre>
+      <p>Here, <code>Eq[Nat, n, n]</code> requires the function to return a proof of <code>n = n</code>, and <code>refl(n)</code> supplies that proof. DepPy checks the function body statically. A Python <code>assert</code> or a test suite checks only the values encountered during execution.</p>
+
+      <h3>The Curry–Howard Correspondence</h3>
+      <p>The Curry–Howard correspondence connects logic and typed programs: a proposition can be represented by a type, and a proof by a term of that type. In the example above, <code>Eq[Nat, n, n]</code> is the proposition and <code>refl(n)</code> is its proof term. The checked function <code>same</code> constructs that evidence for any <code>n: Nat</code>, rather than demonstrating the equality for only a few tested values.</p>
+      <p>DepPy checks proof terms with its kernel. A declaration can also depend on an explicit axiom; the Results panel reports such dependencies because an assumed axiom is not a proved statement.</p>
+
+      <h3>What Does “Check” Examine?</h3>
+      <ul>
+        <li><strong><code>@dependent</code></strong>: Marks pure functions and proofs for static verification. DepPy checks their types, bodies, and supported recursive definitions.</li>
+        <li><strong><code>@verified</code></strong>: Marks imperative code. DepPy converts contracts and control flow into proof obligations and verifies the resulting proofs.</li>
+      </ul>
+      <p>The <strong>Results</strong> panel displays verified declarations, remaining goals, and errors. Clicking an error navigates directly to its location in the source code.</p>
+
+      <h3>Why Are Check and Run Python Separate?</h3>
+      <ul>
+        <li><strong>Check</strong> statically verifies supported declarations without executing the source code.</li>
+        <li><strong>Run Python</strong> executes the original source in a browser-based Python environment and captures its output. It shows runtime behavior but does not verify proofs or contracts.</li>
+      </ul>
+
+      <h3>Current Scope</h3>
+      <p>DepPy supports a subset of Python syntax. The checker rejects unsupported constructs and declarations with proof obligations it cannot verify.</p>
+      <p>The project does not guarantee equivalent behavior across checked terms, generated code, and direct Python execution. For details on supported features and limitations, consult the <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/reference.md" target="_blank" rel="noopener noreferrer">Reference</a>, <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/proofs.md" target="_blank" rel="noopener noreferrer">Proof Guide</a>, and <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/python-runtime.md" target="_blank" rel="noopener noreferrer">Python Execution Guide</a>.</p>
+    </article>
   </main>
 </body>
 </html>

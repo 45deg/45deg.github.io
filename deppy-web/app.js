@@ -4,13 +4,33 @@ const editorHost = document.querySelector('#cm-editor');
 const numbers = document.querySelector('#line-numbers');
 const picker = document.querySelector('#examples');
 const checkButton = document.querySelector('#check');
+const runButton = document.querySelector('#run');
+const stopButton = document.querySelector('#stop');
+let pythonWorker;
 const results = document.querySelector('#results');
 const status = document.querySelector('#status');
 const sourceMeta = document.querySelector('#source-meta');
+const pages = {
+  playground: document.querySelector('#playground-page'),
+  about: document.querySelector('#about-page'),
+};
+const navigationLinks = [...document.querySelectorAll('[data-route]')];
 let busy = false;
 let checker;
 let editor;
 const MAX_SOURCE_BYTES = 64 * 1024;
+
+function showRoute() {
+  const requested = location.hash.slice(1);
+  const route = Object.hasOwn(pages, requested) ? requested : 'playground';
+  for (const [name, page] of Object.entries(pages)) page.hidden = name !== route;
+  for (const link of navigationLinks) {
+    if (link.dataset.route === route) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+}
+window.addEventListener('hashchange', showRoute);
+showRoute();
 
 function getSource() {
   return editor ? editor.state.doc.toString() : source.value;
@@ -210,10 +230,69 @@ function renderAnalysis(data) {
   }
 }
 
+function finishRun() {
+  pythonWorker?.terminate();
+  pythonWorker = undefined;
+  busy = false;
+  runButton.disabled = false;
+  checkButton.disabled = !checker;
+  stopButton.hidden = true;
+}
+
+function runPython() {
+  if (busy) return;
+  const code = getSource();
+  if (new TextEncoder().encode(code).length > MAX_SOURCE_BYTES) {
+    setStatus('Error', 'failure');
+    results.replaceChildren(textElement('p', 'request-error', 'Source must be under 64 KiB.'));
+    return;
+  }
+  busy = true;
+  runButton.disabled = true;
+  checkButton.disabled = true;
+  stopButton.hidden = false;
+  setStatus('Loading Python…', 'loading');
+  const output = textElement('pre', 'python-output', '');
+  results.replaceChildren(textElement('p', '', 'Python execution · proofs are not checked'), output);
+  try {
+    pythonWorker = new Worker('./python-worker.js', {type: 'module'});
+    pythonWorker.onmessage = ({data}) => {
+      if (data.type === 'output') {
+        // Bound rendered output for accidental print loops.
+        if (output.textContent.length < 100000) output.textContent += data.text.slice(0, 10000) + '\n';
+      } else if (data.type === 'running') {
+        setStatus('Running…', 'loading');
+      } else {
+        if (data.type === 'error') output.textContent += data.text;
+        else if (!output.textContent) output.textContent = 'Completed without output. Use print() to display a result.';
+        setStatus(data.type === 'done' ? 'Completed' : 'Execution error', data.type === 'done' ? 'success' : 'failure');
+        finishRun();
+      }
+    };
+    pythonWorker.onerror = event => {
+      output.textContent += event.message || 'Python worker could not load.';
+      setStatus('Execution error', 'failure');
+      finishRun();
+    };
+    pythonWorker.postMessage(code);
+  } catch (error) {
+    output.textContent = error.message;
+    setStatus('Execution error', 'failure');
+    finishRun();
+  }
+}
+
+runButton.addEventListener('click', runPython);
+stopButton.addEventListener('click', () => {
+  finishRun();
+  setStatus('Stopped', 'idle');
+});
+
 async function check() {
   if (busy || !checker) return;
   busy = true;
   checkButton.disabled = true;
+  runButton.disabled = true;
   setStatus('Checking…', 'loading');
   results.replaceChildren(textElement('p', 'working', 'Checking…'));
   try {
@@ -224,6 +303,7 @@ async function check() {
   } finally {
     busy = false;
     checkButton.disabled = false;
+    runButton.disabled = false;
   }
 }
 
@@ -243,6 +323,7 @@ source.addEventListener('keydown', event => {
 });
 checkButton.addEventListener('click', check);
 picker.addEventListener('change', () => {
+  if (pythonWorker) finishRun();
   if (picker.value && picker.value in examples) {
     setSource(examples[picker.value].source);
     setStatus('Ready', 'idle');
@@ -252,7 +333,7 @@ picker.addEventListener('change', () => {
 
 let examples = {};
 checkButton.disabled = true;
-Promise.all([fetch('./examples.json').then(response => {
+Promise.all([fetch('./examples.json?v=8').then(response => {
   if (!response.ok) throw new Error('Examples unavailable.');
   return response.json();
 }), loadChecker()]).then(([data]) => {
@@ -274,7 +355,7 @@ Promise.all([fetch('./examples.json').then(response => {
   }
   picker.value = 'basics';
   setSource(examples.basics.source);
-  checkButton.disabled = false;
+  checkButton.disabled = busy;
 }).catch(error => {
   picker.replaceChildren(new Option('Unavailable', ''));
   setStatus('Error', 'failure');
