@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./lufs-view/
+    featured: false
+    title:
+      ja: LUFS view
+      en: LUFS view
+    year: 2026
+    description_html:
+      ja: 音声ファイルのラウドネスをブラウザ内で解析し、時間軸で比較できるツール。配信サービスごとの目標音量に合わせた聴き比べもできる。
+      en: A browser-based tool for analyzing and comparing audio loudness over time, with listening previews normalized to streaming-platform targets.
+    tags:
+      - Audio
+      - Visualization
+      - Viewer
+    image:
+      src: ./images/i54.jpg
+      alt:
+        ja: LUFS viewでデモ音源のラウドネス推移、測定値、Spotify向け配信プレビューを表示した画面
+        en: LUFS view showing a demo track's loudness timeline, measurements, and Spotify delivery preview
   - href: ./deppy-web/
     featured: false
     title:
