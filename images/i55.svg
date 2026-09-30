@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+<title id="title">Real Quantifier Elimination</title>
+<desc id="desc">QEPCAD converts exists y: y squared equals x into x greater than or equal to zero.</desc>
+<rect width="512" height="320" fill="#fafbf8"/>
+<g fill="#243c2d" font-family="Arial, sans-serif">
+<text x="256" y="44" text-anchor="middle" font-size="28" font-weight="600">QEPCAD</text>
+<text x="256" y="70" text-anchor="middle" font-size="16" fill="#526556">Real Quantifier Elimination</text>
+<rect x="32" y="94" width="448" height="68" fill="#fff" stroke="#718568"/>
+<text x="256" y="138" text-anchor="middle" font-size="34" font-family="Georgia, serif">∃y: y² = x</text>
+<path d="M256 176v22m-7-7 7 7 7-7" fill="none" stroke="#356145" stroke-width="2"/>
+<rect x="32" y="212" width="448" height="84" fill="#edf1ee"/>
+<text x="256" y="235" text-anchor="middle" font-size="16">Quantifier-free condition</text>
+<text x="256" y="277" text-anchor="middle" font-size="48" font-family="Georgia, serif">x ≥ 0</text>
+</g></svg>

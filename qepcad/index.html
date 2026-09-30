@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Convert formulas over the reals into equivalent quantifier-free conditions. Run exact QEPCAD computations in your browser and inspect projection factors, cells, and calculation steps.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Real Quantifier Elimination powered by QEPCAD">
+<meta property="og:description" content="Convert formulas over the reals into equivalent quantifier-free conditions. Run exact QEPCAD computations in your browser and inspect projection factors, cells, and calculation steps.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Real Quantifier Elimination powered by QEPCAD">
+<meta name="twitter:description" content="Convert formulas over the reals into equivalent quantifier-free conditions. Run exact QEPCAD computations in your browser and inspect projection factors, cells, and calculation steps.">
+<title>Real Quantifier Elimination powered by QEPCAD</title>
+<link rel="stylesheet" href="./style.css"><script type="module" src="./src/app.js"></script>
+</head>
+<body>
+<main>
+<section class="editor-panel" aria-labelledby="editor-title">
+<div class="section-heading"><div class="title-row"><h1 id="editor-title">Real Quantifier Elimination <small class="title-credit">powered by <a href="https://github.com/chriswestbrown/qepcad">QEPCAD</a></small></h1><div class="language-control" data-language-control><label for="language">Language</label><select id="language"><option value="en" lang="en">English</option><option value="ja" lang="ja">日本語</option></select></div></div><p>Convert logical formulas with rational-coefficient polynomials into equivalent quantifier-free formulas over the reals.</p></div>
+<div class="label-row"><label for="formula">Formula</label><span class="key-hint">⌘ / Ctrl + Enter to compute</span></div>
+<div class="input-shell"><textarea id="formula" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="validation input-hint" rows="3">exists y: y^2 = x</textarea>
+<div class="toolbar" role="group" aria-label="Formula input tools">
+<button type="button" data-insert="exists x: " title="Existential quantifier: exists">∃</button><button type="button" data-insert="forall x: " title="Universal quantifier: forall">∀</button><span class="separator"></span><button type="button" data-insert=" and " title="Conjunction: and">∧</button><button type="button" data-insert=" or " title="Disjunction: or">∨</button><button type="button" data-insert="not ()" data-back="1" title="Negation: not">¬</button><button type="button" data-insert=" -> " title="Implication">→</button><span class="separator"></span><button type="button" data-insert=" <= " title="Less than or equal to">≤</button><button type="button" data-insert=" >= " title="Greater than or equal to">≥</button><button type="button" data-insert=" != " title="Not equal to">≠</button><button type="button" data-insert="^2" title="Square">x²</button><button type="button" data-insert="()" data-back="1" title="Parentheses">( )</button>
+</div></div>
+<div id="validation" class="validation" role="status" aria-live="polite"></div>
+<p id="input-hint" class="hint">All variables are real. Multiply with <code>*</code>, raise to a power with <code>^</code>.</p>
+<div class="actions"><button class="primary" id="run">Compute</button><button class="secondary" id="cancel" hidden>Cancel computation</button></div>
+<div class="examples"><label for="example">Examples</label><select id="example"><option value="sqrt">Existence of a square root</option><option value="alternating">Alternating ∀ and ∃</option><option value="reverse">Reversing quantifier order</option><option value="quadratic">Quadratic equation and discriminant</option><option value="interval">Solutions in an interval</option><option value="nested">Quantifiers within a formula</option><option value="three">Elimination with three variables</option></select><p id="example-note"></p></div>
+<details class="grammar"><summary>Input syntax</summary><div class="grammar-body"><table class="syntax-table" aria-label="Input syntax"><tbody><tr><th scope="row">Quantifiers</th><td><code>exists x: …</code> / <code>forall x, y: …</code></td></tr><tr><th scope="row">Comparisons</th><td><code>= != &lt; &lt;= &gt; &gt;=</code><br><code>0 &lt; x &lt; 1</code> is also supported.</td></tr><tr><th scope="row">Logical operators</th><td><code>not</code>, <code>and</code>, <code>or</code>, <code>-></code>, <code>&lt;-></code>(from strongest to weakest)</td></tr><tr><th scope="row">Polynomials</th><td><code>x^2 + 2*x*y - 1/3</code><br>Integers, decimals, and rational numbers are handled exactly.</td></tr></tbody></table><p>The quantifier's <code>:</code> applies to the entire formula on its right. Use parentheses to limit its scope. Symbols such as ∃, ∀, ∧, and ∨ are also supported.</p><p>Variable denominators, negative exponents, and functions such as sin and log are not supported.</p><pre>formula := quantifier | comparison
+         | not formula | (formula)
+         | formula and/or/->/&lt;-> formula
+quantifier := exists/forall vars : formula
+comparison := polynomial relation polynomial</pre></div></details>
+<details class="grammar"><summary>Supported formulas and limits</summary><div class="grammar-body"><p>Supports first-order formulas with multiple variables and quantifiers over rational-coefficient polynomials. Free variables can remain in the result.</p><p>Limits: 4,000 input characters, 600 tokens, 12 variables after prenex conversion, 64 polynomials, total degree 32, 250 terms per polynomial, and 500 digits per coefficient numerator or denominator. Computations are limited to 60 seconds, 512 MiB of WASM memory, and 1.5 MB of log output. Computations may fail to finish even within these limits. Cancellations and errors are shown separately from truth values.</p></div></details>
+</section>
+<section class="workspace" aria-labelledby="workspace-title">
+<div class="workspace-top"><h2 id="workspace-title">Result</h2><span id="result-meta" class="subtle">Not computed</span></div>
+<div id="stale" class="notice" hidden>The input has changed. Compute again to update the result below.</div>
+<div id="progress" class="progress" hidden role="status"><span class="spinner" aria-hidden="true"></span><span id="progress-label">Loading the engine…</span><span id="elapsed">0.0 s</span></div>
+<div id="error" class="error-panel" hidden role="alert"></div>
+<section id="answer" class="answer" hidden aria-labelledby="answer-title"><div class="answer-top"><h3 id="answer-title">Quantifier-free formula</h3><button id="copy" class="text-button">Copy</button></div><div id="answer-formula" class="math"></div><p id="answer-note"></p></section>
+<details class="calculation-details"><summary>Calculation details</summary><div id="formula-preview" class="formula-preview math" aria-label="Normalized input formula"></div><nav class="steps" aria-label="Calculation stages"><button data-step="0" aria-current="step">Normalization</button><button data-step="1">Projection</button><button data-step="2">Cell decomposition</button><button data-step="3">Quantifier elimination</button></nav>
+<article id="stage" class="stage"></article>
+<div class="step-controls"><button class="text-button" id="previous">Previous stage</button><span id="step-count">1 / 4</span><button class="text-button" id="next">Next stage <span aria-hidden="true">→</span></button></div>
+
+</details>
+<details id="audit" class="audit" hidden><summary>QEPCAD input and execution log</summary><p>Projection factors, cells, and results come from QEPCAD. No independent proof verification is performed.</p><div id="variable-map" class="variable-map"></div><h4>Engine input</h4><pre id="engine-input"></pre><h4>Execution log</h4><pre id="engine-log"></pre></details>
+</section>
+</main>
+<footer><span>QEPCAD B + SACLIB (WebAssembly)</span><span>Formulas are not sent to external servers.</span><a href="./THIRD_PARTY_NOTICES.md">Licenses and sources</a></footer>
+</body></html>

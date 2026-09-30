@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/chriswestbrown/tarski",
+  "revision": "796962b75f43dac291d3feb12e3712643b19d787",
+  "engine": "QEPCAD B 1.80 + SACLIB 2.2.8",
+  "compiler": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 5.0.5-git",
+  "optimization": "-O0",
+  "sha256": {
+    "qepcad.js": "483f12543b462735c4a3e00bd1650f1fad6c03dee66671d6f1212931fcd3ebfa",
+    "qepcad.wasm": "15e85336fc80decfb640a83028b141465a0d16dc58fa5091ce0165a3adf0224d"
+  }
+}

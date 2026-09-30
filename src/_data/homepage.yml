@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./qepcad/
+    featured: false
+    title:
+      ja: 実数の量化子消去
+      en: Real Quantifier Elimination
+    year: 2026
+    description_html:
+      ja: QEPCADで実数上の論理式から量化子を消去するブラウザツール。自由変数の条件を求め、射影因子・セル・計算過程を確認できる。
+      en: A browser tool for eliminating quantifiers over the reals with QEPCAD. Find conditions on free variables and inspect projection factors, cells, and calculation steps.
+    tags:
+      - Mathematics
+      - Utility
+      - WebAssembly
+    image:
+      src: ./images/i55.svg
+      alt:
+        ja: "exists y: y² = x を量化子なしの条件 x ≥ 0 に変換する例"
+        en: "An example converting exists y: y² = x into the quantifier-free condition x ≥ 0"
   - href: ./lufs-view/
     featured: false
     title:
