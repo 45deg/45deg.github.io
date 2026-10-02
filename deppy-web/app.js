@@ -333,7 +333,7 @@ picker.addEventListener('change', () => {
 
 let examples = {};
 checkButton.disabled = true;
-Promise.all([fetch('./examples.json?v=8').then(response => {
+Promise.all([fetch('./examples.json?v=10').then(response => {
   if (!response.ok) throw new Error('Examples unavailable.');
   return response.json();
 }), loadChecker()]).then(([data]) => {
