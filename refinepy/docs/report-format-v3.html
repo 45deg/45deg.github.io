@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>report-format-v3 · refinepy</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <p class="brand">refinepy</p>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Playground</a>
+      <a href="../guide.html">Guide</a>
+      <a href="../reference.html" aria-current="page">Reference</a>
+    </nav>
+  </header>
+  <main id="content" class="documentation" tabindex="-1">
+<h1 id="report-and-workflow-v3">Report and workflow v3</h1>
+<p>The verifier emits <a href="report-schema-v3.json">JSON Schema
+v3</a>. Consumers must check <code>schema_version</code> and validate
+the complete envelope. Model manifest v1 and worker protocol v17 have
+separate compatibility boundaries.</p>
+<p>Reports contain verification results and evidence. Each target
+includes source identity, hashes, byte ranges, status, reasons,
+obligations, invariants, checked scope, inhabitation, limits and cost.
+Reflected entry contracts may record a modeled input witness checked by
+bounded evaluation of independently admitted definitions. This confirms
+existence for the entry contract only; it is neither a concrete Python
+execution witness nor finite-sampling evidence for universal
+obligations. <code>dependencies</code> is a flat identity-sorted list of
+source callee outcomes with source locations and secondary diagnostics.
+<code>cache</code> records the current invocation’s reuse evidence.
+<code>dependency_results</code> records module initialization/hash
+evidence and summary strings, including model dependency identities.</p>
+<p>Successfully verified source functions with structurally certified
+fresh list results record
+<code>ownership:&lt;identity&gt;:fresh-list-result; checked source allocation and aliases</code>
+in <code>dependency_results</code>. Isolated product results record
+<code>ownership:&lt;identity&gt;:isolated-product-result; checked source allocations and disjoint fields</code>.
+This normal-return evidence is independent of termination; a
+partial-correctness function may allocate a fresh result on every return
+without establishing that it returns. It propagates through checked
+dependencies and cache hits. A failed target or dependency never
+establishes that target’s ownership certificate. Source edits that
+replace an allocation with a borrowed return invalidate the closure
+cache. Model allocation claims do not produce source ownership evidence.
+See the <a
+href="specification.html#exclusive-local-list-writes">ownership
+rules</a>.</p>
+<p>Version 3 removes <code>unchecked_scope</code>,
+<code>trusted_models</code> and <code>initializer_assumptions</code>
+from JSON and their dedicated sections from text. The verifier still
+retains this evidence internally and in the private cache; verification
+remains conditional on the runtime and model assumptions defined in the
+specification. Model manifest v1 still requires initializer assumptions.
+Text status and reason names use the same stable kebab-case names as
+JSON. Text also shows effective settings, resolved identities, source
+hashes/ranges, obligations, checked scope, invariants, dependency
+outcomes, cache and costs.</p>
+<p>A source caller receives a non-success when any required callee
+fails. All available callee diagnostics are retained in deterministic
+dependency order; caller obligations are blocked rather than justified
+by unchecked postconditions. Error takes precedence over unknown,
+unsupported, unproved and counterexample when aggregating
+specialization/dependency outcomes. A callee counterexample blocks the
+caller as unproved; it is not automatically a caller execution witness.
+The ordering selects an overall category, not a severity measure for
+each finding.</p>
+<p>Exit 0 requires nonempty verified targets, concrete or abstract
+inhabitation evidence, checked obligations, and verified diagnostic-free
+source dependencies. Exit 1 covers unmet proofs, uncertainty,
+unsupported features and invalid source contracts/types. Exit 2 covers
+configuration, I/O, model installation and internal or worker execution
+failures, including secondary dependency failures. Source selection
+never imports or executes target Python.</p>
+<h2 id="cache-contract">Cache contract</h2>
+<p>Caching is opt-in through <code>--cache-dir PATH</code> or
+<code>RunOptions::cache_dir</code>. Omitting the option uses the
+uncached verifier. CLI cache paths are relative to the working
+directory, independently of source/model paths relative to the project
+config.</p>
+<p>The cache stores a successful selected function and its entire
+verified source closure. Before lookup the resolver rereads and
+snapshots all required modules, initializers, annotation-only imports,
+re-exports, callee bodies/contracts and declared specializations. The
+key hashes these snapshots and initialization states, declared
+trust/model identities and effects (including their metadata hashes),
+the expected verified dependency identities/results, effective config
+and limits, host OS/architecture, protocol/schema/solver pins and exact
+driver and worker executable bytes. Compiled qualifier generation and
+translation policies therefore invalidate entries when the executable
+changes. Every source module’s full contents participate, so unrelated
+edits within a loaded module may also cause a conservative miss. Source
+resolution errors and mutually recursive closures bypass reuse and go
+through the ordinary failure path. Direct self-calls are covered by the
+enclosing function fingerprint and do not repeat the closure traversal.
+Their <code>direct-recursion:</code> evidence records the
+declared-contract hypothesis and whether integer-component descent was
+checked, including on hits. Completed measured terminating closures
+additionally carry
+<code>termination:&lt;identity&gt;:verified; recursion depth and resource exhaustion are not verified</code>
+evidence. Explicit measures add
+<code>termination-measure-definedness</code> and
+<code>termination-decrease</code> obligation kinds. Measured loops add
+<code>termination-loop-measure-definedness</code>,
+<code>termination-loop-nonnegative</code> and (when a back edge exists)
+<code>termination-loop-decrease</code>. Integer-component descent
+includes lexicographic integer tuples. The status remains
+<code>verified</code> for both partial-correctness and
+termination-checked targets; consumers must inspect the evidence for the
+requested identity. No termination evidence is published after a failed
+or uncertain check.</p>
+<p>The playground’s termination summary requires a verified,
+diagnostic-free target and the complete
+<code>termination:&lt;resolved_identity&gt;:verified; recursion depth and resource exhaustion are not verified</code>
+record for that exact identity. Evidence for a callee alone does not
+certify the caller. Without target evidence a verified contract applies
+to normal returns; failed or uncertain results cannot display verified
+termination. <strong>Proof evidence</strong> exposes termination,
+induction, reflection, ownership and erased-lemma records under
+<strong>Verification details</strong> without changing the JSON schema
+or status.</p>
+<p>Admitted recursive definitions also carry
+<code>reflection:&lt;identity&gt;:verified recursive definition; unfolding depth=&lt;depth&gt;; residual calls uninterpreted</code>
+evidence (<code>&lt;depth&gt;</code> is an upper bound: 8 for
+scalar-only signatures, 3 for signatures containing containers;
+inductive lemma queries use one-step ground equations). It is published
+only with verified source termination and propagates through
+dependencies and cache hits. Bounded proofs with satisfiable residual
+applications are <code>unknown</code>, not confirmed counterexamples or
+successful cache entries. See <a
+href="specification.html#recursive-scalar-reflection">recursive
+reflection</a>.</p>
+<p>Recursive refined-<code>None</code> lemmas with verified integer
+descent additionally carry
+<code>induction:&lt;identity&gt;:verified return proposition; checked integer descent at every self-call</code>
+evidence. It requires every base/step and independent summary-free
+descent to pass. Evidence propagates to callers and cache hits; a failed
+proof or measure publishes no induction evidence. Ordinary recursive
+partial-correctness contracts alone are not induction evidence. See <a
+href="specification.html#inductive-lemma-functions">inductive
+lemmas</a>.</p>
+<p>An entry can only be committed after all source dependencies, all
+declared specializations, model predicate totality and every final
+obligation succeed. Non-successes are recomputed and never persisted. On
+hits a fresh trivial query validates the live worker, protocol and
+loaded pinned Z3; a missing, malformed, crashed, mismatched or uncertain
+worker cannot be hidden by a saved proof. Failed live validation
+invalidates that entry. This probe is a compatibility check, not
+rechecking every stored proof obligation.</p>
+<p>Entries contain versioned envelopes and payload SHA-256 checksums.
+Bounded reads, unique temporary files, file sync, atomic rename and
+directory sync protect against truncation and interrupted writes.
+Temporary files are ignored. Invalid entries produce cache notes and
+trigger ordinary checking. Cache I/O failure is best-effort: a fresh
+completed proof may still verify with a visible cache note. The cache
+directory is trusted local state; checksums do not authenticate hostile
+writers. No shared or remote cache protocol is provided.</p>
+<p><code>cache.state</code> is <code>disabled</code>, <code>miss</code>,
+<code>hit</code>, or <code>bypass</code>; <code>key</code> is null when
+no key was constructed. <code>stored_query_count</code> records the
+stored proof’s work on a hit. <code>query_count</code> counts actual
+worker queries in this invocation including the live probe; it is
+normally 1 for a warm successful target. <code>elapsed_ms</code>
+measures this target invocation, including frontend/closure resolution
+and cache operations. Executable hashing is shared invocation setup and
+is outside per-target <code>elapsed_ms</code>. Cached invariant and
+internal scope/trust evidence retains its original meaning.</p>
+<h2 id="cancellation-and-deadlines">Cancellation and deadlines</h2>
+<p>Embedders can clone <code>Cancellation</code> and call
+<code>cancel()</code> from another thread. The CLI accepts
+<code>--cancel-file PATH</code>; creating the file cancels active work,
+and a preexisting file prevents verification from starting. File-state
+I/O uncertainty is conservatively treated as cancellation. Cancellation
+is reported as <code>unknown: cancelled</code>, exits 1 and cannot
+publish a reusable verified result. An existing flag must be removed
+deliberately before a subsequent CLI run.</p>
+<p>Worker polling and pipe reception both observe cancellation and the
+absolute target deadline. A cancelled worker is killed and reaped before
+the call returns. Subsequent independent runs may recover using a fresh
+session and worker. Native query budgets are capped by remaining target
+time; post-check/publication control checks prevent a late response or
+cache hit from escaping the deadline. Frontend and lowering observe
+control at driver boundaries; they are not preempted midway through an
+individual operation. This is a cooperative API/file interface, not a
+new operating-system signal handler or a guarantee for uncatchable
+process death.</p>
+  </main>
+</body>
+</html>

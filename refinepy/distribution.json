@@ -1,0 +1,1009 @@
+{
+  "source_commit": "3b6eb9d7bbcd0972796dcc85cbca77359d79f44a",
+  "rust": "1.97.1",
+  "z3": "4.15.4",
+  "emscripten": "5.0.5",
+  "licenses": [
+    {
+      "name": "aho-corasick",
+      "version": "1.1.5",
+      "source": "https://github.com/BurntSushi/aho-corasick",
+      "files": [
+        "third-party/aho-corasick-1.1.5/COPYING",
+        "third-party/aho-corasick-1.1.5/LICENSE-MIT",
+        "third-party/aho-corasick-1.1.5/UNLICENSE"
+      ]
+    },
+    {
+      "name": "arrayvec",
+      "version": "0.7.8",
+      "source": "https://github.com/bluss/arrayvec",
+      "files": [
+        "third-party/arrayvec-0.7.8/LICENSE-APACHE",
+        "third-party/arrayvec-0.7.8/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "source": "https://github.com/bitflags/bitflags",
+      "files": [
+        "third-party/bitflags-2.13.2/LICENSE-APACHE",
+        "third-party/bitflags-2.13.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "block-buffer",
+      "version": "0.10.4",
+      "source": "https://github.com/RustCrypto/utils",
+      "files": [
+        "third-party/block-buffer-0.10.4/LICENSE-APACHE",
+        "third-party/block-buffer-0.10.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bstr",
+      "version": "1.13.1",
+      "source": "https://github.com/BurntSushi/bstr",
+      "files": [
+        "third-party/bstr-1.13.1/COPYING",
+        "third-party/bstr-1.13.1/LICENSE-APACHE",
+        "third-party/bstr-1.13.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "castaway",
+      "version": "0.2.4",
+      "source": "https://github.com/sagebind/castaway",
+      "files": [
+        "third-party/castaway-0.2.4/LICENSE"
+      ]
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.5",
+      "source": "https://github.com/rust-lang/cfg-if",
+      "files": [
+        "third-party/cfg-if-1.0.5/LICENSE-APACHE",
+        "third-party/cfg-if-1.0.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "char_str",
+      "version": "0.0.2",
+      "source": "https://github.com/astral-sh/char_str",
+      "files": [
+        "third-party/char_str-0.0.2/LICENSE"
+      ]
+    },
+    {
+      "name": "compact_str",
+      "version": "0.10.0",
+      "source": "https://github.com/ParkMyCar/compact_str",
+      "files": [
+        "third-party/compact_str-0.10.0/LICENSE"
+      ]
+    },
+    {
+      "name": "crypto-common",
+      "version": "0.1.7",
+      "source": "https://github.com/RustCrypto/traits",
+      "files": [
+        "third-party/crypto-common-0.1.7/LICENSE-APACHE",
+        "third-party/crypto-common-0.1.7/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "digest",
+      "version": "0.10.7",
+      "source": "https://github.com/RustCrypto/traits",
+      "files": [
+        "third-party/digest-0.10.7/LICENSE-APACHE",
+        "third-party/digest-0.10.7/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "drop_bomb",
+      "version": "0.1.5",
+      "source": "https://github.com/matklad/drop_bomb",
+      "files": [
+        "third-party/drop_bomb-0.1.5/LICENSE-APACHE",
+        "third-party/drop_bomb-0.1.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "either",
+      "version": "1.18.0",
+      "source": "https://github.com/rayon-rs/either",
+      "files": [
+        "third-party/either-1.18.0/LICENSE-APACHE",
+        "third-party/either-1.18.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "equivalent",
+      "version": "1.0.2",
+      "source": "https://github.com/indexmap-rs/equivalent",
+      "files": [
+        "third-party/equivalent-1.0.2/LICENSE-APACHE",
+        "third-party/equivalent-1.0.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "generic-array",
+      "version": "0.14.7",
+      "source": "https://github.com/fizyk20/generic-array.git",
+      "files": [
+        "third-party/generic-array-0.14.7/LICENSE"
+      ]
+    },
+    {
+      "name": "get-size2",
+      "version": "0.10.3",
+      "source": "https://github.com/bircni/get-size2",
+      "files": [
+        "third-party/get-size2-0.10.3/LICENSE"
+      ]
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.17.1",
+      "source": "https://github.com/rust-lang/hashbrown",
+      "files": [
+        "third-party/hashbrown-0.17.1/LICENSE-APACHE",
+        "third-party/hashbrown-0.17.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "indexmap",
+      "version": "2.14.2",
+      "source": "https://github.com/indexmap-rs/indexmap",
+      "files": [
+        "third-party/indexmap-2.14.2/LICENSE-APACHE",
+        "third-party/indexmap-2.14.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "itertools",
+      "version": "0.15.0",
+      "source": "https://github.com/rust-itertools/itertools",
+      "files": [
+        "third-party/itertools-0.15.0/LICENSE-APACHE",
+        "third-party/itertools-0.15.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.18",
+      "source": "https://github.com/dtolnay/itoa",
+      "files": [
+        "third-party/itoa-1.0.18/LICENSE-APACHE",
+        "third-party/itoa-1.0.18/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "libc",
+      "version": "0.2.189",
+      "source": "https://github.com/rust-lang/libc",
+      "files": [
+        "third-party/libc-0.2.189/LICENSE-APACHE",
+        "third-party/libc-0.2.189/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "log",
+      "version": "0.4.34",
+      "source": "https://github.com/rust-lang/log",
+      "files": [
+        "third-party/log-0.4.34/LICENSE-APACHE",
+        "third-party/log-0.4.34/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "memchr",
+      "version": "2.8.3",
+      "source": "https://github.com/BurntSushi/memchr",
+      "files": [
+        "third-party/memchr-2.8.3/COPYING",
+        "third-party/memchr-2.8.3/LICENSE-MIT",
+        "third-party/memchr-2.8.3/UNLICENSE"
+      ]
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.6",
+      "source": "https://github.com/rust-num/num-bigint",
+      "files": [
+        "third-party/num-bigint-0.4.6/LICENSE-APACHE",
+        "third-party/num-bigint-0.4.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-complex",
+      "version": "0.4.6",
+      "source": "https://github.com/rust-num/num-complex",
+      "files": [
+        "third-party/num-complex-0.4.6/LICENSE-APACHE",
+        "third-party/num-complex-0.4.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.47",
+      "source": "https://github.com/rust-num/num-integer",
+      "files": [
+        "third-party/num-integer-0.1.47/LICENSE-APACHE",
+        "third-party/num-integer-0.1.47/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-iter",
+      "version": "0.1.46",
+      "source": "https://github.com/rust-num/num-iter",
+      "files": [
+        "third-party/num-iter-0.1.46/LICENSE-APACHE",
+        "third-party/num-iter-0.1.46/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-rational",
+      "version": "0.4.2",
+      "source": "https://github.com/rust-num/num-rational",
+      "files": [
+        "third-party/num-rational-0.4.2/LICENSE-APACHE",
+        "third-party/num-rational-0.4.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "source": "https://github.com/rust-num/num-traits",
+      "files": [
+        "third-party/num-traits-0.2.19/LICENSE-APACHE",
+        "third-party/num-traits-0.2.19/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num",
+      "version": "0.4.3",
+      "source": "https://github.com/rust-num/num",
+      "files": [
+        "third-party/num-0.4.3/LICENSE-APACHE",
+        "third-party/num-0.4.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "ordermap",
+      "version": "1.2.2",
+      "source": "https://github.com/indexmap-rs/ordermap",
+      "files": [
+        "third-party/ordermap-1.2.2/LICENSE-APACHE",
+        "third-party/ordermap-1.2.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "phf",
+      "version": "0.11.3",
+      "source": "https://github.com/rust-phf/rust-phf",
+      "files": [
+        "third-party/phf-0.11.3/LICENSE"
+      ]
+    },
+    {
+      "name": "phf_shared",
+      "version": "0.11.3",
+      "source": "https://github.com/rust-phf/rust-phf",
+      "files": [
+        "third-party/phf_shared-0.11.3/LICENSE"
+      ]
+    },
+    {
+      "name": "psm",
+      "version": "0.1.32",
+      "source": "https://github.com/rust-lang/stacker/",
+      "files": [
+        "third-party/psm-0.1.32/LICENSE-APACHE",
+        "third-party/psm-0.1.32/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.18",
+      "source": "https://github.com/rust-lang/regex",
+      "files": [
+        "third-party/regex-automata-0.4.18/LICENSE-APACHE",
+        "third-party/regex-automata-0.4.18/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.11",
+      "source": "https://github.com/rust-lang/regex",
+      "files": [
+        "third-party/regex-syntax-0.8.11/LICENSE-APACHE",
+        "third-party/regex-syntax-0.8.11/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "ruff_python_ast",
+      "version": "0.0.12",
+      "source": "https://github.com/astral-sh/ruff",
+      "files": [
+        "third-party/ruff_python_ast-0.0.12/LICENSE"
+      ]
+    },
+    {
+      "name": "ruff_python_parser",
+      "version": "0.0.12",
+      "source": "https://github.com/astral-sh/ruff",
+      "files": [
+        "third-party/ruff_python_parser-0.0.12/LICENSE"
+      ]
+    },
+    {
+      "name": "ruff_python_trivia",
+      "version": "0.0.12",
+      "source": "https://github.com/astral-sh/ruff",
+      "files": [
+        "third-party/ruff_python_trivia-0.0.12/LICENSE"
+      ]
+    },
+    {
+      "name": "ruff_source_file",
+      "version": "0.0.12",
+      "source": "https://github.com/astral-sh/ruff",
+      "files": [
+        "third-party/ruff_source_file-0.0.12/LICENSE"
+      ]
+    },
+    {
+      "name": "ruff_text_size",
+      "version": "0.0.12",
+      "source": "https://github.com/astral-sh/ruff",
+      "files": [
+        "third-party/ruff_text_size-0.0.12/LICENSE"
+      ]
+    },
+    {
+      "name": "rustc-hash",
+      "version": "2.1.3",
+      "source": "https://github.com/rust-lang/rustc-hash",
+      "files": [
+        "third-party/rustc-hash-2.1.3/LICENSE-APACHE",
+        "third-party/rustc-hash-2.1.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "ryu",
+      "version": "1.0.23",
+      "source": "https://github.com/dtolnay/ryu",
+      "files": [
+        "third-party/ryu-1.0.23/LICENSE-APACHE",
+        "third-party/ryu-1.0.23/LICENSE-BOOST"
+      ]
+    },
+    {
+      "name": "serde",
+      "version": "1.0.229",
+      "source": "https://github.com/serde-rs/serde",
+      "files": [
+        "third-party/serde-1.0.229/LICENSE-APACHE",
+        "third-party/serde-1.0.229/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.229",
+      "source": "https://github.com/serde-rs/serde",
+      "files": [
+        "third-party/serde_core-1.0.229/LICENSE-APACHE",
+        "third-party/serde_core-1.0.229/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.151",
+      "source": "https://github.com/serde-rs/json",
+      "files": [
+        "third-party/serde_json-1.0.151/LICENSE-APACHE",
+        "third-party/serde_json-1.0.151/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_spanned",
+      "version": "1.1.1",
+      "source": "https://github.com/toml-rs/toml",
+      "files": [
+        "third-party/serde_spanned-1.1.1/LICENSE-APACHE",
+        "third-party/serde_spanned-1.1.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "sha2",
+      "version": "0.10.9",
+      "source": "https://github.com/RustCrypto/hashes",
+      "files": [
+        "third-party/sha2-0.10.9/LICENSE-APACHE",
+        "third-party/sha2-0.10.9/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "siphasher",
+      "version": "1.0.4",
+      "source": "https://github.com/jedisct1/rust-siphash",
+      "files": [
+        "third-party/siphasher-1.0.4/COPYING",
+        "third-party/siphasher-1.0.4/LICENSE-APACHE",
+        "third-party/siphasher-1.0.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "smallvec",
+      "version": "1.16.2",
+      "source": "https://github.com/servo/rust-smallvec",
+      "files": [
+        "third-party/smallvec-1.16.2/LICENSE-APACHE",
+        "third-party/smallvec-1.16.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "stacker",
+      "version": "0.1.25",
+      "source": "https://github.com/rust-lang/stacker",
+      "files": [
+        "third-party/stacker-0.1.25/LICENSE-APACHE",
+        "third-party/stacker-0.1.25/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "static_assertions",
+      "version": "1.1.0",
+      "source": "https://github.com/nvzqz/static-assertions-rs",
+      "files": [
+        "third-party/static_assertions-1.1.0/LICENSE-APACHE",
+        "third-party/static_assertions-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "thin-vec",
+      "version": "0.2.20",
+      "source": "https://github.com/mozilla/thin-vec",
+      "files": [
+        "third-party/thin-vec-0.2.20/LICENSE-APACHE",
+        "third-party/thin-vec-0.2.20/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "thiserror",
+      "version": "2.0.21",
+      "source": "https://github.com/dtolnay/thiserror",
+      "files": [
+        "third-party/thiserror-2.0.21/LICENSE-APACHE",
+        "third-party/thiserror-2.0.21/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "tinyvec",
+      "version": "1.13.3",
+      "source": "https://github.com/Lokathor/tinyvec",
+      "files": [
+        "third-party/tinyvec-1.13.3/LICENSE-APACHE.md",
+        "third-party/tinyvec-1.13.3/LICENSE-MIT.md",
+        "third-party/tinyvec-1.13.3/LICENSE-ZLIB.md"
+      ]
+    },
+    {
+      "name": "toml",
+      "version": "0.9.8",
+      "source": "https://github.com/toml-rs/toml",
+      "files": [
+        "third-party/toml-0.9.8/LICENSE-APACHE",
+        "third-party/toml-0.9.8/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "toml_datetime",
+      "version": "0.7.5+spec-1.1.0",
+      "source": "https://github.com/toml-rs/toml",
+      "files": [
+        "third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-APACHE",
+        "third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "toml_parser",
+      "version": "1.1.3+spec-1.1.0",
+      "source": "https://github.com/toml-rs/toml",
+      "files": [
+        "third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-APACHE",
+        "third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "toml_writer",
+      "version": "1.1.2+spec-1.1.0",
+      "source": "https://github.com/toml-rs/toml",
+      "files": [
+        "third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-APACHE",
+        "third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "typenum",
+      "version": "1.20.1",
+      "source": "https://github.com/paholg/typenum",
+      "files": [
+        "third-party/typenum-1.20.1/LICENSE",
+        "third-party/typenum-1.20.1/LICENSE-APACHE",
+        "third-party/typenum-1.20.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.26",
+      "source": "https://github.com/dtolnay/unicode-ident",
+      "files": [
+        "third-party/unicode-ident-1.0.26/LICENSE-APACHE",
+        "third-party/unicode-ident-1.0.26/LICENSE-MIT",
+        "third-party/unicode-ident-1.0.26/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "unicode-normalization",
+      "version": "0.1.25",
+      "source": "https://github.com/unicode-rs/unicode-normalization",
+      "files": [
+        "third-party/unicode-normalization-0.1.25/LICENSE-APACHE",
+        "third-party/unicode-normalization-0.1.25/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "unicode_names2",
+      "version": "1.3.0",
+      "source": "https://github.com/progval/unicode_names2",
+      "files": [
+        "third-party/unicode_names2-1.3.0/LICENSE-APACHE",
+        "third-party/unicode_names2-1.3.0/LICENSE-MIT",
+        "third-party/unicode_names2-1.3.0/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "winnow",
+      "version": "0.7.15",
+      "source": "https://github.com/winnow-rs/winnow",
+      "files": [
+        "third-party/winnow-0.7.15/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "winnow",
+      "version": "1.0.4",
+      "source": "https://github.com/winnow-rs/winnow",
+      "files": [
+        "third-party/winnow-1.0.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "z3-sys",
+      "version": "0.10.9",
+      "source": "https://github.com/prove-rs/z3.rs.git",
+      "files": [
+        "third-party/z3-sys-0.10.9/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "z3",
+      "version": "0.19.6",
+      "source": "https://github.com/prove-rs/z3.rs.git",
+      "files": [
+        "third-party/z3-0.19.6/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.23",
+      "source": "https://github.com/dtolnay/zmij",
+      "files": [
+        "third-party/zmij-1.0.23/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "emscripten",
+      "version": "5.0.5",
+      "source": "https://github.com/emscripten-core/emscripten/tree/5.0.5",
+      "files": [
+        "third-party/emscripten-5.0.5/LICENSE"
+      ]
+    },
+    {
+      "name": "musl",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/musl-emscripten-5.0.5/COPYRIGHT"
+      ]
+    },
+    {
+      "name": "libcxx",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/libcxx-emscripten-5.0.5/LICENSE.TXT"
+      ]
+    },
+    {
+      "name": "libcxxabi",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/libcxxabi-emscripten-5.0.5/LICENSE.TXT"
+      ]
+    },
+    {
+      "name": "libunwind",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/libunwind-emscripten-5.0.5/LICENSE.TXT"
+      ]
+    },
+    {
+      "name": "compiler-rt",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/compiler-rt-emscripten-5.0.5/LICENSE.TXT"
+      ]
+    },
+    {
+      "name": "llvm-libc",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/llvm-libc-emscripten-5.0.5/LICENSE.TXT"
+      ]
+    },
+    {
+      "name": "mimalloc",
+      "version": "emscripten-5.0.5",
+      "source": null,
+      "files": [
+        "third-party/mimalloc-emscripten-5.0.5/LICENSE"
+      ]
+    },
+    {
+      "name": "Z3",
+      "version": "4.15.4",
+      "source": "https://github.com/Z3Prover/z3/tree/745087e237e669d709ae35694728a0c479e572b3",
+      "files": [
+        "third-party/Z3-4.15.4/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "rust-standard-library",
+      "version": "1.97.1",
+      "source": "https://github.com/rust-lang/rust/tree/1.97.1",
+      "files": [
+        "third-party/rust-standard-library-1.97.1/COPYRIGHT-library.html"
+      ]
+    },
+    {
+      "name": "@codemirror/lang-python",
+      "version": "6.2.1",
+      "source": "https://github.com/codemirror/lang-python.git",
+      "files": [
+        "third-party/@codemirror_lang-python-6.2.1/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/state",
+      "version": "6.7.6",
+      "source": "git+https://code.haverbeke.berlin/codemirror/state.git",
+      "files": [
+        "third-party/@codemirror_state-6.7.6/LICENSE"
+      ]
+    },
+    {
+      "name": "@marijn/find-cluster-break",
+      "version": "1.0.4",
+      "source": "git+https://code.haverbeke.berlin/marijn/find-cluster-break.git",
+      "files": [
+        "third-party/@marijn_find-cluster-break-1.0.4/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/autocomplete",
+      "version": "6.20.3",
+      "source": "git+https://code.haverbeke.berlin/codemirror/autocomplete.git",
+      "files": [
+        "third-party/@codemirror_autocomplete-6.20.3/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/language",
+      "version": "6.12.4",
+      "source": "git+https://code.haverbeke.berlin/codemirror/language.git",
+      "files": [
+        "third-party/@codemirror_language-6.12.4/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/view",
+      "version": "6.43.13",
+      "source": "git+https://code.haverbeke.berlin/codemirror/view.git",
+      "files": [
+        "third-party/@codemirror_view-6.43.13/LICENSE"
+      ]
+    },
+    {
+      "name": "crelt",
+      "version": "1.0.7",
+      "source": "git+https://code.haverbeke.berlin/marijn/crelt.git",
+      "files": [
+        "third-party/crelt-1.0.7/LICENSE"
+      ]
+    },
+    {
+      "name": "style-mod",
+      "version": "4.1.4",
+      "source": "git+https://code.haverbeke.berlin/marijn/style-mod.git",
+      "files": [
+        "third-party/style-mod-4.1.4/LICENSE"
+      ]
+    },
+    {
+      "name": "w3c-keyname",
+      "version": "2.2.8",
+      "source": "git+https://github.com/marijnh/w3c-keyname.git",
+      "files": [
+        "third-party/w3c-keyname-2.2.8/LICENSE"
+      ]
+    },
+    {
+      "name": "@lezer/common",
+      "version": "1.5.3",
+      "source": "git+https://code.haverbeke.berlin/lezer/common.git",
+      "files": [
+        "third-party/@lezer_common-1.5.3/LICENSE"
+      ]
+    },
+    {
+      "name": "@lezer/highlight",
+      "version": "1.2.5",
+      "source": "git+https://code.haverbeke.berlin/lezer/highlight.git",
+      "files": [
+        "third-party/@lezer_highlight-1.2.5/LICENSE"
+      ]
+    },
+    {
+      "name": "@lezer/lr",
+      "version": "1.4.10",
+      "source": "git+https://code.haverbeke.berlin/lezer/lr.git",
+      "files": [
+        "third-party/@lezer_lr-1.4.10/LICENSE"
+      ]
+    },
+    {
+      "name": "@lezer/python",
+      "version": "1.1.19",
+      "source": "git+https://code.haverbeke.berlin/lezer/python.git",
+      "files": [
+        "third-party/@lezer_python-1.1.19/LICENSE"
+      ]
+    },
+    {
+      "name": "codemirror",
+      "version": "6.0.2",
+      "source": "https://github.com/codemirror/basic-setup.git",
+      "files": [
+        "third-party/codemirror-6.0.2/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/commands",
+      "version": "6.11.1",
+      "source": "git+https://code.haverbeke.berlin/codemirror/commands.git",
+      "files": [
+        "third-party/@codemirror_commands-6.11.1/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/lint",
+      "version": "6.9.7",
+      "source": "git+https://code.haverbeke.berlin/codemirror/lint.git",
+      "files": [
+        "third-party/@codemirror_lint-6.9.7/LICENSE"
+      ]
+    },
+    {
+      "name": "@codemirror/search",
+      "version": "6.7.2",
+      "source": "git+https://code.haverbeke.berlin/codemirror/search.git",
+      "files": [
+        "third-party/@codemirror_search-6.7.2/LICENSE"
+      ]
+    }
+  ],
+  "sha256": {
+    "LICENSE": "de39e0f64f62c620f4565fcd0b9984c1fe8b3434c80d7167ab9e1b11b226cd4e",
+    "THIRD_PARTY_NOTICES.txt": "47a239162dfcc00f3412ab653393b594101a9f9624aec35c2006ce96b709440f",
+    "app.js": "ad968b202aed711c1cdcf102a41e166c9704a38de46f1ff5a84e2d4491276b9e",
+    "content/guide.en.html": "29924f07615fcfc57eb123000951aaa3c37bf8d7fda2446298cd3e2a57343fe7",
+    "content/guide.ja.html": "e53b67047e4ab2384d15cbc6086e3dea557ab6c35fe1fddefba42235ff063dd2",
+    "content/reference.en.html": "9ca14434997cf944191b3f6df5bfa2cd7384b66425ca4862a4d5da3e8e69f8a8",
+    "content/reference.ja.html": "4d48056f28d66a8c8ed84da14ba5b30e1254d3099ba5346a60726b2216e87356",
+    "docs/browser-playground.html": "433f62420be1d25e8d5f4a06d0118ab19379b0df585120adbe377df3001ed0ef",
+    "docs/compatibility.json": "94604d171791f96d13ef000848f9d96fb0658bca32679b1913b9ad45a355872f",
+    "docs/example-gallery.html": "c6de3050bb8d3a8e8ccfe74fc12927d35822a8dfafed2dbf0d66a30d39b901c5",
+    "docs/language-composition-plan.html": "47b39eb2bb5e10a79af72d08b36ac4f33f84bd93997045b47b6ccabe12bb1d9e",
+    "docs/model-format-v1.html": "2bb9f960e4c90c1f0f447b56af536e46602238c6be26d876402e94a3c71533b4",
+    "docs/practical-examples.html": "ea0643dc0aca54321b6fb707c3eacbf1381a9a4cef5c0cf4197bbda100851d5c",
+    "docs/python-support.html": "fef4070b163eaa279fe5b9445f472f60af8a07bde0bc8b3f6214783e76f499dd",
+    "docs/report-format-v3.html": "19288f1c510931039b4f370a96e0fc794a982d9aa09d11c3c9b750394dead00e",
+    "docs/report-schema-v3.json": "79bfa991f2f78bb7f5f81669db441e075a965466b913c386d96dbc3b4d3bdacb",
+    "docs/specification.html": "a0cdc30de4da115c4eca65362401f774170740adb31111eacbb96ec151a1dbe7",
+    "guide.html": "8f25e82d3c3870b739137e434c73f938fc78173c5453a26c83f71bf5126a5391",
+    "index.html": "8f25e82d3c3870b739137e434c73f938fc78173c5453a26c83f71bf5126a5391",
+    "reference.html": "8f25e82d3c3870b739137e434c73f938fc78173c5453a26c83f71bf5126a5391",
+    "refinepy.js": "aad96cc6e8b09086f2f025d0d87ad0307d8b841f3d600536b6f627da7934139e",
+    "refinepy.wasm": "f3da5da6e7d67412ce56ab629d05cbe94c1b9316196cb13b9ebfc7ccd199217f",
+    "runner.js": "96561a3348a778ddf6a5301e671e3cf54f35c0eea6370e4f151447d53ee9caf5",
+    "samples.js": "5997276ba303d3eae59e0088d69bfc6912f7d94728f7f8edf3b3244ea9e59308",
+    "style.css": "fe81afd067b7b0ec48e269dec312fc9553fd520e24a4355065e1690129549c91",
+    "third-party/@codemirror_autocomplete-6.20.3/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_commands-6.11.1/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_lang-python-6.2.1/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_language-6.12.4/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_lint-6.9.7/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_search-6.7.2/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_state-6.7.6/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@codemirror_view-6.43.13/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/@lezer_common-1.5.3/LICENSE": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+    "third-party/@lezer_highlight-1.2.5/LICENSE": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+    "third-party/@lezer_lr-1.4.10/LICENSE": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+    "third-party/@lezer_python-1.1.19/LICENSE": "54bd812a6d334e0c438b78a43cea74b67e882739fd3450115ddc7c52be5706c1",
+    "third-party/@marijn_find-cluster-break-1.0.4/LICENSE": "9360b00fdd091f05c783b568bdd46c679c41b72415599252de98949462ea1acb",
+    "third-party/Z3-4.15.4/LICENSE.txt": "e617cad2ab9347e3129c2b171e87909332174e17961c5c3412d0799469111337",
+    "third-party/aho-corasick-1.1.5/COPYING": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f",
+    "third-party/aho-corasick-1.1.5/LICENSE-MIT": "0f96a83840e146e43c0ec96a22ec1f392e0680e6c1226e6f3ba87e0740af850f",
+    "third-party/aho-corasick-1.1.5/UNLICENSE": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c",
+    "third-party/arrayvec-0.7.8/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/arrayvec-0.7.8/LICENSE-MIT": "4da95ec4ecb65b738d470b7d762894ad9c97da93e6cbfb18b570fc2c96f4b871",
+    "third-party/bitflags-2.13.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/bitflags-2.13.2/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/block-buffer-0.10.4/LICENSE-APACHE": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5",
+    "third-party/block-buffer-0.10.4/LICENSE-MIT": "d5c22aa3118d240e877ad41c5d9fa232f9c77d757d4aac0c2f943afc0a95e0ef",
+    "third-party/bstr-1.13.1/COPYING": "68653aaa727a2bfa31b7a751e31701ce33c49d695c12dd291a07d1c54da4c14b",
+    "third-party/bstr-1.13.1/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/bstr-1.13.1/LICENSE-MIT": "6b7374c39a57e57fc2c38eb529c4c88340152b10f51dd5ae2d819dfa67f61715",
+    "third-party/castaway-0.2.4/LICENSE": "f98e09091d5ae02b2f2ec1ead4f7f28c4c44d1cb98b078739ba67091637e170c",
+    "third-party/cfg-if-1.0.5/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/cfg-if-1.0.5/LICENSE-MIT": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+    "third-party/char_str-0.0.2/LICENSE": "edca60b1d5f5069be6c33a0e4266b82faa32d896ed6136167430fed6787d8419",
+    "third-party/codemirror-6.0.2/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+    "third-party/compact_str-0.10.0/LICENSE": "0d52feec79589df30138dad3800323fe5686b764b73347330a2dfef8ac83efe8",
+    "third-party/compiler-rt-emscripten-5.0.5/LICENSE.TXT": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+    "third-party/crelt-1.0.7/LICENSE": "23852ebf6aef7fadffc92514b3c5df163a8651f2c3ed0dbb494cb49d93bd5de5",
+    "third-party/crypto-common-0.1.7/LICENSE-APACHE": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5",
+    "third-party/crypto-common-0.1.7/LICENSE-MIT": "3521672491a3479422d5fe1aca6645dd2984090f85da6e5205abfb18fb7a6897",
+    "third-party/digest-0.10.7/LICENSE-APACHE": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5",
+    "third-party/digest-0.10.7/LICENSE-MIT": "9e0dfd2dd4173a530e238cb6adb37aa78c34c6bc7444e0e10c1ab5d8881f63ba",
+    "third-party/drop_bomb-0.1.5/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/drop_bomb-0.1.5/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/either-1.18.0/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/either-1.18.0/LICENSE-MIT": "7576269ea71f767b99297934c0b2367532690f8c4badc695edf8e04ab6a1e545",
+    "third-party/emscripten-5.0.5/LICENSE": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+    "third-party/equivalent-1.0.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/equivalent-1.0.2/LICENSE-MIT": "7365cc8878a1d7ce155a58c4ca09c3d7a6be413efa5334a80ea842912b669349",
+    "third-party/generic-array-0.14.7/LICENSE": "c09aae9d3c77b531f56351a9947bc7446511d6b025b3255312d3e3442a9a7583",
+    "third-party/get-size2-0.10.3/LICENSE": "013ca8b1499479ce162f0d68ff25f4ac0a98dae625d55a8eabfb1fb4aa38933d",
+    "third-party/hashbrown-0.17.1/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/hashbrown-0.17.1/LICENSE-MIT": "ff8f68cb076caf8cefe7a6430d4ac086ce6af2ca8ce2c4e5a2004d4552ef52a2",
+    "third-party/indexmap-2.14.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/indexmap-2.14.2/LICENSE-MIT": "ecc269ef87fd38a1d98e30bfac9ba964a9dbd9315c3770fed98d4d7cb5882055",
+    "third-party/itertools-0.15.0/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/itertools-0.15.0/LICENSE-MIT": "7576269ea71f767b99297934c0b2367532690f8c4badc695edf8e04ab6a1e545",
+    "third-party/itoa-1.0.18/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/itoa-1.0.18/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/libc-0.2.189/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/libc-0.2.189/LICENSE-MIT": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+    "third-party/libcxx-emscripten-5.0.5/LICENSE.TXT": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b",
+    "third-party/libcxxabi-emscripten-5.0.5/LICENSE.TXT": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c",
+    "third-party/libunwind-emscripten-5.0.5/LICENSE.TXT": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d",
+    "third-party/llvm-libc-emscripten-5.0.5/LICENSE.TXT": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+    "third-party/log-0.4.34/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/log-0.4.34/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/memchr-2.8.3/COPYING": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f",
+    "third-party/memchr-2.8.3/LICENSE-MIT": "0f96a83840e146e43c0ec96a22ec1f392e0680e6c1226e6f3ba87e0740af850f",
+    "third-party/memchr-2.8.3/UNLICENSE": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c",
+    "third-party/mimalloc-emscripten-5.0.5/LICENSE": "19c99805e7a44a34b297a75d1edea9985e300066dfc024d5c99d4236d4573b5d",
+    "third-party/musl-emscripten-5.0.5/COPYRIGHT": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+    "third-party/num-0.4.3/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-0.4.3/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-bigint-0.4.6/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-bigint-0.4.6/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-complex-0.4.6/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-complex-0.4.6/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-integer-0.1.47/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-integer-0.1.47/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-iter-0.1.46/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-iter-0.1.46/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-rational-0.4.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-rational-0.4.2/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/num-traits-0.2.19/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/num-traits-0.2.19/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/ordermap-1.2.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/ordermap-1.2.2/LICENSE-MIT": "ecc269ef87fd38a1d98e30bfac9ba964a9dbd9315c3770fed98d4d7cb5882055",
+    "third-party/phf-0.11.3/LICENSE": "0ab4d106b6faac07fb6a051815fd1b4d862d730895e2d7d7358c2f13565e7a38",
+    "third-party/phf_shared-0.11.3/LICENSE": "0ab4d106b6faac07fb6a051815fd1b4d862d730895e2d7d7358c2f13565e7a38",
+    "third-party/psm-0.1.32/LICENSE-APACHE": "965a63a81d9a2fbeb5f9096954dabb49690f9dffcdac9825f675b25c807252a2",
+    "third-party/psm-0.1.32/LICENSE-MIT": "3e3714aa69bd874601741fd7d7ad5298740cece37778e279fc1ab4451c5a11af",
+    "third-party/regex-automata-0.4.18/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/regex-automata-0.4.18/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/regex-syntax-0.8.11/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/regex-syntax-0.8.11/LICENSE-MIT": "6485b8ed310d3f0340bf1ad1f47645069ce4069dcc6bb46c7d5c6faf41de1fdb",
+    "third-party/ruff_python_ast-0.0.12/LICENSE": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+    "third-party/ruff_python_parser-0.0.12/LICENSE": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+    "third-party/ruff_python_trivia-0.0.12/LICENSE": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+    "third-party/ruff_source_file-0.0.12/LICENSE": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+    "third-party/ruff_text_size-0.0.12/LICENSE": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+    "third-party/rust-standard-library-1.97.1/COPYRIGHT-library.html": "0a65bb747c49c7bb816cbc7188319bd6e4e8d08091c1190b8a3c0971c47968ed",
+    "third-party/rustc-hash-2.1.3/LICENSE-APACHE": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc",
+    "third-party/rustc-hash-2.1.3/LICENSE-MIT": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652",
+    "third-party/ryu-1.0.23/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/ryu-1.0.23/LICENSE-BOOST": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+    "third-party/serde-1.0.229/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/serde-1.0.229/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/serde_core-1.0.229/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/serde_core-1.0.229/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/serde_json-1.0.151/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/serde_json-1.0.151/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/serde_spanned-1.1.1/LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+    "third-party/serde_spanned-1.1.1/LICENSE-MIT": "6efb0476a1cc085077ed49357026d8c173bf33017278ef440f222fb9cbcb66e6",
+    "third-party/sha2-0.10.9/LICENSE-APACHE": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5",
+    "third-party/sha2-0.10.9/LICENSE-MIT": "b4eb00df6e2a4d22518fcaa6a2b4646f249b3a3c9814509b22bd2091f1392ff1",
+    "third-party/siphasher-1.0.4/COPYING": "c962ee4d1d05ddc138b202b2540219ebc57893fcf97b364852094a9a94ce1365",
+    "third-party/siphasher-1.0.4/LICENSE-APACHE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "third-party/siphasher-1.0.4/LICENSE-MIT": "f9c4c77baa3828004ee54b8a4f2db2e88ed44a6237a493965bf551fac0fcb62d",
+    "third-party/smallvec-1.16.2/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/smallvec-1.16.2/LICENSE-MIT": "0b28172679e0009b655da42797c03fd163a3379d5cfa67ba1f1655e974a2a1a9",
+    "third-party/stacker-0.1.25/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/stacker-0.1.25/LICENSE-MIT": "378f5840b258e2779c39418f3f2d7b2ba96f1c7917dd6be0713f88305dbda397",
+    "third-party/static_assertions-1.1.0/LICENSE-APACHE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "third-party/static_assertions-1.1.0/LICENSE-MIT": "ea084a2373ebc1f0902c09266e7bf25a05ab3814c1805bb017ffa7308f90c061",
+    "third-party/style-mod-4.1.4/LICENSE": "cb4474e26547397169061d3586c00022cda5330a1b64fa13e872319f3b63aff1",
+    "third-party/thin-vec-0.2.20/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/thin-vec-0.2.20/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/thiserror-2.0.21/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/thiserror-2.0.21/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/tinyvec-1.13.3/LICENSE-APACHE.md": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "third-party/tinyvec-1.13.3/LICENSE-MIT.md": "fd80a26fbb3f644af1fa994134446702932968519797227e07a1368dea80f0bc",
+    "third-party/tinyvec-1.13.3/LICENSE-ZLIB.md": "84b34dd7608f7fb9b17bd588a6bf392bf7de504e2716f024a77d89f1b145a151",
+    "third-party/toml-0.9.8/LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+    "third-party/toml-0.9.8/LICENSE-MIT": "6efb0476a1cc085077ed49357026d8c173bf33017278ef440f222fb9cbcb66e6",
+    "third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+    "third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-MIT": "6efb0476a1cc085077ed49357026d8c173bf33017278ef440f222fb9cbcb66e6",
+    "third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+    "third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-MIT": "6efb0476a1cc085077ed49357026d8c173bf33017278ef440f222fb9cbcb66e6",
+    "third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+    "third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-MIT": "6efb0476a1cc085077ed49357026d8c173bf33017278ef440f222fb9cbcb66e6",
+    "third-party/typenum-1.20.1/LICENSE": "db11fec9946737df39ca3898d9cd8c10ec6f6c3a884a6802b0ad0b81b4e8f23a",
+    "third-party/typenum-1.20.1/LICENSE-APACHE": "516b24e051bf5630880ebbd55c40a25ce9552ebaf8970a53e8976eb70e522406",
+    "third-party/typenum-1.20.1/LICENSE-MIT": "a825bd853ab71619a4923d7b4311221427848070ff44d990da39b0b274c1683f",
+    "third-party/unicode-ident-1.0.26/LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "third-party/unicode-ident-1.0.26/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "third-party/unicode-ident-1.0.26/LICENSE-UNICODE": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1",
+    "third-party/unicode-normalization-0.1.25/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/unicode-normalization-0.1.25/LICENSE-MIT": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0",
+    "third-party/unicode_names2-1.3.0/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "third-party/unicode_names2-1.3.0/LICENSE-MIT": "6d3a9431e65e69c73a8923e6517b889d17549b23db406b9ec027710d16af701f",
+    "third-party/unicode_names2-1.3.0/LICENSE-UNICODE": "f858d5fab15f87699a92876e78d7699a92bdb116b57bf64bf6778c374b5cb0fe",
+    "third-party/w3c-keyname-2.2.8/LICENSE": "869c30f368eb08735e779027b9f4bc9fea2f39624351856aebe42741f0bc0884",
+    "third-party/winnow-0.7.15/LICENSE-MIT": "cb5aedb296c5246d1f22e9099f925a65146f9f0d6b4eebba97fd27a6cdbbab2d",
+    "third-party/winnow-1.0.4/LICENSE-MIT": "cb5aedb296c5246d1f22e9099f925a65146f9f0d6b4eebba97fd27a6cdbbab2d",
+    "third-party/z3-0.19.6/LICENSE.txt": "91676bb417b9ef3b63df7701be0d29511f433e923d5ec55a64139ea6a8cafa9c",
+    "third-party/z3-sys-0.10.9/LICENSE.txt": "91676bb417b9ef3b63df7701be0d29511f433e923d5ec55a64139ea6a8cafa9c",
+    "third-party/zmij-1.0.23/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "worker.js": "c73cbbf554d1df235e909645cc71ff1a77972b99b9c407493039adc4ecb31821"
+  }
+}

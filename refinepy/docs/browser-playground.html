@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>browser-playground · refinepy</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <p class="brand">refinepy</p>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Playground</a>
+      <a href="../guide.html">Guide</a>
+      <a href="../reference.html" aria-current="page">Reference</a>
+    </nav>
+  </header>
+  <main id="content" class="documentation" tabindex="-1">
+<h1 id="browser-playground">Browser playground</h1>
+<p>The playground builds the existing Rust verifier and the pinned Z3
+4.15.4 source into a single WebAssembly module using
+<code>wasm32-unknown-emscripten</code>. It runs the same parser, package
+resolver, inference, final obligations and model validation as the
+native CLI. The browser provides an in-memory filesystem containing
+<code>playground.py</code> and a generated configuration. Python source
+is never executed, uploaded or persisted. No verification backend is
+required.</p>
+<h2 id="display-language">Display language</h2>
+<p>The playground header has an <strong>EN / JP</strong> switch for
+English and Japanese. It translates controls, example names, editor
+search controls and result summaries entirely in the frontend. Switching
+preserves the source, undo history, selector, current run and existing
+results. The language preference is saved locally when browser storage
+is available; English is the default. Python samples, raw verifier
+diagnostics, proof records, stage identifiers and JSON stay in their
+original form. Guide and Reference content is available in both
+languages. Their Python code blocks remain identical. Linked technical
+documents under <code>docs/</code> remain in English. The three header
+pages use client-side navigation without reloading the editor. Direct
+<code>.html</code> URLs, section links and browser Back/Forward are
+supported; refreshing still resets the source. Documentation load
+failures are shown explicitly.</p>
+<h2 id="build-and-run-locally">Build and run locally</h2>
+<p>Use the repository’s pinned Rust toolchain, Emscripten
+(<code>emcc</code>, <code>emcmake</code>), CMake, a host C/C++ compiler
+with libclang, curl, SHA-256 tooling, Python 3, Node.js 22 or newer,
+pnpm 11.1.1 and Pandoc. Native Z3 is not required. The build checks the
+same Z3 source archive checksum as the native build and uses a separate
+static-library installation under <code>target/wasm</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rustup</span> target add wasm32-unknown-emscripten</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/build-wasm.sh</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/serve-wasm.sh</span></code></pre></div>
+<p>Open <a href="http://127.0.0.1:8000"
+class="uri">http://127.0.0.1:8000</a>. Choose an example and click
+<strong>Load example</strong>, edit the source, then click
+<strong>Verify</strong>. The local development server sends
+<code>Cache-Control: no-store</code> for generated assets so later
+reloads use the rebuilt verifier. If an earlier server’s assets were
+already cached, use a fresh local port with
+<code>REFINEPY_WEB_PORT</code> for the first run after this change. The
+function selector accepts a function name or <code>*</code>, with the
+same explicit-target semantics as the native CLI. Results retain the
+exact report classifications, diagnostics, inference evidence and
+checked scope. Expand <strong>Full JSON report</strong> for report
+schema v3 output. The results start with counts of
+<strong>Verified</strong>, <strong>Needs review</strong> and
+<strong>Failed</strong> selected functions. Needs review groups
+<code>unproved</code>, <code>unknown</code> and
+<code>unsupported</code>; Failed groups <code>counterexample</code> and
+<code>error</code>, whose individual meanings remain visible on each
+card. An error does not necessarily indicate a source bug. Report-level
+diagnostics appear separately and prevent an all-verified summary. Each
+card gives a short conclusion and a separate termination summary. Expand
+<strong>Verification details</strong> for solver costs, checked scope,
+inferred invariants, source dependencies and <strong>Proof
+evidence</strong>, including ownership records. <strong>Full JSON
+report</strong> retains the complete report.</p>
+<p>Each result also shows whether termination of that function and its
+checked calls was verified. A verified contract without that evidence
+applies to normal returns. <strong>Proof evidence</strong> expands the
+original termination, induction, reflection and erased-lemma records.
+Callee evidence alone never establishes termination of the selected
+caller; failed or uncertain results cannot show a successful termination
+summary. The <a href="example-gallery.html">numerical example guide</a>
+describes one basic range contract and five numerical examples:
+Fibonacci, integer square root, series summation, exact rational
+rounding and signed division. Container examples remain regression
+inputs outside the menu. All menu sources are copied verbatim from
+maintained Python files by <code>build-web.sh</code>; the Wasm suite
+checks source equality and proof results. Loading a sample replaces the
+editor contents and clears its undo history. There is no automatic
+saving.</p>
+<p>The Python editor uses CodeMirror 6 with line numbers, syntax
+highlighting, completion, bracket matching, folding, undo/redo and
+search. Tab moves focus out of the editor; use Ctrl+] (Cmd+] on macOS)
+to indent and Ctrl+F (Cmd+F) to search. The editor becomes read-only
+while verification runs. The layout uses a neutral header, compact
+toolbar and adjacent source and result panes; narrow screens stack the
+panes. Header links open the local Guide and Reference in the same
+tab.</p>
+<p>The English sources are <code>web/guide.md</code> and
+<code>web/reference.md</code>; their complete Japanese counterparts are
+<code>web/guide.ja.md</code> and <code>web/reference.ja.md</code>.
+Maintain both languages together, retaining identical code blocks,
+section IDs and link destinations. The build renders four fragments
+under <code>content/</code> with Pandoc and rewrites local Markdown
+links to HTML. <code>index.html</code>, <code>guide.html</code> and
+<code>reference.html</code> serve the same app shell, so static servers
+need no URL rewrite. <code>web/navigation.js</code> fetches and caches
+successful fragments, ignores stale responses after navigation or
+language changes, and reports load failures. <code>web/route.js</code>
+limits client-side navigation to the three top-level pages. The editor
+stays mounted, including its undo history, results and active worker.
+Source is still reset on a full reload and never saved to storage.</p>
+<p>Technical Markdown files in <code>docs/</code> retain their
+standalone English pages using <code>web/docs-template.html</code>.
+Update the relevant sources alongside behavior changes, as required by
+<code>AGENTS.md</code>. Run
+<code>python3 scripts/check-web-docs.py</code> after building to check
+bilingual code, anchors, reference links and the direct-entry shells.
+Pandoc’s syntax token spans use the editor palette in
+<code>web/style.css</code> to highlight documentation code blocks in
+both light and dark color schemes. The editor page omits backend and
+verification-boundary explanations; the linked documentation retains the
+detailed contract.</p>
+<p>CodeMirror and its dependencies are locked in
+<code>web/pnpm-lock.yaml</code> and bundled locally with esbuild. The
+browser loads no editor code from a CDN. After frontend edits, reuse an
+existing Wasm build with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/build-web.sh</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/serve-wasm.sh</span></code></pre></div>
+<p><code>build-wasm.sh</code> also runs this frontend build. Generated
+bundles and dependencies are ignored; only source, package configuration
+and the lockfile are committed.</p>
+<p>The first build compiles Z3 and can take several minutes. Subsequent
+builds reuse the generated CMake and Cargo outputs. All compiler caches
+and browser artifacts are ignored under <code>target/</code>. Set
+<code>REFINEPY_BUILD_JOBS</code> to control CMake parallelism and
+<code>REFINEPY_WEB_PORT</code> to change the local server port. If
+<code>EM_CACHE</code> is unset, the script keeps Emscripten’s generated
+system libraries in <code>target/wasm/emscripten-cache</code>.</p>
+<h2 id="browser-execution-boundary">Browser execution boundary</h2>
+<p>Each verification starts a fresh Web Worker and module instance. Z3
+uses a single-threaded build with polling timeouts; no SharedArrayBuffer
+or special cross-origin isolation headers are needed. The browser must
+support WebAssembly exception handling, matching the pinned Rust target
+and the Z3 C++ build. Rust monotonic deadlines and native query timeouts
+still apply. <strong>Cancel</strong> terminates the worker, and an
+independent 90-second browser deadline covers module loading and all
+selected targets. Cancellation, loading failure and that outer deadline
+produce no proof result.</p>
+<p>The browser solver runs in the same module instead of a child
+process. It checks the loaded Z3 version, request size, satisfiable
+models and the target deadline before accepting a result. The native CLI
+retains its isolated worker protocol. The documented proof assumptions
+remain applicable to this execution boundary.</p>
+<p>The editor accepts one UTF-8 module, at most 1 MiB. Calls within that
+module work; additional project files, external model manifests, native
+cache reuse and cancel-file control are not exposed by this UI. Missing
+source dependencies fail through the ordinary resolver and must not be
+treated as verified. The full <a href="python-support.html">Python
+support matrix</a> and <a
+href="specification.html#meaning-of-verification">verification
+contract</a> still apply. Verification remains conditional. A
+<code>verified</code> status alone does not prove termination; explicit
+integer or lexicographic measures can add evidence for direct recursion
+and measured loops as described in the specification.</p>
+<h2 id="checks">Checks</h2>
+<p>Check result interpretation without a browser or solver:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pnpm</span> <span class="at">--dir</span> web test</span></code></pre></div>
+<p>After building, run the Wasm integration checks in Node:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> scripts/test-wasm.cjs</span></code></pre></div>
+<p>They execute the actual generated module against supported contracts,
+source calls, loop inference, containers, counterexamples and failure
+boundaries. This is separate from browser UI verification and from the
+native checks in <code>scripts/test.sh</code>.</p>
+<p>Development-host validation used Emscripten 5.0.5 and Node 24.21.0
+with the pinned Rust toolchain. The Wasm checks and native test entry
+point passed. The in-app browser was checked for successful
+verification, counterexample display, sample selection, cancellation and
+recovery, JSON display, result invalidation after editing, and reflow at
+390 pixels. Other browsers remain unverified; the 90-second outer
+deadline was not exercised to expiry.</p>
+<p>CodeMirror integration validation: the frontend bundle, JavaScript
+syntax checks, shell syntax checks and existing Wasm integration checks
+passed. The in-app browser exercised successful verification,
+counterexamples, sample replacement, result invalidation after editing,
+search, Tab focus exit, read-only state during a 300-function run,
+cancellation and subsequent successful verification. At 390 pixels the
+panes stacked and the document had no horizontal overflow. Dark mode,
+other browsers and the 90-second deadline remain unverified for this
+edit.</p>
+<p>Guide and Reference validation: the frontend and Pandoc documentation
+build, shell syntax and local links/anchors across all eight HTML pages
+passed. The in-app browser opened Guide, Reference and the Python
+support matrix, returned to the playground and verified the default
+example. At 390 pixels the header links remained visible, the panes
+stacked and the document had no horizontal overflow. The original
+new-tab link attributes were inspected; these links now use same-tab
+navigation. Dark mode and other browsers remain unverified for this
+layout change.</p>
+<p>Termination display validation: the three result-interpretation
+tests, JavaScript syntax checks and frontend/documentation build passed.
+The in-app browser checked a verified straight-line function, a verified
+unmeasured loop and a counterexample; their summaries respectively
+showed verified termination, normal-return contracts only, and no
+established termination. Callee-only, wrong-identity, incomplete and
+failed evidence cases are covered by the interpretation tests. This
+display check used the existing Wasm artifact; the rebuilt-module checks
+are recorded below.</p>
+<p>Complete-example validation: <code>build-wasm.sh</code> rebuilt the
+current verifier and generated the proof samples from their maintained
+sources. All 51 Node Wasm case groups passed, including ten
+binary-search targets, seven local-list targets, signed variable
+division, missing membership invariants, extra writes, zero divisors,
+candidate limits and target deadlines. Each positive example’s
+exact-target termination evidence was checked; failed and uncertain
+cases did not display verified termination. The in-app browser verified
+all three samples, rejected unguarded division, cleared results after
+edits, cancelled a 300-function run and verified again. At 390 pixels,
+panes stacked with no document overflow and expanded proof evidence
+wrapped within the result card. HTTP inspection confirmed
+<code>Cache-Control: no-store</code> on the Wasm response; browser
+checks used a fresh local origin after observing cached prior-build
+code. Dark mode, other browsers, zoom and expiry of the outer 90-second
+browser deadline were not tested in this change. Node’s target-deadline
+check is separate from that browser deadline.</p>
+<p>Composition-demo validation: the current verifier was rebuilt with
+<code>sh scripts/build-wasm.sh</code>.
+<code>node scripts/test-wasm.cjs</code> passes all 55 reported checks,
+including the three composite-value functions, all nine partition
+functions, ownership/termination evidence and rejection of a borrowed
+result. The former tuple-proof-argument rejection now expects
+verification, matching product predicates; a dictionary-construction
+case retains the body-only boundary. The three frontend report tests
+also pass. Generated documentation checks cover 361 local
+Guide/Reference links, six navigation pages and the four pages
+describing these samples. In the in-app browser, loading and verifying
+each new sample displayed <code>3 verified</code> and
+<code>9 verified</code>, respectively. This increment did not repeat
+mobile/zoom or cancellation testing.</p>
+<p>Summary display validation: five result-interpretation tests cover
+grouped outcomes, empty reports, report diagnostics and exact-target
+termination. Browser execution checked verified, counterexample and
+mixed verified/unsupported results, edit invalidation and keyboard
+expansion of verification details. At 390 px width the results wrap
+without page-level horizontal overflow. The web documentation was
+rebuilt and its local links and header navigation checked. Browser zoom,
+dark-mode rendering and cancellation were not rechecked for this
+display-only change; the verification engine is unchanged.</p>
+<p>Earlier practical example revision: the demo had eight menu entries,
+beginning with three accepted contract examples and one deliberate
+conservation bug. The native CLI verifies the four introductory
+functions with exact-target termination evidence. The Wasm suite passed
+62 checks, including the four documented failing edits, and the finite
+Python checker passes 2,271 cases and four bug witnesses. The browser
+checks cover the new default sample, the conservation counterexample and
+the two-function window example. Guide, Reference and the new
+walkthrough are rebuilt from Markdown.</p>
+<p>Earlier algorithm gallery revision: the menu had one basic and six
+advanced entries. Native verification accepts all nine functions across
+Fibonacci, four-value sorting and framing with exact-target termination
+evidence. The 69-check Wasm suite includes their positive results,
+Fibonacci induction evidence and four rejected sorting/framing edits.
+Separate Python execution checks cover 514 Fibonacci indices, 625
+sorting inputs and 508 framed packets; sorting and framing also have
+four concrete mutation witnesses. The browser confirms the three sample
+selections and their 4/3/2 verified results. The generated Guide,
+Reference and gallery links are checked. No arbitrary-length sorting
+support or new verifier semantics are introduced by this revision.</p>
+<p>Numerical gallery revision: the menu now contains one basic range
+contract and five numerical examples. The five new square-root,
+summation and rounding functions verify natively and in Wasm with
+exact-target termination evidence. The Wasm suite passes 75 checks,
+including three deliberate numeric mutations. Independent Python oracles
+cover 2,203 finite numerical cases and three concrete bug witnesses.
+Browser execution checks integer square root and rational
+rounding/rescaling. Documentation is rebuilt and local navigation
+checked. These are integer/rational proofs, not floating-point error
+analyses.</p>
+  </main>
+</body>
+</html>

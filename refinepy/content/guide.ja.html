@@ -1,0 +1,659 @@
+<h1 id="guide">ガイド</h1>
+<h2 id="verify-a-function">関数を検証する</h2>
+<ol type="1">
+<li><strong>サンプル</strong>を選び、<strong>サンプルを読み込む</strong>を押します。</li>
+<li><code>playground.py</code>
+を編集します。別のサンプルを読み込むと、ソースが置き換わり、取り消し履歴も消えます。</li>
+<li><strong>検証する関数</strong>に関数名を指定します。<code>*</code>
+は型注釈付き関数をすべて選択します。</li>
+<li><strong>検証</strong>を押すと、エディターの横に結果が表示されます。<strong>キャンセル</strong>で実行を停止できます。</li>
+</ol>
+<p>ソースや関数の指定を編集すると、前の結果は消えます。検証中はエディターが読み取り専用になります。ページを再読み込みすると、最初のサンプルに戻ります。ヘッダーのガイドとリファレンスは同じタブで開きます。</p>
+<p>ヘッダーの <strong>EN / JP</strong>
+で英語と日本語を切り替えられます。操作、サンプル名、エディターの検索操作、結果の要約、ガイド、リファレンスの本文をフロント側で翻訳します。切り替えても、ソース、取り消し履歴、関数の指定、実行中の検証、既存の結果を保持します。ブラウザーの保存機能が使える場合、言語設定を保存します。初期設定は英語です。Python
+サンプル、コード例、検証器の診断原文、証拠の記録、処理段階の識別子、JSON
+は変更しません。<code>docs/</code> 内の詳細な技術文書は英語です。</p>
+<p>ヘッダーの3ページは、エディターを再読み込みせずに切り替わります。<code>.html</code>
+URL
+の直接表示、見出しへのリンク、ブラウザーの戻る・進むに対応しています。ページ全体を再読み込みするとソースは初期化されます。ドキュメントを読み込めなかった場合は、その旨を表示します。</p>
+<h2 id="write-a-contract">契約を書く</h2>
+<p>リポジトリの二分探索サンプルは、重複を含む任意の長さの整列済みリストについて、完全な探索契約と停止性を検証します。検証済みの区間に関する帰納補題が、区間を狭めても要素の所属関係を維持します。静的アサーションは補題を実行せずに利用します。<a
+href="docs/specification.html#binary-search-contract-prototype">仕様</a>を参照してください。</p>
+<p><code>Annotated</code> で型に述語を付けます。lambda
+の最初の引数は制約される値です。戻り値の述語では関数の引数も指定でき、結果と入力の関係を記述できます。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(x: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result, x: result <span class="op">==</span> x <span class="op">+</span> <span class="dv">1</span>)]:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>この契約は、入力が非負で、結果が入力よりちょうど1大きいことを要求します。戻り値の式を
+<code>x - 1</code> に変更して、もう一度検証してみてください。</p>
+<h2 id="choose-a-numerical-example">数値サンプルを選ぶ</h2>
+<p>メニューには基本サンプルの
+<strong>値を指定した範囲に収める</strong>と、<strong>フィボナッチ数：高速倍加法の検証</strong>、<strong>二分法による整数平方根</strong>、<strong>数列の和と閉形式</strong>、<strong>厳密な丸めと有理数によるスケール変換</strong>、<strong>符号付き整数の商と余り</strong>があります。</p>
+<p><a
+href="docs/example-gallery.html">数値サンプルガイド</a>は、具体的な数値で式を説明し、証明の方法と制限を示します。例えば平方根の契約は
+<code>r*r &lt;= n &lt; (r+1)*(r+1)</code>
+です。丸めでは誤差の範囲と、ちょうど中間の値の扱いを指定します。サンプルを選び、<strong>サンプルを読み込む</strong>を押して、<code>*</code>
+で<strong>検証</strong>してください。コンテナーのサンプルは、リポジトリと回帰テストに残っています。</p>
+<h2 id="verify-string-contents">文字列の内容を検証する</h2>
+<p>文字列の内容比較、長さ、連結、安全な整数の添字アクセス、ステップ1のスライスを、本体と述語で使えます。読み取りでは添字が範囲内であることを証明します。負の添字は末尾から数えます。スライスは境界を切り詰め、境界の省略と
+None、ステップの省略と None、定数1に対応します。</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine, requires</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> text: <span class="bu">len</span>(text) <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first(text: <span class="bu">str</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">str</span>, Refine(<span class="kw">lambda</span> result: <span class="bu">len</span>(result) <span class="op">==</span> <span class="dv">1</span>)]:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text[<span class="dv">0</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append(left: <span class="bu">str</span>, right: <span class="bu">str</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">str</span>, Refine(<span class="kw">lambda</span> result, left, right: <span class="bu">len</span>(result) <span class="op">==</span> <span class="bu">len</span>(left) <span class="op">+</span> <span class="bu">len</span>(right))]:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> left <span class="op">+</span> right</span></code></pre></div>
+<p>モデルはサロゲートを含むPythonの全コードポイントを保持します。大小比較はコードポイントの辞書式順序で、<code>"a" &lt; "aa" &lt; "b"</code>
+が成り立ちます。固定長タプルも、共通の要素が比較可能な整数・bool・文字列・入れ子のタプルなら辞書式に比較できます。対応する両要素がNoneの場合も扱えます。文字列メソッド、f-string、その他のスライスステップは未対応です。文字列の証拠は4,096コードポイントまで完全に再構築し、それを超える証拠は
+<code>unknown</code> になります。<a
+href="docs/specification.html#strings">文字列モデル</a>と<a
+href="reference.html#supported-forms-and-limits">対応表</a>を参照してください。</p>
+<h2
+id="describe-a-complete-tuple-result">タプルの結果全体を記述する</h2>
+<p>契約内のタプルリテラルで、結果の全フィールドをまとめて記述できます。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, x: result <span class="op">==</span> (x, x <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x, x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>タプルの構築、連結、静的なスライスは、事前条件、細分化述語、アサーション、ループ不変条件で使えます。例えば
+<code>result == pair_input[::-1]</code>
+は固定長タプルの反転を表します。フィールドには省略可能値、入れ子のタプル、対応する要素型のリストやマッピングを含められます。後のスライスが空になったり、別のフィールドで等価比較が既に偽になったりする場合も、各フィールドの式は安全でなければなりません。タプルを構築する前に、条件付きの読み取りをガードしてください。<a
+href="reference.html#predicate-expressions-and-built-ins">リファレンス</a>と<a
+href="docs/specification.html#none-and-fixed-tuples">タプルモデル</a>を参照してください。</p>
+<p>関数は、ペア全体の契約を持つ2つのリストを返せます。</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_at(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    Refine(<span class="kw">lambda</span> result, xs, i: result <span class="op">==</span> (xs[:i], xs[i:])),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:i], xs[i:]</span></code></pre></div>
+<p>期待されるフィールド型があるため、<code>tuple[list[int], list[int]]</code>
+の結果には <code>return [], []</code>
+も使えます。リストの要素自体には引き続きスカラー型を使います。タプルから取り出したリストは借用されており、取り出すだけでは更新できません。ローカルで構築したリストは書き込み後に直接返してください。タプルへの格納で、書き込んだリストの別名参照を禁止する規則を回避することはできません。</p>
+<h2 id="multiply-integer-inputs">整数入力を乗算する</h2>
+<p>本体と述語では、2つの変数を整数乗算のオペランドにできます。例えば、任意の整数入力の平方は非負です。</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square(a: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result: result <span class="op">&gt;=</span> <span class="dv">0</span>)]:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">*</span> a</span></code></pre></div>
+<p><code>square</code> を選択して検証します。<code>result &gt;= 0</code>
+を <code>result &gt; 0</code> に変えると、<code>a = 0</code>
+の反例が得られます。積には
+<code>Annotated[int, Refine(lambda result, a, b: result == a * b)]</code>
+の依存する戻り値契約を使えます。整数の <code>a *= b</code>
+でも右辺に変数を使え、再束縛後に宣言済みのローカル契約を検査します。</p>
+<p>非線形整数の証明義務は、ソルバーの能力や設定された制限を超え、<code>unknown</code>
+になる場合があります。構文への対応は、すべての多項式の性質を証明できるという保証ではありません。<a
+href="reference.html#supported-forms-and-limits">リファレンス</a>と<a
+href="docs/specification.html#integers-and-booleans">整数モデル</a>を参照してください。</p>
+<h2 id="divide-by-an-integer-input">整数入力で除算する</h2>
+<p>事前条件や分岐で、除数が0でないことを示します。正負どちらの除数にも対応し、Python
+の床方向への丸めと余りの符号に従います。</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires, ensures</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> d: d <span class="op">!=</span> <span class="dv">0</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> r, a, d: a <span class="op">==</span> r[<span class="dv">0</span>] <span class="op">*</span> d <span class="op">+</span> r[<span class="dv">1</span>] <span class="kw">and</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">0</span> <span class="op">&lt;=</span> r[<span class="dv">1</span>] <span class="op">&lt;</span> d <span class="cf">if</span> d <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> d <span class="op">&lt;</span> r[<span class="dv">1</span>] <span class="op">&lt;=</span> <span class="dv">0</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> divide(a: <span class="bu">int</span>, d: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">//</span> d, a <span class="op">%</span> d</span></code></pre></div>
+<p>ガードのない変数の除数が0になり得る場合、定義可能性の証明義務に失敗します。<code>a // d if d else 0</code>
+は対応する安全な書き方です。<code>//=</code> と <code>%=</code>
+も同じ検査を行います。述語にも <code>d != 0 and a % d == 0</code>
+などのガードが必要です。変数の除数を使う証明は <code>unknown</code>
+になる場合があります。<a
+href="docs/specification.html#integers-and-booleans">整数モデル</a>を参照してください。</p>
+<h2
+id="build-and-update-a-local-list">ローカルリストを構築して更新する</h2>
+<p>管理対象の <code>examples/local-lists/lists.py</code>
+には、範囲の構築、フィルター、置換、交換の完全なサンプルがあります。プレイグラウンドに貼り付けて検証できます。数値メニューには
+<strong>符号付き整数の商と余り</strong>があります。</p>
+<p><code>examples/partition/partition.py</code>
+は、負数と非負数への厳密な分割を証明し、入力を変えずに両方の結果を安全に更新します。ソースをエディターに貼り付け、<code>*</code>
+で検証してください。</p>
+<p>1つのローカル名に新しいリストを構築します。入力リストの値を関数入口のまま保ちつつ、新しいリストの内容を更新できます。</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires, ensures</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> xs, i: <span class="op">-</span><span class="bu">len</span>(xs) <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> r, xs, i, value:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(r) <span class="op">==</span> <span class="bu">len</span>(xs) <span class="kw">and</span> r[i] <span class="op">==</span> value</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> r <span class="op">==</span> xs[:i <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">len</span>(xs) <span class="op">+</span> i] <span class="op">+</span> [value]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> xs[(i <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">len</span>(xs) <span class="op">+</span> i) <span class="op">+</span> <span class="dv">1</span>:])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replace(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> xs[:]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    out[i] <span class="op">=</span> value</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>単独の <code>append</code> と <code>extend</code>、リストの
+<code>+=</code> で結果を構築できます。空リストには
+<code>out: list[int] = []</code>
+などの明示的なローカル型が必要です。追加・置換する要素は、非負や偶数といった細分化を含む要素契約を満たす必要があります。リスト全体のローカル細分化は書き込みのたびに検査します。ループでは明示的な不変条件や減少尺度が必要になる場合があります。要素の細分化は、関数が読んだ要素だけでなく、有効な要素すべてを記述します。細分化の
+lambda は、それぞれ独自の要素値を束縛します。</p>
+<p>置換の契約は、負の添字を含め、前後の要素列全体を保持します。ローカルリストのサンプルは、<code>build_range</code>
+が正確に <code>0</code> から <code>n - 1</code>
+を返すこと、<code>evens</code>
+が入力中の偶数をすべて元の順序で、重複も保持して返すことも証明します。定義を論理に取り込んだ仕様と、正確な接頭部分の不変条件により、構築中に仕様関数を実行せずに契約を表します。片側の要素の細分化がより強くても、再帰的に比較可能な要素のソートが一致すればリストの等価比較ができます。<a
+href="docs/specification.html#exclusive-local-list-writes">完全な契約</a>を参照してください。</p>
+<p>コンテナーの要素には、タプル、省略可能値、その他の対応するコンテナーを使えます。</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coordinates() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]]:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    out: <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]] <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    out.append((<span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out <span class="op">==</span> [(<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">4</span>)]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> missing_values() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    out: <span class="bu">list</span>[<span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">=</span> [<span class="va">None</span>, <span class="dv">2</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    out[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out[<span class="dv">0</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>入れ子の空リテラルは、戻り値型、ローカル注釈、隣接する型付きリストから型を受け取ります。入れ子のフィールドと要素の細分化も証明義務です。新しく確保した外側のリストは、借用した内側のリストの所有権を与えません。<code>rows[0]</code>
+を読むだけでは、そのリストを変更できません。内包表記でも、対応する複合要素を構築できます。</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adjacent_pairs(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]]:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(x, x <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs]</span></code></pre></div>
+<p>各内包表記には同期のジェネレーターを1つ使います。入れ子の内包表記は変数スコープが別です。フィルターと、1つの内包表記内の複数ジェネレーターには対応していません。要素の構築は、すべての入力要素について契約を満たし、安全である必要があります。空の入力では要素の式を評価しません。定義を取り込むヘルパーの呼び出しにも、依存先の検証成功が必要です。</p>
+<p>検証済みのソースヘルパーを使い、新しいリストの構築を共通化できます。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> xs)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs, value: result <span class="op">==</span> xs <span class="op">+</span> [value])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append_copy(xs: <span class="bu">list</span>[<span class="bu">int</span>], value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> copy(xs)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    out.append(value)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>検証器はヘルパーの実際の確保処理と、すべてのソース依存先を検査します。同じ等価契約でも
+<code>return xs</code>
+では呼び出し側の書き込みを許可しません。両方の分岐が新しいリストを返す必要があり、借用した結果を返す分岐があると所有権を移せません。インポートしたヘルパーや認証済み呼び出しの連鎖にも対応します。推論された呼び出し結果は、更新時も要素の細分化を保持します。</p>
+<p>ヘルパーが独立した2つのリストを返し、直接のアンパックで両方を移譲することもできます。</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> (xs, xs))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copies(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]]:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:], xs[:]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> (xs <span class="op">+</span> [<span class="dv">1</span>], xs <span class="op">+</span> [<span class="dv">2</span>]))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grow(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]]:</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    left, right <span class="op">=</span> copies(xs)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    left.append(<span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    right.append(<span class="dv">2</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> left, right</span></code></pre></div>
+<p>証明書は、入れ子のコンテナー内部に保持する参照も含め、確保が独立していることを検査します。同じリストを2回返したり、入力を返したりする場合は認められません。呼び出し時に直接アンパックしてください。タプルをローカルに保存してからフィールドを取り出すと別名参照が残り、書き込みは許可されません。<a
+href="docs/specification.html#exclusive-local-list-writes">所有権規則</a>は、転送、条件付き、定義を取り込む呼び出し、ジェネリックな結果について説明します。<code>examples/partition/partition.py</code>
+は、順序と重複を含む厳密な負数・非負数の分割を証明し、返された両方のリストを更新します。接頭部分の仕様は全域で定義され、ループには検査済みの減少尺度があります。</p>
+<p><code>alias = out</code>
+として保存すると、書き込みは未対応になります。入力リストや借用した呼び出し結果は、代入だけでは書き込み可能になりません。<code>out</code>
+を更新するループは、変化しない入力か <code>out[:]</code>
+などの新しいコピーを走査する必要があります。構築後の通常の走査には対応します。<code>pop</code>、<code>clear</code>、スライス代入、入れ子の変更呼び出しは未対応です。<a
+href="docs/specification.html#exclusive-local-list-writes">所有権と書き込みの規則</a>を参照してください。</p>
+<h2 id="fixed-tuples-and-allowed-values">固定長タプルと許可する値</h2>
+<p><code>Literal</code>
+で許可するスカラー値の有限集合を指定します。固定長タプルは各フィールドの契約を保持し、等価比較、連結、静的なスライスに対応します。</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>Mode <span class="op">=</span> Literal[<span class="st">&quot;read&quot;</span>, <span class="st">&quot;write&quot;</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_pair(pair: <span class="bu">tuple</span>[Literal[<span class="dv">0</span>, <span class="dv">1</span>], Mode]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[Mode, Literal[<span class="dv">0</span>, <span class="dv">1</span>]]:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pair[::<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div>
+<p>Literal
+の引数は同じ基底型を持つ必要があります。タプルのスライス境界とステップは、静的に分かる整数、または省略・None
+で指定します。ステップは0以外です。正確な制限は<a
+href="reference.html">リファレンス</a>を参照してください。</p>
+<h2 id="add-a-function-precondition">関数の事前条件を追加する</h2>
+<p>入力間の関係には、インポートした <code>requires</code>
+デコレーターを使います。後で宣言したものも含め、どの入力も参照でき、複数行に記述できます。</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> xs, i: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_at(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
+<p><code>import refinepy as rp</code> や
+<code>from refinepy import requires as pre</code>
+も使えます。デコレーターは Python
+実行中に述語を実行したり契約を検査したりせず、元の関数を保持します。装飾したコードを実行するには
+refinepy
+の補助パッケージをインストールしてください。検証器は、ソースをインポートせずに読みます。<code>requires</code>、<code>reflect</code>、<code>decreases</code>
+にはデコレーターを使い、旧コメント形式は拒否されます。ループ不変条件には通常の
+<code>invariant(lambda ...)</code>
+呼び出しを使います。コメント形式は非推奨です。束縛規則は<a
+href="reference.html#function-preconditions">リファレンス</a>を参照してください。</p>
+<p>比較の連鎖は <code>0 &lt;= i &lt; len(xs)</code>
+のように書けます。<code>None</code>、<code>in</code>、<code>not in</code>
+を含む連鎖は、<code>left is None and right is None</code>
+のように個別の真偽式に分けてください。関数の既定値は、スカラー・<code>None</code>
+リテラル、または <code>int</code> / <code>bool</code> / <code>str</code>
+リテラルの平坦なタプルに限ります。入れ子のタプルや <code>None</code>
+を含むタプルの既定値は未対応です。<a
+href="reference.html#supported-forms-and-limits">対応する形式と制限</a>を参照してください。</p>
+<h2 id="write-a-return-contract-with-ensures">ensures
+で戻り値の契約を書く</h2>
+<p><code>ensures</code> を使うと、<code>Annotated</code>
+の内部ではなく関数の上に戻り値の細分化を書けます。関数シグネチャには戻り値の基底型を残します。</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, n: result <span class="op">==</span> n <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> n: n <span class="op">+</span> <span class="dv">0</span> <span class="op">==</span> n)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> identity_lemma(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>値を返す場合、lambda
+の最初の引数が結果を表し、以降の引数は関数入口の入力を指定します。<code>None</code>
+を返す場合は、すべての lambda
+引数が入口の入力を表すため、証明関数にダミーの結果引数は不要です。複数の
+<code>ensures</code> と既存の戻り値の <code>Refine</code>
+メタデータは、すべて成立する必要があります。述語は静的に検査され、Python
+実行中には動きません。規則の詳細は<a
+href="reference.html#function-postconditions">リファレンス</a>を参照してください。</p>
+<h2 id="check-recursive-termination">再帰の停止性を検査する</h2>
+<p><code>decreases</code>
+で整数の尺度を追加します。各再帰呼び出しの尺度は非負で、関数入口の尺度より厳密に小さくなければなりません。</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: n)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count(n: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> r, n: r <span class="op">==</span> n)]:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">1</span> <span class="op">+</span> count(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><code>count</code> を選んで検証します。<code>count(n - 1)</code> を
+<code>count(n)</code>
+に変えると、停止性の証明義務に失敗します。リストのスライスに対する再帰では
+<code>len(xs)</code>
+も使えます。尺度は、ローカルで再代入しても元の入力を参照します。</p>
+<p>成分が複数ある場合は、空でない整数タプルリテラルを返します。最初に異なる成分が減少する必要があり、それより後の成分は再設定できます。</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n, m: (n, m))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lex_count(n: Nat, m: Nat) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> lex_count(n, m <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> lex_count(n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span></span></code></pre></div>
+<p>再帰呼び出し時に、すべての成分が非負である必要があります。ソース内の全呼び出し先は独立に停止することを示し、ループには次節のように明示的な尺度が必要です。このデコレーターのない関数も、再帰の停止性を証明せずに正常な戻り値の契約を検証できます。成功すると
+<code>termination:</code> の証拠が追加されます。Python
+の再帰深度や資源の制限は保証に含まれません。<a
+href="reference.html#termination-measures">リファレンス</a>を参照してください。</p>
+<h2 id="check-loop-termination">ループの停止性を検査する</h2>
+<p>通常の <code>invariant</code> と <code>decreases</code>
+呼び出しをループの直前に置きます。lambda
+の束縛名は、現在のループ入口のローカル変数を指定します。連続する不変条件は論理積になり、1つの尺度をどちらの順序でも添えられます。通常の
+Python 型検査器でも使えます。補助パッケージは lambda
+を呼び出しません。</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine, invariant, decreases</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_to(n: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> r, n: r <span class="op">==</span> n)]:</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    invariant(<span class="kw">lambda</span> i, n: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;=</span> n)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    decreases(<span class="kw">lambda</span> i, n: n <span class="op">-</span> i)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> n:</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i</span></code></pre></div>
+<p><code>count_to</code>
+を選んで検証します。不変条件は、反復に関する帰納法でループ入口の性質を示します。尺度は、実行する各反復で非負となり、通常の経路と
+<code>continue</code>
+の両方の後戻り辺で厳密に減少することで停止性を証明します。尺度を
+<code>i</code> に変えたり、<code>i</code> を増やさずに
+<code>continue</code>
+する経路を追加したりすると失敗します。尺度のない不変条件は部分正当性のみを証明し、ループの停止性の証拠は公開しません。</p>
+<p>ループの尺度は <code>(n, m)</code>
+のようなタプルにも対応します。入れ子のループには、それぞれ尺度が必要です。対応する
+<code>for</code>
+でも同じ呼び出しを使います。ローカル変数はループ前に束縛済みである必要があり、未束縛の反復変数は
+lambda の束縛名にできません。尺度は、本体の前かつ <code>for</code>
+の対象を束縛する前に記録します。<code>break</code>、return、反復0回では減少を要求しません。最後の反復を含むすべての後戻り辺で、次の尺度が定義され非負である必要があります。<code>max(n - i, 0)</code>
+でカウントダウンを全域で定義できます。</p>
+<p>独立した停止性検査は、すべての呼び出し結果の要約を取り除き、不変条件の初期成立と保持を再検査します。そのため、呼び出し先の結果契約に依存する証明は未完了のままになる場合があります。全呼び出し先は独立に停止する必要があります。Python
+は各ループに到達する前にマーカー呼び出しを1回実行しますが、述語や尺度の本体は実行しません。<a
+href="reference.html#loops-and-assertions">リファレンス</a>と<a
+href="docs/specification.html#decreasing-measures">仕様</a>を参照してください。</p>
+<h2
+id="prove-an-equation-about-a-function">関数についての等式を証明する</h2>
+<p>全域で定義されたスカラー式の関数に <code>@refinepy.reflect</code>
+を付けると、実際の定義を契約で使えます。補題は、等式を戻り値の細分化として記述し、<code>None</code>
+を返せます。</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inc(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lemma(x: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[<span class="va">None</span>, Refine(<span class="kw">lambda</span> _, x: inc(inc(x)) <span class="op">==</span> x <span class="op">+</span> <span class="dv">2</span>)]:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p><code>lemma</code> を選んで検証します。<code>x + 2</code> を
+<code>x + 3</code>
+に変えると証明に失敗します。別の検証対象の関数が補題を呼び出し、正常な戻り値の契約を使えます。定義を取り込む関数は、代入、平坦なアンパック、アサーション、分岐、return
+に対応します。型注釈には、積、省略可能値、対応するコンテナーを含む、細分化のない対応する値型を使います。入れ子の細分化と事前条件は対象外です。直接再帰には、後述する追加要件があります。減少を検査する再帰補題は、後述のように帰納法で命題を証明できます。制限は<a
+href="reference.html#reflected-functions-and-lemmas">リファレンス</a>を参照してください。</p>
+<p>例えば、ガード付きのマッピング参照を論理関数にできます。</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_value(values: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">int</span>], key: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> key <span class="kw">not</span> <span class="kw">in</span> values:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> values[key]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_lookup(values: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">int</span>], key: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (find_value(values, key) <span class="kw">is</span> <span class="va">None</span>) <span class="op">==</span> (key <span class="kw">not</span> <span class="kw">in</span> values)</span></code></pre></div>
+<p>検証器は <code>check_lookup</code>
+で定義を使う前に、<code>find_value</code>
+の参照ガードを検査します。定義を取り込む本体では、ループとコンテナーへの書き込みは未対応です。呼び出し側が
+<code>find_value(values, key) == find_value(values, key)</code>
+を使う場合でも、ガードを除くと検証に失敗します。省略可能値の内容へのアクセスや変数の除数にも、同じ独立した安全性検査が必要です。</p>
+<h2 id="use-a-lemma-without-executing-it">補題を実行せずに使う</h2>
+<p>関数内のローカル注釈は Python では評価されません。静的な
+<code>Assert</code>
+注釈により、実行時の呼び出しを追加せず、検証済みの補題を使えます。</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Assert</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> use_lemma(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    x: Annotated[<span class="bu">int</span>, Assert(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> value: inc(inc(value)) <span class="op">==</span> value <span class="op">+</span> <span class="dv">2</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        using<span class="op">=</span><span class="kw">lambda</span> arg: lemma(arg),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code></pre></div>
+<p>上の <code>inc</code> と <code>lemma</code>
+のサンプルに、この関数を追加してください。検証器は補題の安全性と停止性、実際の引数を検査してから、事後条件を使ってアサーションを証明します。事後条件とアサーションが完全に一致する必要はありません。正常に戻る場合の契約が検証できても、停止しない補題は静的な証明に使えません。</p>
+<p><code>using</code> のない <code>Assert(lambda value: ...)</code>
+は、現在の事実から命題を検査します。どちらの形式も、束縛済みのローカル変数に適用し、既存の宣言契約がない限り、その後の代入は制約しません。lambda
+の最初の束縛名は現在の値を受け取ります。<code>lambda value, y: value &lt; y</code>
+などの追加の束縛名は、現在束縛されているローカル変数を明示的に指定します。<code>using</code>
+の lambda
+は独自のローカル依存を列挙し、複数の引数を補題に渡せます。自由変数としてローカル変数を取り込むことには対応しません。入力を再束縛した場合もアサーション時点の値を使い、その後の変更で確立済みの事実は更新されません。入力、結果、ローカル宣言の契約には
+<code>Refine</code> を使います。<a
+href="reference.html#static-assertions">リファレンス</a>と<a
+href="docs/specification.html#binary-search-contract-prototype">二分探索の証明</a>を参照してください。</p>
+<h2
+id="reflect-a-recursive-scalar-function">再帰スカラー関数の定義を取り込む</h2>
+<p><code>reflect</code> と <code>decreases</code>
+を組み合わせ、停止する再帰定義を範囲を限定した等式で使います。</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: <span class="bu">max</span>(n, <span class="dv">0</span>))</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">1</span> <span class="op">+</span> count(n <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bounded(n: Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: <span class="dv">0</span> <span class="op">&lt;=</span> v <span class="op">&lt;=</span> <span class="dv">7</span>)]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, n: count(n) <span class="op">==</span> n)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p><code>bounded</code>
+を選んで検証します。ソースの定義は、等式を使う前に独立した停止性検査に通る必要があります。再帰引数を
+<code>n</code>
+に変えると、それ以外が自明な等式でもこの検査に失敗します。</p>
+<p>スカラーのみの再帰定義では、入力と結果は細分化のない <code>int</code>
+または
+<code>bool</code>、戻り値は1つの式、事前条件なしで記述します。呼び出しは定義を8層まで展開します。それより先は未解釈のままとなり、結論が出ない問い合わせは、偽の等式の一部も含め
+<code>unknown</code>
+になります。範囲を限定した等式に使えますが、範囲を限定しない等式には明示的な帰納補題が必要です。再帰リストは、次節のように展開上限が小さくなります。<a
+href="reference.html#recursive-scalar-reflection">リファレンス</a>を参照してください。</p>
+<p>再帰定義には、積と省略可能値も使えます。</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: <span class="bu">max</span>(n, <span class="dv">0</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> carry(n: <span class="bu">int</span>, pair: <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]:</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pair</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> carry(n <span class="op">-</span> <span class="dv">1</span>, pair)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_carry(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> carry(<span class="dv">1</span>, (xs, <span class="va">None</span>)) <span class="op">==</span> (xs, <span class="va">None</span>)</span></code></pre></div>
+<p>マッピングとシーケンスの入力・結果にも対応します。検証器は、再帰等式を通して省略可能値の存在状態と、有効なコンテナーの内容を保持します。コンテナーを含むシグネチャでは、既定で定義を3層まで展開します。範囲を限定しない主張には、帰納補題が必要になるか、証明未完了になる場合があります。</p>
+<h2
+id="reflect-a-recursive-list-function">再帰リスト関数の定義を取り込む</h2>
+<p>再帰関数は、細分化のない
+<code>list[int]</code>、<code>list[bool]</code>、<code>list[str]</code>
+を受け取ったり返したりできます。減少尺度に <code>len(xs)</code>
+を使い、条件付きの添字アクセスをガードします。</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [] <span class="cf">if</span> <span class="bu">len</span>(xs) <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> reverse(xs[<span class="dv">1</span>:]) <span class="op">+</span> [xs[<span class="dv">0</span>]]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bounded(xs: Annotated[<span class="bu">list</span>[<span class="bu">int</span>], Refine(<span class="kw">lambda</span> v: <span class="bu">len</span>(v) <span class="op">&lt;=</span> <span class="dv">2</span>)]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs: reverse(xs) <span class="op">==</span> xs[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p><code>bounded</code>
+を選んで検証します。呼び出し側が定義を使う前に、ソース本体が安全性と停止性の検査に通る必要があります。空リストのガードを除くと読み取りの証明義務に失敗し、<code>xs[1:]</code>
+を <code>xs</code> に変えると減少の検査に失敗します。</p>
+<p>リストを含むシグネチャは定義を3層展開し、残りの呼び出しは未解釈のままです。置換中にスライス式は急速に大きくなり、既存の
+128 KiB
+制限が適用されます。上の長さの制限は、空リストの基底ケースに達するための層数を確保します。制限がないと、この等式では結論が出ません。任意の長さについて証明するには、次の明示的な帰納補題を使います。未解釈の呼び出しが残る充足可能な問い合わせは、偽の等式も含め
+<code>unknown</code> になり、ソースの反例は生成しません。<a
+href="reference.html#recursive-scalar-reflection">リファレンス</a>を参照してください。</p>
+<h2 id="prove-a-list-equation">リストの等式を証明する</h2>
+<p>通常の Python
+リストの連結とスライスで、全域で定義されたヘルパーを記述します。</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs <span class="op">+</span> ys</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs, ys:</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        reverse(append(xs, ys)) <span class="op">==</span> append(reverse(ys), reverse(xs)))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p><code>reverse_append</code>
+を選んで検証します。この等式は任意の有限長のリストを扱います。リストの等価比較は長さとすべての有効な要素を比べ、リストの範囲外の内部値は無視します。<code>append(xs, []) == xs</code>
+や連結の結合則も記述できます。両オペランドの要素型と要素契約は、再帰的に比較可能で一致する必要があります。このサンプルは非再帰の定義を使い、任意の有限リストについて等式を証明します。再帰リストの定義は前述のように有限の展開に対応し、次のサンプルでは明示的な帰納補題を追加します。</p>
+<h2
+id="prove-a-list-equation-by-induction">帰納法でリストの等式を証明する</h2>
+<p>戻り値の命題と <code>decreases</code>
+を持つ、通常の再帰補題を使います。より小さい各自己呼び出しが帰納仮説を与えます。このサンプルは、任意の有限長について反転とスライスが等しいことを証明し、その結果から反転と連結の等式を証明します。</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [] <span class="cf">if</span> <span class="kw">not</span> xs <span class="cf">else</span> reverse(xs[<span class="dv">1</span>:]) <span class="op">+</span> [xs[<span class="dv">0</span>]]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_spec(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs: reverse(xs) <span class="op">==</span> xs[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> xs:</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        reverse_spec(xs[<span class="dv">1</span>:])</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs, ys: reverse(xs <span class="op">+</span> ys) <span class="op">==</span> reverse(ys) <span class="op">+</span> reverse(xs))</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    reverse_spec(xs <span class="op">+</span> ys)</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    reverse_spec(xs)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    reverse_spec(ys)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p><code>reverse_append</code>
+を選んで検証します。長さの上限はありません。ドライバーは
+<code>reverse</code>
+を独立に検査してから、補題の基底ケース、戻り値の命題、厳密な減少を検査します。自己呼び出しを除くと帰納段階に仮説がなくなり、<code>reverse_spec(xs)</code>
+に変えると減少に失敗します。誤った基底ケースも失敗します。成功した証明には
+<code>induction:...</code> と <code>termination:...</code>
+の証拠が残ります。</p>
+<p>これは、受け入れ済みの定義の1段階の基礎等式と、通常の再帰呼び出しの契約を使います。証明を局所的に保つため各分岐で
+return
+してください。分岐を合流させると候補述語の推論が必要になり、結論が出ない場合があります。直接再帰と整数または辞書式の尺度が必要で、ループには独自の尺度を付けます。相互帰納と自動証明探索は未対応です。<code>decreases</code>
+がない補題は部分正当性を保持しますが、帰納の証拠は付きません。<a
+href="reference.html#inductive-lemmas">リファレンス</a>を参照してください。</p>
+<h2 id="read-the-results">結果を読む</h2>
+<p>結果の冒頭には、選択した関数の
+<strong>検証済み</strong>、<strong>要確認</strong>、<strong>失敗</strong>
+の件数が表示されます。要確認は
+<code>unproved</code>、<code>unknown</code>、<code>unsupported</code>、失敗は
+<code>counterexample</code>、<code>error</code>
+をまとめたものです。個別の意味は各カードに残ります。エラーは必ずしもソースのバグを意味しません。レポート全体の診断は別に表示され、診断がある場合は「すべて検証済み」にはなりません。各カードには短い結論と、別の停止性の要約があります。<strong>検証の詳細</strong>を展開すると、ソルバーのコスト、検証した範囲、推論した不変条件、ソースの依存先、所有権の記録を含む<strong>証明の証拠</strong>を確認できます。<strong>JSON
+レポート全文</strong>には完全なレポートが残ります。</p>
+<p>各関数には状態、停止性の要約、診断が表示されます。その関数自身の停止性の証拠を持つ検証済みの結果には、<strong>停止性：この関数と検証対象の呼び出しについて証明済みです。</strong>
+と表示します。証拠がなければ、正常に戻る場合の契約は検証済みですが、停止性は証明されていません。失敗した結果や不確実な結果で、停止性が証明済みになることはありません。Python
+の再帰深度の安全性と資源の利用可能性はモデルの範囲外です。</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>状態</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verified</code></td>
+<td>必要な証明義務を満たしました。</td>
+</tr>
+<tr>
+<td><code>counterexample</code></td>
+<td>妥当性を確認した反例がソースの契約に違反しています。</td>
+</tr>
+<tr>
+<td><code>unproved</code></td>
+<td>未証明の義務が残っています。これだけでソースのバグとは確定できません。</td>
+</tr>
+<tr>
+<td><code>unsupported</code></td>
+<td>ソースが対応範囲外の形式を使っています。</td>
+</tr>
+<tr>
+<td><code>unknown</code></td>
+<td>制限やソルバーの不確実性により結果が得られませんでした。</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>ソース、契約、設定、実行のいずれかが失敗しました。診断を確認してください。</td>
+</tr>
+</tbody>
+</table>
+<p><code>unknown</code>
+は、ソルバーの完全なモデルを、対応する表現や資源の制限内で再構築できなかったことを意味する場合もあります。コンテナーの要素を一部読むだけでは、有効なモデルとは確認できません。<a
+href="docs/specification.html#model-validation-and-execution-witnesses">モデル検証規則</a>を参照してください。省略可能値の内容に関する事実は、値が存在する場合に適用します。未使用の内容も、保存表現が整っているか検査します。入れ子の要素の証拠は、条件内で行う文字列の観測も含め、各コンテナー階層で検査します。この内部対応は、取り出した入れ子リストの所有権を確立しません。</p>
+<p>依存する契約、事前条件、コンテナーの読み取り、ループ不変条件、対応・未対応の
+Python 構文の概要は<a
+href="reference.html">リファレンス</a>を参照してください。</p>
+<h2 id="editor-shortcuts">エディターのショートカット</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>Windows / Linux</th>
+<th>macOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>検索</td>
+<td>Ctrl+F</td>
+<td>Cmd+F</td>
+</tr>
+<tr>
+<td>取り消し</td>
+<td>Ctrl+Z</td>
+<td>Cmd+Z</td>
+</tr>
+<tr>
+<td>選択範囲のインデント</td>
+<td>Ctrl+]</td>
+<td>Cmd+]</td>
+</tr>
+<tr>
+<td>選択範囲のインデント解除</td>
+<td>Ctrl+[</td>
+<td>Cmd+[</td>
+</tr>
+<tr>
+<td>補完候補の表示</td>
+<td>Ctrl+Space</td>
+<td>Ctrl+Space</td>
+</tr>
+<tr>
+<td>エディターから移動</td>
+<td>Tab</td>
+<td>Tab</td>
+</tr>
+</tbody>
+</table>
+<p>ブラウザーでは最大 1 MiB
+の単一モジュールを扱います。追加のプロジェクトファイルや外部モデルのマニフェストは、このプレイグラウンドでは扱いません。ビルドと実行の詳細は<a
+href="docs/browser-playground.html">ブラウザープレイグラウンドガイド</a>を参照してください。</p>
+<h2 id="verify-fibonacci-doubling">フィボナッチ数の倍加法を検証する</h2>
+<p><code>examples/fibonacci/README.md</code>
+のサンプルは、通常のフィボナッチ漸化式に対する高速倍加法を証明します。<code>ensures</code>
+は <code>addition</code>、<code>pair</code>、<code>fast_fib</code>
+の戻り値の細分化を表し、<code>None</code>
+の補題では結果の束縛名を省略します。再帰する <code>addition</code>
+補題が2つの加法公式を帰納法で証明します。<code>pair</code>
+は静的アサーションで <code>addition(k, k)</code>
+に特殊化し、より小さい再帰呼び出しの契約から
+<code>(F(n), F(n + 1))</code>
+を証明します。4つの対象すべてが添字の上限なしで検証できます。別の実行検査は、514個の添字を反復加算による正解値と比較します。</p>
+<p>分岐する漸化式では、再帰定義の受け入れ前検査に 4 MiB
+の予算を使います。保存する1段階の定義、非循環の展開、問い合わせの等式には、より小さい上限が引き続き適用されます。この予算変更は証明の仮定を追加しません。<a
+href="reference.html#recursive-scalar-reflection">リファレンス</a>を参照してください。このサンプルは静的アサーションで加法の証明呼び出しの実行を避け、正しさのみを評価します。時間計算量については主張しません。Python
+の再帰深度と資源の制限は、停止性の保証に含まれません。</p>

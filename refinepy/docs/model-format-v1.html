@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>model-format-v1 · refinepy</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <p class="brand">refinepy</p>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Playground</a>
+      <a href="../guide.html">Guide</a>
+      <a href="../reference.html" aria-current="page">Reference</a>
+    </nav>
+  </header>
+  <main id="content" class="documentation" tabindex="-1">
+<h1 id="model-manifest-v1">Model manifest v1</h1>
+<p>Explicitly configured TOML manifests describe value/container
+signatures and read-only snapshot effects without importing Python
+modules. A model is a trusted claim about one fixed direct function and
+its initialization, not verification of the external implementation.
+Source functions take precedence when a configured source root supplies
+their module.</p>
+<p>Set <code>model-files = ["models/vendor.toml"]</code> under
+<code>[tool.refinepy]</code>. Paths are relative to the configuration
+directory. Unknown fields, missing required fields, wrong field types,
+invalid binders, unsupported effects and compatibility failures produce
+<code>error: invalid-model</code>; no stub fallback is applied.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode toml"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">schema_version</span> <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">python_version</span> <span class="op">=</span> <span class="st">&quot;3.12&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[runtime]</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">implementation</span> <span class="op">=</span> <span class="st">&quot;vendor-dist&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">&quot;1.0&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dt">metadata</span> <span class="op">=</span> <span class="st">&quot;vendor-dist-1.0.dist-info/METADATA&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[[models]]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">symbol</span> <span class="op">=</span> <span class="st">&quot;vendor.step&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;lambda x: x &gt;= 0&quot;</span><span class="op">]</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="dt">ensures</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;lambda result, x: result == x + 1&quot;</span><span class="op">]</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="dt">definedness</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;lambda x: x &gt;= 1&quot;</span><span class="op">]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="dt">raises</span> <span class="op">=</span> <span class="op">[]</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="dt">reads</span> <span class="op">=</span> <span class="op">[]</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="dt">writes</span> <span class="op">=</span> <span class="op">[]</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="dt">allocates</span> <span class="op">=</span> <span class="op">[]</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="dt">implementations</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;vendor-dist==1.0:vendor.step&quot;</span><span class="op">]</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="dt">provenance</span> <span class="op">=</span> <span class="st">&quot;Reviewed scalar specification for vendor-dist 1.0&quot;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">&quot;1&quot;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="dt">hash</span> <span class="op">=</span> <span class="st">&quot;derived&quot;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">[[models.initializer_assumptions]]</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="dt">module</span> <span class="op">=</span> <span class="st">&quot;vendor&quot;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">&quot;1&quot;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">&quot;Inert initialization and fixed direct symbol&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="kw">[models.signature]</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="dt">returns</span> <span class="op">=</span> <span class="st">&quot;int&quot;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="kw">[[models.signature.parameters]]</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">&quot;x&quot;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="dt">type</span> <span class="op">=</span> <span class="st">&quot;int&quot;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="dt">mode</span> <span class="op">=</span> <span class="st">&quot;positional-or-keyword&quot;</span></span></code></pre></div>
+<p>The metadata file must contain exactly one
+<code>Name: vendor-dist</code> line and one <code>Version: 1.0</code>
+line for this example. Its path is relative to the manifest. The user
+supplies the installed distribution metadata; refinepy reads those bytes
+and compares exact names and versions. It does not inspect executable
+Python, consult an active interpreter’s import path, or establish that a
+deployment uses that distribution. The fixed implementation and
+deployment correspondence remain internal assumptions. These are useful
+static compatibility checks, not runtime attestation. Synthetic metadata
+in the tests is deliberately a trust fixture.</p>
+<h2 id="field-contracts">Field contracts</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Location</th>
+<th>Fields and exact types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manifest</td>
+<td><code>schema_version</code>: integer, exactly 1;
+<code>python_version</code>: string, exactly <code>3.12</code>;
+<code>runtime</code>: table; <code>models</code>: array of tables</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td><code>implementation</code>, <code>version</code>,
+<code>metadata</code>: nonempty strings; metadata must exist and match
+the exact distribution name and version</td>
+</tr>
+<tr>
+<td>Model</td>
+<td><code>symbol</code>, <code>provenance</code>, <code>version</code>,
+<code>hash</code>: strings; <code>signature</code>: table; every
+predicate/effect/implementation field: array of strings;
+<code>initializer_assumptions</code>: array of tables</td>
+</tr>
+<tr>
+<td>Signature</td>
+<td><code>parameters</code>: array of tables, including an explicit
+empty array for a zero-argument function; <code>returns</code>:
+supported annotation string</td>
+</tr>
+<tr>
+<td>Parameter</td>
+<td><code>name</code>, <code>type</code>, <code>mode</code>: strings;
+optional <code>default</code>: TOML integer, boolean, or signed decimal
+integer string</td>
+</tr>
+<tr>
+<td>Initializer</td>
+<td><code>module</code>, <code>version</code>, <code>description</code>:
+nonempty strings</td>
+</tr>
+</tbody>
+</table>
+<p>Symbols and parameter names use ASCII Python identifier spellings.
+Parameter names are unique; symbols have a module and function
+component. Modes are <code>positional-only</code>,
+<code>positional-or-keyword</code>, or <code>keyword-only</code>, in
+that order. A required positional parameter cannot follow a positional
+default. Defaults have int/bool literal semantics; decimal strings
+preserve arbitrary-precision integers beyond TOML’s integer range. The
+definition checks default base types; each call checks its instantiated
+dependent refinement.</p>
+<p>Parameter <code>type</code> and result strings use the value
+annotation DSL, including <code>Annotated[T, Refine(lambda ...)]</code>
+contracts with the resolved inert marker. <code>Assert</code> is a
+source-local operation and cannot appear in model types. Parameter
+refinements may name earlier formal inputs; result refinements may name
+any entry input, following the source binder convention. No project
+aliases or arbitrary Python expressions are evaluated. Use
+<code>Sequence</code> and <code>Mapping</code> for built-in list/tuple
+and dict inputs, or invariant <code>list</code>/<code>dict</code> types.
+Elements/values must be nonoptional scalars, and mapping keys must be
+plain <code>str</code>. Element refinements stay at their type nodes.
+Fixed product fields may recursively contain these containers and
+optional values. A product containing containers counts as a container
+input for <code>reads</code>; allocation declarations still do not
+certify caller-side list mutation. Outer result predicates may be
+specified in <code>ensures</code>.</p>
+<p><code>requires</code> and <code>definedness</code> strings are
+single-line literal lambdas whose binders name entry inputs.
+<code>ensures</code> lambdas bind the result first, then named entry
+inputs. Duplicate, unresolved, unsorted or non-bool predicates are
+errors. The same frontend parses source contracts and model predicates.
+Guarded sequence indexing and mapping lookup are admitted. Before using
+a model summary, the checker proves precondition/definedness totality
+without assuming those predicates themselves, and postcondition totality
+from the input contract and arbitrary result base value. Separate
+postcondition predicates cannot justify each other’s definedness. Body
+calls remain outside this DSL.</p>
+<p>At each call, every parameter refinement, requires predicate and
+definedness predicate is a final proof obligation. The postcondition
+describes an arbitrary normal result and becomes usable only within a
+proof whose preceding obligations all succeed. The model does not supply
+a concrete result for witness replay.</p>
+<p>The contract requires <code>raises</code> and <code>writes</code> to
+be empty. <code>reads</code> conservatively names every container input
+exactly once, using its parameter name; optional container inputs count
+as dependencies. No omitted input, duplicate, nested selector or global
+selector is accepted. <code>allocates</code> is either empty or
+<code>["return"]</code> for a container result (including an optional
+container). That selector claims a fresh result on normal returns with a
+container value. It supplies no observable identity or non-aliasing
+formula: those operations remain unsupported.</p>
+<p>For example, a copy model can declare <code>x: Sequence[int]</code>,
+return <code>list[int]</code>, use <code>reads = ["x"]</code>,
+<code>writes = []</code>, <code>allocates = ["return"]</code>, and
+specify
+<code>ensures = ["lambda result, x: len(result) == len(x)"]</code>. This
+only establishes length preservation; element equality would need an
+additional supported contract. Empty writes/raises and freshness are
+trusted claims, not checks of the external implementation. Unknown
+calls, callbacks, globals, I/O and method dispatch have no model
+semantics. <code>implementations</code> must be the single exact string
+<code>distribution==version:resolved.symbol</code> matching the manifest
+runtime. There is no overload selection or version-range matching.</p>
+<p>Each external module initialized by an import needs a versioned
+assumption, including all parents of a modeled submodule. Project-source
+parent initializers are checked instead. A child model cannot bypass an
+unsupported parent initializer. Initializer and implementation
+assumptions are retained internally even when the import is used only
+for module initialization and the modeled function is not called.</p>
+<h2 id="identity-and-hashing">Identity and hashing</h2>
+<p><code>hash</code> is required and its only admitted value is
+<code>derived</code>. No user-provided checksum is accepted as already
+validated. <code>src/models/mod.rs</code> serializes the strictly typed
+model record to JSON in struct-field order, appends the exact runtime
+metadata bytes and <code>refinepy-model-v1-python3.12-m5</code>, and
+derives SHA-256. The reported identity includes the resolved symbol,
+model version, derived hash and exact runtime distribution version. The
+derived digest is not stored back into the manifest. TOML table/key
+order and formatting do not affect it; predicate strings and array order
+are part of the record and do affect it.</p>
+<p>Models are loaded afresh for each requested selector. Source module
+hashes and verified dependency origins are reported alongside model
+identities. Opt-in <a
+href="report-format-v3.html#cache-contract">verified-closure caching</a>
+includes model, runtime metadata and source dependencies in its
+invalidation contract.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>refinepy playground</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="samples.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#source" data-i18n="Skip to editor">Skip to editor</a>
+  <main>
+    <header class="site-header">
+      <h1 class="brand">refinepy</h1>
+      <nav aria-label="Main navigation" data-i18n-aria="Main navigation">
+        <a href="index.html" aria-current="page" data-i18n="Playground">Playground</a>
+        <a href="guide.html" data-i18n="Guide">Guide</a>
+        <a href="reference.html" data-i18n="Reference">Reference</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Display language" data-i18n-aria="Display language">
+        <button type="button" data-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
+        <button type="button" data-language="ja" aria-pressed="false" lang="ja" aria-label="日本語">JP</button>
+      </div>
+    </header>
+    <div id="playground-page">
+    <form id="playground">
+      <div class="toolbar">
+        <label><span data-i18n="Example">Example</span>
+          <select id="example">
+            <optgroup data-i18n-label label="Basics">
+              <option value="bounds" data-i18n="Keep a value within bounds">Keep a value within bounds</option>
+            </optgroup>
+            <optgroup data-i18n-label label="Numerical algorithms">
+              <option value="fibonacci" data-i18n="Fibonacci: verified fast doubling">Fibonacci: verified fast doubling</option>
+              <option value="squareRoot" data-i18n="Integer square root by bisection">Integer square root by bisection</option>
+              <option value="series" data-i18n="Series sums and their closed form">Series sums and their closed form</option>
+              <option value="rounding" data-i18n="Exact rounding and rational rescaling">Exact rounding and rational rescaling</option>
+              <option value="division" data-i18n="Signed quotient and remainder">Signed quotient and remainder</option>
+            </optgroup>
+          </select>
+        </label>
+        <button type="button" id="load" data-i18n="Load example">Load example</button>
+        <label><span data-i18n="Function selector">Function selector</span>
+          <input id="selector" value="*" required autocomplete="off" spellcheck="false" aria-describedby="selector-help">
+        </label>
+        <button type="submit" id="verify" data-i18n="Verify">Verify</button>
+        <button type="button" id="cancel" disabled data-i18n="Cancel">Cancel</button>
+      </div>
+      <p id="selector-help" data-i18n class="note">Use a function name or * for all annotated functions in playground.py. Loading an example replaces the editor contents.</p>
+      <div class="panes">
+        <section aria-labelledby="source-title">
+          <h2 id="source-title">playground.py <span>Python 3.12</span></h2>
+          <div id="source" tabindex="-1"></div>
+          <p id="editor-help" data-i18n class="note">Tab moves focus. Use Ctrl+] / Cmd+] to indent. Ctrl+F / Cmd+F searches the source.</p>
+        </section>
+        <section class="results-pane" aria-labelledby="results-title">
+          <h2 id="results-title" data-i18n="Results">Results</h2>
+          <p id="status" role="status" aria-live="polite">Ready to verify.</p>
+          <div id="results" aria-busy="false"></div>
+          <details id="report-details" hidden>
+            <summary data-i18n="Full JSON report">Full JSON report</summary>
+            <pre id="report"></pre>
+          </details>
+        </section>
+      </div>
+    </form>
+    </div>
+    <article id="content" class="documentation" tabindex="-1" hidden></article>
+  </main>
+</body>
+</html>

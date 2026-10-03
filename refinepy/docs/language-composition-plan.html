@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>language-composition-plan · refinepy</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <p class="brand">refinepy</p>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Playground</a>
+      <a href="../guide.html">Guide</a>
+      <a href="../reference.html" aria-current="page">Reference</a>
+    </nav>
+  </header>
+  <main id="content" class="documentation" tabindex="-1">
+<h1 id="language-composition-implementation-plan">Language composition
+implementation plan</h1>
+<p>This work addresses the three high-priority gaps identified in the
+language review. This document tracks acceptance work; it does not
+expand the supported language by itself. The specification and support
+matrix describe shipped behavior.</p>
+<h2 id="required-outcomes">Required outcomes</h2>
+<ol type="1">
+<li>Compose supported value types: lists of fixed products, optional
+list elements, products containing lists, and nested supported
+containers. Preserve element/field refinements, optional definedness,
+value equality, variance and stable-state assumptions. Exercise
+coordinate sequences, missing values and a function returning two
+partition lists.</li>
+<li>Compose fresh list construction across source calls. Derive
+freshness from checked allocation/alias behavior, not value equality or
+a postcondition. Permit a caller to append to or update a returned fresh
+list while preserving inputs. Reject borrowed/mixed-branch results,
+escaping aliases and unsafe iterator writes. Propagate evidence through
+dependencies and recursion conservatively; an unsuccessful dependency
+cannot establish ownership.</li>
+<li>Compose contracts and logical functions. Admit product construction
+and supported product operations in predicates. Extend checked
+reflection to supported products, optionals and mappings, and total
+multi-statement definitions. Retain independently checked definedness
+and termination, argument evaluation, dependency validation and bounded
+expansion. Preconditions must be accounted for explicitly if
+partial-domain reflection is introduced; they must never become
+unconditional equations.</li>
+</ol>
+<p>Each outcome needs positive, negative and boundary regression
+coverage, aligned Guide/Reference/specification/support-matrix updates,
+rebuilt web documentation, and relevant native checks. Runtime
+differential checks must cover newly modeled Python operations. Solver
+uncertainty remains a non-success. Browser/Wasm checks are distinct from
+native or document checks.</p>
+<h2 id="progress">Progress</h2>
+<p>Entries record successive implementation checkpoints. Later entries
+supersede earlier source-admission restrictions; the required outcomes
+above remain the completion criteria.</p>
+<ul>
+<li>Implemented: fixed-product construction, concatenation and static
+slicing in predicates and erased lemma arguments, reusing existing
+product lowering and definedness obligations. Regression coverage checks
+complete product contracts, preconditions, invariants, empty products,
+numeric field equality, unsafe eager reads, short-circuit guards and
+rejected unreflected calls/dynamic slices.
+<code>sh scripts/test.sh</code> passes, including formatting, Clippy,
+the native suite, report validation and companion checks.
+<code>sh scripts/build-web.sh</code> passes; generated Guide/Reference
+links, fragments, affected content and header links were checked.
+Browser/Wasm execution was not rerun for this increment.</li>
+<li>Implemented: products containing supported values, including lists,
+mappings, optional fields and nested products. Contextual fields type
+empty containers; product equality recursively preserves optional tags
+and valid-domain list equality. Field/element contracts and
+mutable-container invariance remain enforced. Product constructors,
+slices and source calls cannot conceal aliases of written lists. Direct
+returns can carry two independently built lists; extracting a list field
+does not establish freshness. Worker protocol v12 retains nested
+snapshot domain axioms and model validation. Regression coverage
+includes complete split-list contracts, unsafe reads, forged model
+rejection and 168 additional Python 3.12 differential cases.
+<code>sh scripts/test.sh</code> passes (177 Rust tests, 82 report
+validations and 7 companion tests, plus formatting and Clippy). Web
+documentation builds; 316 Guide/Reference links, header navigation on
+seven pages and affected content were checked. Browser/Wasm execution
+was not rerun for this increment.</li>
+<li>Pending: ownership transfer through product results and complete
+representative composition examples. Composite element admission is
+recorded below; outer allocation alone does not establish nested
+exclusivity. Filtered partition examples remain acceptance work.</li>
+<li>Implemented: source-call freshness for scalar-element list results.
+Iterative allocation-certificate discovery composes source helpers,
+imported/re-exported functions, generic variants and builders that
+update another helper’s result. Return/assignment provenance remains
+separate from value contracts and trusted allocation claims.
+Borrowed/mixed results, ungrounded recursive hypotheses, stored aliases,
+live-iterator writes and failed dependencies cannot justify a write.
+Discovery has a 64-source-function bound and does not recurse through
+the Rust stack. Reports/cache retain successful ownership evidence and
+source edits invalidate it. Regression coverage includes imported
+element refinements, independently allocated copies, recursive
+allocating returns, the discovery bound and 480 finite Python 3.12
+execution cases. <code>sh scripts/test.sh</code> passes (175 Rust tests,
+82 report validations and 7 companion tests, plus formatting and
+Clippy). Web documentation builds and its affected content/header links
+were checked. Browser/Wasm execution has not been rerun for this
+increment.</li>
+<li>Implemented: acyclic expression reflection over all currently
+admitted value types, including products, optionals, sequences and
+mappings. Nested signature refinements remain excluded. Guarded reads,
+optional projections and variable divisors rely on independent
+source-body safety checks; tautological callers and unused arguments
+cannot bypass failed dependencies or definedness checks. Regression
+coverage includes imported definitions, mapping construction/lookup,
+complete split-list contracts, nested refined-domain rejection and 12
+additional Python 3.12 differential cases.
+<code>sh scripts/test.sh</code> passes (179 Rust tests, 82 report
+validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 322 Guide/Reference links, header navigation on
+six pages, affected content and the preserved reflection anchor were
+checked. Browser/Wasm execution was not rerun for this increment.</li>
+<li>Implemented: loop-free multi-statement reflection. Ordinary source
+typing and CFG lowering preserve local rebinding, parallel unpacking,
+branch joins and early returns. Assertions and unused partial
+computations remain independent raw-body obligations, never logical
+premises. Memoized block templates retain the 128 KiB expansion bound
+and impose a 128-edge expansion-depth bound. Regression coverage
+includes recursive statement definitions, None fallthrough,
+shadowed/unbound locals, discarded failures, growth limits and Python
+3.12 comparison of statement-defined mapping/optional helpers.
+<code>sh scripts/test.sh</code> passes (181 Rust tests, 82 report
+validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 325 Guide/Reference links, header navigation on
+six pages and affected content were checked. Browser/Wasm execution was
+not rerun for this increment.</li>
+<li>Implemented: recursive reflection over plain supported values,
+including products, optionals, strings, sequences and mappings. Worker
+protocol v13 carries recursive value guards and extensional equality;
+ground equations guard argument validity and establish result validity
+without constraining container padding. Residual calls remain
+uninterpreted and satisfiable application queries remain unknown.
+Regression coverage checks nested invalid domains, padding, mapping
+reads, failed descent and 12 Python 3.12 result equations.
+<code>sh scripts/test.sh</code> passes (184 Rust tests, 82 report
+validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 334 Guide/Reference links, header navigation on
+six pages, preserved reflection anchors and affected content were
+checked. Browser/Wasm execution was not rerun for this increment.</li>
+<li>Pending: complete composite-container support and representative
+composition examples. Reflected loops remain unsupported.</li>
+<li>Corrected a prerequisite for nested element contracts: element
+evidence now binds its value lexically in SMT instead of replacing
+rendered variable-name prefixes. A nested map with binder
+<code>v10</code> inside element binder <code>v1</code> previously
+disagreed with concrete replay; positive and negative regression queries
+now agree. This correction does not yet admit composite container
+elements. <code>sh scripts/test.sh</code> passes (185 Rust tests, 82
+report validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 334 Guide/Reference links, header navigation on
+six pages and affected content were checked. Browser/Wasm execution was
+not rerun.</li>
+</ul>
+<p>The final acceptance audit below determines completion of all three
+required outcomes.</p>
+<h3 id="composite-container-representation-work">Composite-container
+representation work</h3>
+<p>The storage layout now uses one outer array per flattened element
+leaf, preceded by the container length or mapping domain. Product fields
+and optional tags keep distinct arrays; nested snapshots produce arrays
+of shapes and arrays of arrays. Zero-width elements retain the outer
+shape without a values array. Literal construction, reads, list stores,
+concatenation, slicing, pointwise maps and element bindings use this
+layout. Internal SMT tests cover products containing optionals and
+lists, duplicate mapping keys, negative reads, replacement, reversal,
+field-wise maps and true/false element predicates.</p>
+<p>This is internal representation work, not source admission. The
+scalar-element frontend gate remains in place. Before removing it, align
+frontend element contracts and enforce ownership for nested mutable
+aliases. Then validate the original coordinate, missing-value and
+partition examples through the frontend and Python execution. Low-level
+SMT tests alone do not establish those outcomes.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (188 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). The
+final zero-width/empty-domain cases also pass the focused layout tests
+and formatting/Clippy checks. These layout tests execute native Z3 below
+source admission; they are not frontend or Python differential coverage
+for composite elements. No browser/Wasm execution was performed for this
+internal increment.</p>
+<p>Recursive validity, equality and coercion now follow the element
+layout. Source equality checks present optional payloads and valid
+container domains; SSA equality retains full array domains while
+respecting absent payloads. Nested quantifiers and coercion lambdas use
+distinct index names so inner operations cannot capture outer indices.
+Snapshot axioms share the value guards, and concrete value equality
+descends through nested snapshots. Coercion expands each element leaf
+and preserves product field widths, including zero-width None fields.
+Internal native SMT tests compare these operations with concrete replay
+for invalid nested strings/lengths, absent payloads, padding, nested
+numeric coercions and heterogeneous fixed products viewed as homogeneous
+sequences. Python source admission remains pending; worker witness
+validation is described below.</p>
+<p>Validation: the full repository script passed 191 Rust tests, 82
+report validations and 7 companion tests. After retaining list-equality
+short-circuiting on length/content mismatches, formatting and Clippy
+were checked again and all 10 library tests plus 37 stable-container
+integration tests passed. Composite SMT/replay checks remain internal;
+browser/Wasm execution was not performed.</p>
+<p>Structural model reconstruction now joins parallel element arrays
+across all exact stores and certified region boundaries, retaining both
+infinite tails. Nested snapshots and optional tags are assembled
+recursively. Store chains are decoded iteratively; depth/step/store
+limits return an unavailable reconstruction instead of guessing values.
+Index-independent array-valued lambda leaves are certified before
+decoding. Native model tests cover misaligned field stores, very large
+indices, overlapping stores/region cutpoints, nested array-valued
+lambdas, zero-width elements and rejected index-dependent models. This
+is decoder coverage, not source admission or composite source-witness
+validation.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (195 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 336 Guide/Reference links, header navigation on
+six pages and affected content were checked. Browser/Wasm execution was
+not rerun.</p>
+<p>Worker protocol v14 now accepts structural composite-container
+queries through the isolated solver and validates complete returned
+models. Representation checks visit every stored field, default, region
+and key, including inactive padding. Source-domain checks follow
+container domains and optional presence. String length congruence
+remains global, with the empty identity fixed at length zero. Snapshot
+axioms and optional string observations use the same guards. Integration
+tests exercise the actual worker, accept legitimate inactive payloads,
+and reject forged active contents, mismatched nested element types and
+noncanonical padding. Derived-term observations do not invent domain
+axioms for projected inactive snapshots; existing optional-list programs
+retain their verification results. The Python frontend’s scalar-element
+restriction remains until contracts and ownership support are
+complete.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (197 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 336 Guide/Reference links, header navigation on
+six pages and affected content were checked. These worker tests do not
+establish Python admission for composite elements. Browser/Wasm
+execution was not rerun.</p>
+<p>The ownership checker now distinguishes a fresh outer list from
+references retained in its elements. Composite constructions and source
+calls with fresh outer results still propagate potential borrowed
+references. Append/extend and item writes check newly stored references
+while allowing scalar self-extension. Internal HIR regressions cover
+nested list/product/optional storage, independent scalar-list copies,
+inserted aliases and source-result certificates. This is a prerequisite
+for composite source admission, not evidence of nested exclusivity:
+shallow composite copies remain conservative, and frontend admission and
+the representative composition examples are still pending.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (200 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). The
+final ownership fixtures also pass all three focused regressions,
+formatting and Clippy. Web documentation builds. No composite Python
+admission or browser/Wasm execution is claimed by these internal
+checks.</p>
+<p>Worker protocol v15 supports scoped nested element evidence. Contract
+lowering retains the original outer binder and assigns distinct
+nested-level binders above the source-position map range. Query typing
+recursively checks closed unary conditions and rejects shadowing or
+enclosing-variable capture. Model validation recursively replays
+generated string observations in each complete element domain. Worker
+tests compare nested contracts with concrete replay on empty, valid and
+invalid contents, reject malformed scopes, and reject forged inactive
+strings when an inner condition explicitly observes their payloads.
+Frontend annotation admission, composite construction and representative
+examples remain pending.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (202 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 336 Guide/Reference links, header navigation on
+six pages and affected content were checked. The new tests exercise
+native worker queries and concrete logical replay; they do not establish
+composite Python admission. Browser/Wasm execution was not rerun.</p>
+<p>Python annotations and list/dictionary literals now admit supported
+composite elements: products, optionals, None and nested containers.
+Context reaches nested empty literals, while independently inferred
+literals retain their own contracts. Recovering a typed neighbor’s
+element contract never assumes its refinements of new contents. Source
+tests cover coordinate construction, missing-value updates, nested lists
+and dictionary values, refined nested reads and rejected bad values.
+They also check fresh outer source-call results, preservation of inputs,
+escaped or inserted aliases, and rejection of writes through extracted
+inner lists. Source equality recursively admits known
+scalar/optional/product/list values and rejects abstract Sequence or
+mapping elements, whose runtime equality is not established by this
+model. Twelve Python 3.12 differential cases compare composite
+construction, writes and reversed nested lists with CFG execution.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (204 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). Final
+diagnostic/comment edits also pass formatting, Clippy and both focused
+composite-source tests. Web documentation builds; 347 Guide/Reference
+links, navigation on six pages and affected content were checked.
+Browser/Wasm execution was not rerun.</p>
+<p>Product-result ownership transfer remains pending. The representative
+filtered partition acceptance work and remaining composition boundaries
+must still be exercised before declaring this goal complete.</p>
+<p>Comprehension elements now admit supported composite construction,
+reflected calls and nested single-generator comprehensions. Context
+supplies types for nested empty literals; element construction
+obligations remain in logical definedness instead of disappearing when
+the HIR becomes a map template. Empty inputs retain vacuous evaluation,
+and overwritten dictionary entries must still satisfy their construction
+contracts. Nested literals and inferred writable element types also
+retain the full construction contract, including read-only interfaces
+whose base sorts have no invariant key. Fixed products with a common
+supported element type can provide iteration/extend views.</p>
+<p>Map templates retain the reflected definitions used by their element
+bodies and construction contracts. Dependency checks include nested
+templates and empty domains: an invalid reflected callee cannot
+establish verification just because its call marker was erased during
+lowering. Regression coverage checks explicit callee evidence, failed
+raw-body assertions, nested scopes, empty construction, rejected alias
+storage and discarded unsafe reads. Forty Python 3.12 differential cases
+compare composite/nested maps, shadowed names and fixed-product views
+with CFG execution. Filters and multiple generators in one comprehension
+remain outside the supported syntax; the required filtered partition
+example can use checked loops.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (206 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy),
+including 40 new Python 3.12 differential cases. Web documentation
+builds; 349 Guide/Reference links, navigation on six pages and affected
+content were checked. Browser/Wasm execution was not rerun.
+Product-result ownership and the remaining composition examples are
+still required for goal completion.</p>
+<p>General classes, exceptions, asynchronous execution and arbitrary
+shared-heap mutation are outside this work. The review’s medium and
+medium-to-high priorities are not prerequisites for these three
+outcomes.</p>
+<p>Product-result isolation now has a provisional allocation-graph
+analysis. It tracks allocation sites, container-retained references and
+product fields across whole-body assignment histories, including bounded
+loop fixed points. A result qualifies only when all reachable mutable
+containers are allocated and product fields have disjoint reference
+sets. Unknown product alternatives remain visible after field
+projection, slicing, concatenation and unpacking; a known product shape
+cannot erase an opaque borrowed alternative. Scalar-element source
+builders can supply their existing outer-list evidence, while unknown
+composite source calls and extracted elements remain conservative.</p>
+<p>A frontend regression checks 15 cases covering independent partition
+builders, repeated references, borrowed and mixed results, nested
+retention, shallow copies, comprehension allocations, opaque product
+projections and loop-carried borrowing. This evidence is not yet
+consumed by caller-side ownership checks or published as successful
+ownership evidence. Product-result transfer, dependency propagation and
+the complete representative partition example remain required acceptance
+work.</p>
+<p>Validation: <code>sh scripts/test.sh</code> passes (207 Rust tests,
+82 report validations, 7 companion tests, formatting and Clippy). Web
+documentation builds; 349 local Guide/Reference links and navigation on
+six pages were checked. These new tests exercise provisional frontend
+evidence, not caller-side ownership transfer or Python identity
+observations. Browser/Wasm execution was not rerun.</p>
+<p>Product-result ownership now propagates through the same bounded,
+hypothesis-free source-certificate discovery as list results. Signatures
+and reflected HIR carry the stronger isolation evidence separately from
+outer-list freshness. A direct flat unpacking of a certified source
+result permits local list writes; source forwarding, returning an
+unpacked list, conditional results and generic variants retain their
+applicable certificates. Stored products, borrowed/mixed results,
+repeated references, nested sharing, escaping aliases, live iterator
+writes and ungrounded recursive cycles remain non-successes. Successful
+dependency closures publish isolated-product evidence; cache regressions
+invalidate that evidence when an imported/re-exported builder changes
+its allocation, sharing or contract.</p>
+<p><code>examples/partition</code> supplies the representative filtered
+partition and callers. The contracts establish negative/nonnegative
+element refinements, exact filtered contents in input order with
+duplicates retained, combined length, and subsequent appends to both
+returned lists. A total reflected prefix specification avoids repeated
+slice expansion; the loop has explicit invariant and descent checks.
+Regression variants reverse contents, substitute elements, duplicate
+insertions and omit a classification case. Forty finite Python 3.12
+cases compare the lowered partition with actual execution and
+independently check identities, forwarded builders and input
+preservation. The execution oracle erases recursive specification
+checks, as Python does; separate driver tests prove those contracts.
+Raising specification sentinels ensure builders do not execute the proof
+helper.</p>
+<p>The product transfer and representative example have implementation
+and focused acceptance coverage, supplemented by the final validation
+and audit below. Earlier pending entries describe historical checkpoints
+rather than new scope restrictions.</p>
+<h3 id="final-acceptance-audit">Final acceptance audit</h3>
+<p>All three required outcomes are implemented and validated within the
+supported language described by the specification. This audit supersedes
+the historical pending checkpoints above.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Required outcome</th>
+<th>Authoritative implementation and acceptance evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compose supported value types</td>
+<td><code>composite_products_preserve_values_contracts_and_aliases</code>,
+<code>composite_container_source_admission_preserves_contracts_and_aliases</code>,
+and the composite-comprehension tests in
+<code>tests/integration/value_types.rs</code> cover products, optional
+elements, nested containers, field/element contracts, definedness,
+equality and rejected variance/aliases. The same file supplies
+coordinate and missing-value source cases and Python 3.12 differential
+checks. <code>examples/partition/partition.py</code> completes the
+two-result example. Structural worker/model-validation regressions
+remain in the full native suite.</td>
+</tr>
+<tr>
+<td>Compose fresh construction across calls</td>
+<td><code>isolated_product_results_transfer_owned_lists_through_calls</code>
+and
+<code>isolated_product_results_reject_aliases_and_failed_dependencies</code>
+cover list/product forwarding, writes, preserved inputs,
+conditional/reflected/generic results, nested independence, rejected
+borrowing/sharing, escaped aliases, live iterators, failed dependencies
+and recursive/discovery bounds. Existing fresh-list tests cover external
+allocation claims and imported refinements.
+<code>product_result_ownership_cache_tracks_aliases_and_failed_callees</code>
+checks imported/re-exported evidence, warm hits and invalidation.</td>
+</tr>
+<tr>
+<td>Compose contracts and logical functions</td>
+<td>Product-predicate tests in <code>value_types.rs</code> cover
+construction, concatenation, slicing, empty values and eager
+definedness. Reflection tests in <code>packages_calls.rs</code> cover
+products, optionals, mappings, statement bodies, argument evaluation,
+raw-body safety, termination, failed dependencies and expansion limits.
+The added
+<code>recursive_reflection_composes_nested_container_elements</code>
+exercises nested composite source signatures and rejects an unsafe raw
+read even for a reflexive caller equation. Preconditions/refined domains
+remain excluded rather than installed as unconditional equations.</td>
+</tr>
+<tr>
+<td>Representative execution and negative cases</td>
+<td>All nine targets from <code>examples/partition/pyproject.toml</code>
+report <code>verified</code>; partition and its caller retain ownership
+and termination evidence.
+<code>product_partition_matches_python312_and_preserves_independent_results</code>
+compares 40 cases with CFG execution and Python identities/input
+preservation.
+<code>product_partition_contracts_reject_reordering_omissions_and_duplicates</code>
+prevents weakened implementations from passing the exact contract.</td>
+</tr>
+<tr>
+<td>Documentation and checks</td>
+<td>Guide, Reference, specification, support matrix and report evidence
+documentation agree on direct product transfer and its boundaries.
+<code>sh scripts/test.sh</code> passes 212 Rust tests, 82 report
+validations, 7 companion tests, formatting and Clippy. The subsequently
+added nested-reflection regression passes separately; final formatting
+and all-target Clippy also pass (213 distinct Rust tests checked in
+total). Web documentation builds; 361 local Guide/Reference links,
+navigation on six pages and changed content on five pages were
+checked.</td>
+</tr>
+</tbody>
+</table>
+<p>No mandatory acceptance work remains for these three outcomes.
+General classes, exceptions, arbitrary shared-heap writes,
+filtered/multiple-generator comprehension syntax, reflected loops and
+partial-domain reflection remain the documented language boundaries, not
+newly claimed support. Expansion limits can still produce a non-success;
+the partition specification stays within those limits. No browser/Wasm
+execution was performed for this increment. Native verification, finite
+Python execution and generated-document checks are separate
+evidence.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>practical-examples · refinepy</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <p class="brand">refinepy</p>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Playground</a>
+      <a href="../guide.html">Guide</a>
+      <a href="../reference.html" aria-current="page">Reference</a>
+    </nav>
+  </header>
+  <main id="content" class="documentation" tabindex="-1">
+<h1 id="practical-refinement-contracts">Practical refinement
+contracts</h1>
+<p>These examples describe reusable operations without tying them to a
+particular application. An ordinary type describes the shape of a value.
+A refinement adds what must be true about that value, often in relation
+to another argument.</p>
+<p>The playground retains <strong>Keep a value within bounds</strong> as
+its single basic example. Allocation and window reading remain
+standalone exercises under <code>examples/practical/</code>; paste their
+source into the editor and verify with <code>*</code>. The <a
+href="example-gallery.html">current menu</a> emphasizes larger
+algorithms. Read the input contract before the implementation:
+verification applies to inputs that satisfy it.
+<code>Annotated[T, Refine(...)]</code> retains the Python type
+<code>T</code>; the lambda’s first argument names the refined value and
+later arguments name the function inputs it depends on.</p>
+<h2 id="keep-a-value-within-bounds">Keep a value within bounds</h2>
+<p><code>clamp(value, lower, upper)</code> accepts an ordered interval:
+<code>lower &lt;= upper</code>. It returns the nearest value in that
+interval. The result contract says both that the result lies within the
+bounds and that it equals
+<code>min(upper, max(lower, value))</code>.</p>
+<p>The second condition matters. Always returning <code>lower</code>
+would satisfy the range condition, but would change values that already
+fit. This is the difference between proving an output is permitted and
+proving it is the intended output. Negative bounds and the single-point
+interval <code>lower == upper</code> are valid inputs.</p>
+<p>Try changing the final <code>return value</code> to
+<code>return lower</code>. Verification should report
+<code>unproved</code>; an incomplete proof is not itself a validated
+execution witness. Independently, <code>clamp(1, 0, 2)</code> then
+returns 0 instead of 1.</p>
+<h2 id="allocate-within-capacity">Allocate within capacity</h2>
+<p><code>allocate(available, requested)</code> takes two nonnegative
+quantities and returns <code>(granted, remaining)</code>. This operation
+can represent distributing work, space, or a budget, without needing a
+specific unit or storage system.</p>
+<p>The tuple fields have the refined type <code>Nat</code>, so neither
+may be negative. The result contract also states:</p>
+<ul>
+<li><code>granted == min(available, requested)</code>: grant as much as
+possible.</li>
+<li><code>granted + remaining == available</code>: preserve the original
+quantity.</li>
+</ul>
+<p>Nonnegativity alone would admit <code>(0, 0)</code> for every
+request. Conservation alone would admit granting nothing even when
+capacity is available. Both the exact allocation rule and conservation
+belong in the contract. Zero capacity, zero demand and demand greater
+than capacity are all valid cases.</p>
+<p>Subtract one extra unit from the returned remainder to create a
+deliberate conservation bug with the same contract. Verification should
+report <code>counterexample</code>. For example,
+<code>(available, requested) = (3, 1)</code> would produce
+<code>(1, 1)</code>, losing one unit.</p>
+<h2 id="read-an-exact-window">Read an exact window</h2>
+<p><code>read_window(data, cursor, count)</code> returns
+<code>(items, next_cursor)</code>. The input contract allows
+<code>0 &lt;= cursor &lt;= len(data)</code> and
+<code>0 &lt;= count &lt;= len(data) - cursor</code>. The result contract
+requires all of:</p>
+<ul>
+<li>Exactly <code>count</code> items, with the contents of the requested
+slice.</li>
+<li>A cursor advanced by exactly <code>count</code>.</li>
+<li>A next cursor no greater than the data length.</li>
+</ul>
+<p>Python slicing silently returns fewer items when an endpoint is too
+large. The input contract prevents that behavior here; absence of an
+<code>IndexError</code> alone would be a weaker guarantee. Reading zero
+items at the end is allowed.</p>
+<p><code>read_pair</code> makes two one-item reads. Its stronger input
+contract promises two available items. The first call’s result
+establishes the second call’s valid cursor, and the one-item length
+guarantees justify both <code>[0]</code> accesses. The final contract
+identifies the two returned values in the original data.</p>
+<p>Try adding one to the returned cursor in <code>read_window</code>:
+its exact cursor contract fails. Alternatively, weaken
+<code>read_pair</code> to require only one available item. The second
+call can no longer be justified. The cursor edit reports
+<code>unproved</code>; the weakened input reports <code>error</code>
+because even the return contract <code>data[cursor + 1]</code> is not
+defined for every admitted input. With <code>data = [7]</code> and
+<code>cursor = 0</code>, the latter edit admits an input that reaches an
+empty second window and fails at <code>[0]</code> during Python
+execution.</p>
+<h2 id="scope-and-provenance">Scope and provenance</h2>
+<p>The three accepted introductory samples contain four functions, all
+expected to be <code>verified</code> with separate exact-target
+termination evidence. They do not model concurrent access, I/O or
+machine-width overflow. Annotations do not validate incoming data at
+runtime. Callers outside the checked code must establish the
+preconditions. Termination evidence does not prove resource
+availability.</p>
+<p>The user-supplied <code>LiquidHaskell.pdf</code>, especially sections
+2.2–2.3 on value constraints and dependent contracts and sections
+3.1–3.2 on length constraints, provided conceptual background. The
+Python implementations, scenarios and explanations here were written for
+refinepy; they are not translations of the book’s code or prose. These
+samples make no claim that refinepy supports LiquidHaskell’s
+user-defined algebraic data types or measures.</p>
+<p>The menu removes the earlier arithmetic, first-element, loop-counter
+and composite-syntax demonstrations. Their small regression inputs
+remain in <code>scripts/fixtures/wasm-samples.cjs</code>; search, list
+and partition demonstrations remain in the repository. Signed division
+is in the numerical menu.</p>
+<p>The maintained files are <code>examples/practical/bounds.py</code>,
+<code>allocation.py</code> and <code>window.py</code>. The web build
+copies <code>bounds.py</code> into the menu; the other two sources
+remain directly usable as standalone exercises. The Wasm regression
+suite checks accepted programs and the four edits above. A separate
+finite Python check covers boundaries and concrete bug witnesses; finite
+execution is not the universal proof supplied by the verifier.</p>
+  </main>
+</body>
+</html>

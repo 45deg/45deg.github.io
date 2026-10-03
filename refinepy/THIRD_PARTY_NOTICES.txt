@@ -1,0 +1,438 @@
+Third-party notices for the refinepy browser distribution
+
+refinepy is licensed under the MIT License; see LICENSE.
+The components below retain their respective licenses and copyright notices.
+Listed runtime/toolchain components conservatively include potentially unused code.
+Full notices are shipped at the relative paths below.
+
+aho-corasick 1.1.5
+  Source: https://github.com/BurntSushi/aho-corasick
+  third-party/aho-corasick-1.1.5/COPYING
+  third-party/aho-corasick-1.1.5/LICENSE-MIT
+  third-party/aho-corasick-1.1.5/UNLICENSE
+
+arrayvec 0.7.8
+  Source: https://github.com/bluss/arrayvec
+  third-party/arrayvec-0.7.8/LICENSE-APACHE
+  third-party/arrayvec-0.7.8/LICENSE-MIT
+
+bitflags 2.13.2
+  Source: https://github.com/bitflags/bitflags
+  third-party/bitflags-2.13.2/LICENSE-APACHE
+  third-party/bitflags-2.13.2/LICENSE-MIT
+
+block-buffer 0.10.4
+  Source: https://github.com/RustCrypto/utils
+  third-party/block-buffer-0.10.4/LICENSE-APACHE
+  third-party/block-buffer-0.10.4/LICENSE-MIT
+
+bstr 1.13.1
+  Source: https://github.com/BurntSushi/bstr
+  third-party/bstr-1.13.1/COPYING
+  third-party/bstr-1.13.1/LICENSE-APACHE
+  third-party/bstr-1.13.1/LICENSE-MIT
+
+castaway 0.2.4
+  Source: https://github.com/sagebind/castaway
+  third-party/castaway-0.2.4/LICENSE
+
+cfg-if 1.0.5
+  Source: https://github.com/rust-lang/cfg-if
+  third-party/cfg-if-1.0.5/LICENSE-APACHE
+  third-party/cfg-if-1.0.5/LICENSE-MIT
+
+char_str 0.0.2
+  Source: https://github.com/astral-sh/char_str
+  third-party/char_str-0.0.2/LICENSE
+
+compact_str 0.10.0
+  Source: https://github.com/ParkMyCar/compact_str
+  third-party/compact_str-0.10.0/LICENSE
+
+crypto-common 0.1.7
+  Source: https://github.com/RustCrypto/traits
+  third-party/crypto-common-0.1.7/LICENSE-APACHE
+  third-party/crypto-common-0.1.7/LICENSE-MIT
+
+digest 0.10.7
+  Source: https://github.com/RustCrypto/traits
+  third-party/digest-0.10.7/LICENSE-APACHE
+  third-party/digest-0.10.7/LICENSE-MIT
+
+drop_bomb 0.1.5
+  Source: https://github.com/matklad/drop_bomb
+  third-party/drop_bomb-0.1.5/LICENSE-APACHE
+  third-party/drop_bomb-0.1.5/LICENSE-MIT
+
+either 1.18.0
+  Source: https://github.com/rayon-rs/either
+  third-party/either-1.18.0/LICENSE-APACHE
+  third-party/either-1.18.0/LICENSE-MIT
+
+equivalent 1.0.2
+  Source: https://github.com/indexmap-rs/equivalent
+  third-party/equivalent-1.0.2/LICENSE-APACHE
+  third-party/equivalent-1.0.2/LICENSE-MIT
+
+generic-array 0.14.7
+  Source: https://github.com/fizyk20/generic-array.git
+  third-party/generic-array-0.14.7/LICENSE
+
+get-size2 0.10.3
+  Source: https://github.com/bircni/get-size2
+  third-party/get-size2-0.10.3/LICENSE
+
+hashbrown 0.17.1
+  Source: https://github.com/rust-lang/hashbrown
+  third-party/hashbrown-0.17.1/LICENSE-APACHE
+  third-party/hashbrown-0.17.1/LICENSE-MIT
+
+indexmap 2.14.2
+  Source: https://github.com/indexmap-rs/indexmap
+  third-party/indexmap-2.14.2/LICENSE-APACHE
+  third-party/indexmap-2.14.2/LICENSE-MIT
+
+itertools 0.15.0
+  Source: https://github.com/rust-itertools/itertools
+  third-party/itertools-0.15.0/LICENSE-APACHE
+  third-party/itertools-0.15.0/LICENSE-MIT
+
+itoa 1.0.18
+  Source: https://github.com/dtolnay/itoa
+  third-party/itoa-1.0.18/LICENSE-APACHE
+  third-party/itoa-1.0.18/LICENSE-MIT
+
+libc 0.2.189
+  Source: https://github.com/rust-lang/libc
+  third-party/libc-0.2.189/LICENSE-APACHE
+  third-party/libc-0.2.189/LICENSE-MIT
+
+log 0.4.34
+  Source: https://github.com/rust-lang/log
+  third-party/log-0.4.34/LICENSE-APACHE
+  third-party/log-0.4.34/LICENSE-MIT
+
+memchr 2.8.3
+  Source: https://github.com/BurntSushi/memchr
+  third-party/memchr-2.8.3/COPYING
+  third-party/memchr-2.8.3/LICENSE-MIT
+  third-party/memchr-2.8.3/UNLICENSE
+
+num-bigint 0.4.6
+  Source: https://github.com/rust-num/num-bigint
+  third-party/num-bigint-0.4.6/LICENSE-APACHE
+  third-party/num-bigint-0.4.6/LICENSE-MIT
+
+num-complex 0.4.6
+  Source: https://github.com/rust-num/num-complex
+  third-party/num-complex-0.4.6/LICENSE-APACHE
+  third-party/num-complex-0.4.6/LICENSE-MIT
+
+num-integer 0.1.47
+  Source: https://github.com/rust-num/num-integer
+  third-party/num-integer-0.1.47/LICENSE-APACHE
+  third-party/num-integer-0.1.47/LICENSE-MIT
+
+num-iter 0.1.46
+  Source: https://github.com/rust-num/num-iter
+  third-party/num-iter-0.1.46/LICENSE-APACHE
+  third-party/num-iter-0.1.46/LICENSE-MIT
+
+num-rational 0.4.2
+  Source: https://github.com/rust-num/num-rational
+  third-party/num-rational-0.4.2/LICENSE-APACHE
+  third-party/num-rational-0.4.2/LICENSE-MIT
+
+num-traits 0.2.19
+  Source: https://github.com/rust-num/num-traits
+  third-party/num-traits-0.2.19/LICENSE-APACHE
+  third-party/num-traits-0.2.19/LICENSE-MIT
+
+num 0.4.3
+  Source: https://github.com/rust-num/num
+  third-party/num-0.4.3/LICENSE-APACHE
+  third-party/num-0.4.3/LICENSE-MIT
+
+ordermap 1.2.2
+  Source: https://github.com/indexmap-rs/ordermap
+  third-party/ordermap-1.2.2/LICENSE-APACHE
+  third-party/ordermap-1.2.2/LICENSE-MIT
+
+phf 0.11.3
+  Source: https://github.com/rust-phf/rust-phf
+  third-party/phf-0.11.3/LICENSE
+
+phf_shared 0.11.3
+  Source: https://github.com/rust-phf/rust-phf
+  third-party/phf_shared-0.11.3/LICENSE
+
+psm 0.1.32
+  Source: https://github.com/rust-lang/stacker/
+  third-party/psm-0.1.32/LICENSE-APACHE
+  third-party/psm-0.1.32/LICENSE-MIT
+
+regex-automata 0.4.18
+  Source: https://github.com/rust-lang/regex
+  third-party/regex-automata-0.4.18/LICENSE-APACHE
+  third-party/regex-automata-0.4.18/LICENSE-MIT
+
+regex-syntax 0.8.11
+  Source: https://github.com/rust-lang/regex
+  third-party/regex-syntax-0.8.11/LICENSE-APACHE
+  third-party/regex-syntax-0.8.11/LICENSE-MIT
+
+ruff_python_ast 0.0.12
+  Source: https://github.com/astral-sh/ruff
+  third-party/ruff_python_ast-0.0.12/LICENSE
+
+ruff_python_parser 0.0.12
+  Source: https://github.com/astral-sh/ruff
+  third-party/ruff_python_parser-0.0.12/LICENSE
+
+ruff_python_trivia 0.0.12
+  Source: https://github.com/astral-sh/ruff
+  third-party/ruff_python_trivia-0.0.12/LICENSE
+
+ruff_source_file 0.0.12
+  Source: https://github.com/astral-sh/ruff
+  third-party/ruff_source_file-0.0.12/LICENSE
+
+ruff_text_size 0.0.12
+  Source: https://github.com/astral-sh/ruff
+  third-party/ruff_text_size-0.0.12/LICENSE
+
+rustc-hash 2.1.3
+  Source: https://github.com/rust-lang/rustc-hash
+  third-party/rustc-hash-2.1.3/LICENSE-APACHE
+  third-party/rustc-hash-2.1.3/LICENSE-MIT
+
+ryu 1.0.23
+  Source: https://github.com/dtolnay/ryu
+  third-party/ryu-1.0.23/LICENSE-APACHE
+  third-party/ryu-1.0.23/LICENSE-BOOST
+
+serde 1.0.229
+  Source: https://github.com/serde-rs/serde
+  third-party/serde-1.0.229/LICENSE-APACHE
+  third-party/serde-1.0.229/LICENSE-MIT
+
+serde_core 1.0.229
+  Source: https://github.com/serde-rs/serde
+  third-party/serde_core-1.0.229/LICENSE-APACHE
+  third-party/serde_core-1.0.229/LICENSE-MIT
+
+serde_json 1.0.151
+  Source: https://github.com/serde-rs/json
+  third-party/serde_json-1.0.151/LICENSE-APACHE
+  third-party/serde_json-1.0.151/LICENSE-MIT
+
+serde_spanned 1.1.1
+  Source: https://github.com/toml-rs/toml
+  third-party/serde_spanned-1.1.1/LICENSE-APACHE
+  third-party/serde_spanned-1.1.1/LICENSE-MIT
+
+sha2 0.10.9
+  Source: https://github.com/RustCrypto/hashes
+  third-party/sha2-0.10.9/LICENSE-APACHE
+  third-party/sha2-0.10.9/LICENSE-MIT
+
+siphasher 1.0.4
+  Source: https://github.com/jedisct1/rust-siphash
+  third-party/siphasher-1.0.4/COPYING
+  third-party/siphasher-1.0.4/LICENSE-APACHE
+  third-party/siphasher-1.0.4/LICENSE-MIT
+
+smallvec 1.16.2
+  Source: https://github.com/servo/rust-smallvec
+  third-party/smallvec-1.16.2/LICENSE-APACHE
+  third-party/smallvec-1.16.2/LICENSE-MIT
+
+stacker 0.1.25
+  Source: https://github.com/rust-lang/stacker
+  third-party/stacker-0.1.25/LICENSE-APACHE
+  third-party/stacker-0.1.25/LICENSE-MIT
+
+static_assertions 1.1.0
+  Source: https://github.com/nvzqz/static-assertions-rs
+  third-party/static_assertions-1.1.0/LICENSE-APACHE
+  third-party/static_assertions-1.1.0/LICENSE-MIT
+
+thin-vec 0.2.20
+  Source: https://github.com/mozilla/thin-vec
+  third-party/thin-vec-0.2.20/LICENSE-APACHE
+  third-party/thin-vec-0.2.20/LICENSE-MIT
+
+thiserror 2.0.21
+  Source: https://github.com/dtolnay/thiserror
+  third-party/thiserror-2.0.21/LICENSE-APACHE
+  third-party/thiserror-2.0.21/LICENSE-MIT
+
+tinyvec 1.13.3
+  Source: https://github.com/Lokathor/tinyvec
+  third-party/tinyvec-1.13.3/LICENSE-APACHE.md
+  third-party/tinyvec-1.13.3/LICENSE-MIT.md
+  third-party/tinyvec-1.13.3/LICENSE-ZLIB.md
+
+toml 0.9.8
+  Source: https://github.com/toml-rs/toml
+  third-party/toml-0.9.8/LICENSE-APACHE
+  third-party/toml-0.9.8/LICENSE-MIT
+
+toml_datetime 0.7.5+spec-1.1.0
+  Source: https://github.com/toml-rs/toml
+  third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-APACHE
+  third-party/toml_datetime-0.7.5+spec-1.1.0/LICENSE-MIT
+
+toml_parser 1.1.3+spec-1.1.0
+  Source: https://github.com/toml-rs/toml
+  third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-APACHE
+  third-party/toml_parser-1.1.3+spec-1.1.0/LICENSE-MIT
+
+toml_writer 1.1.2+spec-1.1.0
+  Source: https://github.com/toml-rs/toml
+  third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-APACHE
+  third-party/toml_writer-1.1.2+spec-1.1.0/LICENSE-MIT
+
+typenum 1.20.1
+  Source: https://github.com/paholg/typenum
+  third-party/typenum-1.20.1/LICENSE
+  third-party/typenum-1.20.1/LICENSE-APACHE
+  third-party/typenum-1.20.1/LICENSE-MIT
+
+unicode-ident 1.0.26
+  Source: https://github.com/dtolnay/unicode-ident
+  third-party/unicode-ident-1.0.26/LICENSE-APACHE
+  third-party/unicode-ident-1.0.26/LICENSE-MIT
+  third-party/unicode-ident-1.0.26/LICENSE-UNICODE
+
+unicode-normalization 0.1.25
+  Source: https://github.com/unicode-rs/unicode-normalization
+  third-party/unicode-normalization-0.1.25/LICENSE-APACHE
+  third-party/unicode-normalization-0.1.25/LICENSE-MIT
+
+unicode_names2 1.3.0
+  Source: https://github.com/progval/unicode_names2
+  third-party/unicode_names2-1.3.0/LICENSE-APACHE
+  third-party/unicode_names2-1.3.0/LICENSE-MIT
+  third-party/unicode_names2-1.3.0/LICENSE-UNICODE
+
+winnow 0.7.15
+  Source: https://github.com/winnow-rs/winnow
+  third-party/winnow-0.7.15/LICENSE-MIT
+
+winnow 1.0.4
+  Source: https://github.com/winnow-rs/winnow
+  third-party/winnow-1.0.4/LICENSE-MIT
+
+z3-sys 0.10.9
+  Source: https://github.com/prove-rs/z3.rs.git
+  third-party/z3-sys-0.10.9/LICENSE.txt
+
+z3 0.19.6
+  Source: https://github.com/prove-rs/z3.rs.git
+  third-party/z3-0.19.6/LICENSE.txt
+
+zmij 1.0.23
+  Source: https://github.com/dtolnay/zmij
+  third-party/zmij-1.0.23/LICENSE-MIT
+
+emscripten 5.0.5
+  Source: https://github.com/emscripten-core/emscripten/tree/5.0.5
+  third-party/emscripten-5.0.5/LICENSE
+
+musl emscripten-5.0.5
+  third-party/musl-emscripten-5.0.5/COPYRIGHT
+
+libcxx emscripten-5.0.5
+  third-party/libcxx-emscripten-5.0.5/LICENSE.TXT
+
+libcxxabi emscripten-5.0.5
+  third-party/libcxxabi-emscripten-5.0.5/LICENSE.TXT
+
+libunwind emscripten-5.0.5
+  third-party/libunwind-emscripten-5.0.5/LICENSE.TXT
+
+compiler-rt emscripten-5.0.5
+  third-party/compiler-rt-emscripten-5.0.5/LICENSE.TXT
+
+llvm-libc emscripten-5.0.5
+  third-party/llvm-libc-emscripten-5.0.5/LICENSE.TXT
+
+mimalloc emscripten-5.0.5
+  third-party/mimalloc-emscripten-5.0.5/LICENSE
+
+Z3 4.15.4
+  Source: https://github.com/Z3Prover/z3/tree/745087e237e669d709ae35694728a0c479e572b3
+  third-party/Z3-4.15.4/LICENSE.txt
+
+rust-standard-library 1.97.1
+  Source: https://github.com/rust-lang/rust/tree/1.97.1
+  third-party/rust-standard-library-1.97.1/COPYRIGHT-library.html
+
+@codemirror/lang-python 6.2.1
+  Source: https://github.com/codemirror/lang-python.git
+  third-party/@codemirror_lang-python-6.2.1/LICENSE
+
+@codemirror/state 6.7.6
+  Source: git+https://code.haverbeke.berlin/codemirror/state.git
+  third-party/@codemirror_state-6.7.6/LICENSE
+
+@marijn/find-cluster-break 1.0.4
+  Source: git+https://code.haverbeke.berlin/marijn/find-cluster-break.git
+  third-party/@marijn_find-cluster-break-1.0.4/LICENSE
+
+@codemirror/autocomplete 6.20.3
+  Source: git+https://code.haverbeke.berlin/codemirror/autocomplete.git
+  third-party/@codemirror_autocomplete-6.20.3/LICENSE
+
+@codemirror/language 6.12.4
+  Source: git+https://code.haverbeke.berlin/codemirror/language.git
+  third-party/@codemirror_language-6.12.4/LICENSE
+
+@codemirror/view 6.43.13
+  Source: git+https://code.haverbeke.berlin/codemirror/view.git
+  third-party/@codemirror_view-6.43.13/LICENSE
+
+crelt 1.0.7
+  Source: git+https://code.haverbeke.berlin/marijn/crelt.git
+  third-party/crelt-1.0.7/LICENSE
+
+style-mod 4.1.4
+  Source: git+https://code.haverbeke.berlin/marijn/style-mod.git
+  third-party/style-mod-4.1.4/LICENSE
+
+w3c-keyname 2.2.8
+  Source: git+https://github.com/marijnh/w3c-keyname.git
+  third-party/w3c-keyname-2.2.8/LICENSE
+
+@lezer/common 1.5.3
+  Source: git+https://code.haverbeke.berlin/lezer/common.git
+  third-party/@lezer_common-1.5.3/LICENSE
+
+@lezer/highlight 1.2.5
+  Source: git+https://code.haverbeke.berlin/lezer/highlight.git
+  third-party/@lezer_highlight-1.2.5/LICENSE
+
+@lezer/lr 1.4.10
+  Source: git+https://code.haverbeke.berlin/lezer/lr.git
+  third-party/@lezer_lr-1.4.10/LICENSE
+
+@lezer/python 1.1.19
+  Source: git+https://code.haverbeke.berlin/lezer/python.git
+  third-party/@lezer_python-1.1.19/LICENSE
+
+codemirror 6.0.2
+  Source: https://github.com/codemirror/basic-setup.git
+  third-party/codemirror-6.0.2/LICENSE
+
+@codemirror/commands 6.11.1
+  Source: git+https://code.haverbeke.berlin/codemirror/commands.git
+  third-party/@codemirror_commands-6.11.1/LICENSE
+
+@codemirror/lint 6.9.7
+  Source: git+https://code.haverbeke.berlin/codemirror/lint.git
+  third-party/@codemirror_lint-6.9.7/LICENSE
+
+@codemirror/search 6.7.2
+  Source: git+https://code.haverbeke.berlin/codemirror/search.git
+  third-party/@codemirror_search-6.7.2/LICENSE

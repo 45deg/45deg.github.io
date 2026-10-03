@@ -1,0 +1,846 @@
+<h1 id="guide">Guide</h1>
+<h2 id="verify-a-function">Verify a function</h2>
+<ol type="1">
+<li>Choose an <strong>Example</strong> and click <strong>Load
+example</strong>.</li>
+<li>Edit <code>playground.py</code>. Loading another example replaces
+the source and clears undo history.</li>
+<li>Set <strong>Function selector</strong> to a function name, or
+<code>*</code> for all annotated functions.</li>
+<li>Click <strong>Verify</strong>. Results appear alongside the editor.
+<strong>Cancel</strong> stops the current run.</li>
+</ol>
+<p>Editing the source or selector clears the previous results. The
+editor is read-only while verification runs. Reloading the page restores
+the initial example. The header’s Guide and Reference links open in the
+same tab.</p>
+<p>The playground header has an <strong>EN / JP</strong> switch for
+English and Japanese. It translates controls, example names, editor
+search controls and result summaries entirely in the frontend. Switching
+preserves the source, undo history, selector, current run and existing
+results. The language preference is saved locally when browser storage
+is available; English is the default. Python samples, raw verifier
+diagnostics, proof records, stage identifiers and JSON stay in their
+original form. Guide and Reference content is available in both
+languages. Their Python code blocks remain identical. Linked technical
+documents under <code>docs/</code> remain in English. The three header
+pages use client-side navigation without reloading the editor. Direct
+<code>.html</code> URLs, section links and browser Back/Forward are
+supported; refreshing still resets the source. Documentation load
+failures are shown explicitly.</p>
+<h2 id="write-a-contract">Write a contract</h2>
+<p>The repository’s binary-search example verifies a complete search
+contract and termination for arbitrary-length sorted lists, including
+duplicates. Checked inductive interval lemmas preserve membership as the
+interval shrinks; static assertions use those lemmas without executing
+them. See the <a
+href="docs/specification.html#binary-search-contract-prototype">specification</a>.</p>
+<p>Use <code>Annotated</code> to attach a predicate to a type. The first
+lambda parameter is the value being constrained. A return predicate can
+also name the function’s parameters to relate the result to its
+inputs.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(x: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result, x: result <span class="op">==</span> x <span class="op">+</span> <span class="dv">1</span>)]:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>This contract requires a nonnegative input and a result exactly one
+greater than that input. Try changing the return expression to
+<code>x - 1</code> and verify again.</p>
+<h2 id="choose-a-numerical-example">Choose a numerical example</h2>
+<p>The menu has one basic example, <strong>Keep a value within
+bounds</strong>, followed by <strong>Fibonacci: verified fast
+doubling</strong>, <strong>Integer square root by bisection</strong>,
+<strong>Series sums and their closed form</strong>, <strong>Exact
+rounding and rational rescaling</strong>, and <strong>Signed quotient
+and remainder</strong>.</p>
+<p>The <a href="docs/example-gallery.html">numerical example guide</a>
+illustrates the equations with concrete numbers and explains the proof
+techniques and limitations. For example, the square-root contract is
+<code>r*r &lt;= n &lt; (r+1)*(r+1)</code>; rounding specifies both the
+error interval and what happens at a half-way value. Choose a sample,
+click <strong>Load example</strong>, then <strong>Verify</strong> with
+<code>*</code>. Container examples remain in the repository and
+regression suite.</p>
+<h2 id="verify-string-contents">Verify string contents</h2>
+<p>Strings support content equality, length, concatenation, safe integer
+indexing and step-1 slicing in both bodies and predicates. Prove a read
+is in bounds; negative indices count from the end. Slices clip their
+bounds, and accept omitted or None bounds and an omitted, None or
+constant step of one.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine, requires</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> text: <span class="bu">len</span>(text) <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first(text: <span class="bu">str</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">str</span>, Refine(<span class="kw">lambda</span> result: <span class="bu">len</span>(result) <span class="op">==</span> <span class="dv">1</span>)]:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text[<span class="dv">0</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append(left: <span class="bu">str</span>, right: <span class="bu">str</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">str</span>, Refine(<span class="kw">lambda</span> result, left, right: <span class="bu">len</span>(result) <span class="op">==</span> <span class="bu">len</span>(left) <span class="op">+</span> <span class="bu">len</span>(right))]:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> left <span class="op">+</span> right</span></code></pre></div>
+<p>The model preserves every Python code point, including surrogates.
+String methods, f-strings and other slice steps remain unsupported.
+Ordering compares code points lexicographically;
+<code>"a" &lt; "aa" &lt; "b"</code>. Fixed tuples also compare
+lexicographically when their common fields are comparable
+integers/bools, strings or nested tuples (with matching None fields
+allowed). String witnesses are reconstructed completely up to 4,096 code
+points; larger witnesses yield <code>unknown</code>. See the <a
+href="docs/specification.html#strings">string model</a> and <a
+href="reference.html#supported-forms-and-limits">support matrix</a>.</p>
+<h2 id="describe-a-complete-tuple-result">Describe a complete tuple
+result</h2>
+<p>Use a tuple literal in a contract to describe all result fields
+together:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, x: result <span class="op">==</span> (x, x <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pair(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x, x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
+<p>Tuple construction, concatenation and static slicing are available in
+preconditions, refinements, assertions and loop invariants. For example,
+<code>result == pair_input[::-1]</code> describes reversal of a fixed
+tuple. Fields can include optional values, nested tuples and lists or
+mappings with supported elements. Each field expression must be safe,
+even if a later slice is empty or equality is already false from a
+different field. Guard partial reads before constructing the tuple. See
+the <a
+href="reference.html#predicate-expressions-and-built-ins">Reference</a>
+and <a href="docs/specification.html#none-and-fixed-tuples">tuple
+model</a>.</p>
+<p>A function can return two lists with a contract on the complete
+pair:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_at(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    Refine(<span class="kw">lambda</span> result, xs, i: result <span class="op">==</span> (xs[:i], xs[i:])),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:i], xs[i:]</span></code></pre></div>
+<p>Expected field types also allow <code>return [], []</code> for a
+<code>tuple[list[int], list[int]]</code> result. List elements
+themselves still have scalar types. A list extracted from a tuple is
+borrowed: extraction does not authorize updates. Return locally built
+lists directly after their writes; storing one in a tuple does not
+bypass the rule against aliases of written lists.</p>
+<h2 id="multiply-integer-inputs">Multiply integer inputs</h2>
+<p>Integer multiplication accepts two variable operands in bodies and
+predicates. For example, a square is nonnegative for every integer
+input:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square(a: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result: result <span class="op">&gt;=</span> <span class="dv">0</span>)]:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">*</span> a</span></code></pre></div>
+<p>Select <code>square</code> and verify. Changing
+<code>result &gt;= 0</code> to <code>result &gt; 0</code> produces a
+counterexample at <code>a = 0</code>. A product can use the dependent
+result contract
+<code>Annotated[int, Refine(lambda result, a, b: result == a * b)]</code>.
+Integer <code>a *= b</code> also accepts a variable right operand and
+checks any declared local contract after rebinding.</p>
+<p>Nonlinear integer obligations can exceed the solver’s capabilities or
+configured limits and return <code>unknown</code>. Support does not
+guarantee a proof for every polynomial property. See <a
+href="reference.html#supported-forms-and-limits">Reference</a> and the
+<a href="docs/specification.html#integers-and-booleans">integer
+model</a>.</p>
+<h2 id="divide-by-an-integer-input">Divide by an integer input</h2>
+<p>Use a precondition or a branch to establish a nonzero divisor. Both
+signs are supported, with Python floor rounding and remainder signs:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires, ensures</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> d: d <span class="op">!=</span> <span class="dv">0</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> r, a, d: a <span class="op">==</span> r[<span class="dv">0</span>] <span class="op">*</span> d <span class="op">+</span> r[<span class="dv">1</span>] <span class="kw">and</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">0</span> <span class="op">&lt;=</span> r[<span class="dv">1</span>] <span class="op">&lt;</span> d <span class="cf">if</span> d <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> d <span class="op">&lt;</span> r[<span class="dv">1</span>] <span class="op">&lt;=</span> <span class="dv">0</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> divide(a: <span class="bu">int</span>, d: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">//</span> d, a <span class="op">%</span> d</span></code></pre></div>
+<p>An unguarded variable divisor produces a failed definedness
+obligation if it can be zero. <code>a // d if d else 0</code> is a
+supported safe alternative; <code>//=</code> and <code>%=</code> apply
+the same check. Predicates also need a guard, such as
+<code>d != 0 and a % d == 0</code>. Variable-divisor proofs can return
+<code>unknown</code>. See the <a
+href="docs/specification.html#integers-and-booleans">integer
+model</a>.</p>
+<h2 id="build-and-update-a-local-list">Build and update a local
+list</h2>
+<p>The maintained <code>examples/local-lists/lists.py</code> source
+contains the complete range, filter, replacement and exchange example.
+Paste it into the playground to verify it. The numerical menu includes
+<strong>Signed quotient and remainder</strong>.</p>
+<p>The maintained <code>examples/partition/partition.py</code> proves an
+exact negative/nonnegative partition and safely updates both results
+without changing the input. Paste its source into the editor and verify
+with <code>*</code>.</p>
+<p>Construct a fresh list under one local name. Its contents can then be
+updated while input lists retain their entry values:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires, ensures</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> xs, i: <span class="op">-</span><span class="bu">len</span>(xs) <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> r, xs, i, value:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(r) <span class="op">==</span> <span class="bu">len</span>(xs) <span class="kw">and</span> r[i] <span class="op">==</span> value</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> r <span class="op">==</span> xs[:i <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">len</span>(xs) <span class="op">+</span> i] <span class="op">+</span> [value]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> xs[(i <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">len</span>(xs) <span class="op">+</span> i) <span class="op">+</span> <span class="dv">1</span>:])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replace(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>, value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> xs[:]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    out[i] <span class="op">=</span> value</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>Standalone <code>append</code> and <code>extend</code>, and list
+<code>+=</code>, support result construction. Empty lists need an
+explicit local type, such as <code>out: list[int] = []</code>. Each
+added or replaced element must satisfy the element contract, including
+refinements such as nonnegativity or evenness. Whole-list local
+refinements are checked after every write. Loops may need explicit
+invariants/measures. Element refinements describe every valid element,
+not just the elements read by the function. Each refinement lambda binds
+its own element value.</p>
+<p>The replacement contract preserves the complete prefix and suffix,
+including for negative indices. The local-list example also proves that
+<code>build_range</code> returns exactly <code>0</code> through
+<code>n - 1</code>, and <code>evens</code> returns every even input
+element in its original order with duplicates preserved. Reflected
+specifications and exact prefix invariants express these contracts
+without executing specification functions during construction. List
+equality accepts matching recursively comparable element sorts even when
+one side has a stronger element refinement. See the <a
+href="docs/specification.html#exclusive-local-list-writes">complete
+contracts</a>.</p>
+<p>Container elements can be tuples, optional values or other supported
+containers:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coordinates() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]]:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    out: <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]] <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">2</span>)]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    out.append((<span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out <span class="op">==</span> [(<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">4</span>)]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> missing_values() <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    out: <span class="bu">list</span>[<span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">=</span> [<span class="va">None</span>, <span class="dv">2</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    out[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> out[<span class="dv">0</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>Nested empty literals receive their type from a declared result,
+local annotation or typed adjacent list. Nested field and element
+refinements remain obligations. A newly allocated outer list does not
+give ownership of borrowed inner lists; reading <code>rows[0]</code>
+cannot justify modifying that list. Comprehensions can also construct
+supported composite elements:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adjacent_pairs(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">tuple</span>[<span class="bu">int</span>, <span class="bu">int</span>]]:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(x, x <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs]</span></code></pre></div>
+<p>Each comprehension has one synchronous generator. Nested
+comprehensions have separate variable scopes; filters and multiple
+generators in one comprehension remain unsupported. Element construction
+must satisfy its contracts and be safe for every input element. An empty
+input does not evaluate the element expression. Reflected helper calls
+still require successful dependency verification.</p>
+<p>Fresh list construction can be shared through checked source
+helpers:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> xs)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs, value: result <span class="op">==</span> xs <span class="op">+</span> [value])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append_copy(xs: <span class="bu">list</span>[<span class="bu">int</span>], value: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> copy(xs)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    out.append(value)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div>
+<p>The verifier checks the helper’s actual allocation and every source
+dependency. The same equality contract on <code>return xs</code> would
+not permit the caller’s write. Both branches must return fresh lists; a
+borrowed alternative prevents ownership transfer. Imported helpers and
+chains of certified calls are supported. Inferred call results retain
+their element refinements when updated.</p>
+<p>A helper can also return two independent lists and transfer both
+through direct unpacking:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> (xs, xs))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copies(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]]:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[:], xs[:]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, xs: result <span class="op">==</span> (xs <span class="op">+</span> [<span class="dv">1</span>], xs <span class="op">+</span> [<span class="dv">2</span>]))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grow(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">list</span>[<span class="bu">int</span>]]:</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    left, right <span class="op">=</span> copies(xs)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    left.append(<span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    right.append(<span class="dv">2</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> left, right</span></code></pre></div>
+<p>The certificate checks independent allocations, including references
+retained inside nested containers. Returning one list twice or returning
+an input does not qualify. Keep the unpacking at the call: saving the
+tuple in a local and then extracting its fields retains aliases and does
+not permit writes. The <a
+href="docs/specification.html#exclusive-local-list-writes">ownership
+rules</a> describe forwarded, conditional, reflected and generic
+results. The repository example
+<code>examples/partition/partition.py</code> proves exact
+negative/nonnegative partitions, including order and duplicates, and
+updates both returned lists. Its prefix specification is total, and the
+loop has a checked decreasing measure.</p>
+<p>Saving <code>alias = out</code> makes writes unsupported. Input lists
+and borrowed call results cannot become writable through assignment. A
+loop that updates <code>out</code> must iterate a stable input or a
+fresh copy such as <code>out[:]</code>. Ordinary iteration after
+construction is supported. <code>pop</code>, <code>clear</code>, slice
+assignment and nested mutation calls remain unsupported. See the <a
+href="docs/specification.html#exclusive-local-list-writes">ownership and
+write rules</a>.</p>
+<h2 id="fixed-tuples-and-allowed-values">Fixed tuples and allowed
+values</h2>
+<p>Use <code>Literal</code> for a finite set of allowed scalar values.
+Fixed tuples retain contracts for each field and support equality,
+concatenation and static slices.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>Mode <span class="op">=</span> Literal[<span class="st">&quot;read&quot;</span>, <span class="st">&quot;write&quot;</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_pair(pair: <span class="bu">tuple</span>[Literal[<span class="dv">0</span>, <span class="dv">1</span>], Mode]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[Mode, Literal[<span class="dv">0</span>, <span class="dv">1</span>]]:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pair[::<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div>
+<p>Literal arguments must share one base type. Tuple slice bounds and
+steps must be statically known integers (or omitted/None), with a
+nonzero step. See <a href="reference.html">Reference</a> for the exact
+limits.</p>
+<h2 id="add-a-function-precondition">Add a function precondition</h2>
+<p>Use an imported <code>requires</code> decorator for a relation across
+inputs. It can refer to any input, including one declared later, and can
+span several lines.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> xs, i: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_at(xs: <span class="bu">list</span>[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
+<p><code>import refinepy as rp</code> and
+<code>from refinepy import requires as pre</code> also work. The
+decorators never execute predicates or check contracts during Python
+execution, and preserve the original function. Install the refinepy
+companion package to run decorated code. The verifier reads source
+without importing it. Use decorators for <code>requires</code>,
+<code>reflect</code> and <code>decreases</code>; their old comment forms
+are rejected. Loop invariants use ordinary
+<code>invariant(lambda ...)</code> calls; the comment form is
+deprecated. See <a
+href="reference.html#function-preconditions">Reference</a> for the
+binding rules.</p>
+<p>Comparison chains such as <code>0 &lt;= i &lt; len(xs)</code> are
+supported. Split chains containing <code>None</code>, <code>in</code> or
+<code>not in</code> into separate boolean guards, for example
+<code>left is None and right is None</code>. Function defaults must be
+scalar/<code>None</code> literals or flat tuples of
+<code>int</code>/<code>bool</code>/<code>str</code> literals; nested
+tuples and <code>None</code> fields in tuple defaults are unsupported.
+See the <a href="reference.html#supported-forms-and-limits">supported
+forms and limits</a>.</p>
+<h2 id="write-a-return-contract-with-ensures">Write a return contract
+with ensures</h2>
+<p>Use <code>ensures</code> to write a return refinement above the
+function instead of inside <code>Annotated</code>. Keep the return base
+type in the function signature.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> result, n: result <span class="op">==</span> n <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> n: n <span class="op">+</span> <span class="dv">0</span> <span class="op">==</span> n)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> identity_lemma(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>For a value result, the first lambda parameter denotes the result and
+later parameters name function-entry inputs. For a <code>None</code>
+result, all lambda parameters name entry inputs, so a proof function
+needs no dummy result parameter. Multiple <code>ensures</code>
+decorators and existing return <code>Refine</code> metadata must all
+hold. These predicates are checked statically and never run during
+Python execution. See <a
+href="reference.html#function-postconditions">Reference</a> for the full
+rules.</p>
+<h2 id="check-recursive-termination">Check recursive termination</h2>
+<p>Add an integer measure with <code>decreases</code>. Each recursive
+call must use a nonnegative measure strictly smaller than the measure on
+entry:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: n)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count(n: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> r, n: r <span class="op">==</span> n)]:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">1</span> <span class="op">+</span> count(n <span class="op">-</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>Select <code>count</code> and verify. Changing
+<code>count(n - 1)</code> to <code>count(n)</code> fails the termination
+obligation. The measure can also use <code>len(xs)</code> for recursion
+over list slices. It refers to the original inputs even after local
+reassignment.</p>
+<p>For more than one component, return a literal nonempty integer tuple.
+The first unequal component must decrease; later components may
+reset:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n, m: (n, m))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lex_count(n: Nat, m: Nat) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> lex_count(n, m <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> lex_count(n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span></span></code></pre></div>
+<p>Every component must remain nonnegative at recursive calls. All
+source callees must independently terminate, and any loops need explicit
+measures as below. A function without this decorator can still verify
+its normal return contract without proving recursive termination.
+Successful checks add <code>termination:</code> evidence; Python
+recursion-depth and resource limits remain outside the guarantee. See <a
+href="reference.html#termination-measures">Reference</a>.</p>
+<h2 id="check-loop-termination">Check loop termination</h2>
+<p>Place ordinary <code>invariant</code> and <code>decreases</code>
+calls directly before the loop. Their lambda binders name current header
+locals. Consecutive invariants are conjoined; one measure may accompany
+them, in either order. These calls also work with ordinary Python type
+checkers. The companion never invokes the lambdas.</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine, invariant, decreases</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Nat <span class="op">=</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: v <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_to(n: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> r, n: r <span class="op">==</span> n)]:</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    invariant(<span class="kw">lambda</span> i, n: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;=</span> n)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    decreases(<span class="kw">lambda</span> i, n: n <span class="op">-</span> i)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> n:</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i</span></code></pre></div>
+<p>Select <code>count_to</code> and verify. The invariant establishes
+the header property by induction over iterations. The measure proves
+termination: it is nonnegative on each taken iteration and strictly
+decreases on both the normal and <code>continue</code> back edges.
+Changing the measure to <code>i</code>, or adding a path that continues
+without incrementing <code>i</code>, fails verification. An invariant
+without a measure proves only partial correctness and publishes no
+termination evidence for the loop.</p>
+<p>Loop measures also accept tuples such as <code>(n, m)</code>. Nested
+loops each need their own measure. Supported <code>for</code> loops use
+the same calls; source locals must be bound before the loop, so an
+initially unbound iteration target cannot be a binder. Measures are
+snapshotted before the body and before binding a <code>for</code>
+target. There is no decrease requirement on <code>break</code>, return
+or zero iterations. Every back edge must still have a defined
+nonnegative next measure, including the final iteration;
+<code>max(n - i, 0)</code> can keep a countdown total.</p>
+<p>An independent termination check removes all call-result summaries
+and rechecks invariant initiation and preservation. A proof relying on a
+callee’s result contract can therefore remain unproved. All callees must
+independently terminate. Python executes the marker calls once before
+each loop is reached, but does not execute their predicate or measure
+bodies. See <a href="reference.html#loops-and-assertions">Reference</a>
+and <a
+href="docs/specification.html#decreasing-measures">specification</a>.</p>
+<h2 id="prove-an-equation-about-a-function">Prove an equation about a
+function</h2>
+<p>Mark a total scalar expression function with
+<code>@refinepy.reflect</code> to use its actual definition in a
+contract. A lemma can return <code>None</code> with the equation as its
+return refinement:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inc(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lemma(x: <span class="bu">int</span>) <span class="op">-&gt;</span> Annotated[<span class="va">None</span>, Refine(<span class="kw">lambda</span> _, x: inc(inc(x)) <span class="op">==</span> x <span class="op">+</span> <span class="dv">2</span>)]:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>Select <code>lemma</code> and verify. Changing <code>x + 2</code> to
+<code>x + 3</code> makes the proof fail. Other checked functions can
+call a lemma to use its normal-return contract. Reflected definitions
+accept assignments, flat unpacking, assertions, branches and returns,
+with plain supported value annotations, including products, optionals
+and supported containers. Nested refinements and preconditions are
+excluded. Direct recursion has the additional requirements below.
+Recursive lemmas with checked descent can prove propositions by
+induction, as shown below. See <a
+href="reference.html#reflected-functions-and-lemmas">Reference</a> for
+the limits.</p>
+<p>For example, a guarded mapping lookup can become a logical
+function:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_value(values: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">int</span>], key: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> key <span class="kw">not</span> <span class="kw">in</span> values:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> values[key]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_lookup(values: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">int</span>], key: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (find_value(values, key) <span class="kw">is</span> <span class="va">None</span>) <span class="op">==</span> (key <span class="kw">not</span> <span class="kw">in</span> values)</span></code></pre></div>
+<p>The verifier checks the lookup guard in <code>find_value</code>
+before using its definition in <code>check_lookup</code>. Loops and
+container writes remain unsupported in reflected bodies. Removing the
+guard fails verification even if a caller uses
+<code>find_value(values, key) == find_value(values, key)</code>.
+Optional payload access and variable divisors require the same
+independent safety check.</p>
+<h2 id="use-a-lemma-without-executing-it">Use a lemma without executing
+it</h2>
+<p>Function-local annotations are not evaluated by Python. A static
+<code>Assert</code> annotation lets verification use a checked lemma
+without adding a runtime call:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Assert</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> use_lemma(x: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    x: Annotated[<span class="bu">int</span>, Assert(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> value: inc(inc(value)) <span class="op">==</span> value <span class="op">+</span> <span class="dv">2</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        using<span class="op">=</span><span class="kw">lambda</span> arg: lemma(arg),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code></pre></div>
+<p>Add this function to the <code>inc</code> and <code>lemma</code>
+example above. The verifier checks the lemma’s safety and termination,
+checks the actual arguments, then uses its postcondition to prove the
+assertion. Its postcondition does not have to match the assertion
+exactly. A nonterminating lemma cannot supply a static proof, even if
+its normal-return contract verifies.</p>
+<p><code>Assert(lambda value: ...)</code> without <code>using</code>
+checks the proposition from current facts. Both forms apply to an
+already bound local and leave future assignments unconstrained unless a
+declaration contract already applies. The first lambda binder receives
+the current value. Additional binders, such as
+<code>lambda value, y: value &lt; y</code>, explicitly name currently
+bound locals. The <code>using</code> lambda can list its own local
+dependencies to pass several arguments to a lemma. Free local captures
+are unsupported. These binders use values at the assertion, even if an
+input was rebound; later changes do not update the established fact. Use
+<code>Refine</code> for contracts on inputs, results and local
+declarations. See <a
+href="reference.html#static-assertions">Reference</a> and the <a
+href="docs/specification.html#binary-search-contract-prototype">binary-search
+proof</a>.</p>
+<h2 id="reflect-a-recursive-scalar-function">Reflect a recursive scalar
+function</h2>
+<p>Combine <code>reflect</code> with <code>decreases</code> to use a
+terminating recursive definition in a bounded equation:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: <span class="bu">max</span>(n, <span class="dv">0</span>))</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span> <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">1</span> <span class="op">+</span> count(n <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bounded(n: Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v: <span class="dv">0</span> <span class="op">&lt;=</span> v <span class="op">&lt;=</span> <span class="dv">7</span>)]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, n: count(n) <span class="op">==</span> n)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>Select <code>bounded</code> and verify. The source definition must
+independently pass its termination checks before its equations can be
+used. Changing the recursive argument to <code>n</code> fails that
+check, even for an otherwise trivial equation.</p>
+<p>Scalar-only recursive reflected inputs and results must be plain
+<code>int</code> or <code>bool</code>, with one return expression and no
+preconditions. Calls expand through eight definition layers. Beyond
+that, calls remain uninterpreted; inconclusive queries return
+<code>unknown</code>, including some false equations. This supports
+bounded equations, while unbounded equations require an explicit
+inductive lemma. Recursive lists use a smaller unfolding bound, as shown
+below. See <a
+href="reference.html#recursive-scalar-reflection">Reference</a>.</p>
+<p>Recursive reflected functions may also carry products and optional
+values:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> n: <span class="bu">max</span>(n, <span class="dv">0</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> carry(n: <span class="bu">int</span>, pair: <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[<span class="bu">list</span>[<span class="bu">int</span>], <span class="bu">int</span> <span class="op">|</span> <span class="va">None</span>]:</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pair</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> carry(n <span class="op">-</span> <span class="dv">1</span>, pair)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_carry(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> carry(<span class="dv">1</span>, (xs, <span class="va">None</span>)) <span class="op">==</span> (xs, <span class="va">None</span>)</span></code></pre></div>
+<p>Mapping and sequence inputs/results are also supported. The verifier
+preserves optional presence and valid container contents through the
+recursive equations. Signatures containing containers use at most three
+definition layers by default; unbounded claims still need an inductive
+lemma or may remain unproved.</p>
+<h2 id="reflect-a-recursive-list-function">Reflect a recursive list
+function</h2>
+<p>A recursive function can take or return a plain
+<code>list[int]</code>, <code>list[bool]</code>, or
+<code>list[str]</code>. Use <code>len(xs)</code> as a decreasing measure
+and guard partial indexing:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [] <span class="cf">if</span> <span class="bu">len</span>(xs) <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> reverse(xs[<span class="dv">1</span>:]) <span class="op">+</span> [xs[<span class="dv">0</span>]]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bounded(xs: Annotated[<span class="bu">list</span>[<span class="bu">int</span>], Refine(<span class="kw">lambda</span> v: <span class="bu">len</span>(v) <span class="op">&lt;=</span> <span class="dv">2</span>)]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs: reverse(xs) <span class="op">==</span> xs[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>Select <code>bounded</code> and verify. The source body must pass
+safety and termination checks before any caller uses its definition.
+Removing the empty-list guard fails the read obligation; replacing
+<code>xs[1:]</code> with <code>xs</code> fails descent.</p>
+<p>Signatures containing lists unfold three definition layers, with
+residual calls uninterpreted. Slice expressions grow quickly during
+substitution; the existing 128 KiB limit still applies. The length bound
+above leaves enough layers to reach the empty-list base case. Without
+that bound, this equation is inconclusive: use the explicit inductive
+lemma below to prove it for arbitrary lengths. Satisfiable residual
+queries return <code>unknown</code>, including false equations; they do
+not produce source counterexamples. See <a
+href="reference.html#recursive-scalar-reflection">Reference</a>.</p>
+<h2 id="prove-a-list-equation">Prove a list equation</h2>
+<p>Use ordinary Python list concatenation and slices to define total
+list helpers:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs <span class="op">+</span> ys</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs, ys:</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        reverse(append(xs, ys)) <span class="op">==</span> append(reverse(ys), reverse(xs)))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>Select <code>reverse_append</code> and verify. The equation covers
+lists of arbitrary finite length. List equality compares lengths and all
+valid elements; it ignores internal values outside the list. You can
+also state <code>append(xs, []) == xs</code> or concatenation
+associativity. Both operands must have matching recursively comparable
+element types and element contracts. This example uses nonrecursive
+definitions and proves the equation for arbitrary finite lists.
+Recursive list definitions support bounded unfolding as described above;
+the next example adds an explicit inductive lemma.</p>
+<h2 id="prove-a-list-equation-by-induction">Prove a list equation by
+induction</h2>
+<p>Use a recursive ordinary lemma with a return proposition and
+<code>decreases</code>. Each smaller self-call supplies the induction
+hypothesis. This example proves reverse against a slice for arbitrary
+finite lengths, then uses that result to prove reverse/append:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> refinepy</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.reflect</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [] <span class="cf">if</span> <span class="kw">not</span> xs <span class="cf">else</span> reverse(xs[<span class="dv">1</span>:]) <span class="op">+</span> [xs[<span class="dv">0</span>]]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="at">@refinepy.decreases</span>(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_spec(xs: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs: reverse(xs) <span class="op">==</span> xs[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> xs:</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        reverse_spec(xs[<span class="dv">1</span>:])</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_append(xs: <span class="bu">list</span>[<span class="bu">int</span>], ys: <span class="bu">list</span>[<span class="bu">int</span>]) <span class="op">-&gt;</span> Annotated[</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">None</span>, Refine(<span class="kw">lambda</span> _, xs, ys: reverse(xs <span class="op">+</span> ys) <span class="op">==</span> reverse(ys) <span class="op">+</span> reverse(xs))</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    reverse_spec(xs <span class="op">+</span> ys)</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    reverse_spec(xs)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    reverse_spec(ys)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<p>Select <code>reverse_append</code> and verify. There is no length
+bound. The driver checks <code>reverse</code> independently, then checks
+the lemma’s bases, return proposition and strict descent. Removing the
+self-call leaves the step without its hypothesis; changing it to
+<code>reverse_spec(xs)</code> fails descent. A wrong base also fails.
+Successful proofs retain <code>induction:...</code> and
+<code>termination:...</code> evidence.</p>
+<p>This uses one-step ground equations of admitted definitions and the
+ordinary recursive call contract. Return in each branch to keep the
+proof local; a merged branch may need qualifier inference and remain
+inconclusive. This facility requires direct recursion and an integer or
+lexicographic measure; any loops need their own measures. Mutual
+induction and automatic proof search are unsupported. Without
+<code>decreases</code>, a lemma retains partial correctness and carries
+no induction evidence. See <a
+href="reference.html#inductive-lemmas">Reference</a>.</p>
+<h2 id="read-the-results">Read the results</h2>
+<p>The results start with counts of <strong>Verified</strong>,
+<strong>Needs review</strong> and <strong>Failed</strong> selected
+functions. Needs review groups <code>unproved</code>,
+<code>unknown</code> and <code>unsupported</code>; Failed groups
+<code>counterexample</code> and <code>error</code>, whose individual
+meanings remain visible on each card. An error does not necessarily
+indicate a source bug. Report-level diagnostics appear separately and
+prevent an all-verified summary. Each card gives a short conclusion and
+a separate termination summary. Expand <strong>Verification
+details</strong> for solver costs, checked scope, inferred invariants,
+source dependencies and <strong>Proof evidence</strong>, including
+ownership records. <strong>Full JSON report</strong> retains the
+complete report.</p>
+<p>Each function shows its status, termination summary and diagnostics.
+A verified result with termination evidence for that exact function
+shows <strong>Termination: verified for this function and its checked
+calls.</strong> Without that evidence, the contract is verified for
+normal returns and termination is not established. Failed or uncertain
+results never show a successful termination summary. Python
+recursion-depth safety and resource availability remain outside the
+model.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verified</code></td>
+<td>The verifier discharged the required obligations.</td>
+</tr>
+<tr>
+<td><code>counterexample</code></td>
+<td>A validated source witness violates the contract.</td>
+</tr>
+<tr>
+<td><code>unproved</code></td>
+<td>An obligation remains unproved; this alone does not establish a
+source bug.</td>
+</tr>
+<tr>
+<td><code>unsupported</code></td>
+<td>The source uses a form outside the supported domain.</td>
+</tr>
+<tr>
+<td><code>unknown</code></td>
+<td>Limits or solver uncertainty prevented a result.</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Source, contracts, configuration or execution failed; read the
+diagnostic.</td>
+</tr>
+</tbody>
+</table>
+<p>An <code>unknown</code> result can also mean the solver’s complete
+model could not be reconstructed within the supported representation or
+resource limits. Reading only a few container elements would not
+establish a valid model. See the <a
+href="docs/specification.html#model-validation-and-execution-witnesses">model
+validation rules</a>. Optional payload facts apply when a value is
+present. Unused payloads are still checked for a well-formed stored
+representation. Nested element evidence is checked at every container
+level, including the string observations made inside its conditions.
+This internal support does not establish ownership of an extracted
+nested list.</p>
+<p>See <a href="reference.html">Reference</a> for dependent contracts,
+preconditions, container reads, loop invariants and a summary of
+supported and unsupported Python forms.</p>
+<h2 id="editor-shortcuts">Editor shortcuts</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Windows / Linux</th>
+<th>macOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search</td>
+<td>Ctrl+F</td>
+<td>Cmd+F</td>
+</tr>
+<tr>
+<td>Undo</td>
+<td>Ctrl+Z</td>
+<td>Cmd+Z</td>
+</tr>
+<tr>
+<td>Indent selection</td>
+<td>Ctrl+]</td>
+<td>Cmd+]</td>
+</tr>
+<tr>
+<td>Unindent selection</td>
+<td>Ctrl+[</td>
+<td>Cmd+[</td>
+</tr>
+<tr>
+<td>Request completion</td>
+<td>Ctrl+Space</td>
+<td>Ctrl+Space</td>
+</tr>
+<tr>
+<td>Leave editor</td>
+<td>Tab</td>
+<td>Tab</td>
+</tr>
+</tbody>
+</table>
+<p>The browser accepts one module of at most 1 MiB. Additional project
+files and external model manifests are not exposed by this playground.
+Build and execution details are in the <a
+href="docs/browser-playground.html">browser playground guide</a>.</p>
+<h2 id="verify-fibonacci-doubling">Verify Fibonacci doubling</h2>
+<p>The example in <code>examples/fibonacci/README.md</code> proves fast
+doubling against the ordinary Fibonacci recurrence. <code>ensures</code>
+expresses the return refinements of <code>addition</code>,
+<code>pair</code> and <code>fast_fib</code>; the <code>None</code> lemma
+omits a result binder. A recursive <code>addition</code> lemma proves
+two addition formulas by induction; <code>pair</code> specializes them
+with <code>addition(k, k)</code> in a static assertion and uses its
+smaller recursive call’s contract to prove
+<code>(F(n), F(n + 1))</code>. All four targets verify without an index
+upper bound. The separate execution checker compares 514 indices with an
+iterative addition oracle.</p>
+<p>The branching recurrence uses a 4 MiB recursive admission preflight;
+stored one-step definitions, acyclic expansions and query equations
+retain their smaller bounds. This budget adjustment adds no proof
+assumptions. See <a
+href="reference.html#recursive-scalar-reflection">Reference</a>. The
+example uses a static assertion to avoid executing addition proof calls
+and evaluates correctness only; it makes no time complexity claim.
+Python recursion-depth and resource limits remain outside the
+termination guarantee.</p>

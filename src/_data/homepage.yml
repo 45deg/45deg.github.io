@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./refinepy/
+    featured: false
+    title:
+      ja: refinepy Playground
+      en: refinepy Playground
+    year: 2026
+    description_html:
+      ja: Pythonの細分型と契約を検証するブラウザツール。コードを編集し、関数の事前・事後条件や停止性をZ3で静的に検査できる。
+      en: A browser playground for Python refinement types and contracts. Edit code and use Z3 to check function preconditions, postconditions, and termination statically.
+    tags:
+      - Programming
+      - Compiler
+      - WebAssembly
+    image:
+      src: ./images/i56.jpg
+      alt:
+        ja: refinepyでclamp関数の範囲・返り値の契約と停止性が検証された画面
+        en: refinepy showing verified range and return-value contracts and termination for the clamp function
   - href: ./qepcad/
     featured: false
     title:

@@ -1,0 +1,455 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:refinepy:report:3",
+  "title": "refinepy report schema version 3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "effective_config",
+    "targets",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 3
+    },
+    "effective_config": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/config"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/target"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagnostic"
+      }
+    }
+  },
+  "$defs": {
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "source": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidates-per-kvar",
+        "candidates-per-target",
+        "extracted-integer-constants",
+        "query-timeout-ms",
+        "target-timeout-ms"
+      ],
+      "properties": {
+        "candidates-per-kvar": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "candidates-per-target": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "extracted-integer-constants": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "query-timeout-ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "target-timeout-ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 18446744073709551615
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python-version",
+        "source-roots",
+        "targets",
+        "model-files",
+        "limits"
+      ],
+      "properties": {
+        "python-version": {
+          "const": "3.12"
+        },
+        "source-roots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "model-files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "message",
+        "span"
+      ],
+      "properties": {
+        "reason": {
+          "enum": [
+            "feature-not-implemented",
+            "invalid-syntax",
+            "source-encoding",
+            "configuration",
+            "source-io",
+            "target-not-found",
+            "worker-missing",
+            "worker-protocol",
+            "worker-failure",
+            "worker-deadline",
+            "solver-unknown",
+            "invalid-annotation",
+            "invalid-directive",
+            "base-type",
+            "unbound-name",
+            "uninhabited-contract",
+            "contract-inhabitation",
+            "refinement-violation",
+            "candidate-limit",
+            "analysis-limit",
+            "invalid-model",
+            "dependency-failure",
+            "internal",
+            "cancelled"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_identity",
+        "resolved_identity",
+        "source_path",
+        "source_sha256",
+        "range",
+        "stage",
+        "status",
+        "diagnostics",
+        "obligation_kinds",
+        "inferred_invariants",
+        "user_invariants",
+        "dependency_results",
+        "checked_scope",
+        "inhabitation_evidence",
+        "limits",
+        "query_count",
+        "elapsed_ms",
+        "dependencies",
+        "cache"
+      ],
+      "properties": {
+        "requested_identity": {
+          "type": "string"
+        },
+        "resolved_identity": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stage": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "counterexample",
+            "unproved",
+            "unknown",
+            "unsupported",
+            "error"
+          ]
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        },
+        "obligation_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inferred_invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "user_invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependency_results": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checked_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inhabitation_evidence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        },
+        "query_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependency"
+          }
+        },
+        "cache": {
+          "$ref": "#/$defs/cache"
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "status",
+        "source_path",
+        "source_sha256",
+        "range",
+        "diagnostics"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "counterexample",
+            "unproved",
+            "unknown",
+            "unsupported",
+            "error"
+          ]
+        },
+        "source_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "key",
+        "stored_query_count",
+        "note"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "disabled",
+            "miss",
+            "hit",
+            "bypass"
+          ]
+        },
+        "key": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stored_query_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
