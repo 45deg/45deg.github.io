@@ -5,12 +5,12 @@ seo_title:
   ja: 45deg.
   en: 45deg.
 description:
-  ja: 45degは、個人で作ったWebツール、可視化、ブラウザアプリ、技術記事をまとめた制作ログです。
-  en: 45deg is a personal collection of web tools, visualizations, browser apps, and technical notes.
+  ja: 45degは、作ったものや、試したことをまとめた個人サイトです。
+  en: 45deg is a personal collection of things I've made and explored.
 og_image: ./images/i25.jpg
 about:
-  ja: 個人で作ったWebツール、可視化、記事を置いています。
-  en: A collection of small web tools, visualizations, and notes I made for myself.
+  ja: ブラウザで動く道具や可視化、実験、メモを置いています。
+  en: Browser tools, visualizations, experiments, and notes.
 filters:
   - key: all
     tags: []
@@ -121,7 +121,7 @@ works:
       en: refinepy Playground
     year: 2026
     description_html:
-      ja: Pythonの細分型と契約を検証するブラウザツール。コードを編集し、関数の事前・事後条件や停止性をZ3で静的に検査できる。
+      ja: PythonのRefinement Typeと契約を検証するブラウザツール。コードを編集し、関数の事前・事後条件や停止性をZ3で静的に検査できる。
       en: A browser playground for Python refinement types and contracts. Edit code and use Z3 to check function preconditions, postconditions, and termination statically.
     tags:
       - Programming
