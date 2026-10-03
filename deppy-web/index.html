@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>DependentTypedPython</title>
+  <title>DependentlyTypedPython</title>
   <link rel="stylesheet" href="./style.css?v=7">
   <script type="importmap">
   {
@@ -37,14 +37,14 @@
 </head>
 <body>
   <header class="site-header">
-    <h1 class="brand"><span class="brand-mark" aria-hidden="true">λ</span> DependentTypedPython</h1>
+    <h1 class="brand"><span class="brand-mark" aria-hidden="true">λ</span> DependentlyTypedPython</h1>
     <nav class="site-nav" aria-label="Main navigation">
       <a href="#playground" data-route="playground" aria-current="page">Playground</a>
       <a href="#about" data-route="about">About</a>
     </nav>
     <div class="header-links">
       <span class="header-note">Runs in your browser</span>
-      <a class="github-link" href="https://github.com/45deg/DependentTypedPython" target="_blank" rel="noopener noreferrer" aria-label="DependentTypedPython on GitHub (opens in a new tab)">
+      <a class="github-link" href="https://github.com/45deg/DependentlyTypedPython" target="_blank" rel="noopener noreferrer" aria-label="DependentlyTypedPython on GitHub (opens in a new tab)">
         <img src="./github-invertocat-black.svg" alt="" width="24" height="24">
       </a>
     </div>
@@ -81,7 +81,7 @@
     </section>
     <article id="about-page" class="guide" hidden>
       <h2>About DepPy</h2>
-      <p><strong>DependentTypedPython (DepPy)</strong> is an experimental dependently typed language built on Python syntax.</p>
+      <p><strong>DependentlyTypedPython (DepPy)</strong> is an experimental dependently typed language built on Python syntax.</p>
       <p>In DepPy, dependent types can directly reference values. An annotation can describe the exact length of a collection or assert an equality that the function body must prove. DepPy statically verifies declarations within its supported subset without executing the source code.</p>
       <p>The <code>deppy</code> package also lets you run the original source code with standard Python. Proof checking is a separate step handled by DepPy's checker. Neither standard Python execution nor conventional Python type checkers verify these proofs.</p>
 
@@ -118,7 +118,7 @@ def same(n: Nat) -&gt; Eq[Nat, n, n]:
 
       <h3>Current Scope</h3>
       <p>DepPy supports a subset of Python syntax. The checker rejects unsupported constructs and declarations with proof obligations it cannot verify.</p>
-      <p>The project does not guarantee equivalent behavior across checked terms, generated code, and direct Python execution. For details on supported features and limitations, consult the <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/reference.md" target="_blank" rel="noopener noreferrer">Reference</a>, <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/proofs.md" target="_blank" rel="noopener noreferrer">Proof Guide</a>, and <a href="https://github.com/45deg/DependentTypedPython/blob/main/docs/python-runtime.md" target="_blank" rel="noopener noreferrer">Python Execution Guide</a>.</p>
+      <p>The project does not guarantee equivalent behavior across checked terms, generated code, and direct Python execution. For details on supported features and limitations, consult the <a href="https://github.com/45deg/DependentlyTypedPython/blob/main/docs/reference.md" target="_blank" rel="noopener noreferrer">Reference</a>, <a href="https://github.com/45deg/DependentlyTypedPython/blob/main/docs/proofs.md" target="_blank" rel="noopener noreferrer">Proof Guide</a>, and <a href="https://github.com/45deg/DependentlyTypedPython/blob/main/docs/python-runtime.md" target="_blank" rel="noopener noreferrer">Python Execution Guide</a>.</p>
     </article>
   </main>
 </body>
