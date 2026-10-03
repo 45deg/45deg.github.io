@@ -260,7 +260,7 @@ works:
       emoji: 🔎
   - href: ./scroll-stitch/
     homeButton: false
-    featured: false
+    featured: true
     title:
       ja: Scroll Stitch
       en: Scroll Stitch
@@ -346,24 +346,24 @@ works:
       alt:
         ja: ヒント数字が配置された9×9の数独盤面
         en: A 9×9 Sudoku board with clue digits
-  - href: ./ui-pattern-atlas/
-    featured: false
-    title:
-      ja: UI Pattern Atlas
-      en: UI Pattern Atlas
-    year: 2026
-    description_html:
-      ja: UIパターンを用途やカテゴリから検索し、具体例とともに参照できるインターフェース設計カタログ。
-      en: A searchable interface design catalog for exploring UI patterns by purpose and category, with concrete examples.
-    tags:
-      - UI
-      - Design
-      - Reference
-    image:
-      src: ./images/i46.jpg
-      alt:
-        ja: UI Pattern AtlasでWelcome screenパターンを表示している画面
-        en: UI Pattern Atlas displaying the Welcome screen pattern
+#  - href: ./ui-pattern-atlas/
+#    featured: false
+#    title:
+#      ja: UI Pattern Atlas
+#      en: UI Pattern Atlas
+#    year: 2026
+#    description_html:
+#      ja: UIパターンを用途やカテゴリから検索し、具体例とともに参照できるインターフェース設計カタログ。
+#      en: A searchable interface design catalog for exploring UI patterns by purpose and category, with concrete examples.
+#    tags:
+#      - UI
+#      - Design
+#      - Reference
+#    image:
+#      src: ./images/i46.jpg
+#      alt:
+#        ja: UI Pattern AtlasでWelcome screenパターンを表示している画面
+#        en: UI Pattern Atlas displaying the Welcome screen pattern
   - href: ./a-tour-of-succinct-data-structure/
     homeButton: false
     featured: true
@@ -732,7 +732,7 @@ works:
       src: ./images/i35.png
       alt: Lucide Text Search
   - href: ./punct/
-    featured: false
+    featured: true
     title:
       ja: 句読点補完ツール
       en: Japanese Punctuation Completion Tool
