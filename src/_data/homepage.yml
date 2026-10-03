@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./wordkin/
+    featured: false
+    title:
+      ja: Wordkin
+      en: Wordkin
+    year: 2026
+    description_html:
+      ja: 英単語の語源を系図で辿る辞書。語義や派生語を確認し、複数の語の共通祖先を比較できる。
+      en: An etymology dictionary for exploring English word ancestry, viewing definitions and derivatives, and comparing shared ancestors across words.
+    tags:
+      - Dictionary
+      - Visualization
+      - Search
+    image:
+      src: ./images/i57.png
+      alt:
+        ja: dictionaryから中英語・ラテン語へ遡る語源ツリーの一部
+        en: Part of the etymology tree tracing dictionary through Middle English and Latin
   - href: ./refinepy/
     featured: false
     title:

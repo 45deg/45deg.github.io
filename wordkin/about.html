@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>データについて — Wordkin</title>
+    <script type="module" crossorigin src="./assets/about-BktNnjHk.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/style-CQUW1DX_.js">
+    <link rel="stylesheet" crossorigin href="./assets/style-J2thRSSq.css">
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="./">wordkin<span data-return>探索に戻る</span></a>
+      <select class="language-switcher" aria-label="表示言語" data-language>
+        <option value="ja" lang="ja">日本語</option>
+        <option value="en" lang="en">English</option>
+      </select>
+    </header>
+    <article
+      data-locale="ja"
+      lang="ja"
+      style="max-width: 800px; margin: 45px auto; padding: 0 24px; line-height: 1.9"
+    >
+      <h1>データについて</h1>
+      <p>
+        Kaikkiが配布する英語版Wiktionaryの多言語抽出データを加工し、英語項目と語源の参照先を収録しています。収録件数はこのページの末尾に記載しています。全量を読み込んだ場合も、元の辞書にない語や、未対応の語源構造は補完されません。
+      </p>
+      <h2>出典と利用条件</h2>
+      <p>
+        原文の執筆者はWiktionaryの各項目の投稿者です。各語の詳細に原文へのリンクを設けています。投稿者の履歴は各項目の「View
+        history」で確認できます。抽出はWiktextract、配布はKaikkiによります。
+      </p>
+      <p>
+        <a href="https://kaikki.org/dictionary/rawdata.html">Kaikkiの配布ページ</a> ·
+        <a href="https://github.com/tatuylonen/wiktextract">Wiktextract</a> ·
+        <a href="https://en.wiktionary.org/wiki/Wiktionary:Copyrights">Wiktionaryの著作権情報</a>
+      </p>
+      <p>
+        Wiktionary由来の本文と本アプリの加工データは
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/"
+          >Creative Commons Attribution-ShareAlike 4.0</a
+        >
+        の条件に従います。項目固有の引用などには別の条件がある場合があります。本アプリはKaikki、Wiktionary、Wikimediaによる公式サービスではありません。
+      </p>
+      <p>アプリのコードはMITライセンスです。辞書データには上記のCC BY-SA 4.0を適用します。</p>
+      <p><a href="./THIRD-PARTY-NOTICES.txt">依存ライブラリの著作権・ライセンス表記</a></p>
+      <h2>どのように加工したか</h2>
+      <p>
+        音声・翻訳・例文などを除き、英語項目と、それにつながる語源参照を抽出しています。言語・綴り・語源の区別を保持し、参照先を一意に特定できない場合は別の未確定ノードにしています。綴りのアクセントや再建語の記号を削除して同一視する処理はしていません。
+      </p>
+      <p>
+        対応する語源テンプレートと明示的なツリーの関係を取り込み、原文を確認した経路を補正データで追加しています。自動処理では語源の文章やテンプレートの並びから親子関係を推測しません。複雑な入れ子のテンプレート、表記の不一致、未対応のテンプレートによって関係が欠落します。抽出結果は歴史言語学上の確定判断ではありません。
+      </p>
+      <h2>系図と比較</h2>
+      <p>
+        祖先を上、選択した語を下に表示し、派生語は6項目ずつ追加できます。図の縦位置や接続線の長さは年代や実際の世代数を表しません。参照先が未確定の語と、不確かな由来は点線で区別します。
+      </p>
+      <p>
+        最大4項目の共通祖先を比較できます。関連語・不確かな由来・未確定ノードは確定した共通祖先に含めず、接辞の共有は共通の構成要素として区別します。探索は900ノード、祖先図は最大160語に制限されるため、共通祖先が見つからなくても無関係とは判定しません。
+      </p>
+      <h2>動作と通信</h2>
+      <p>
+        データバンドルを読み込んだ後、検索・探索・語義の取得はブラウザ内で実行します。検索語や選択した項目IDをAPIへ送信しません。初回に約67
+        MiBのバンドルを取得し、必要な圧縮ブロックだけを展開します。外部フォントや解析サービスは使いません。原文リンクを開くと外部サイトへ移動します。英語と、元データに対応する祖先語・関連語の語義と品詞をEtymologyごとに収録しています。説明は英語で、日本語訳・用例・発音は含まれません。
+      </p>
+      <p>
+        収録：英語1,412,175項目、グラフ1,731,062ノード。入力SHA-256:
+        <code style="overflow-wrap: anywhere"
+          >504d55e7053c742ffe24b49a6ebd0c8261a1cd4b352702a1940547088829f5e1</code
+        >
+      </p>
+    </article>
+    <article
+      data-locale="en"
+      lang="en"
+      hidden
+      style="max-width: 800px; margin: 45px auto; padding: 0 24px; line-height: 1.9"
+    >
+      <h1>About the data</h1>
+      <p>
+        Wordkin processes multilingual extracts of English Wiktionary distributed by Kaikki. It
+        includes English entries and their etymological references. Entry counts appear below. Words
+        missing from the source dictionary and unsupported etymological structures are not filled
+        in.
+      </p>
+      <h2>Sources and terms of use</h2>
+      <p>
+        The original authors are the contributors to each Wiktionary entry. Word details link to the
+        source entry; its “View history” page lists contributors. Wiktextract extracts the data, and
+        Kaikki distributes it.
+      </p>
+      <p>
+        <a href="https://kaikki.org/dictionary/rawdata.html">Kaikki data downloads</a> ·
+        <a href="https://github.com/tatuylonen/wiktextract">Wiktextract</a> ·
+        <a href="https://en.wiktionary.org/wiki/Wiktionary:Copyrights"
+          >Wiktionary copyright information</a
+        >
+      </p>
+      <p>
+        Wiktionary text and this app’s processed data follow the terms of
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/"
+          >Creative Commons Attribution-ShareAlike 4.0</a
+        >. Individual quotations may have additional conditions. This app is not an official service
+        of Kaikki, Wiktionary, or Wikimedia.
+      </p>
+      <p>
+        The app code is licensed under MIT. Dictionary data is covered by CC BY-SA 4.0 as described
+        above.
+      </p>
+      <p><a href="./THIRD-PARTY-NOTICES.txt">Third-party copyright and license notices</a></p>
+      <h2>Data processing</h2>
+      <p>
+        English entries and connected etymological references are extracted, excluding audio,
+        translations, and examples. Language, spelling, and etymology distinctions are preserved.
+        References that cannot be uniquely resolved become separate unresolved nodes. Accents and
+        reconstruction symbols are not removed to merge spellings.
+      </p>
+      <p>
+        Explicit relationships in supported etymology templates and trees are included, with
+        supplemental paths reviewed against the source text. Automated processing does not infer
+        parent–child relationships from prose or template order. Complex nesting, spelling
+        differences, and unsupported templates can leave relationships missing. The extracted graph
+        is not a definitive judgment in historical linguistics.
+      </p>
+      <h2>Trees and comparisons</h2>
+      <p>
+        Ancestors appear above the selected word; derivatives can be added six at a time. Vertical
+        positions and line lengths do not represent dates or actual generation counts. Unresolved
+        references and uncertain origins are distinguished with dotted lines.
+      </p>
+      <p>
+        Compare shared ancestors across up to four entries. Related words, uncertain origins, and
+        unresolved nodes are excluded from confirmed shared ancestry. Shared affixes are identified
+        as shared components. Exploration is limited to 900 nodes and ancestor diagrams to 160
+        words; finding no shared ancestor does not establish that the words are unrelated.
+      </p>
+      <h2>Operation and network use</h2>
+      <p>
+        After the data bundle loads, search, exploration, and definition retrieval run in your
+        browser. Search terms and selected entry IDs are not sent to an API. The initial download is
+        about 67 MiB; only required compressed blocks are decoded. No external fonts or analytics
+        services are used. Source links open external websites. Definitions and parts of speech are
+        grouped by etymology for English entries and source-matched ancestral or related words.
+        Definitions are in English; Japanese translations, examples, and pronunciation are not
+        included.
+      </p>
+      <p>
+        Included: 1,412,175 English entries and 1,731,062 graph nodes. Input SHA-256:
+        <code style="overflow-wrap: anywhere"
+          >504d55e7053c742ffe24b49a6ebd0c8261a1cd4b352702a1940547088829f5e1</code
+        >
+      </p>
+    </article>
+  </body>
+</html>

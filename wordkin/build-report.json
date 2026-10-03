@@ -1,0 +1,14 @@
+{
+  "allCompressedBlocksRoundtripVerified": true,
+  "ancestorMeanings": 144629,
+  "bytes": 70055244,
+  "englishEntries": 1412175,
+  "meaningRows": 1559248,
+  "nodes": 1731062,
+  "sha256": "27aeb10a6b938b76030186e84bfb331d10ef68dc71714bd7cdbae91a17624d89",
+  "independentlyDecodedNodes": 1731062,
+  "adjacencyEntries": 4127212,
+  "availableEnglishNodes": 1412264,
+  "inputSha256": "504d55e7053c742ffe24b49a6ebd0c8261a1cd4b352702a1940547088829f5e1",
+  "format": "wordkin-local-v3"
+}
