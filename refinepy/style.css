@@ -39,12 +39,15 @@ button:disabled { cursor: default; opacity: .6; }
 .skip-link { position: absolute; top: -5rem; left: 1rem; padding: .5rem; background: var(--background); z-index: 10; }
 .skip-link:focus { top: .5rem; }
 #selector-help { margin: 0; padding: .45rem 1rem; border-bottom: 1px solid var(--border); }
-.panes { display: grid; grid-template-columns: minmax(0, var(--code-share, 3fr)) 12px minmax(0, var(--results-share, 2fr)); min-height: calc(100dvh - 10rem); }
+.panes { display: grid; grid-template-columns: minmax(0, var(--code-share, 3fr)) 12px minmax(0, var(--results-share, 2fr)); grid-template-rows: var(--panel-height, 520px); }
 section { min-width: 0; }
 h2 { font-size: .9rem; font-weight: 600; margin: 0; padding: .65rem 1rem; border-bottom: 1px solid var(--border); }
 h2 span { float: right; font-weight: 400; color: var(--muted); }
-.results-pane { border-left: 1px solid var(--border); }
-#source .cm-editor { height: var(--panel-height, max(28rem, calc(100dvh - 14rem))); font-size: .9rem; }
+#code-panel { display: flex; flex-direction: column; min-height: 0; }
+#source { flex: 1; min-height: 0; }
+#source-title, #editor-help { flex-shrink: 0; }
+.results-pane { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; border-left: 1px solid var(--border); }
+#source .cm-editor { height: 100%; font-size: .9rem; }
 #source .cm-scroller { overflow: auto; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; line-height: 1.6; }
 #source .cm-content { padding: .7rem 0; }
 #source .cm-gutters { background: var(--surface); color: var(--muted); border: 0; }
@@ -53,6 +56,10 @@ h2 span { float: right; font-weight: 400; color: var(--muted); }
 #source .cm-editor.cm-focused { outline: 2px solid var(--accent); outline-offset: -2px; }
 #source .cm-panels, #source .cm-tooltip { background: var(--surface); color: var(--text); }
 #editor-help { padding: .4rem 1rem; margin: 0; border-top: 1px solid var(--border); }
+#results-scroll { min-height: 0; overflow-y: scroll; scrollbar-gutter: stable; }
+#results-scroll::-webkit-scrollbar { width: 10px; }
+#results-scroll::-webkit-scrollbar-track { background: var(--surface); }
+#results-scroll::-webkit-scrollbar-thumb { background: var(--muted); border: 2px solid var(--surface); border-radius: 5px; }
 #status { margin: 0; padding: 1rem; }
 #results { padding: 0 1rem; }
 .result-card { border: 1px solid var(--border); padding: .8rem; margin-bottom: .8rem; overflow-wrap: anywhere; }
@@ -65,9 +72,8 @@ summary { cursor: pointer; }
 pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
 a { color: var(--accent); }
 @media (max-width: 800px) {
-  .panes { grid-template-columns: 1fr; }
+  .panes { grid-template-columns: 1fr; grid-template-rows: var(--panel-height, 400px) var(--panel-height, 400px); }
   .results-pane { border-left: 0; border-top: 1px solid var(--border); }
-  #source .cm-editor { height: var(--panel-height, 25rem); }
   .site-header { flex-wrap: wrap; }
   .site-header { gap: 1rem; }
   .site-header nav { gap: 1rem; order: 1; flex-basis: 100%; }
@@ -123,13 +129,11 @@ a { color: var(--accent); }
 .result-review, .result-failed { border-left: 4px solid var(--text); }
 
 /* Separators preserve the original workspace styling and remain keyboard operable. */
-.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.visually-hidden { position: absolute; top: 0; left: 0; margin: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .resizer { touch-action: none; user-select: none; display: flex; align-items: center; justify-content: center; background: var(--surface); }
 .resizer::before { content: ""; background: var(--border); }
 .width-resizer { cursor: col-resize; }
 .width-resizer::before { width: 2px; height: 36px; }
-.height-resizer { grid-column: 1 / -1; height: 16px; cursor: row-resize; border-top: 1px solid var(--border); }
-.height-resizer::before { width: 48px; height: 2px; }
 .resizer:hover::before, .resizer:focus-visible::before { background: var(--text); }
 .resizer:focus-visible { outline-offset: -3px; }
 .resizing { user-select: none; }

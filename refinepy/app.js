@@ -106,10 +106,9 @@
   }
 
   // layout.js
-  function createPaneLayout(panes, widthHandle, heightHandle) {
+  function createPaneLayout(panes, widthHandle) {
     const narrow = window.matchMedia("(max-width: 800px)");
     let share = 60;
-    let height = null;
     let drag = null;
     function setShare(value) {
       share = Math.max(30, Math.min(70, value));
@@ -117,80 +116,63 @@
       panes.style.setProperty("--results-share", `${100 - share}fr`);
       widthHandle.setAttribute("aria-valuenow", String(Math.round(share)));
     }
-    function setHeight(value) {
-      height = Math.max(280, Math.min(1e3, value));
-      panes.style.setProperty("--panel-height", `${height}px`);
-      heightHandle.setAttribute("aria-valuenow", String(Math.round(height)));
+    function applyHeight() {
+      const top2 = panes.getBoundingClientRect().top + window.scrollY;
+      const value = narrow.matches ? 400 : Math.max(0, window.innerHeight - top2);
+      panes.style.setProperty("--panel-height", `${value}px`);
     }
     function endDrag() {
       if (!drag) return;
-      const { handle, pointerId } = drag;
+      const { handle: handle2, pointerId } = drag;
       drag = null;
       panes.classList.remove("resizing");
-      if (handle.hasPointerCapture(pointerId)) handle.releasePointerCapture(pointerId);
+      if (handle2.hasPointerCapture(pointerId)) handle2.releasePointerCapture(pointerId);
     }
     function syncBreakpoint() {
       endDrag();
       widthHandle.hidden = narrow.matches;
       widthHandle.tabIndex = narrow.matches ? -1 : 0;
-      if (height === null) heightHandle.setAttribute("aria-valuenow", String(narrow.matches ? 400 : Math.max(448, window.innerHeight - 224)));
+      applyHeight();
     }
-    function resetHeight() {
-      height = null;
-      panes.style.removeProperty("--panel-height");
-      syncBreakpoint();
-    }
-    for (const [handle, axis] of [[widthHandle, "width"], [heightHandle, "height"]]) {
-      handle.addEventListener("pointerdown", (event) => {
-        if (event.button !== 0 || axis === "width" && narrow.matches) return;
-        event.preventDefault();
-        endDrag();
-        handle.focus({ preventScroll: true });
-        drag = {
-          handle,
-          axis,
-          pointerId: event.pointerId,
-          y: event.clientY,
-          height: Number(heightHandle.getAttribute("aria-valuenow"))
-        };
-        handle.setPointerCapture(event.pointerId);
-        panes.classList.add("resizing");
-      });
-      handle.addEventListener("pointermove", (event) => {
-        if (!drag || drag.handle !== handle || drag.pointerId !== event.pointerId) return;
-        if (axis === "width") {
-          const box = panes.getBoundingClientRect();
-          const available = box.width - handle.getBoundingClientRect().width;
-          if (available > 0) setShare(100 * (event.clientX - box.left - handle.getBoundingClientRect().width / 2) / available);
-        } else setHeight(drag.height + event.clientY - drag.y);
-      });
-      for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) {
-        handle.addEventListener(event, (event2) => {
-          if (drag?.handle === handle && drag.pointerId === event2.pointerId) endDrag();
-        });
-      }
-      handle.addEventListener("dblclick", () => {
-        if (axis === "width") setShare(60);
-        else resetHeight();
-      });
-      handle.addEventListener("keydown", (event) => {
-        if (axis === "width" && narrow.matches) return;
-        const negative = axis === "width" ? "ArrowLeft" : "ArrowUp";
-        const positive = axis === "width" ? "ArrowRight" : "ArrowDown";
-        const min = axis === "width" ? 30 : 280;
-        const max = axis === "width" ? 70 : 1e3;
-        const step = (axis === "width" ? 2 : 20) * (event.shiftKey ? 5 : 1);
-        const current = axis === "width" ? share : Number(heightHandle.getAttribute("aria-valuenow"));
-        const value = event.key === "Home" ? min : event.key === "End" ? max : event.key === negative ? current - step : event.key === positive ? current + step : null;
-        if (value === null) return;
-        event.preventDefault();
-        if (axis === "width") setShare(value);
-        else setHeight(value);
+    const handle = widthHandle;
+    handle.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || narrow.matches) return;
+      event.preventDefault();
+      endDrag();
+      handle.focus({ preventScroll: true });
+      drag = { handle, pointerId: event.pointerId };
+      handle.setPointerCapture(event.pointerId);
+      panes.classList.add("resizing");
+    });
+    handle.addEventListener("pointermove", (event) => {
+      if (!drag || drag.handle !== handle || drag.pointerId !== event.pointerId) return;
+      const box = panes.getBoundingClientRect();
+      const available = box.width - handle.getBoundingClientRect().width;
+      if (available > 0) setShare(100 * (event.clientX - box.left - handle.getBoundingClientRect().width / 2) / available);
+    });
+    for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) {
+      handle.addEventListener(event, (event2) => {
+        if (drag?.handle === handle && drag.pointerId === event2.pointerId) endDrag();
       });
     }
+    handle.addEventListener("dblclick", () => {
+      setShare(60);
+    });
+    handle.addEventListener("keydown", (event) => {
+      if (narrow.matches) return;
+      const step = event.shiftKey ? 10 : 2;
+      const value = event.key === "Home" ? 30 : event.key === "End" ? 70 : event.key === "ArrowLeft" ? share - step : event.key === "ArrowRight" ? share + step : null;
+      if (value === null) return;
+      event.preventDefault();
+      setShare(value);
+    });
     window.addEventListener("blur", endDrag);
     window.addEventListener("resize", syncBreakpoint);
     narrow.addEventListener("change", syncBreakpoint);
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(applyHeight);
+      observer.observe(panes.parentElement);
+    }
     setShare(share);
     syncBreakpoint();
   }
@@ -223,7 +205,6 @@
   // i18n.js
   var japanese = {
     "Resize code and results": "\u30B3\u30FC\u30C9\u3068\u691C\u8A3C\u7D50\u679C\u306E\u5E45\u3092\u8ABF\u6574",
-    "Resize panel height": "\u30D1\u30CD\u30EB\u306E\u9AD8\u3055\u3092\u8ABF\u6574",
     "Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.": "\u5883\u754C\u3092\u30C9\u30E9\u30C3\u30B0\u3057\u3066\u30B5\u30A4\u30BA\u3092\u5909\u66F4\u3067\u304D\u307E\u3059\u3002\u77E2\u5370\u30AD\u30FC\u3067\u8ABF\u6574\u3001Home\u30FBEnd \u3067\u6700\u5C0F\u30FB\u6700\u5927\u3001\u30C0\u30D6\u30EB\u30AF\u30EA\u30C3\u30AF\u3067\u521D\u671F\u5024\u306B\u623B\u308A\u307E\u3059\u3002",
     "refinepy playground": "refinepy \u30D7\u30EC\u30A4\u30B0\u30E9\u30A6\u30F3\u30C9",
     "Skip to content": "\u672C\u6587\u3078\u79FB\u52D5",
@@ -25973,7 +25954,7 @@
     status.textContent = statusError === null ? t2(statusMessage) : `${t2("Execution error")}: ${statusError}`;
   }
   var form = document.querySelector("#playground");
-  createPaneLayout(document.querySelector(".panes"), document.querySelector("#pane-resizer"), document.querySelector("#height-resizer"));
+  createPaneLayout(document.querySelector(".panes"), document.querySelector("#pane-resizer"));
   var source = createSourceEditor(document.querySelector("#source"), invalidateResults);
   var selector = document.querySelector("#selector");
   var example = document.querySelector("#example");

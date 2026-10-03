@@ -76,14 +76,15 @@
         <div id="pane-resizer" class="resizer width-resizer" role="separator" tabindex="0" aria-label="Resize code and results" data-i18n-aria="Resize code and results" aria-orientation="vertical" aria-controls="code-panel results-panel" aria-valuemin="30" aria-valuemax="70" aria-valuenow="60" aria-describedby="resize-help"></div>
         <section id="results-panel" class="results-pane" aria-labelledby="results-title">
           <h2 id="results-title" data-i18n="Results">Results</h2>
+          <div id="results-scroll" tabindex="0" aria-labelledby="results-title">
           <p id="status" role="status" aria-live="polite">Ready to verify.</p>
           <div id="results" aria-busy="false"></div>
           <details id="report-details" hidden>
             <summary data-i18n="Full JSON report">Full JSON report</summary>
             <pre id="report"></pre>
           </details>
+          </div>
         </section>
-        <div id="height-resizer" class="resizer height-resizer" role="separator" tabindex="0" aria-label="Resize panel height" data-i18n-aria="Resize panel height" aria-orientation="horizontal" aria-controls="code-panel results-panel" aria-valuemin="280" aria-valuemax="1000" aria-valuenow="520" aria-describedby="resize-help"></div>
       </div>
       <p id="resize-help" class="visually-hidden" data-i18n="Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.">Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.</p>
     </form>
