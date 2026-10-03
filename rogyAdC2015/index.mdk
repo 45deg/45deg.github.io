@@ -1,6 +1,7 @@
 Title: Dynamorphism 概論
 Author: ざくろ
 Math Mode: mathjax
+MathJax: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 Embed       : False
 
 [TITLE]
@@ -12,7 +13,7 @@ Embed       : False
 
 この記事では、関数型プログラミングにおいて動的計画法(Dynamic Programming)を行う手法の一つである *dynamorphism* について解説します。
 
-しかし、dynamorphism という概念はそれ単体で説明できるものではなく、F-代数 や catamorphism, anamorphism, hylomorphism, histmorphism などの各種概念を用いないと説明できないものです。そこでこの記事では順々とそれらの概念を追っていき、最後にdynamorphismに行き着くような構成になっています。
+しかし、dynamorphism という概念はそれ単体で説明できるものではなく、F-代数 や catamorphism, anamorphism, hylomorphism, histomorphism などの各種概念を用いないと説明できないものです。そこでこの記事では順々とそれらの概念を追っていき、最後にdynamorphismに行き着くような構成になっています。
 
 そのため、この記事は dynamorphism の説明記事であると同時に、F-(余)代数や catamorphism, anamorphism 等に関する解説記事でもあります。
 
@@ -106,10 +107,10 @@ Cons 1 $ Cons 2 $ Cons 3 $ Nil :: (F (F (F (F a))))
 そこで、[#sflist]を「方程式」とみなし、その方程式を満たすような ${\sf List}$ を「リストを表すデータ型」とする発想の転換をします。しかし、型同士の等式は $=$ ではなく 同型 $ \simeq $ で結びます。 
 
 ~ Note
-型 $A, B$ に対してA $\simeq$ B とは、「関数 $f: A \to B, g: B \to A$ が存在し、$f \circ g = g \circ f = id$ である」ということです。なお、f, g はそれぞれ存在すれば一意に定まります。
+型 $A, B$ に対して $A \simeq B$ とは、「関数 $f: A \to B, g: B \to A$ が存在し、$f \circ g = id_B$, $g \circ f = id_A$ を満たす」ということです。同型写像 $f$ 自体は一意とは限りませんが、$f$ を固定すると、その逆写像 $g$ は一意に定まります。
 ~
 
-つまり、次の「方程式」を満たすような $X$ が「リストを表すデータ型」です。
+次の「方程式」は、リストを表すデータ型が満たす条件です。ただし、この条件だけでデータ型が一意に決まるわけではありません。
 
 ~ Equation {#eqn1}
   X \simeq 1 + Int \times X
@@ -121,7 +122,7 @@ Cons 1 $ Cons 2 $ Cons 3 $ Nil :: (F (F (F (F a))))
   X \simeq F(X)
 ~
 
-この時、[#eqn2]を満たすような $X$ のことを関手$F$の**不動点** とよび、$\mu F$ で表します。[^fixedf]そして $\mu F$ こそがまさに求めたい *リストを表現するデータ型* となっています。
+この時、[#eqn2]を満たすような $X$ を関手 $F$ の**不動点**と呼びます。以下では、後述する F-始代数の台を $\mu F$ と書きます。始代数の構造写像は同型なので、$\mu F$ は不動点になります。[^fixedf] 集合と全域関数の圏で考えると、このリストの例では有限リストの型が始代数の台になります。
 
 以下、Haskellへ不動点を導入した上で、先述の`F`に関して不動点を適用して、実際にリストを表現することを確認します。
 
@@ -226,7 +227,7 @@ main = print $ sumIL $ cons 100 $ cons 20 $ cons 3 $ nil
 
 **余代数**(coalgebra)とは、代数の双対です。つまり、先ほどの可換図式の矢印を反対したものが、そのまま余代数になります。
 
-一応定義を書いておきます。関手 $F$ について、型 $A$ と、関数 $f : F(A) \to A$ のペア $(A, f)$ を **$F$-余代数** (F-coalgebra) といいます。
+関手 $F$ について、型 $A$ と、関数 $f : A \to F(A)$ のペア $(A, f)$ を **$F$-余代数** (F-coalgebra) といいます。
 また、F-余代数 $(A, a : A \to F(A)), (B, b : B \to F(B))$ に対し、$f : A \to B$ で $F(f) \circ a = b \circ f$ を満たすものを**F-余代数の準同型** (homomorphism of F-coalgebra) といいます。すなわち、以下の図式を可換にします。
 
 ~ Center
@@ -236,7 +237,7 @@ main = print $ sumIL $ cons 100 $ cons 20 $ cons 3 $ nil
 特にF-余代数の中で、任意の他のF-余代数**から**の準同型が一意に存在するものを **F-終余代数** (terminal F-coalgebra) といいます。[^fcoalg] つまり、先の図において、任意の型 $A$ に対し $f$ が一意に存在する場合、$B$はF-終余代数になります。
 
 
-先程と同様に、$(\mu F, {\sf outF})$ は F-終余代数であることが知られています。[^terminalf]つまり、任意のF-余代数 $(Y, \psi : Y \to F(Y))$ に対して関数 $f : Y \to \mu F$ が一意に存在します。この時、$f$ のことを **anamorphism** [^ana] と呼びます。また、$f$ を ${\sf ana} \psi$ や $ [\!( \psi )\!] $ と表すこともあります。
+以下では、Haskell の遅延評価される再帰型を同じ不動点で表す慣習に合わせ、終余代数の台も $\mu F$ と書きます。この表記のもとで、$(\mu F, {\sf outF})$ は F-終余代数であることが知られています。[^terminalf]つまり、任意のF-余代数 $(Y, \psi : Y \to F(Y))$ に対して関数 $f : Y \to \mu F$ が一意に存在します。この時、$f$ のことを **anamorphism** [^ana] と呼びます。また、$f$ を ${\sf ana} \psi$ や $ [\!( \psi )\!] $ と表すこともあります。
 
 ~ Center
 ![fig-ana]
@@ -298,9 +299,9 @@ hylo phi psi = cata phi . ana psi
 ```
 
 
-hylomorphism によって、再帰関数の処理が表現できます。再帰関数の呼び出しは、[call treeという木構造で表現できます](https://en.wikibooks.org/wiki/Visualizing_Computation/Call_Trees)。そのため、${\sf ana} \varphi$で引数の値に基づきそのcall treeを再現し、さらにその tree を evaluation する処理を ${\sf cata} \psi$ で行えば、再帰関数と同等の処理が可能になります。
+hylomorphism によって、再帰関数の処理が表現できます。再帰関数の呼び出しは、[call treeという木構造で表現できます](https://en.wikibooks.org/wiki/Visualizing_Computation/Call_Trees)。そのため、${\sf ana} \psi$で引数の値に基づきそのcall treeを再現し、さらにその tree を evaluation する処理を ${\sf cata} \varphi$ で行えば、再帰関数と同等の処理が可能になります。
 
-では再帰関数の例としてフィボナッチ数列のn番目を求める関数 $fib(n)$ をhyloで実現しましょう。この時 hylo のベースになる関手 $F_{fib}(X)$ は、$F_{fib}(X) = 1 + 1 + Int \times X \times X$ となります。 
+では再帰関数の例としてフィボナッチ数列のn番目を求める関数 $fib(n)$ をhyloで実現しましょう。この時 hylo のベースになる関手 $F_{fib}(X)$ は、$F_{fib}(X) = 1 + 1 + X \times X$ となります。
 
 この時 $1 + 1$ は再帰関数の「底」、つまり $fib(0) = 0$ と $fib(1) = 1$ を意味しています。また、$X \times X$ は $fib(n) = fib(n-1) + fib(n-2)$ の2つの fib 関数の呼び出しを表現しています。したがって、この関手の不動点 $\mu F_{fib}$ は、fib の call tree (二分木) を表す再帰的データ構造になります。
 
@@ -335,12 +336,12 @@ main = print $ fibAsHylo 10
 
 これで再帰関数をhyloで表せることが分かりました。しかしこの場合、引数の値が大きくなるにつれ、ana によって作られる中間データ構造の大きさが指数的に増えていきます。これは一般に再帰関数のcall-treeが指数的に大きくなるのと同じ現象です。
 
-普通、再帰関数が指数的に増えないようにするためには、[メモ化](https://ja.wikipedia.org/wiki/メモ化)などの技法が考えられます。そして、hyloについても同様にメモ化を考えることができ、それがずばり*dynamorphism*なのですが、dynamorphism を導入する前にまず histomorphism について解説します。
+同じ部分問題の再計算を避ける技法に、[メモ化](https://ja.wikipedia.org/wiki/メモ化)があります。dynamorphism でも途中の計算結果を保持して再利用しますが、同じ引数の呼び出しを自動的にまとめるわけではありません。必要な部分問題の結果を参照できる中間データ構造を設計することが重要です。その仕組みを説明するため、まず histomorphism を導入します。
 
 # histomorphism
 
-histmorphism は catamorphism の拡張であり、catamorphismは直前の結果しか参照できなかったものを、過去の任意の時点での結果を参照できるようにしたものです。
-これを実現するためには、過去の値を保持できるようなデータ構造を作らなければなりません。以下ではまず与えられた関手Fに対してそのようなデータ構造を構成する方法を示し、その上で histmorphism を定義します。
+histomorphism は catamorphism の拡張であり、catamorphismは直前の結果しか参照できなかったものを、過去の任意の時点での結果を参照できるようにしたものです。
+これを実現するためには、過去の値を保持できるようなデータ構造を作らなければなりません。以下ではまず与えられた関手Fに対してそのようなデータ構造を構成する方法を示し、その上で histomorphism を定義します。
 
 ## $F^{\times}_A$ と $\tilde{F}$
 
@@ -408,9 +409,9 @@ sub cf = case (outF $ unCf cf) of
 
 ## histomorphism
 
-前述したように、関手$F$に対する${\tilde F}$とは、Fによる再帰的データ構造のそれぞれのノードに値を付加できるようにしたものです。そこへ結果を格納することによって、後の任意の時点でその計算結果を参照することが可能になります。以下、histmorphismの定義からはじめます。
+前述したように、関手$F$に対する${\tilde F}$とは、Fによる再帰的データ構造のそれぞれのノードに値を付加できるようにしたものです。そこへ結果を格納することによって、後の任意の時点でその計算結果を参照することが可能になります。以下、histomorphismの定義からはじめます。
 
-$F{\tilde F}$-代数 $(F{\tilde F}A, \varphi : F{\tilde F}A \to A)$ に対して、**histomorphism** は以下の図式を可換にするような一意な関数 ${\sf histo}(\varphi)$ のことを言います。
+$F{\tilde F}$-代数 $(A, \varphi : F{\tilde F}A \to A)$ に対して、**histomorphism** は以下の図式を可換にするような一意な関数 ${\sf histo}(\varphi)$ のことを言います。
 
 ~ Equation {#hist1}
 {\sf histo}(\varphi) = \varphi \circ F ( {\sf ana} \langle {\sf histo}(\varphi), {\sf outF} \rangle ) \circ {\sf outF}
@@ -419,7 +420,7 @@ $F{\tilde F}$-代数 $(F{\tilde F}A, \varphi : F{\tilde F}A \to A)$ に対して
 ~ Center
 ![fig-histo1]
 ~
-histmorphism は、${\tilde F}$ -tree に対する catamorphism であると喩えることができます。
+histomorphism は、${\tilde F}$ -tree に対する catamorphism であると喩えることができます。
 
 先程のhistoの定義をHaskellで実装すると以下のようになります。
 ``` haskell
@@ -489,7 +490,7 @@ main = print $ fibAsHisto $ nat 100
 
 # dynamorphism
 
-**dynamorphism** は、histomorphism の前に anamorphism をつなげたものです。つまり、anamorphism でデータ構造を構築し、histomorphism でそれを畳み込む一連の処理を行います。これは hylomorphism の考え方と同じです。よって、dynamorphism は プリミティブな型(整数や文字列など) を受け取りプリミティブな型を返す関数となり、関数を呼び出す側からは中間のデータ構造を意識する必要がなくなります。
+**dynamorphism** は、histomorphism の前に anamorphism をつなげたものです。つまり、anamorphism でデータ構造を構築し、histomorphism でそれを畳み込む一連の処理を行います。これは hylomorphism の考え方と同じです。入力と出力の型はプリミティブな型に限らず、関数を呼び出す側からは中間のデータ構造を意識する必要がありません。
 
 dynamorphism の定義は以下のようになっています。[^dyna]
 
@@ -565,7 +566,7 @@ knapsack c v w = dyna phi psi $ (n,c) where
   back i cs = case sub cs of
     (KSTree _ (Just b)) -> back (i - 1) b
 
-main = show $ knapsack 5 [4,2,5,8] [2,2,1,3] -- 13
+main = print $ knapsack 5 [4,2,5,8] [2,2,1,3] -- 13
 ```
 
 さて、順番に見ていきましょう。
@@ -625,8 +626,8 @@ psi 関数をanaに渡すことで中間データ構造を生成します。サ�
 ```
 ~
 
-この `back` は 引数 i を与えると、現在時から i 時点前 (すなわち${\tilde F}$-treeにおけるi代目の子孫ノード) の結果を取得して返してきます。
-つまり、リスト [#dozenlist] においては、現在 `cs` が `(i,j)` のノードであるとすると、`back 1 cs` は `(i-1,j)` の時点の結果を返し[^back1]、`back (1 + (n + 1) * (w !! i)) cs` は `(i-1,j-w[i])` [^back2] 時点の結果を返すことになります。よって先ほどの推測は正しく、[#dp] を実装できたことが確認できました。
+この `back` は、`cs` を起点に子ノードをたどり、指定された位置の計算結果を返します。`back 1 cs` は `cs` 自身の値を返し、`back k cs` はそこから子ノードを `k-1` 回たどった先の値を返します。
+現在評価中のノードを `(i,j)` とすると、`cs` はその子である `(i+1,j)` のノードです。したがって `back 1 cs` は $dp[i+1][j]$ を返し[^back1]、`back (1 + (n + 1) * (w !! i)) cs` は $dp[i+1][j-w[i]]$ を返します[^back2]。これにより、[#dp] の漸化式を実装できています。ただし `back k cs` は最大で `k-1` 回子ノードをたどるため、配列のような定数時間の参照ではありません。計算結果の再利用と、その結果を探すコストは区別する必要があります。
 
 一応畳み込む際の途中計算の結果を示しておきます。(実際には呼ばれない部分にも値が入っています)余裕があれば手で追ってみてください。
 
@@ -647,13 +648,13 @@ psi 関数をanaに渡すことで中間データ構造を生成します。サ�
 * **F-余代数**において $(\mu F, outF)$ への準同型 のことを **anamorphism**といいます。これはデータ構造の構築を行います。
 * **hylomorphism** は anamorphism が出力したデータ構造を catamorphism に入力して得られる結果を返します。
 * ${\tilde F}(A)$ とは、$\mu F$ のそれぞれのノードに 情報 $A$ を付加したものです。
-* **histmorphism** は、関手 $F$ に対して ${\tilde F}$ を考え、その上の catamorphism を行います。
-* **dynamorphism** は、anamorphism が出力したデータ構造を histmorphism に入力して得られる結果を返します。
+* **histomorphism** は、関手 $F$ に対して ${\tilde F}$ を考え、その上の catamorphism を行います。
+* **dynamorphism** は、anamorphism が出力したデータ構造を histomorphism に入力して得られる結果を返します。
 
 # あとがき {#atogaki}
 
-今回は catamorphism, anamorphism, histmorphism, dynamorphism について説明しました。しかし -morphism は他にもあります。
-histmorphism の双対である futumorphism、その2つを繋げた chronomorphism、hylomorphism での ana, cata の関数合成を逆にした metamorphism
+今回は catamorphism, anamorphism, histomorphism, dynamorphism について説明しました。しかし -morphism は他にもあります。
+histomorphism の双対である futumorphism、その2つを繋げた chronomorphism、hylomorphism での ana, cata の関数合成を逆にした metamorphism
 また catamorphism を拡張した paramorphism, zygomorphism, prepromorphism、それらの双対である apomorphism, cozygomorphism, postproporphism、
 他にも synchromorphism や exomorphism や mutumorphism などもあります。これらの morphism (まとめて **recursion schemes** と呼ばれます)は Haskell では [recursion-schemes](https://hackage.haskell.org/package/recursion-schemes) などに実装されています。
 
@@ -664,7 +665,7 @@ histmorphism の双対である futumorphism、その2つを繋げた chronomorp
 # 参考文献 {#bib}
 
 1. Jevgeni Kabanov and Varmo Vene. 2006. Recursion schemes for dynamic programming. In Proceedings of the 8th international conference on Mathematics of Program Construction (MPC'06), Tarmo Uustalu (Ed.). Springer-Verlag, Berlin, Heidelberg, 235-252.
-  : dynamorpism の初出論文です。この記事とだいたい同じ流れ(cata, ana, histo から dynamorpism に至る)で構成されています。dynamorphismを利用した例として編集距離やLCSの例が挙げられています。
+  : dynamorphism の初出論文です。この記事とだいたい同じ流れ(cata, ana, histo から dynamorphism に至る)で構成されています。dynamorphismを利用した例として編集距離やLCSの例が挙げられています。
 1. Ralf Hinze and Nicolas Wu. 2013. Histo- and dynamorphisms revisited. In Proceedings of the 9th ACM SIGPLAN workshop on Generic programming (WGP '13). ACM, New York, NY, USA, 1-12. 
   : dynamorphism に触れている2つめの論文です。この論文では Comonad や λ-bicategory などを用いてより高度な議論をしています。サンプルコードとしてカタラン数や制限巡回セールスマン問題などを挙げています。
 1. [Madoko Reference](http://research.microsoft.com/en-us/um/people/daan/madoko/doc/reference.html)
@@ -687,11 +688,11 @@ histmorphism の双対である futumorphism、その2つを繋げた chronomorp
 [^sirouto]: ここでいう素人とは、その分野の研究者・専門家ではない、また専門教育を受けていないことを意味します。
 [^union]: 実際はAとBどちらの値を持つかの情報を持っている必要があります([Tagged Union](https://en.wikipedia.org/wiki/Tagged_union))
 [^func1]: ここではHask圏の自己関手のことを「関手」と表記します。以下の文についても同様です。
-[^fixedf]: つまり、$\mu F$ について、$f: \mu F \to F(\mu F)$ と $g: F(\mu F) \to \mu F$ が一意に存在し、$f \circ g = id_{F(\mu F)}, g \circ f = id_{\mu F}$を満たすことを意味します。
+[^fixedf]: ここでの構造写像 ${\sf inF}: F(\mu F) \to \mu F$ と、その逆写像 ${\sf outF}: \mu F \to F(\mu F)$ は、${\sf inF} \circ {\sf outF} = id_{\mu F}$, ${\sf outF} \circ {\sf inF} = id_{F(\mu F)}$ を満たします。不動点であるという条件だけで同型写像が一意に定まるわけではありません。
 [^falg]: 要するに (F,f) を対象、準同型を射とする圏 ${\mathcal Alg}(F)$ の始対象がF-始代数。また、F-始代数は(存在すれば)同型を除いて一意。
-[^initialf]: 実は「$(\mu F, {\sf inF})$ が始代数であるならば、$\mu F$ は不動点である」という[Lambekの定理](https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor#LambeksTheorem)をもとに始対象から不動点である事実を導いているのですが、ここでは説明の流れが逆(不動点→始対象)になっています。
+[^initialf]: 始代数の構造写像が同型であることは [Lambekの定理](https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor#LambeksTheorem)によります。逆に、単に不動点であるだけでは始代数とは限りません。
 [^fcoalg]: 要するに (F,f) を対象、準同型を射とする圏 ${\mathcal CoAlg}(F)$ の終対象がF-終余代数。また、F-終余代数は(存在すれば)同型を除いて一意。
-[^terminalf]: この時、正確には終余代数となるのは最*大*不動点 $\nu F$ ですが、言及している状況下では、最大不動点と最小不動点は一致するので$\mu F$としています。
+[^terminalf]: 一般には、始代数の台 $\mu F$ と終余代数の台 $\nu F$ は区別します。例えば集合と全域関数の圏では、リスト関手の始代数は有限リスト、終余代数は有限・無限リストを含む型です。ここで同じ `FixF` を fold と unfold の両方に使うのは、遅延評価される Haskell の表現に合わせたものです。最小不動点と最大不動点の一致を数学的に扱うには、適切な領域の圏と関手の条件が必要で、任意の圏・関手で一致するわけではありません。
 [^cata]: 日本語訳は知るかぎりではありません。無理やり訳すなら「下射」みたいな？
 [^ana]: 無理やり訳すなら「上射」です。
 [^hylo]: hylo- には「物」などの意味があるようです。余談なのですが、アリストテレス哲学の文脈でも hylomorphism というものがあり、これは質料形相論と訳されます。ここでは全く関係ありません。
