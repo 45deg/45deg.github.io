@@ -97,7 +97,7 @@ filters:
       en: Code
 works:
   - href: ./wordkin/
-    featured: false
+    featured: true
     title:
       ja: Wordkin
       en: Wordkin
@@ -151,7 +151,7 @@ works:
         ja: "exists y: y² = x を量化子なしの条件 x ≥ 0 に変換する例"
         en: "An example converting exists y: y² = x into the quantifier-free condition x ≥ 0"
   - href: ./lufs-view/
-    featured: false
+    featured: true
     title:
       ja: LUFS view
       en: LUFS view
@@ -187,7 +187,7 @@ works:
         ja: 黒背景に自然数の関数と等式の証明を記したDepPyコードを大きく表示した画像
         en: Close-up of DepPy code defining a natural number function and an equality proof on a black background
   - href: ./frp-wasm/
-    featured: false
+    featured: true
     title:
       ja: frp-wasm
       en: frp-wasm
@@ -224,7 +224,7 @@ works:
         ja: a-b textで日本語の文章を範囲選択し、開始・終了カーソルとコピーなどの操作を表示した画面
         en: A Japanese passage selected in a-b text, with start and end cursors and copy, cut, and delete controls
   - href: ./cifarviz/
-    featured: false
+    featured: true
     title:
       ja: CIFAR / VIZ
       en: CIFAR / VIZ
@@ -311,7 +311,7 @@ works:
       class: placeholder-data
       emoji: 🔐
   - href: ./morf/
-    featured: false
+    featured: true
     title:
       ja: Morf
       en: Morf
@@ -366,7 +366,7 @@ works:
         en: UI Pattern Atlas displaying the Welcome screen pattern
   - href: ./a-tour-of-succinct-data-structure/
     homeButton: false
-    featured: false
+    featured: true
     title:
       ja: A Tour of Succinct Data Structures
       en: A Tour of Succinct Data Structures
@@ -702,7 +702,7 @@ works:
       src: ./images/i27.png
       alt: Lucide Shape Search
   - href: ./lucide-icons-map/
-    featured: true
+    featured: false
     title:
       ja: Lucide Icons Map
       en: Lucide Icons Map
@@ -717,7 +717,7 @@ works:
       src: ./images/i36.png
       alt: Lucide Icons Map
   - href: ./lucide-text-search/
-    featured: true
+    featured: false
     title:
       ja: Lucide Text Search
       en: Lucide Text Search
@@ -937,7 +937,7 @@ works:
       class: placeholder-article
       emoji: 🎬
   - href: ./subleq-ide/
-    featured: true
+    featured: false
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
@@ -1229,7 +1229,7 @@ works:
       src: ./images/i7.png
       alt: Kantele
   - href: ./neural-network_v2
-    featured: true
+    featured: false
     title:
       ja: ニューラルネットワークの可視化 (ConvnetJS版)
       en: Neural Network Visualization (ConvnetJS)
