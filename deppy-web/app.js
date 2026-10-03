@@ -18,13 +18,34 @@ const navigationLinks = [...document.querySelectorAll('[data-route]')];
 let busy = false;
 let checker;
 let editor;
+let examples = {};
+let activeExample;
 const MAX_SOURCE_BYTES = 64 * 1024;
+
+function loadExample(key) {
+  if (key === activeExample) return;
+  if (pythonWorker) finishRun();
+  activeExample = key;
+  picker.value = key;
+  setSource(examples[key].source);
+  setStatus('Ready', 'idle');
+  results.replaceChildren(textElement('div', 'empty-state', 'Choose Check to verify proofs or Run to execute the examples.'));
+}
 
 function showRoute() {
   const requested = location.hash.slice(1);
-  const route = Object.hasOwn(pages, requested) ? requested : 'playground';
+  const route = requested === 'about' ? 'about' : 'playground';
+  if (route === 'playground' && Object.hasOwn(examples, 'basics')) {
+    const key = Object.hasOwn(examples, requested)
+      ? requested
+      : !requested || requested === 'playground' ? activeExample || 'basics' : 'basics';
+    loadExample(key);
+    // Keep default and unknown routes shareable, without adding a history entry.
+    if (requested !== key) history.replaceState(null, '', `#${key}`);
+  }
   for (const [name, page] of Object.entries(pages)) page.hidden = name !== route;
   for (const link of navigationLinks) {
+    if (link.dataset.route === 'playground') link.setAttribute('href', `#${activeExample || 'basics'}`);
     if (link.dataset.route === route) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   }
@@ -323,38 +344,23 @@ source.addEventListener('keydown', event => {
 });
 checkButton.addEventListener('click', check);
 picker.addEventListener('change', () => {
-  if (pythonWorker) finishRun();
-  if (picker.value && picker.value in examples) {
-    setSource(examples[picker.value].source);
-    setStatus('Ready', 'idle');
-    results.replaceChildren(textElement('div', 'empty-state', 'Run a check to see results.'));
-  }
+  if (Object.hasOwn(examples, picker.value)) location.hash = picker.value;
 });
 
-let examples = {};
 checkButton.disabled = true;
-Promise.all([fetch('./examples.json?v=10').then(response => {
+Promise.all([fetch('./examples.json?v=12').then(response => {
   if (!response.ok) throw new Error('Examples unavailable.');
   return response.json();
 }), loadChecker()]).then(([data]) => {
   examples = data;
   picker.replaceChildren();
-  const groups = new Map();
   for (const [key, value] of Object.entries(examples)) {
     const option = document.createElement('option');
     option.value = key;
     option.textContent = value.label;
-    const groupName = value.group || 'Examples';
-    if (!groups.has(groupName)) {
-      const group = document.createElement('optgroup');
-      group.label = groupName;
-      groups.set(groupName, group);
-      picker.append(group);
-    }
-    groups.get(groupName).append(option);
+    picker.append(option);
   }
-  picker.value = 'basics';
-  setSource(examples.basics.source);
+  showRoute();
   checkButton.disabled = busy;
 }).catch(error => {
   picker.replaceChildren(new Option('Unavailable', ''));

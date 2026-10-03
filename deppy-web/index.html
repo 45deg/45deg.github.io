@@ -33,13 +33,13 @@
     }
   }
   </script>
-  <script type="module" src="./app.js?v=10"></script>
+  <script type="module" src="./app.js?v=12"></script>
 </head>
 <body>
   <header class="site-header">
     <h1 class="brand"><span class="brand-mark" aria-hidden="true">λ</span> DependentlyTypedPython</h1>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="#playground" data-route="playground" aria-current="page">Playground</a>
+      <a href="#basics" data-route="playground" aria-current="page">Playground</a>
       <a href="#about" data-route="about">About</a>
     </nav>
     <div class="header-links">
@@ -69,12 +69,12 @@
           </div>
           <div class="panel-foot">
             <span id="source-meta">0 lines</span>
-            <div class="actions"><span class="shortcut">⌘ / Ctrl + Enter</span><button id="check" class="action-button primary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Check</button><button id="run" class="action-button secondary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6.5 4.5 9 5.5-9 5.5v-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Run Python</button><button id="stop" class="action-button secondary" type="button" hidden>Stop</button></div>
+            <div class="actions"><span class="shortcut">⌘ / Ctrl + Enter</span><button id="check" class="action-button primary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Check</button><button id="run" class="action-button secondary" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6.5 4.5 9 5.5-9 5.5v-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Run</button><button id="stop" class="action-button secondary" type="button" hidden>Stop</button></div>
           </div>
         </section>
         <section class="panel result-panel" aria-labelledby="result-title">
           <div class="panel-head"><h2 id="result-title">Results</h2><span id="status" class="status idle">Ready</span></div>
-          <div id="results" class="results" aria-live="polite"><div class="empty-state">Run a check to see results.</div></div>
+          <div id="results" class="results" aria-live="polite"><div class="empty-state">Choose Check to verify proofs or Run to execute the examples.</div></div>
           <div class="panel-foot result-foot">Run executes Python without checking proofs. Use print() to display output.</div>
         </section>
       </div>
@@ -110,10 +110,10 @@ def same(n: Nat) -&gt; Eq[Nat, n, n]:
       </ul>
       <p>The <strong>Results</strong> panel displays verified declarations, remaining goals, and errors. Clicking an error navigates directly to its location in the source code.</p>
 
-      <h3>Why Are Check and Run Python Separate?</h3>
+      <h3>Why Are Check and Run Separate?</h3>
       <ul>
         <li><strong>Check</strong> statically verifies supported declarations without executing the source code.</li>
-        <li><strong>Run Python</strong> executes the original source in a browser-based Python environment and captures its output. It shows runtime behavior but does not verify proofs or contracts.</li>
+        <li><strong>Run</strong> executes the original source in a browser-based Python environment and captures its output. It shows runtime behavior but does not verify proofs or contracts.</li>
       </ul>
 
       <h3>Current Scope</h3>
