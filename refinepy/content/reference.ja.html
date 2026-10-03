@@ -1,25 +1,6 @@
-<h1 id="reference">リファレンス</h1>
-<p>refinepy は、型注釈付きの Python 3.12
-関数の契約を検査します。以下の例は対応する記述方法を示し、ここで導入するインポートと型の別名を共有します。表は主な制限をまとめています。エディターの操作と結果の状態については<a
-href="guide.html">ガイド</a>を参照してください。</p>
-<p>数値プレイグラウンドには、基本の範囲契約と、フィボナッチ数、整数平方根、数列の和、厳密な有理数の丸め、符号付き除算の例があります。数値による説明、仮定、失敗する編集は<a
-href="docs/example-gallery.html">サンプルガイド</a>を参照してください。ソースは管理対象の
-Python
-ファイルからそのままコピーします。各結果には、それぞれの停止性の証拠が残ります。</p>
-<p>コンテナーを扱う例はリポジトリと回帰テストに残っています。<a
-href="docs/specification.html#binary-search-contract-prototype">二分探索の証明</a>は、任意の整列済みリストについて完全な探索の正しさと停止性を検査します。<a
-href="docs/practical-examples.html">短い契約の演習</a>は確保処理とウィンドウの読み取りを扱います。一般的な再帰仕様の問い合わせでは、結論が出ない場合があります。</p>
-<p>ヘッダーの <strong>EN / JP</strong>
-で英語と日本語を切り替えられます。操作、サンプル名、エディターの検索操作、結果の要約、ガイド、リファレンスの本文をフロント側で翻訳します。切り替えても、ソース、取り消し履歴、関数の指定、実行中の検証、既存の結果を保持します。ブラウザーの保存機能が使える場合、言語設定を保存します。初期設定は英語です。Python
-サンプル、コード例、検証器の診断原文、証拠の記録、処理段階の識別子、JSON
-は変更しません。<code>docs/</code> 内の詳細な技術文書は英語です。</p>
-<p>ヘッダーの3ページは、エディターを再読み込みせずに切り替わります。<code>.html</code>
-URL
-の直接表示、見出しへのリンク、ブラウザーの戻る・進むに対応しています。ページ全体を再読み込みするとソースは初期化されます。ドキュメントを読み込めなかった場合は、その旨を表示します。</p>
 <h2 id="value-contracts">値の契約</h2>
 <p><code>Annotated</code> で型に <code>Refine(lambda ...)</code>
-メタデータを付けます。lambda の最初の引数は制約される値です。複数の
-<code>Refine</code> 述語は <code>and</code> で結合します。</p>
+を付けます。最初の引数は制約する値です。複数の述語はすべて満たす必要があります。</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
@@ -28,9 +9,6 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(x: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result, x: result <span class="op">==</span> x <span class="op">+</span> <span class="dv">1</span>)]:</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
-<p><code>x: Nat</code>
-は非負の入力を要求します。戻り値の契約は、入力よりちょうど1大きい結果を要求します。lambda
-の追加引数は関数の入力を指定します。引数の契約は<strong>それより前の引数</strong>を参照でき、戻り値の契約は<strong>すべての引数</strong>を参照できます。本体で同じ名前に再代入しても、関数入口の値を表します。</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections.abc <span class="im">import</span> Sequence</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -39,18 +17,13 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    i: Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v, xs: <span class="dv">0</span> <span class="op">&lt;=</span> v <span class="op">&lt;</span> <span class="bu">len</span>(xs))],</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
-<p>型の別名とローカル変数の契約は単項述語を使います。<code>count: Nat = 0</code>
-のようなローカル宣言は、その後の <code>count</code> へのすべての代入が
-<code>Nat</code>
-を満たすことを要求します。引数の契約は入口の値のみを制約します。関数のすべての引数と戻り値には型注釈が必要です。ローカル型は推論できます。</p>
-<h2 id="literal-contracts-and-fixed-tuples">Literal
-の契約と固定長タプル</h2>
-<p><code>Literal</code>
-は、基底型と許可する値を制限する契約になります。同じ基底型を持つ、空でない
-int、bool、str、None
-のリテラル集合を使います。符号付き整数、静的な別名、引用した注釈にも対応します。通常の制限のもとで、Literal
-を
-Annotated、省略可能値の内容、タプルのフィールド、スカラー型のコンテナー要素と組み合わせられます。</p>
+<p>追加の引数は関数入口の入力を指定します。引数の契約では先行する引数、戻り値の契約では全引数を参照できます。本体で再代入しても、契約内の入口の値は変わりません。</p>
+<p>型エイリアスとローカル宣言の述語は引数を1つ取ります。<code>count: Nat = 0</code>
+などのローカル契約は後の代入にも適用します。引数の契約は入口だけを制約します。関数の引数と戻り値には型が必要です。ローカルの型は推論できます。</p>
+<h2 id="literal-contracts-and-fixed-tuples">Literal と固定長タプル</h2>
+<p><code>Literal</code> は値を、同じ基本型の
+<code>int</code>、<code>bool</code>、<code>str</code>、<code>None</code>
+の非空のリテラル集合に制限します。符号付き整数、静的な型エイリアス、引用した型注釈に対応します。</p>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
@@ -62,57 +35,34 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_pair(pair: <span class="bu">tuple</span>[Literal[<span class="dv">0</span>, <span class="dv">1</span>], Mode]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[Mode, Literal[<span class="dv">0</span>, <span class="dv">1</span>]]:</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pair[::<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div>
-<p>基底型の混在（int/bool
-を含む）、計算した引数や名前で指定する引数、enum、入れ子の Literal
-は未対応です。整数 Literal は既存の数値表現を使うため、True は
-<code>Literal[1]</code> を満たします。<code>Literal[True]</code> は bool
-を要求し、整数の1を除外します。契約は代入、return、呼び出し引数で検査します。既定値は定義時に基底型を検査し、呼び出しがその値を使う際に細分化を検査します。</p>
-<p>固定長タプルは、本体と述語で <code>==</code> / <code>!=</code>
-に対応します。等価比較はフィールドごとに行い、bool/int
-の数値比較も使います。省略可能フィールドはタグと存在する内容、入れ子のタプルは再帰的に比較します。リストのフィールドは、再帰的に比較可能な要素のソートが一致する場合、有効な範囲の内容を比較します。マッピングや抽象シーケンスのフィールドの等価比較、リストの要素ソートの不一致は未対応です。長さの異なるタプルや、無関係なスカラーフィールド型は等しくありません。空の積を含め、両オペランドを1回ずつ評価します。</p>
-<p>タプルリテラルと <code>a + b</code>
-は、本体と述語で固定長の積を構築します。スライスは選択したフィールド型を保持し、静的な整数または省略・None
-の境界、0以外の静的ステップに対応します。反転と境界の切り詰めも使えます。結果が空でも元の値を評価し、その証明義務を検査します。タプルの大小比較は共通の要素を辞書式に比較し、等しい接頭部分の後は長さで決めます。共通の要素は、比較可能な整数・bool・文字列・入れ子の固定長タプル、または対応する両要素がNoneである必要があります。先の要素で結果が決まり得る場合でも、省略可能値・コンテナー・互換性のない共通要素は受け入れません。比較の前に両タプルの全要素を評価します。動的な積のスライス境界は未対応です。</p>
-<p>タプルのフィールドには、None、省略可能値、別の固定長タプル、対応するコンテナーを再帰的に含められます。文脈のフィールド型から空コンテナーリテラルの型を解決します。フィールドと要素の細分化は検査され、書き込み可能な
-list/dict
-型はタプル内でも不変です。積の構築、連結、スライスは別名参照の可能性を保持します。書き込んだローカルリストをタプルに保存することは拒否され、リストのフィールドを取り出しても新たな所有権は証明されません。後述のように、検査済みの分離証明書を持つソースの結果を直接アンパックすれば、書き込み可能なリストを移譲できます。</p>
-<p>リストとマッピングは、積、省略可能値、入れ子の対応するコンテナーを含められます。読み取りは入れ子の契約を保持します。入れ子のリストを取り出しても新たな所有権は証明されず、新しく確保した外側のリストにも借用した要素が残る場合があります。</p>
-<h2 id="function-preconditions">関数の事前条件</h2>
+<p>基本型の混在、計算した値や名前、enum、入れ子の <code>Literal</code>
+は未対応です。<code>True</code> は <code>Literal[1]</code>
+を満たしますが、整数の <code>1</code> は <code>Literal[True]</code>
+を満たしません。既定値は定義時に基本型、使用時に細分化の条件を検査します。</p>
+<p>固定長タプルは構築、リテラル添字、連結、等価比較、非ゼロの静的ステップによるスライスに対応します。境界は静的な値、省略、None
+に限ります。空スライスや結果が既知の比較でも、全フィールドを評価して検査します。等価比較は再帰的で、リストのフィールドには比較可能な一致する要素型が必要です。マッピングと抽象シーケンスのフィールドの等価比較は未対応です。長さや無関係なスカラー型が異なる場合は不等になります。</p>
+<p>順序は、互換性のある整数・bool、文字列、入れ子のタプル、対応する None
+のフィールドを辞書式に比較し、同じ接頭辞なら長さで決まります。共通フィールドが省略可能型やコンテナーなら拒否します。入れ子の値を含められますが、別名は残ります。更新したリストをタプルに格納したり、フィールドからリストを取り出したりしても、書き込み可能な所有権は得られません。</p>
+<h2 id="function-preconditions">事前条件</h2>
 <p><code>@requires(lambda ...)</code>
-で、後で宣言した引数も含む、関数入力間の関係を指定します。複数の事前条件は結合します。</p>
+は、後に宣言した引数も含めて入口の入力を制約します。複数の事前条件はすべて満たす必要があります。</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> xs, i: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_at(xs: Sequence[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
-<p>補助パッケージは
-<code>ensures</code>、<code>decreases</code>、<code>reflect</code>
-も公開します。<code>import refinepy as rp</code> と
-<code>from refinepy import requires as pre</code>
-は、<code>@rp.requires(...)</code> と <code>@pre(...)</code>
-で使えます。再エクスポートも解決します。同名のユーザー関数は未対応です。<code>requires</code>、<code>ensures</code>、<code>decreases</code>
-は、通常の必須の位置引数を持つ lambda
-リテラルを、位置引数でちょうど1つ受け取ります。括弧で複数行の条件を書けます。<code>@reflect</code>
-に括弧は付けません。<code>reflect</code> または <code>decreases</code>
-の重複はエラーです。デコレーターの順序で契約は変わりません。</p>
-<p>これらのデコレーターは元の関数と型を保持し、実行時に述語を実行したり契約を検査したりしません。Python
-コードの実行には refinepy
-の補助パッケージが必要ですが、検証器は対象コードをインポートしません。デコレーターは関数定義前にインポートする必要があり、<code>TYPE_CHECKING</code>
-の内部には置けません。その他のデコレーターは未対応です。ループの
-<code>invariant</code>
-コメントは非推奨です。後述する通常のマーカー呼び出しを使ってください。古い関数コメント形式はエラーです。</p>
-<p>呼び出しは、呼び出し先の引数契約と事前条件を満たす必要があります。ソース内の呼び出し先も検査し、その事後条件が呼び出し側で使えるようになります。本体で呼び出せるソース関数が、自動的に述語でも呼び出せるわけではありません。</p>
-<h2 id="function-postconditions">関数の事後条件</h2>
-<p><code>@ensures(lambda result, n: result == n + 1)</code>
-は、<code>-&gt; int</code>
-の注釈付き関数に戻り値の細分化を追加します。lambda
-の最初の引数は結果を表し、追加引数はソースでの再代入にかかわらず、不変の関数入口の入力を指定します。<code>None</code>
-の結果では、<code>-&gt; None</code> の関数に
-<code>@ensures(lambda n: proposition)</code>
-と書き、結果の束縛名を省略します。引数のない
-<code>lambda: proposition</code> は、<code>None</code>
-の結果に限って使えます。戻り値の基底型注釈は必要です。別名も同じ束縛規則に従います。</p>
+<p><code>requires</code>、<code>ensures</code>、<code>decreases</code>
+は、通常の必須位置引数を持つリテラル lambda
+を、位置引数として1つ取ります。インポート、別名、再エクスポートに対応します。同名のユーザー関数は対象外です。<code>@reflect</code>
+に括弧は付けません。<code>reflect</code> と <code>decreases</code>
+の重複はエラーです。デコレーターの順序は影響しません。定義より前に、<code>TYPE_CHECKING</code>
+の外でインポートする必要があります。他のデコレーターと旧式の関数コメント指示は未対応です。</p>
+<p>呼び出しは引数の契約と事前条件を満たす必要があります。ソース内の呼び出し先を検証してから、その戻り値の契約を使います。デコレーターは実行時に述語を評価したり契約を強制したりしません。検証器は対象コードをインポートしません。</p>
+<h2 id="function-postconditions">事後条件</h2>
+<p><code>@ensures</code>
+は、必須の戻り値の基本型に述語を加えます。最初の引数は結果、残りは不変な入口の入力です。<code>-&gt; None</code>
+では結果の引数を省き、<code>lambda: proposition</code> も使えます。</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -123,48 +73,29 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> n: n <span class="op">+</span> <span class="dv">0</span> <span class="op">==</span> n)</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> identity_lemma(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
-<p>複数の <code>ensures</code> と既存の戻り値の <code>Refine</code>
-メタデータは論理積になります。注釈付き細分化と同じ論理の部分集合、独立した定義可能性検査、return
-検査、呼び出し側の契約を使います。事後条件で、自身や別の事後条件の定義可能性を正当化することはできません。lambda
-リテラルには通常の必須引数が必要で、インポート、別名、再エクスポートは事前条件の規則に従います。デコレーターの順序は契約を変えません。補助パッケージは述語を呼び出さず、呼び出し可能な関数の識別、型、注釈、実行時の動作も変更しません。定義を取り込む関数では、引き続き細分化のない戻り値契約が必要で、<code>ensures</code>
-は除外します。減少する再帰の <code>None</code>
-補題では、<code>ensures</code>
-が注釈付き戻り値の細分化と同じ命題を与えます。<a
-href="#inductive-lemmas">帰納補題</a>を参照してください。</p>
+<p>複数の <code>ensures</code> と戻り値の <code>Refine</code>
+はすべて満たす必要があります。各述語は独立に安全に評価できる必要があり、自分や他の述語の定義可能性を正当化できません。定義を取り込む関数には細分化のない戻り値が必要で、<code>ensures</code>
+は使えません。</p>
 <h2 id="termination-measures">停止性の尺度</h2>
-<p>トップレベル関数に <code>@decreases(lambda n: expression)</code>
-を1つ付けられます。lambda の束縛名は入口の引数を指定します。結果は
-<code>int</code>、または細分化のない整数成分からなる空でない固定長タプルリテラルで、述語言語の純粋性の制限に従います。尺度は入口の契約と事前条件のもとで定義される必要があります。各直接自己呼び出しでは、通常どおり引数を束縛し、尺度の定義可能性と厳密な辞書式の減少を証明します。現在と次のすべての成分が非負である必要があります。スカラーなら
+<p>直接再帰する関数には <code>@decreases(lambda ...)</code>
+を1つ付けます。引数は入口の入力です。尺度は整数、または通常の整数からなる非空の平坦なリテラルタプルです。各自己呼び出しで定義可能性と厳密な減少を示し、現在と次の全成分を非負に保ちます。スカラーなら
 <code>0 &lt;= next &lt; entry</code>
-です。最初に異なるタプル成分が減少し、それより後の成分は再設定できます。空・入れ子のタプル、bool
-成分、動的なタプル構築はエラーです。基底ケースの尺度は非負でなくても構いません。<code>max(n, 0)</code>
-と <code>len(xs)</code>
-が使えます。ローカルの再代入は関数入口の尺度を変えません。</p>
-<p>ループでは、直前の通常の <code>decreases(lambda ...)</code>
-呼び出しを使い、必要に応じて <code>invariant(lambda ...)</code>
-を添えます。実行する各反復は、<code>for</code>
-の対象を束縛する前に、束縛済みのループ入口のローカル変数について、定義された非負の尺度を記録します。通常の後戻り辺と
+です。タプルは辞書式に比較し、先行成分が減れば後続成分は増やせます。基底ケースの尺度は非負でなくても構いません。bool
+の成分は拒否します。</p>
+<p>ループ直前の <code>decreases(lambda ...)</code>
+は、現在束縛されているヘッダーのローカル値を使います。通常の反復と
 <code>continue</code>
-の後戻り辺はすべて、その記録に対して定義可能性、非負性、厳密なスカラーまたは辞書式の減少を示す必要があります。<code>break</code>、return、反復0回には減少を要求しません。最後の後戻り辺にも、定義された非負の次の尺度が必要です。<code>max(n - i, 0)</code>
-で負への落ち込みを防げます。入れ子のループはそれぞれ尺度が必要です。未束縛の反復変数や内部のイテレーターカウンターは
-lambda の束縛名にできません。</p>
-<p>全呼び出し先は独立に停止する必要があります。信頼されたモデルと相互再帰は未対応です。停止性の証明を要求する場合、到達不能なものを含め、すべてのループに尺度が必要です。独立した減少証明では、すべての呼び出し結果の契約を無視し、固定した不変条件の定義可能性、初期成立、保持を再検査します。そのため、結果に依存する減少や不変条件は証明未完了になる場合があります。証拠の公開前に、すべてのジェネリック特殊化が通る必要があります。</p>
-<p>ループのない非再帰関数や、全ループに明示的な尺度を持つ非再帰関数も、検査対象の呼び出しの閉包全体が停止すると停止性の証拠を得ます。レポートには
-<code>termination:&lt;identity&gt;:verified;</code>
-の証拠が含まれます。再帰尺度は
-<code>termination-measure-definedness</code> と
-<code>termination-decrease</code>、ループ尺度は
-<code>termination-loop-measure-definedness</code>、<code>termination-loop-nonnegative</code>、後戻り辺がある場合の
-<code>termination-loop-decrease</code>
-を追加します。<code>verified</code>
-だけでは停止性を保証しません。プレイグラウンドは、対象そのものの証拠を使って停止性を明示的に要約します。依存先だけの停止性では、選択した関数を認証できません。<strong>証明の証拠</strong>で元の記録を確認できます。失敗した対象や不確実な対象には、停止性を検証済みとは表示しません。これだけで定義を取り込んだ等式が使えるようになるわけではなく、再帰深度や資源枯渇からの自由も保証しません。<a
-href="docs/specification.html#decreasing-measures">仕様</a>、<a
-href="guide.html#check-recursive-termination">再帰のガイド</a>、<a
-href="guide.html#check-loop-termination">ループのガイド</a>を参照してください。</p>
+では、最終反復も含め、次の尺度が定義可能、非負、かつ厳密に小さいことを示します。<code>break</code>、return、反復0回では減少は不要です。入れ子の各ループにも尺度が必要です。未束縛の
+<code>for</code>
+ターゲットや内部の反復カウンターは引数に指定できません。</p>
+<p>呼び出し先も独立に停止する必要があります。減少は呼び出し結果の契約を使わずに検査するため、結果に依存する減少は未証明になる場合があります。信頼された外部モデルや相互再帰は停止性の根拠にできません。停止性を要求した場合、到達不能なループも含めて全ループに尺度が必要です。</p>
+<p><code>verified</code>
+だけでは正常に戻る場合の契約を保証します。停止性には対象関数とその呼び出し先の証拠が必要です。Python
+の再帰深度や利用可能な資源は保証しません。</p>
 <h2 id="static-assertions">静的アサーション</h2>
-<p>値の契約には <code>Refine(lambda ...)</code>
-を使います。特定のソース位置で検査する命題には <code>Assert</code>
-を使います。</p>
+<p><code>Assert</code>
+は、その位置で命題を検査し、後の代入には契約を課しません。対象は確実に束縛済みの関数ローカル変数です。引用しない注釈に初期値を付けず、<code>Assert</code>
+をちょうど1つ指定します。</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Assert</span>
@@ -173,105 +104,45 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">abs</span>(n)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    x: Annotated[<span class="bu">int</span>, Assert(<span class="kw">lambda</span> value: value <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code></pre></div>
-<p>対象は確実に束縛済みの関数ローカル変数で、注釈には初期化式を付けません。基底型は現在の値と一致する必要があります。その型の既存の
-<code>Refine</code> 述語も検査します。<code>Assert</code>
-メタデータ項目はちょうど1つです。アサーションの繰り返しは可能です。その後の代入に契約を設定したり、既存の宣言契約を置き換えたりはしません。</p>
+<p>基本型は現在の値と一致する必要があり、既存の細分化も検査します。lambda
+の最初の引数は現在の値、追加引数は現在束縛済みのローカル変数です。自由変数としてのローカル参照、既定値、可変長引数は未対応です。後の再代入で確立済みの事実は更新されません。</p>
 <p><code>Assert(lambda v: P(v), using=lambda arg: lemma(arg))</code>
-は、補助する補題も指定します。両方の lambda
-リテラルは、現在の値を表す束縛名で始めます。追加の通常の必須引数は、<code>lambda value, y: value &lt; y</code>
-のように、確実に束縛済みの現在のローカル変数を明示的に指定します。lambda
-ごとに依存リストは異なっても構いません。入口の入力ではなく現在の SSA
-値を参照し、後の再束縛で確立済みの事実は更新されません。既定値、可変長・重複の束縛名、未解決の名前、自由変数としてのローカル取り込みは未対応です。<code>using</code>
-は、列挙した束縛名からの論理引数を使い、戻り値が細分化された
-<code>None</code>
-のソース補題を直接1回呼び出します。検証器は引数と事前条件を検査してから事後条件を取り込み、<code>P</code>
-を証明します。補題の閉包全体について独立した停止性が必要です。通常の部分正当性、外部の信頼されたモデル、ループ、相互再帰、循環したアサーションの証拠では不十分です。補題は、そこから
-<code>P</code>
-が導かれる、より強い命題や異なる命題を示しても構いません。</p>
-<p><code>using</code>
-がない場合、命題は現在の事実と受け入れ済みの定義の等式から導かれる必要があります。どちらも未検査の仮定を与えません。検査の失敗やソルバーの不確実性では検証済みになりません。ローカル注釈は
-Python
-で評価されないため、述語と補題の呼び出しに実行時のコストはありません。補助する関数は通常の実行可能な定義を保持します。</p>
-<p><code>Assert</code>
-は、束縛済みのローカル名の、引用されていない宣言のみの注釈に限ります。引数、戻り値、別名、モジュール注釈、入れ子の型、追加メタデータを持つ注釈には使えません。レポートには
-<code>static-assertion</code> の証明義務と <code>static-lemma:</code>
-の依存の証拠が含まれます。健全性と束縛規則は<a
-href="docs/specification.html#static-assertions">仕様</a>を参照してください。</p>
-<h2 id="reflected-functions-and-lemmas">定義を取り込む関数と補題</h2>
-<p>トップレベル関数に括弧なしの <code>@reflect</code>
-を付けると、検査済みの定義を述語とアサーションで使えます。定義からは、通常のインポートや再エクスポートを含め、他の定義を取り込む関数を呼び出せます。デコレーターは、実行を変えずに元の関数を返します。</p>
-<p>定義にはローカル代入、平坦なアンパック、アサーション、if/elif/else
-分岐、return、必要に応じて docstring を使えます。値のない return
-と末尾への到達は、通常の None
-の型付けに従います。細分化のない対応する入力・結果注釈には、スカラー、None、省略可能値、固定長の積、マッピングを含む対応コンテナーがあります。固定した位置引数・キーワード引数のシグネチャと、対応する不変のリテラル既定値も使えます。構築、積の操作、リストの連結・スライス、省略可能値の検査・内容の取り出し、マッピングの所属・参照・<code>get</code>、既存のスカラー操作、不変定数を使えます。呼び出し側の証明で定義を使う前に、ソース本体を検査し、評価されるすべての読み取り、省略可能値の内容の取り出し、除数が、入力領域全体で安全だと証明する必要があります。</p>
-<p>細分化されたシグネチャ（入れ子の契約を含む）、事前条件、ループ、コンテナーへの書き込み、消去される証明呼び出し、相互再帰、ジェネリック、定義を取り込まない呼び出し、信頼された外部呼び出しは除外します。定義の連鎖が深さ32を超えるか、展開後のシリアライズした項が
-128 KiB を超えると <code>unsupported</code> になります。文の CFG
-展開も128辺に制限します。破棄した計算とアサーションの検査も、元のソース本体の証明義務として残ります。再帰シグネチャには次節の制限が適用されます。</p>
-<p>定義を取り込む呼び出しは、注釈、<code>requires</code>、ループ不変条件、アサーション、本体で使えます。定義が引数を無視する場合でも、すべての引数の評価を検査します。通常の関数契約だけでは、論理で呼び出せる関数にはなりません。</p>
-<p>補題は、戻り値の細分化で命題を記述する通常の検査対象関数です。多くの場合
-<code>Annotated[None, Refine(lambda _, x: ...)]</code>
-を使います。本体はその命題を証明する必要があります。検証済みの補題を呼び出すと、その正常に戻る場合の契約を呼び出し側で使えます。明示的な
-<code>decreases</code> 尺度を持つ、戻り値が細分化された
-<code>None</code>
-の再帰補題は、後述する制限付きの帰納規則に対応します。例は<a
-href="guide.html#prove-an-equation-about-a-function">ガイド</a>、検証の境界は<a
-href="docs/specification.html#reflected-scalar-definitions-and-lemmas">仕様</a>を参照してください。</p>
+は、戻り値が細分化された None
+のソース補題を直接1回呼び出します。引数と事前条件を検査し、補題の全呼び出し先の停止性を独立に証明する必要があります。外部モデル、ループ、相互再帰、循環するアサーションの証拠は静的証明に使えません。<code>using</code>
+を省くと、現在の事実と受け入れ済みの定義から命題を証明します。Python
+はこのローカル注釈を評価しません。引数、戻り値、エイリアス、入れ子の型、モジュール注釈には
+<code>Assert</code> を使えません。</p>
+<h2 id="reflected-functions-and-lemmas">定義の取り込みと補題</h2>
+<p><code>@reflect</code>
+で検査済みの定義を述語から呼び出せます。入力と結果は細分化のない対応型にし、入れ子の細分化、事前条件、<code>ensures</code>
+は使えません。代入、平坦なアンパック、アサーション、分岐、return
+に対応します。ループとコンテナーへの書き込みは未対応です。使わない計算も含め、元の本体と全引数の評価が安全である必要があります。</p>
+<p>補題は、戻り値の契約に命題を記述した検査対象関数です。<code>Annotated[None, Refine(lambda _, x: ...)]</code>
+や <code>-&gt; None</code> と <code>@ensures</code>
+を使います。本体で命題を証明し、呼び出すと正常に戻る場合の契約を使えます。通常の契約だけでは、関数を論理式から呼び出せません。<a
+href="guide.html#prove-an-equation-about-a-function">ガイドの例</a>を参照してください。</p>
 <h2 id="recursive-scalar-reflection">再帰定義の取り込み</h2>
-<p>定義を取り込む関数は、宣言名で自身を呼び出せます。積、省略可能値、対応するコンテナーを含む、細分化のない対応する入力・結果型を使い、本体にループと事前条件を置かず、整数の
+<p>定義を取り込む関数は、宣言名で自身を呼び出せます。入力と結果は細分化のない対応型、本体はループなし、事前条件なしとし、整数の
 <code>decreases</code>
-尺度を明示します。ドライバーは、呼び出し側の証明でテンプレートを使う前に、元の自己呼び出しを検証し、減少を独立に検査します。他の全呼び出し先も検証済みで停止する必要があります。受け入れに失敗したり不確実だったりすると、呼び出し側の等式を使えません。</p>
-<p>再帰定義の添字アクセスは、分岐のガードのもとで、元の本体の安全性検査に通る必要があります。呼び出しは、正規化した未解釈の関数識別を保持します。各問い合わせは、受け入れ済みの1段階の基礎的な定義等式を、スカラーのみのシグネチャなら8層、コンテナーを含めば3層まで追加します。帰納補題の問い合わせは、1層と検査済みの自己呼び出し契約を使います。これらは局所的な具体化であり、全称量化した再帰定義の公理ではありません。</p>
-<p>等式は、積のフィールドと省略可能値のタグを再帰的に保持します。シーケンス結果は長さと有効な要素、マッピング結果は領域と存在する値を比較します。引数のガードと結果の事実は、有効な入れ子のスナップショットと文字列の観測を保持します。内部の等価関係が、ソースのマッピングや抽象シーケンスの比較を可能にするわけではありません。lambda
-の配列引数は領域全体の正確な別名参照を使い、スコープを持つ
-map/要素の適用は未解釈のままです。問い合わせは64個の等式と 128 KiB
-の基礎等式を許可します。既定の展開が大きすぎる場合は1層で再試行し、それでも予算を使い切ると
-<code>analysis-limit</code> を伴う <code>unknown</code> になります。</p>
-<p>関数適用を含む充足可能な問い合わせも、関数の解釈を再構築しないため
+尺度を明示します。等式を使う前に本体の安全性と減少を検証し、他の呼び出し先も検証と停止性が必要です。</p>
+<p>展開はスカラーだけのシグネチャで8層、コンテナーを含む場合は3層までです。残りの呼び出しは未解釈のままなので、偽の等式も含めて
 <code>unknown</code>
-になります。偽の等式の一部も含まれます。保存する1段階の定義と非循環の展開は
-128
-KiB、定義の依存先は32の上限を保持します。再帰の有限展開を受け入れる前の検査には、シリアライズした項について別の
-4 MiB 予算があります。各置換と組み立て結果を検査し、超過は
-<code>unsupported</code>
-にします。展開した項は破棄し、証明の問い合わせは、上記の別の上限を持つ基礎等式を使います。フィボナッチの例（<code>examples/fibonacci/README.md</code>）は、この前検査で分岐する漸化式と検査済みの帰納的加法補題を受け入れます。<code>pair</code>
-内の静的アサーションで直接特殊化し、添字の上限なしで高速倍加法の両方の結果を証明します。相互再帰、別名を介した自己呼び出し、複合型のコンテナー要素は引き続き除外します。非再帰の定義の取り込みは厳密です。</p>
-<p>受け入れに成功すると、<code>reflection:&lt;identity&gt;:verified recursive definition;</code>
-に
-<code>unfolding depth=&lt;depth&gt;; residual calls uninterpreted</code>
-を伴う証拠と、<code>termination:</code> の証拠を記録します。worker
-プロトコル v17
-は、構造的な複合コンテナー値と入れ子の要素の証拠に対応し、完全なモデルを検証します。入れ子の条件は、別々の字句的な束縛名と再帰的な観測検査を保持します。文字列はマッピングのキーを含め、完全なコードポイント列を使います。Python
-のコンテナー要素には対応する複合型を使えます。レポートスキーマ v3
-は変わりません。<a
-href="guide.html#reflect-a-recursive-scalar-function">ガイド</a>、<a
-href="guide.html#reflect-a-recursive-list-function">再帰リストの例</a>、<a
-href="docs/specification.html#recursive-scalar-reflection">仕様</a>を参照してください。</p>
+になる場合があります。展開の制限で受け入れや証明が止まることもあります。相互再帰、別名での自己呼び出し、複合要素を持つコンテナーを含む再帰シグネチャは対象外です。有界展開を超える等式には、検査済みの帰納補題を使います。</p>
 <h2 id="inductive-lemmas">帰納補題</h2>
-<p>細分化された <code>None</code> の結果と、整数または辞書式の
-<code>decreases</code>
-尺度を明示した直接再帰関数は、整礎帰納法で戻り値の命題を証明します。追加の指示は不要です。各自己呼び出しの引数と事前条件を検査し、宣言した戻り値の命題を局所的な帰納仮説として使い、基底ケースと再帰のすべての
+<p>戻り値が細分化された <code>None</code>
+の直接再帰関数は、整数または辞書式の <code>decreases</code>
+尺度で命題を帰納的に証明できます。各自己呼び出しは契約と厳密な減少を満たす必要があり、宣言した戻り値の命題を局所的な帰納仮説として使います。基底ケースと再帰ケースの全
 return
-を証明します。すべての呼び出し結果の要約を消去して、厳密な非負の減少を独立に証明します。依存先はすべて独立に検証済みで停止する必要があり、ループには検査済みの尺度が必要です。定義の取り込みは別に受け入れ、その基礎等式が補題の証明に入る前に検査します。</p>
-<p>成功した証明には
-<code>induction:&lt;identity&gt;:verified return proposition;</code> に
-<code>checked integer descent at every self-call</code>
-を伴う証拠と、<code>termination:</code>
-の証拠が付きます。証拠は呼び出し側とキャッシュ利用にも伝わります。失敗した証明や不確実な証明は、帰納の成功も再利用可能なキャッシュ項目も公開しません。尺度のない補題は、正常に戻る場合の部分正当性を保持し、帰納の証拠は持ちません。分岐ごとの明示的な
-return
-は、合流点で結論の出ない候補述語推論を避けられます。自動帰納探索、相互帰納、任意の帰納的データ型の機能はありません。<a
-href="guide.html#prove-a-list-equation-by-induction">ガイド</a>と<a
-href="docs/specification.html#inductive-lemma-functions">仕様</a>を参照してください。</p>
-<h2 id="containers-and-optional-values">コンテナーと省略可能値</h2>
-<p>要素の契約とコンテナーの契約は、異なる階層に適用します。<code>Sequence[Nat]</code>
-はすべての要素を制約します。以下の外側の述語は、添字が安全になるよう、要素が少なくとも1つあることを要求します。</p>
+で命題を証明します。減少は呼び出し結果の契約から独立に検査します。依存先は検証と停止性、ループは尺度が必要です。定義の取り込みは別途受け入れられる必要があります。</p>
+<p>自動帰納探索と相互帰納は未対応です。尺度なしの補題は、正常に戻る場合の部分正当性だけを保証します。</p>
+<h2 id="containers-and-optional-values">コンテナーと省略可能な値</h2>
+<p>要素の契約はすべての有効な要素、外側の契約はコンテナーを制約します。読み取りには範囲やキーの存在の証明が必要です。シーケンスの負の添字と、<code>T | None</code>・<code>Optional[T]</code>
+の不在検査や型の絞り込みに対応します。</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>NonEmptyNats <span class="op">=</span> Annotated[Sequence[Nat], Refine(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs) <span class="op">&gt;</span> <span class="dv">0</span>)]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first(xs: NonEmptyNats) <span class="op">-&gt;</span> Nat:</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[<span class="dv">0</span>]</span></code></pre></div>
-<p>シーケンスの読み取りには範囲内の添字が必要で、負の添字にも対応します。要素の細分化は、有効なスナップショットの領域全体に適用します。lambda
-の引数は局所的な束縛で、入れ子の論理計算もそのスコープを保持します。辞書の読み取りにはキーの存在が必要です。所属検査で参照をガードするか、<code>get</code>
-を使って省略可能な結果を処理してください。</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections.abc <span class="im">import</span> Mapping</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -280,43 +151,20 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a hr
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> port <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> port</span></code></pre></div>
-<p><code>T | None</code> と <code>Optional[T]</code>
-は、不在の検査と型の絞り込みに対応します。コンテナーは、積、省略可能値、入れ子のコンテナーを含む、対応する要素や値を持ちます。排他的なローカルリストの認証があれば、単独の
-<code>append</code> /
-<code>extend</code>、<code>+=</code>、整数の要素代入にも対応します。入力や共有リストへの書き込み、<code>pop</code>、スライス代入、辞書の更新は未対応です。<a
-href="docs/specification.html#exclusive-local-list-writes">排他的なローカルリスト</a>を参照してください。</p>
-<p>リストを返すソースヘルパーは、検査済みの確保証明書を移譲できます。呼び出し側は、1つのローカル名で新しい結果に追加・拡張・更新できます。すべての
-return
-と代入は確保元の情報を保つ必要があり、両分岐と全ジェネリック特殊化を検査します。内容が等しいという契約だけでは所有権を確立できません。依存先の失敗、借用・混在した結果、根拠のない再帰の証明書サイクル、信頼されたモデルの確保に関する主張では書き込みを正当化できません。抽象
+<p>新しい共有されていないローカルリストは、単独の
+<code>append</code>・<code>extend</code>、<code>+=</code>、整数添字による代入で更新できます。要素とリスト全体の細分化も検査します。入力・共有リスト、反復中のリストへの書き込み、<code>pop</code>、スライス代入、辞書への書き込みは未対応です。</p>
+<p>新しいリストを返す検査済みのソースヘルパーは、1つのローカル名に書き込み可能な所有権を移せます。独立に確保され、共有のない可変コンテナーのタプルを返すヘルパーなら、<code>left, right = split(xs)</code>
+のような直接の平坦なアンパックでリストの所有権を移せます。借用・共有フィールド、先にタプルを保存する操作、入れ子のアンパックでは所有権を得られません。内容が等しい契約だけでは不十分で、全依存先と戻り値の全選択肢の検証が必要です。抽象
+Sequence と省略可能な戻り値は所有権を移しません。</p>
+<p>要素には対応するタプル、省略可能な値、入れ子のコンテナーを使えます。外側のリストを所有しても、取り出した内側のリストには書き込めません。更新した別のローカルリストを要素として格納すると拒否します。リストの等価比較は、細分化が異なっても、再帰的に比較可能な一致するスカラー、省略可能型、タプル、リストの要素型に対応します。抽象
 Sequence
-と省略可能な結果は証明書を移譲しません。入力と使用中のイテレーターの保護は継続します。証明書の探索は、1回につき異なるソース関数を最大64個訪問し、上限で保守的に停止します。レポートは、依存先の検証成功後にのみ
-<code>ownership:&lt;identity&gt;:fresh-list-result; checked source allocation and aliases</code>
-を公開します。この証拠は停止性を意味しません。<a
-href="guide.html#build-and-update-a-local-list">ガイド</a>を参照してください。</p>
-<p>固定長タプルを返すソースヘルパーは、代わりに分離証明書を確立できます。到達可能な可変コンテナーがすべて確保され、各フィールドの参照グラフが互いに交わらないことを示します。直接の平坦なアンパック（<code>left, right = split(xs)</code>）でリストへの書き込みが許可されます。転送、インポートしたヘルパー、定義を取り込む呼び出し、全ジェネリック特殊化は、検査済みの依存を保持します。条件付き結果は、すべての選択肢の認証が必要です。同じ参照の繰り返し、借用フィールド、入れ子の共有は分離を妨げます。タプルの先行保存、フィールドの取り出し、入れ子のアンパックでは所有権を移せません。成功したレポートは
-<code>ownership:&lt;identity&gt;:isolated-product-result; checked source allocations and disjoint fields</code>
-を公開します。同じ64関数の探索上限が適用され、ループの確保履歴には64回の収束上限があります。<a
-href="guide.html#build-and-update-a-local-list">ガイドの例</a>を参照してください。</p>
-<p>入れ子のコンテナーでは、リスト結果の証明書は外側のリストのみを記述します。新しく保存する要素に、別の書き込み済みローカルリストを残してはいけません。内側のリストを取り出しても排他性は確立しません。リストの等価比較は、スカラー、省略可能値、積、リストの要素を再帰的に許可します。抽象
-Sequence
-とマッピングの要素は、積の内部に入れ子になっていても比較を妨げます。</p>
-<p>再帰的に比較可能な要素のソートが一致すれば、リスト内容の等価比較では要素の細分化が異なっても構いません。例えば
-<code>list[Nat]</code> と <code>list[int]</code>
-を比較できます。これは、細分化のないリストを細分化された書き込み可能リストに代入できるという意味ではありません。連結には、引き続き一致する要素契約が必要です。ローカルリストの例は、厳密な範囲構築、偶数の完全かつ安定した抽出、他のすべての位置を保持する置換を証明します。<a
-href="docs/specification.html#exclusive-local-list-writes">仕様</a>を参照してください。</p>
+とマッピングの要素は比較できません。連結には一致する要素契約が必要で、書き込み可能なコンテナー型は不変です。<a
+href="guide.html#build-and-update-a-local-list">ガイド</a>に例があります。</p>
 <h2 id="loops-and-assertions">ループとアサーション</h2>
-<p><code>if</code>、<code>while</code>、対応する <code>for</code>
-ループは、通常の Python
-として使います。自動推論でループの性質を示せない場合、<code>invariant(lambda ...)</code>
-をループ直前に置きます。lambda
-の束縛名は、関数入口の値ではなく、現在のループ入口のローカル変数を指定します。停止性を要求するには
-<code>decreases(lambda ...)</code>
-を1つ使います。信頼された補助パッケージの識別は、インポート、別名、再エクスポートを通して解決します。</p>
-<p>これらの式文は、位置引数でちょうど1つの lambda
-リテラルを受け取ります。名前付き
-callable、既定値、可変長の束縛名、キーワード引数はエラーです。連続するマーカーは、同じブロックの次のループに付属します。別の文を挟むと切り離され、エラーになります。空行と通常のコメントは挟めます。マーカー呼び出しは実行時に
-lambda
-を作りますが、呼び出したり契約を強制したりはしません。ソースの呼び出し依存にもなりません。旧不変条件コメント形式は非推奨ですが、互換性のため受け入れます。</p>
+<p>推論で必要な性質を示せない場合は、ループの直前に
+<code>invariant(lambda ...)</code>
+を置きます。引数は現在のヘッダーのローカル値です。停止性を要求するには
+<code>decreases(lambda ...)</code> を1つ加えます。</p>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> invariant, decreases</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -327,13 +175,12 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> n:</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i</span></code></pre></div>
-<p>不変条件はループ前と各反復後に成立する必要があります。検査されるものであり、未検査の仮定として受け入れません。<code>assert</code>
-条件も証明義務で、次節の述語言語を使う必要があります。</p>
-<h2 id="supported-forms-and-limits">対応する形式と制限</h2>
-<p>ソルバーモデルの再構築は、配列の既定値、書き込み、認証された区分定数領域を完全に保持します。ネイティブ配列ごとに書き込み4,096個、構造の深さ128、問い合わせの束縛ごとに復号65,536ステップまで許可します。文字列も1文字列あたり4,096コードポイントまで完全に再構築し、マッピングのキーは文字列の内容で比較します。未対応の表現や制限の超過は
-<code>unknown</code> になり、サンプリングした反例にはしません。<a
-href="docs/specification.html#model-validation-and-execution-witnesses">モデル検証</a>を参照してください。モデルの検査は、保存表現と観測可能な値を区別します。不在の省略可能値の内容や領域外の項目も有効な型と数値形式が必要です。一方、ソース領域の制約は存在状態と領域のガードに従います。</p>
-<p>ここで「対応」とは、列挙する制限のもとで形式を受け入れることです。その形式で書いたすべての性質を証明できるという保証ではありません。</p>
+<p>各マーカーは必須引数を持つリテラル lambda
+を位置引数として1つ取ります。同じブロックで連続するマーカーは次のループに適用されます。間にコメントや空行は置けますが、他の文は置けません。インポート、別名、再エクスポートに対応します。実行時に述語は評価しません。旧式の不変条件コメントは受け付けますが非推奨です。</p>
+<p>不変条件は開始時と各反復後に検査します。<code>assert</code>
+も証明義務であり、対応する述語の構文を使う必要があります。</p>
+<h2 id="supported-forms-and-limits">対応構文と制限</h2>
+<p>構文が対応範囲内でも、すべての性質を証明できるとは限りません。未対応の構文、ソルバーの不確実性、解析やモデル復元の上限到達を検証成功として扱いません。</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -448,11 +295,10 @@ href="docs/specification.html#model-validation-and-execution-witnesses">モデ�
 </tr>
 </tbody>
 </table>
-<h2 id="predicate-expressions-and-built-ins">述語式と組み込み関数</h2>
+<h2 id="predicate-expressions-and-built-ins">述語と組み込み関数</h2>
 <p>述語は bool
-を返し、宣言された型と確立した契約のもとで安全に評価できる必要があります。例えば
-<code>len(xs) &gt; 0 and xs[0] &gt;= 0</code>
-のような短絡ガードで、読み取りを正当化できます。</p>
+を返し、宣言型と確立済みの事実の下で安全に評価できる必要があります。<code>len(xs) &gt; 0 and xs[0] &gt;= 0</code>
+のように短絡ガードで読み取りを正当化できます。</p>
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -496,27 +342,19 @@ href="docs/specification.html#model-validation-and-execution-witnesses">モデ�
 </tr>
 </tbody>
 </table>
-<p>モデル化したリストの述語では、リストリテラル、<code>+</code>、<code>==</code>、<code>!=</code>、定数ステップのスライスを許可します。空リストには文脈からの要素型が必要です。等価比較は長さとすべての有効な要素を比較し、領域外の配列値を無視します。内部のスナップショット制約は完全な配列の等価関係を保持します。<a
-href="guide.html#prove-a-list-equation">ガイドのリスト等式</a>と<a
-href="docs/specification.html#list-content-equality-and-concatenation">リストモデル</a>を参照してください。</p>
-<p>タプルリテラル、連結、静的スライスも、述語と消去される補題の引数で許可します。比較結果が静的に分かる場合や、スライスがフィールドを選ばない場合も、各フィールドが安全である必要があります。述語内では、定義を取り込まないユーザー定義述語の呼び出し、明示的な量化、マッピング構築、内包表記を許可しません。本体でリテラルや呼び出しに対応していても、述語で使えるとは限りません。<code>sum</code>、<code>all</code>、<code>any</code>、<code>sorted</code>、<code>isinstance</code>、<code>int</code>
-/ <code>bool</code> / <code>str</code>
-による変換には対応するモデルがありません。第三者ライブラリーの API
-は、既定では未対応です。</p>
+<p>リストリテラル、等価比較、連結、定数ステップのスライスを使えます。空リストには文脈からの要素型が必要です。タプルの構築、連結、静的スライスも使えますが、全フィールドの安全性を検査します。定義を取り込まないユーザー関数の呼び出し、明示的な量化、マッピング構築、内包表記は述語内では使えません。<code>sum</code>、<code>all</code>、<code>any</code>、<code>sorted</code>、<code>isinstance</code>、スカラー変換、第三者
+API には既定のモデルがありません。</p>
 <h2 id="scope-of-a-result">結果の適用範囲</h2>
-<p>結果の冒頭には、選択した関数の
-<strong>検証済み</strong>、<strong>要確認</strong>、<strong>失敗</strong>
-の件数が表示されます。要確認は
-<code>unproved</code>、<code>unknown</code>、<code>unsupported</code>、失敗は
+<p>検証済みの契約は、入口の契約を満たす入力とモデル化した組み込み実行環境に適用します。モデル化した実行時エラーと正常に戻る場合の契約を検査し、停止性は別の証拠で示します。Python
+の注釈は契約を強制しません。ブラウザーは単一モジュールを Python
+を実行せずに読みます。パッケージ解決と外部モデル登録はネイティブのワークフローで扱います。ページ移動には
+<code>#/playground</code>、<code>#/guide</code>、<code>#/reference</code>
+と見出しへのリンクを使えます。サンプルは
+<code>#/playground/&lt;sample&gt;</code>
+で指定し、<code>bounds</code>、<code>fibonacci</code>、<code>squareRoot</code>、<code>series</code>、<code>rounding</code>、<code>division</code>
+を使えます。</p>
+<p><strong>要確認</strong>は
+<code>unproved</code>、<code>unknown</code>、<code>unsupported</code>、<strong>失敗</strong>は
 <code>counterexample</code>、<code>error</code>
-をまとめたものです。個別の意味は各カードに残ります。エラーは必ずしもソースのバグを意味しません。レポート全体の診断は別に表示され、診断がある場合は「すべて検証済み」にはなりません。各カードには短い結論と、別の停止性の要約があります。<strong>検証の詳細</strong>を展開すると、ソルバーのコスト、検証した範囲、推論した不変条件、ソースの依存先、所有権の記録を含む<strong>証明の証拠</strong>を確認できます。<strong>JSON
-レポート全文</strong>には完全なレポートが残ります。</p>
-<p><code>verified</code>
-は、契約を満たす入力と、モデル化した組み込み実行環境に適用します。モデル化した実行時エラーと、正常に戻る場合の契約を検査します。停止性は、尺度付きで受け入れた呼び出しの閉包についての追加の証拠です。その証拠を得るには、直接再帰に検査済みの整数または辞書式の尺度が必要で、各ループにも独自の尺度が必要です。通常の
-Python 実行時には、注釈は契約を強制しません。</p>
-<p>プレイグラウンドは、Python
-を実行せずに1つのモジュールを読みます。パッケージ解決と外部モデル登録はネイティブのワークフローで行います。内部では
-refinepy が性質の候補を推論し、Z3 で証明義務を検査します。</p>
-<p>境界ケースの詳細は <a href="docs/python-support.html">Python
-対応表</a>と<a
-href="docs/specification.html">仕様</a>を参照してください。このページはそれらの概要であり、対応する部分集合を拡張するものではありません。</p>
+をまとめたものです。個別の状態も表示します。レポート全体に診断がある場合は「すべて検証済み」にはなりません。状態の意味と停止性の要約は<a
+href="guide.html#read-the-results">ガイド</a>を参照してください。</p>

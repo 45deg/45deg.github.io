@@ -3,7 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>refinepy playground</title>
+  <!-- Page metadata -->
+  <title>Guide · refinepy</title>
+  <meta name="description" content="Learn how to write Python refinement contracts, use the refinepy editor, and interpret verification results and termination evidence.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="application-name" content="refinepy">
+  <link rel="canonical" href="https://45deg.github.io/refinepy/guide.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="refinepy">
+  <meta property="og:title" content="Guide · refinepy">
+  <meta property="og:description" content="Learn how to write Python refinement contracts, use the refinepy editor, and interpret verification results and termination evidence.">
+  <meta property="og:url" content="https://45deg.github.io/refinepy/guide.html">
+  <meta property="og:image" content="https://45deg.github.io/refinepy/social-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="refinepy: Python contracts, checked in your browser">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Guide · refinepy">
+  <meta name="twitter:description" content="Learn how to write Python refinement contracts, use the refinepy editor, and interpret verification results and termination evidence.">
+  <meta name="twitter:image" content="https://45deg.github.io/refinepy/social-card.png">
+  <meta name="twitter:image:alt" content="refinepy: Python contracts, checked in your browser">
+  <!-- /Page metadata -->
   <link rel="stylesheet" href="style.css">
   <script src="samples.js" defer></script>
   <script src="app.js" defer></script>
@@ -14,9 +34,9 @@
     <header class="site-header">
       <h1 class="brand">refinepy</h1>
       <nav aria-label="Main navigation" data-i18n-aria="Main navigation">
-        <a href="index.html" aria-current="page" data-i18n="Playground">Playground</a>
-        <a href="guide.html" data-i18n="Guide">Guide</a>
-        <a href="reference.html" data-i18n="Reference">Reference</a>
+        <a href="#/playground" aria-current="page" data-i18n="Playground">Playground</a>
+        <a href="#/guide" data-i18n="Guide">Guide</a>
+        <a href="#/reference" data-i18n="Reference">Reference</a>
       </nav>
       <div class="language-switch" role="group" aria-label="Display language" data-i18n-aria="Display language">
         <button type="button" data-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
@@ -40,7 +60,6 @@
             </optgroup>
           </select>
         </label>
-        <button type="button" id="load" data-i18n="Load example">Load example</button>
         <label><span data-i18n="Function selector">Function selector</span>
           <input id="selector" value="*" required autocomplete="off" spellcheck="false" aria-describedby="selector-help">
         </label>
@@ -49,12 +68,13 @@
       </div>
       <p id="selector-help" data-i18n class="note">Use a function name or * for all annotated functions in playground.py. Loading an example replaces the editor contents.</p>
       <div class="panes">
-        <section aria-labelledby="source-title">
+        <section id="code-panel" aria-labelledby="source-title">
           <h2 id="source-title">playground.py <span>Python 3.12</span></h2>
           <div id="source" tabindex="-1"></div>
           <p id="editor-help" data-i18n class="note">Tab moves focus. Use Ctrl+] / Cmd+] to indent. Ctrl+F / Cmd+F searches the source.</p>
         </section>
-        <section class="results-pane" aria-labelledby="results-title">
+        <div id="pane-resizer" class="resizer width-resizer" role="separator" tabindex="0" aria-label="Resize code and results" data-i18n-aria="Resize code and results" aria-orientation="vertical" aria-controls="code-panel results-panel" aria-valuemin="30" aria-valuemax="70" aria-valuenow="60" aria-describedby="resize-help"></div>
+        <section id="results-panel" class="results-pane" aria-labelledby="results-title">
           <h2 id="results-title" data-i18n="Results">Results</h2>
           <p id="status" role="status" aria-live="polite">Ready to verify.</p>
           <div id="results" aria-busy="false"></div>
@@ -63,7 +83,9 @@
             <pre id="report"></pre>
           </details>
         </section>
+        <div id="height-resizer" class="resizer height-resizer" role="separator" tabindex="0" aria-label="Resize panel height" data-i18n-aria="Resize panel height" aria-orientation="horizontal" aria-controls="code-panel results-panel" aria-valuemin="280" aria-valuemax="1000" aria-valuenow="520" aria-describedby="resize-help"></div>
       </div>
+      <p id="resize-help" class="visually-hidden" data-i18n="Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.">Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.</p>
     </form>
     </div>
     <article id="content" class="documentation" tabindex="-1" hidden></article>

@@ -39,12 +39,12 @@ button:disabled { cursor: default; opacity: .6; }
 .skip-link { position: absolute; top: -5rem; left: 1rem; padding: .5rem; background: var(--background); z-index: 10; }
 .skip-link:focus { top: .5rem; }
 #selector-help { margin: 0; padding: .45rem 1rem; border-bottom: 1px solid var(--border); }
-.panes { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); min-height: calc(100dvh - 10rem); }
+.panes { display: grid; grid-template-columns: minmax(0, var(--code-share, 3fr)) 12px minmax(0, var(--results-share, 2fr)); min-height: calc(100dvh - 10rem); }
 section { min-width: 0; }
 h2 { font-size: .9rem; font-weight: 600; margin: 0; padding: .65rem 1rem; border-bottom: 1px solid var(--border); }
 h2 span { float: right; font-weight: 400; color: var(--muted); }
 .results-pane { border-left: 1px solid var(--border); }
-#source .cm-editor { height: max(28rem, calc(100dvh - 14rem)); font-size: .9rem; }
+#source .cm-editor { height: var(--panel-height, max(28rem, calc(100dvh - 14rem))); font-size: .9rem; }
 #source .cm-scroller { overflow: auto; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; line-height: 1.6; }
 #source .cm-content { padding: .7rem 0; }
 #source .cm-gutters { background: var(--surface); color: var(--muted); border: 0; }
@@ -67,7 +67,7 @@ a { color: var(--accent); }
 @media (max-width: 800px) {
   .panes { grid-template-columns: 1fr; }
   .results-pane { border-left: 0; border-top: 1px solid var(--border); }
-  #source .cm-editor { height: 25rem; }
+  #source .cm-editor { height: var(--panel-height, 25rem); }
   .site-header { flex-wrap: wrap; }
   .site-header { gap: 1rem; }
   .site-header nav { gap: 1rem; order: 1; flex-basis: 100%; }
@@ -121,3 +121,16 @@ a { color: var(--accent); }
 .result-card > p:nth-of-type(2) { color: var(--muted); }
 .result-card > details { border-top: 1px solid var(--border); padding-top: .6rem; font-size: .85rem; }
 .result-review, .result-failed { border-left: 4px solid var(--text); }
+
+/* Separators preserve the original workspace styling and remain keyboard operable. */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.resizer { touch-action: none; user-select: none; display: flex; align-items: center; justify-content: center; background: var(--surface); }
+.resizer::before { content: ""; background: var(--border); }
+.width-resizer { cursor: col-resize; }
+.width-resizer::before { width: 2px; height: 36px; }
+.height-resizer { grid-column: 1 / -1; height: 16px; cursor: row-resize; border-top: 1px solid var(--border); }
+.height-resizer::before { width: 48px; height: 2px; }
+.resizer:hover::before, .resizer:focus-visible::before { background: var(--text); }
+.resizer:focus-visible { outline-offset: -3px; }
+.resizing { user-select: none; }
+@media (max-width: 800px) { .width-resizer { display: none; } }

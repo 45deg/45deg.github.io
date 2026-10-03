@@ -1,40 +1,61 @@
 (() => {
   // route.js
+  var pages = { "": "playground", "index.html": "playground", "guide.html": "guide", "reference.html": "reference" };
+  var samples = /* @__PURE__ */ new Set(["bounds", "fibonacci", "squareRoot", "series", "rounding", "division"]);
+  var names = /* @__PURE__ */ new Set(["playground", "guide", "reference"]);
   function routeFor(href, baseHref) {
-    const base2 = new URL(baseHref);
-    const url = new URL(href, base2);
-    if (url.origin !== base2.origin || !url.pathname.startsWith(base2.pathname)) return null;
-    const path = url.pathname.slice(base2.pathname.length);
-    const page = { "": "playground", "index.html": "playground", "guide.html": "guide", "reference.html": "reference" };
-    return Object.hasOwn(page, path) ? { page: page[path], hash: url.hash } : null;
+    const base3 = new URL(baseHref);
+    const url = new URL(href, base3);
+    if (url.origin !== base3.origin || !url.pathname.startsWith(base3.pathname)) return null;
+    const path = url.pathname.slice(base3.pathname.length);
+    if (!Object.hasOwn(pages, path)) return null;
+    const match = /^#\/?(playground|guide|reference)(?:\/(.*))?$/.exec(url.hash);
+    if (match) {
+      const [sample, ...section] = (match[2] ?? "").split("/");
+      if (match[1] === "playground" && samples.has(sample)) {
+        return { page: "playground", sample, hash: section.length ? `#${section.join("/")}` : "" };
+      }
+      return { page: match[1], hash: match[2] ? `#${match[2]}` : "" };
+    }
+    if (url.hash.startsWith("#/")) return null;
+    return { page: pages[path], hash: url.hash };
+  }
+  function hrefFor({ page, sample, hash: hash2 = "" }, baseHref) {
+    if (!names.has(page)) throw new Error("Unknown page");
+    if (sample !== void 0 && (page !== "playground" || !samples.has(sample))) throw new Error("Unknown sample");
+    return new URL(`#/${page}${sample ? `/${sample}` : ""}${hash2 ? `/${hash2.slice(1)}` : ""}`, baseHref).href;
   }
 
   // navigation.js
-  function createNavigation({ playground, content: content2, language: language3, translate: translate2 }) {
+  function createNavigation({ playground, content: content2, language: language3, translate: translate2, onRoute = () => {
+  } }) {
     const cache2 = /* @__PURE__ */ new Map();
     let revision = 0;
-    const base2 = new URL(".", location.href);
+    let displayedHref = null;
+    const base3 = new URL(".", location.href);
     const links = [...document.querySelectorAll(".site-header nav a")];
     async function show({ focus = false, scroll = false } = {}) {
       const current = ++revision;
-      const route = routeFor(location.href, base2.href);
+      displayedHref = location.href;
+      const route = routeFor(location.href, base3.href);
       const page = route?.page ?? "playground";
       const locale = language3();
       for (const link of links) {
-        if (routeFor(link.href, base2.href)?.page === page) link.setAttribute("aria-current", "page");
+        if (routeFor(link.href, base3.href)?.page === page) link.setAttribute("aria-current", "page");
         else link.removeAttribute("aria-current");
       }
       playground.hidden = page !== "playground";
       content2.hidden = page === "playground";
-      document.querySelector(".skip-link").href = page === "playground" ? "#source" : "#content";
+      document.querySelector(".skip-link").href = hrefFor({ ...route, page, hash: page === "playground" ? "#source" : "#content" }, base3.href);
       document.querySelector(".skip-link").textContent = translate2(page === "playground" ? "Skip to editor" : "Skip to content");
       document.title = `${translate2(page === "playground" ? "Playground" : page === "guide" ? "Guide" : "Reference")} \xB7 refinepy`;
+      onRoute(page, route);
       if (page === "playground") {
         content2.removeAttribute("aria-busy");
       } else {
         content2.setAttribute("aria-busy", "true");
         content2.textContent = translate2("Loading documentation\u2026");
-        const url = new URL(`content/${page}.${locale}.html`, base2);
+        const url = new URL(`content/${page}.${locale}.html`, base3);
         try {
           if (!cache2.has(url.href)) {
             const response = await fetch(url);
@@ -50,7 +71,7 @@
         content2.removeAttribute("aria-busy");
       }
       if (current !== revision) return;
-      const hash2 = location.hash;
+      const hash2 = route?.hash ?? "";
       let target = null;
       try {
         target = hash2 ? document.getElementById(decodeURIComponent(hash2.slice(1))) : null;
@@ -63,20 +84,147 @@
     document.addEventListener("click", (event) => {
       const link = event.target.closest("a[href]");
       if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute("download") || link.target && link.target !== "_self") return;
-      const route = routeFor(link.href, base2.href);
+      const raw = link.getAttribute("href");
+      const route = raw?.startsWith("#") && !raw.startsWith("#/") && !/^#\/?(playground|guide|reference)(?:\/|$)/.test(raw) ? { ...routeFor(location.href, base3.href), page: routeFor(location.href, base3.href)?.page ?? "playground", hash: raw } : routeFor(link.href, base3.href);
       if (!route) return;
       event.preventDefault();
-      history.pushState(null, "", link.href);
+      history.pushState(null, "", hrefFor(route, base3.href));
       void show({ focus: true, scroll: true });
     });
-    window.addEventListener("popstate", () => {
-      void show({ focus: true, scroll: true });
-    });
-    return { refresh: () => show() };
+    const addressChanged = () => {
+      if (displayedHref !== location.href) void show({ focus: true, scroll: true });
+    };
+    window.addEventListener("popstate", addressChanged);
+    window.addEventListener("hashchange", addressChanged);
+    return {
+      refresh: () => show(),
+      go: (route) => {
+        history.pushState(null, "", hrefFor(route, base3.href));
+        return show();
+      }
+    };
+  }
+
+  // layout.js
+  function createPaneLayout(panes, widthHandle, heightHandle) {
+    const narrow = window.matchMedia("(max-width: 800px)");
+    let share = 60;
+    let height = null;
+    let drag = null;
+    function setShare(value) {
+      share = Math.max(30, Math.min(70, value));
+      panes.style.setProperty("--code-share", `${share}fr`);
+      panes.style.setProperty("--results-share", `${100 - share}fr`);
+      widthHandle.setAttribute("aria-valuenow", String(Math.round(share)));
+    }
+    function setHeight(value) {
+      height = Math.max(280, Math.min(1e3, value));
+      panes.style.setProperty("--panel-height", `${height}px`);
+      heightHandle.setAttribute("aria-valuenow", String(Math.round(height)));
+    }
+    function endDrag() {
+      if (!drag) return;
+      const { handle, pointerId } = drag;
+      drag = null;
+      panes.classList.remove("resizing");
+      if (handle.hasPointerCapture(pointerId)) handle.releasePointerCapture(pointerId);
+    }
+    function syncBreakpoint() {
+      endDrag();
+      widthHandle.hidden = narrow.matches;
+      widthHandle.tabIndex = narrow.matches ? -1 : 0;
+      if (height === null) heightHandle.setAttribute("aria-valuenow", String(narrow.matches ? 400 : Math.max(448, window.innerHeight - 224)));
+    }
+    function resetHeight() {
+      height = null;
+      panes.style.removeProperty("--panel-height");
+      syncBreakpoint();
+    }
+    for (const [handle, axis] of [[widthHandle, "width"], [heightHandle, "height"]]) {
+      handle.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || axis === "width" && narrow.matches) return;
+        event.preventDefault();
+        endDrag();
+        handle.focus({ preventScroll: true });
+        drag = {
+          handle,
+          axis,
+          pointerId: event.pointerId,
+          y: event.clientY,
+          height: Number(heightHandle.getAttribute("aria-valuenow"))
+        };
+        handle.setPointerCapture(event.pointerId);
+        panes.classList.add("resizing");
+      });
+      handle.addEventListener("pointermove", (event) => {
+        if (!drag || drag.handle !== handle || drag.pointerId !== event.pointerId) return;
+        if (axis === "width") {
+          const box = panes.getBoundingClientRect();
+          const available = box.width - handle.getBoundingClientRect().width;
+          if (available > 0) setShare(100 * (event.clientX - box.left - handle.getBoundingClientRect().width / 2) / available);
+        } else setHeight(drag.height + event.clientY - drag.y);
+      });
+      for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) {
+        handle.addEventListener(event, (event2) => {
+          if (drag?.handle === handle && drag.pointerId === event2.pointerId) endDrag();
+        });
+      }
+      handle.addEventListener("dblclick", () => {
+        if (axis === "width") setShare(60);
+        else resetHeight();
+      });
+      handle.addEventListener("keydown", (event) => {
+        if (axis === "width" && narrow.matches) return;
+        const negative = axis === "width" ? "ArrowLeft" : "ArrowUp";
+        const positive = axis === "width" ? "ArrowRight" : "ArrowDown";
+        const min = axis === "width" ? 30 : 280;
+        const max = axis === "width" ? 70 : 1e3;
+        const step = (axis === "width" ? 2 : 20) * (event.shiftKey ? 5 : 1);
+        const current = axis === "width" ? share : Number(heightHandle.getAttribute("aria-valuenow"));
+        const value = event.key === "Home" ? min : event.key === "End" ? max : event.key === negative ? current - step : event.key === positive ? current + step : null;
+        if (value === null) return;
+        event.preventDefault();
+        if (axis === "width") setShare(value);
+        else setHeight(value);
+      });
+    }
+    window.addEventListener("blur", endDrag);
+    window.addEventListener("resize", syncBreakpoint);
+    narrow.addEventListener("change", syncBreakpoint);
+    setShare(share);
+    syncBreakpoint();
+  }
+
+  // metadata.js
+  var base = "https://45deg.github.io/refinepy/";
+  var pages2 = {
+    playground: { path: "", title: "refinepy Playground \xB7 Python refinement types", japaneseTitle: "refinepy \u30D7\u30EC\u30A4\u30B0\u30E9\u30A6\u30F3\u30C9 \xB7 Python \u306E\u7D30\u5206\u578B", description: "Edit Python code and verify refinement-type contracts with Z3 in your browser. Explore preconditions, postconditions, counterexamples, and termination checks." },
+    guide: { path: "guide.html", title: "Guide \xB7 refinepy", japaneseTitle: "\u30AC\u30A4\u30C9 \xB7 refinepy", description: "Learn how to write Python refinement contracts, use the refinepy editor, and interpret verification results and termination evidence." },
+    reference: { path: "reference.html", title: "Reference \xB7 refinepy", japaneseTitle: "\u30EA\u30D5\u30A1\u30EC\u30F3\u30B9 \xB7 refinepy", description: "Reference for refinepy's supported Python syntax, refinement contracts, preconditions, postconditions, reflection, and termination measures." }
+  };
+  function pageMetadata(page = "playground", language3 = "en") {
+    const data = pages2[page] ?? pages2.playground;
+    return { title: language3 === "ja" ? data.japaneseTitle : data.title, description: data.description, url: base + data.path, image: base + "social-card.png" };
+  }
+  function updatePageMetadata(page, language3) {
+    const data = pageMetadata(page, language3);
+    document.title = data.title;
+    for (const [selector2, attribute, value] of [
+      ['link[rel="canonical"]', "href", data.url],
+      ['meta[name="description"]', "content", data.description],
+      ['meta[property="og:title"]', "content", data.title],
+      ['meta[property="og:description"]', "content", data.description],
+      ['meta[property="og:url"]', "content", data.url],
+      ['meta[name="twitter:title"]', "content", data.title],
+      ['meta[name="twitter:description"]', "content", data.description]
+    ]) document.querySelector(selector2)?.setAttribute(attribute, value);
   }
 
   // i18n.js
   var japanese = {
+    "Resize code and results": "\u30B3\u30FC\u30C9\u3068\u691C\u8A3C\u7D50\u679C\u306E\u5E45\u3092\u8ABF\u6574",
+    "Resize panel height": "\u30D1\u30CD\u30EB\u306E\u9AD8\u3055\u3092\u8ABF\u6574",
+    "Drag the divider to resize. Arrow keys adjust it; Home and End reach the limits. Double-click to reset.": "\u5883\u754C\u3092\u30C9\u30E9\u30C3\u30B0\u3057\u3066\u30B5\u30A4\u30BA\u3092\u5909\u66F4\u3067\u304D\u307E\u3059\u3002\u77E2\u5370\u30AD\u30FC\u3067\u8ABF\u6574\u3001Home\u30FBEnd \u3067\u6700\u5C0F\u30FB\u6700\u5927\u3001\u30C0\u30D6\u30EB\u30AF\u30EA\u30C3\u30AF\u3067\u521D\u671F\u5024\u306B\u623B\u308A\u307E\u3059\u3002",
     "refinepy playground": "refinepy \u30D7\u30EC\u30A4\u30B0\u30E9\u30A6\u30F3\u30C9",
     "Skip to content": "\u672C\u6587\u3078\u79FB\u52D5",
     "Loading documentation\u2026": "\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3092\u8AAD\u307F\u8FBC\u3093\u3067\u3044\u307E\u3059\u2026",
@@ -96,7 +244,6 @@
     "Series sums and their closed form": "\u6570\u5217\u306E\u548C\u3068\u9589\u5F62\u5F0F",
     "Exact rounding and rational rescaling": "\u53B3\u5BC6\u306A\u4E38\u3081\u3068\u6709\u7406\u6570\u306B\u3088\u308B\u30B9\u30B1\u30FC\u30EB\u5909\u63DB",
     "Signed quotient and remainder": "\u7B26\u53F7\u4ED8\u304D\u6574\u6570\u306E\u5546\u3068\u4F59\u308A",
-    "Load example": "\u30B5\u30F3\u30D7\u30EB\u3092\u8AAD\u307F\u8FBC\u3080",
     "Function selector": "\u691C\u8A3C\u3059\u308B\u95A2\u6570",
     "Verify": "\u691C\u8A3C",
     "Cancel": "\u30AD\u30E3\u30F3\u30BB\u30EB",
@@ -143,6 +290,10 @@
     "unknown": "\u5224\u5B9A\u4E0D\u80FD",
     "unsupported": "\u672A\u5BFE\u5FDC"
   };
+  function initialLanguage(saved, browserLanguage = "") {
+    if (saved === "en" || saved === "ja") return saved;
+    return /^ja(?:-|$)/i.test(browserLanguage) ? "ja" : "en";
+  }
   function translate(text, language3 = "en") {
     return language3 === "ja" && Object.hasOwn(japanese, text) ? japanese[text] : text;
   }
@@ -2011,8 +2162,8 @@
     }
   };
   var Configuration = class _Configuration {
-    constructor(base2, compartments, dynamicSlots, address, staticValues, facets) {
-      this.base = base2;
+    constructor(base3, compartments, dynamicSlots, address, staticValues, facets) {
+      this.base = base3;
       this.compartments = compartments;
       this.dynamicSlots = dynamicSlots;
       this.address = address;
@@ -2029,11 +2180,11 @@
       let addr = this.address[facet.id];
       return addr == null ? facet.default : this.staticValues[addr >> 1];
     }
-    static resolve(base2, compartments, oldState) {
+    static resolve(base3, compartments, oldState) {
       let fields = [];
       let facets = /* @__PURE__ */ Object.create(null);
       let newCompartments = /* @__PURE__ */ new Map();
-      for (let ext of flatten(base2, compartments, newCompartments)) {
+      for (let ext of flatten(base3, compartments, newCompartments)) {
         if (ext instanceof StateField)
           fields.push(ext);
         else
@@ -2076,7 +2227,7 @@
         }
       }
       let dynamic = dynamicSlots.map((f) => f(address));
-      return new _Configuration(base2, newCompartments, dynamic, address, staticValues, facets);
+      return new _Configuration(base3, newCompartments, dynamic, address, staticValues, facets);
     }
   };
   function flatten(extension, compartments, newCompartments) {
@@ -2528,7 +2679,7 @@
     @internal
     */
     applyTransaction(tr) {
-      let conf = this.config, { base: base2, compartments } = conf;
+      let conf = this.config, { base: base3, compartments } = conf;
       for (let effect of tr.effects) {
         if (effect.is(Compartment.reconfigure)) {
           if (conf) {
@@ -2539,15 +2690,15 @@
           compartments.set(effect.value.compartment, effect.value.extension);
         } else if (effect.is(StateEffect.reconfigure)) {
           conf = null;
-          base2 = effect.value;
+          base3 = effect.value;
         } else if (effect.is(StateEffect.appendConfig)) {
           conf = null;
-          base2 = asArray(base2).concat(effect.value);
+          base3 = asArray(base3).concat(effect.value);
         }
       }
       let startValues;
       if (!conf) {
-        conf = Configuration.resolve(base2, compartments, this);
+        conf = Configuration.resolve(base3, compartments, this);
         let intermediateState = new _EditorState(conf, this.doc, this.selection, conf.dynamicSlots.map(() => null), (state, slot) => slot.reconfigure(state, this), null);
         startValues = intermediateState.values;
       } else {
@@ -3811,7 +3962,7 @@
   };
 
   // node_modules/.pnpm/w3c-keyname@2.2.8/node_modules/w3c-keyname/index.js
-  var base = {
+  var base2 = {
     8: "Backspace",
     9: "Tab",
     10: "Enter",
@@ -3893,20 +4044,20 @@
   };
   var mac = typeof navigator != "undefined" && /Mac/.test(navigator.platform);
   var ie = typeof navigator != "undefined" && /MSIE \d|Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(navigator.userAgent);
-  for (i = 0; i < 10; i++) base[48 + i] = base[96 + i] = String(i);
+  for (i = 0; i < 10; i++) base2[48 + i] = base2[96 + i] = String(i);
   var i;
-  for (i = 1; i <= 24; i++) base[i + 111] = "F" + i;
+  for (i = 1; i <= 24; i++) base2[i + 111] = "F" + i;
   var i;
   for (i = 65; i <= 90; i++) {
-    base[i] = String.fromCharCode(i + 32);
+    base2[i] = String.fromCharCode(i + 32);
     shift[i] = String.fromCharCode(i);
   }
   var i;
-  for (code in base) if (!shift.hasOwnProperty(code)) shift[code] = base[code];
+  for (code in base2) if (!shift.hasOwnProperty(code)) shift[code] = base2[code];
   var code;
   function keyName(event) {
     var ignoreKey = mac && event.metaKey && event.shiftKey && !event.ctrlKey && !event.altKey || ie && event.shiftKey && event.key && event.key.length == 1 || event.key == "Unidentified";
-    var name2 = !ignoreKey && event.key || (event.shiftKey ? shift : base)[event.keyCode] || event.key || "Unidentified";
+    var name2 = !ignoreKey && event.key || (event.shiftKey ? shift : base2)[event.keyCode] || event.key || "Unidentified";
     if (name2 == "Esc") name2 = "Escape";
     if (name2 == "Del") name2 = "Delete";
     if (name2 == "Left") name2 = "ArrowLeft";
@@ -8052,11 +8203,11 @@
     }
     return result;
   }
-  function selectionFromPoints(points, base2) {
+  function selectionFromPoints(points, base3) {
     if (points.length == 0)
       return null;
     let anchor = points[0].pos, head = points.length == 2 ? points[1].pos : anchor;
-    return anchor < 0 || head < 0 ? null : anchor == head ? EditorSelection.create([EditorSelection.cursor(head + base2, -1)]) : EditorSelection.single(anchor + base2, head + base2);
+    return anchor < 0 || head < 0 ? null : anchor == head ? EditorSelection.create([EditorSelection.cursor(head + base3, -1)]) : EditorSelection.single(anchor + base3, head + base3);
   }
   function sameSelPos(selection, range) {
     return range.head == selection.main.head && range.anchor == selection.main.anchor;
@@ -9319,14 +9470,14 @@
     lineAt(value, type, oracle, top2, offset) {
       let rightTop = top2 + this.left.height, rightOffset = offset + this.left.length + this.break;
       let left = type == QueryType.ByHeight ? value < rightTop : value < rightOffset;
-      let base2 = left ? this.left.lineAt(value, type, oracle, top2, offset) : this.right.lineAt(value, type, oracle, rightTop, rightOffset);
-      if (this.break || (left ? base2.to < rightOffset : base2.from > rightOffset))
-        return base2;
+      let base3 = left ? this.left.lineAt(value, type, oracle, top2, offset) : this.right.lineAt(value, type, oracle, rightTop, rightOffset);
+      if (this.break || (left ? base3.to < rightOffset : base3.from > rightOffset))
+        return base3;
       let subQuery = type == QueryType.ByPosNoHeight ? QueryType.ByPosNoHeight : QueryType.ByPos;
       if (left)
-        return base2.join(this.right.lineAt(rightOffset, subQuery, oracle, rightTop, rightOffset));
+        return base3.join(this.right.lineAt(rightOffset, subQuery, oracle, rightTop, rightOffset));
       else
-        return this.left.lineAt(rightOffset, subQuery, oracle, top2, offset).join(base2);
+        return this.left.lineAt(rightOffset, subQuery, oracle, top2, offset).join(base3);
     }
     forEachLine(from, to, oracle, top2, offset, f) {
       let rightTop = top2 + this.left.height, rightOffset = offset + this.left.length + this.break;
@@ -10150,7 +10301,7 @@
   }
   var BigScaler = class _BigScaler {
     constructor(oracle, heightMap, viewports) {
-      let vpHeight = 0, base2 = 0, domBase = 0;
+      let vpHeight = 0, base3 = 0, domBase = 0;
       this.viewports = viewports.map(({ from, to }) => {
         let top2 = heightMap.lineAt(from, QueryType.ByPos, oracle, 0, 0).top;
         let bottom = heightMap.lineAt(to, QueryType.ByPos, oracle, 0, 0).bottom;
@@ -10159,30 +10310,30 @@
       });
       this.scale = (7e6 - vpHeight) / (heightMap.height - vpHeight);
       for (let obj of this.viewports) {
-        obj.domTop = domBase + (obj.top - base2) * this.scale;
+        obj.domTop = domBase + (obj.top - base3) * this.scale;
         domBase = obj.domBottom = obj.domTop + (obj.bottom - obj.top);
-        base2 = obj.bottom;
+        base3 = obj.bottom;
       }
     }
     toDOM(n) {
-      for (let i2 = 0, base2 = 0, domBase = 0; ; i2++) {
+      for (let i2 = 0, base3 = 0, domBase = 0; ; i2++) {
         let vp = i2 < this.viewports.length ? this.viewports[i2] : null;
         if (!vp || n < vp.top)
-          return domBase + (n - base2) * this.scale;
+          return domBase + (n - base3) * this.scale;
         if (n <= vp.bottom)
           return vp.domTop + (n - vp.top);
-        base2 = vp.bottom;
+        base3 = vp.bottom;
         domBase = vp.domBottom;
       }
     }
     fromDOM(n) {
-      for (let i2 = 0, base2 = 0, domBase = 0; ; i2++) {
+      for (let i2 = 0, base3 = 0, domBase = 0; ; i2++) {
         let vp = i2 < this.viewports.length ? this.viewports[i2] : null;
         if (!vp || n < vp.domTop)
-          return base2 + (n - domBase) / this.scale;
+          return base3 + (n - domBase) / this.scale;
         if (n <= vp.domBottom)
           return vp.top + (n - vp.domTop);
-        base2 = vp.bottom;
+        base3 = vp.bottom;
         domBase = vp.domBottom;
       }
     }
@@ -12152,13 +12303,13 @@
       return result;
     }
   };
-  function attrsFromFacet(view, facet, base2) {
+  function attrsFromFacet(view, facet, base3) {
     for (let sources = view.state.facet(facet), i2 = sources.length - 1; i2 >= 0; i2--) {
       let source2 = sources[i2], value = typeof source2 == "function" ? source2(view) : source2;
       if (value)
-        combineAttrs(value, base2);
+        combineAttrs(value, base3);
     }
-    return base2;
+    return base3;
   }
   var currentPlatform = browser.mac ? "mac" : browser.windows ? "win" : browser.linux ? "linux" : "key";
   function normalizeKeyName(name2, platform) {
@@ -12331,7 +12482,7 @@
         handled = true;
       } else if (isChar && (event.altKey || event.metaKey || event.ctrlKey) && // Ctrl-Alt may be used for AltGr on Windows
       !(browser.windows && event.ctrlKey && event.altKey) && // Alt-combinations on macOS tend to be typed characters
-      !(browser.mac && event.altKey && !(event.ctrlKey || event.metaKey)) && (baseName = base[event.keyCode]) && baseName != name2) {
+      !(browser.mac && event.altKey && !(event.ctrlKey || event.metaKey)) && (baseName = base2[event.keyCode]) && baseName != name2) {
         if (runFor(scopeObj[prefix + modifiers(baseName, event, true)])) {
           handled = true;
         } else if (event.shiftKey && (shiftName = shift[event.keyCode]) != name2 && shiftName != baseName && runFor(scopeObj[prefix + modifiers(shiftName, event, false)])) {
@@ -12396,8 +12547,8 @@
         let pos = view.coordsAtPos(range.head, range.assoc || 1);
         if (!pos)
           return [];
-        let base2 = getBase(view);
-        return [new _RectangleMarker(className, pos.left - base2.left, pos.top - base2.top, null, pos.bottom - pos.top)];
+        let base3 = getBase(view);
+        return [new _RectangleMarker(className, pos.left - base3.left, pos.top - base3.top, null, pos.bottom - pos.top)];
       } else {
         return rectanglesForRange(view, className, range);
       }
@@ -12425,7 +12576,7 @@
       return [];
     let from = Math.max(range.from, view.viewport.from), to = Math.min(range.to, view.viewport.to);
     let ltr = view.textDirection == Direction.LTR;
-    let content2 = view.contentDOM, contentRect = content2.getBoundingClientRect(), base2 = getBase(view);
+    let content2 = view.contentDOM, contentRect = content2.getBoundingClientRect(), base3 = getBase(view);
     let lineElt = content2.querySelector(".cm-line"), lineStyle = lineElt && window.getComputedStyle(lineElt);
     let leftSide = contentRect.left + (lineStyle ? parseInt(lineStyle.paddingLeft) + Math.min(0, parseInt(lineStyle.textIndent)) : 0);
     let rightSide = contentRect.right - (lineStyle ? parseInt(lineStyle.paddingRight) : 0);
@@ -12449,7 +12600,7 @@
       return pieces(top2).concat(between).concat(pieces(bottom));
     }
     function piece(left, top2, right, bottom) {
-      return new RectangleMarker(className, left - base2.left, top2 - base2.top, Math.max(0, right - left), bottom - top2);
+      return new RectangleMarker(className, left - base3.left, top2 - base3.top, Math.max(0, right - left), bottom - top2);
     }
     function pieces({ top: top2, bottom, horizontal }) {
       let pieces2 = [];
@@ -15947,14 +16098,14 @@
         return makeTree(type, children2, positions2, length2, lookAhead2, contextHash2);
       };
     }
-    function makeRepeatLeaf(children2, positions2, base2, i2, from, to, type, lookAhead2, contextHash2) {
+    function makeRepeatLeaf(children2, positions2, base3, i2, from, to, type, lookAhead2, contextHash2) {
       let localChildren = [], localPositions = [];
       while (children2.length > i2) {
         localChildren.push(children2.pop());
-        localPositions.push(positions2.pop() + base2 - from);
+        localPositions.push(positions2.pop() + base3 - from);
       }
       children2.push(makeTree(nodeSet.types[type], localChildren, localPositions, to - from, lookAhead2 - to, contextHash2));
-      positions2.push(from - base2);
+      positions2.push(from - base3);
     }
     function makeTree(type, children2, positions2, length2, lookAhead2, contextHash2, props) {
       if (contextHash2) {
@@ -16270,10 +16421,10 @@
     /**
     @internal
     */
-    constructor(name2, set, base2, modified) {
+    constructor(name2, set, base3, modified) {
       this.name = name2;
       this.set = set;
-      this.base = base2;
+      this.base = base3;
       this.modified = modified;
       this.id = nextTagID++;
     }
@@ -16325,17 +16476,17 @@
       this.instances = [];
       this.id = nextModifierID++;
     }
-    static get(base2, mods) {
+    static get(base3, mods) {
       if (!mods.length)
-        return base2;
-      let exists = mods[0].instances.find((t3) => t3.base == base2 && sameArray2(mods, t3.modified));
+        return base3;
+      let exists = mods[0].instances.find((t3) => t3.base == base3 && sameArray2(mods, t3.modified));
       if (exists)
         return exists;
-      let set = [], tag = new Tag(base2.name, set, base2, mods);
+      let set = [], tag = new Tag(base3.name, set, base3, mods);
       for (let m of mods)
         m.instances.push(tag);
       let configs = powerSet(mods);
-      for (let parent of base2.set)
+      for (let parent of base3.set)
         if (!parent.modified.length)
           for (let config2 of configs)
             set.push(_Modifier.get(parent, config2));
@@ -17019,16 +17170,16 @@
           let top2 = topNodeAt(state, pos, side), data2 = top2.type.prop(languageDataProp);
           if (!data2)
             return [];
-          let base2 = state.facet(data2), sub = top2.type.prop(sublanguageProp);
+          let base3 = state.facet(data2), sub = top2.type.prop(sublanguageProp);
           if (sub) {
             let innerNode = top2.resolve(pos - top2.from, side);
             for (let sublang of sub)
               if (sublang.test(innerNode, state)) {
                 let data3 = state.facet(sublang.facet);
-                return sublang.type == "replace" ? data3 : data3.concat(base2);
+                return sublang.type == "replace" ? data3 : data3.concat(base3);
               }
           }
-          return base2;
+          return base3;
         })
       ].concat(extraExtensions);
     }
@@ -17679,9 +17830,9 @@
     return 0;
   }
   var TreeIndentContext = class _TreeIndentContext extends IndentContext {
-    constructor(base2, pos, context) {
-      super(base2.state, base2.options);
-      this.base = base2;
+    constructor(base3, pos, context) {
+      super(base3.state, base3.options);
+      this.base = base3;
       this.pos = pos;
       this.context = context;
     }
@@ -17695,8 +17846,8 @@
     /**
     @internal
     */
-    static create(base2, pos, context) {
-      return new _TreeIndentContext(base2, pos, context);
+    static create(base3, pos, context) {
+      return new _TreeIndentContext(base3, pos, context);
     }
     /**
     Get the text directly after `this.pos`, either the entire line
@@ -23262,8 +23413,8 @@
         this.reduceContext(type, this.reducePos);
         return;
       }
-      let base2 = this.stack.length - (depth - 1) * 3 - (action & 262144 ? 6 : 0);
-      let start = base2 ? this.stack[base2 - 2] : this.p.ranges[0].from;
+      let base3 = this.stack.length - (depth - 1) * 3 - (action & 262144 ? 6 : 0);
+      let start = base3 ? this.stack[base3 - 2] : this.p.ranges[0].from;
       if (type < parser2.minRepeatTerm && start == this.reducePos && this.reducePos < this.pos)
         this.reducePos = this.pos;
       let size = this.reducePos - start;
@@ -23277,7 +23428,7 @@
           this.p.lastBigReductionSize = size;
         }
       }
-      let bufferBase = base2 ? this.stack[base2 - 1] : 0, count = this.bufferBase + this.buffer.length - bufferBase;
+      let bufferBase = base3 ? this.stack[base3 - 1] : 0, count = this.bufferBase + this.buffer.length - bufferBase;
       if (type < parser2.minRepeatTerm || action & 131072) {
         let pos = parser2.stateFlag(
           this.state,
@@ -23287,12 +23438,12 @@
         this.storeNode(type, start, pos, count + 4, true);
       }
       if (action & 262144) {
-        this.state = this.stack[base2];
+        this.state = this.stack[base3];
       } else {
-        let baseStateID = this.stack[base2 - 3];
+        let baseStateID = this.stack[base3 - 3];
         this.state = parser2.getGoto(baseStateID, type, true);
       }
-      while (this.stack.length > base2)
+      while (this.stack.length > base3)
         this.stack.pop();
       this.reduceContext(type, start);
     }
@@ -23415,10 +23566,10 @@
         off -= 4;
       while (off > 0 && parent.buffer[off - 2] > parent.reducePos)
         off -= 4;
-      let buffer = parent.buffer.slice(off), base2 = parent.bufferBase + off;
-      while (parent && base2 == parent.bufferBase)
+      let buffer = parent.buffer.slice(off), base3 = parent.bufferBase + off;
+      while (parent && base3 == parent.bufferBase)
         parent = parent.parent;
-      return new _Stack(this.p, this.stack.slice(), this.state, this.reducePos, this.pos, this.score, buffer, base2, this.curContext, this.lookAhead, parent);
+      return new _Stack(this.p, this.stack.slice(), this.state, this.reducePos, this.pos, this.score, buffer, base3, this.curContext, this.lookAhead, parent);
     }
     // Try to recover from an error by 'deleting' (ignoring) one token.
     /**
@@ -24454,7 +24605,7 @@
     // `split`, or added to `stacks` if they move `pos` forward.
     advanceStack(stack, stacks, split) {
       let start = stack.pos, { parser: parser2 } = this;
-      let base2 = verbose ? this.stackID(stack) + " -> " : "";
+      let base3 = verbose ? this.stackID(stack) + " -> " : "";
       if (this.stoppedAt != null && start > this.stoppedAt)
         return stack.forceReduce() ? stack : null;
       if (this.fragments) {
@@ -24464,7 +24615,7 @@
           if (match > -1 && cached.length && (!strictCx || (cached.prop(NodeProp.contextHash) || 0) == cxHash)) {
             stack.useNode(cached, match);
             if (verbose)
-              console.log(base2 + this.stackID(stack) + ` (via reuse of ${parser2.getName(cached.type.id)})`);
+              console.log(base3 + this.stackID(stack) + ` (via reuse of ${parser2.getName(cached.type.id)})`);
             return true;
           }
           if (!(cached instanceof Tree) || cached.children.length == 0 || cached.positions[0] > 0)
@@ -24484,7 +24635,7 @@
       if (defaultReduce > 0) {
         stack.reduce(defaultReduce);
         if (verbose)
-          console.log(base2 + this.stackID(stack) + ` (via always-reduce ${parser2.getName(
+          console.log(base3 + this.stackID(stack) + ` (via always-reduce ${parser2.getName(
             defaultReduce & 65535
             /* Action.ValueMask */
           )})`);
@@ -24502,7 +24653,7 @@
         let main = this.tokens.mainToken;
         localStack.apply(action, term, main ? main.start : localStack.pos, end);
         if (verbose)
-          console.log(base2 + this.stackID(localStack) + ` (via ${(action & 65536) == 0 ? "shift" : `reduce of ${parser2.getName(
+          console.log(base3 + this.stackID(localStack) + ` (via ${(action & 65536) == 0 ? "shift" : `reduce of ${parser2.getName(
             action & 65535
             /* Action.ValueMask */
           )}`} for ${parser2.getName(term)} @ ${start}${localStack == stack ? "" : ", split"})`);
@@ -24533,19 +24684,19 @@
       let finished = null, restarted = false;
       for (let i2 = 0; i2 < stacks.length; i2++) {
         let stack = stacks[i2], token = tokens[i2 << 1], tokenEnd = tokens[(i2 << 1) + 1];
-        let base2 = verbose ? this.stackID(stack) + " -> " : "";
+        let base3 = verbose ? this.stackID(stack) + " -> " : "";
         if (stack.deadEnd) {
           if (restarted)
             continue;
           restarted = true;
           stack.restart();
           if (verbose)
-            console.log(base2 + this.stackID(stack) + " (restarted)");
+            console.log(base3 + this.stackID(stack) + " (restarted)");
           let done = this.advanceFully(stack, newStacks);
           if (done)
             continue;
         }
-        let force = stack.split(), forceBase = base2;
+        let force = stack.split(), forceBase = base3;
         for (let j = 0; j < 10 && force.forceReduce(); j++) {
           if (verbose)
             console.log(forceBase + this.stackID(force) + " (via force-reduce)");
@@ -24557,7 +24708,7 @@
         }
         for (let insert2 of stack.recoverByInsert(token)) {
           if (verbose)
-            console.log(base2 + this.stackID(insert2) + " (via recover-insert)");
+            console.log(base3 + this.stackID(insert2) + " (via recover-insert)");
           this.advanceFully(insert2, newStacks);
         }
         if (this.stream.end > stack.pos) {
@@ -24567,7 +24718,7 @@
           }
           stack.recoverByDelete(token, tokenEnd);
           if (verbose)
-            console.log(base2 + this.stackID(stack) + ` (via recover-delete ${this.parser.getName(token)})`);
+            console.log(base3 + this.stackID(stack) + ` (via recover-delete ${this.parser.getName(token)})`);
           pushStackDedup(stack, newStacks);
         } else if (!finished || finished.score < force.score) {
           finished = force;
@@ -25626,13 +25777,13 @@
     return found;
   }
   function indentBody(context, node) {
-    let base2 = context.baseIndentFor(node);
+    let base3 = context.baseIndentFor(node);
     let line = context.lineAt(context.pos, -1), to = line.from + line.text.length;
-    if (/^\s*($|#)/.test(line.text) && context.node.to < to + 100 && !/\S/.test(context.state.sliceDoc(to, context.node.to)) && context.lineIndent(context.pos, -1) <= base2)
+    if (/^\s*($|#)/.test(line.text) && context.node.to < to + 100 && !/\S/.test(context.state.sliceDoc(to, context.node.to)) && context.lineIndent(context.pos, -1) <= base3)
       return null;
-    if (/^\s*(else:|elif |except |finally:|case\s+[^=:]+:)/.test(context.textAfter) && context.lineIndent(context.pos, -1) > base2)
+    if (/^\s*(else:|elif |except |finally:|case\s+[^=:]+:)/.test(context.textAfter) && context.lineIndent(context.pos, -1) > base3)
       return null;
-    return base2 + context.unit;
+    return base3 + context.unit;
   }
   var pythonLanguage = /* @__PURE__ */ LRLanguage.define({
     name: "python",
@@ -25803,11 +25954,12 @@
   }
 
   // app.js
-  var language2 = "en";
+  var savedLanguage = null;
   try {
-    if (localStorage.getItem("refinepy-language") === "ja") language2 = "ja";
+    savedLanguage = localStorage.getItem("refinepy-language");
   } catch {
   }
+  var language2 = initialLanguage(savedLanguage, navigator.language);
   var t2 = (text) => translate(text, language2);
   var lastReport = null;
   var statusMessage = "Ready to verify.";
@@ -25821,10 +25973,10 @@
     status.textContent = statusError === null ? t2(statusMessage) : `${t2("Execution error")}: ${statusError}`;
   }
   var form = document.querySelector("#playground");
+  createPaneLayout(document.querySelector(".panes"), document.querySelector("#pane-resizer"), document.querySelector("#height-resizer"));
   var source = createSourceEditor(document.querySelector("#source"), invalidateResults);
   var selector = document.querySelector("#selector");
   var example = document.querySelector("#example");
-  var load = document.querySelector("#load");
   var verify = document.querySelector("#verify");
   var cancel = document.querySelector("#cancel");
   var status = document.querySelector("#status");
@@ -25841,19 +25993,23 @@
   }
   selector.addEventListener("input", invalidateResults);
   function loadExample() {
+    if (worker) stop();
     lastReport = null;
     source.value = refinepySamples[example.value];
     selector.value = "*";
+    document.querySelector('.site-header nav a[data-i18n="Playground"]').href = `#/playground/${example.value}`;
     results.replaceChildren();
     reportDetails.hidden = true;
     setStatus("Example loaded. Ready to verify.");
   }
-  load.addEventListener("click", loadExample);
+  example.addEventListener("change", () => {
+    loadExample();
+    void navigation.go({ page: "playground", sample: example.value });
+  });
   loadExample();
   function busy(value) {
     verify.disabled = value;
     cancel.disabled = !value;
-    load.disabled = value;
     example.disabled = value;
     selector.disabled = value;
     source.readOnly = value;
@@ -25976,11 +26132,17 @@
     playground: document.querySelector("#playground-page"),
     content: document.querySelector("#content"),
     language: () => language2,
-    translate: t2
+    translate: t2,
+    onRoute: (page, route) => {
+      updatePageMetadata(page, language2);
+      if (page === "playground" && route?.sample && route.sample !== example.value) {
+        example.value = route.sample;
+        loadExample();
+      }
+    }
   });
   function applyLanguage() {
     document.documentElement.lang = language2;
-    document.title = t2("refinepy playground");
     for (const node of document.querySelectorAll("[data-i18n]")) {
       if (!node.dataset.i18n) node.dataset.i18n = node.textContent;
       node.textContent = t2(node.dataset.i18n);

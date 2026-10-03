@@ -1,42 +1,7 @@
-<h1 id="reference">Reference</h1>
-<p>refinepy checks contracts on annotated Python 3.12 functions. The
-examples below show the supported writing patterns and share the imports
-and aliases introduced below. The tables summarize their main limits.
-For editor controls and result statuses, see <a
-href="guide.html">Guide</a>.</p>
-<p>The numerical playground contains one basic range contract and
-examples of Fibonacci, integer square root, series summation, exact
-rational rounding and signed division. See the <a
-href="docs/example-gallery.html">example guide</a> for numerical
-illustrations, assumptions and failing edits. Sources are copied
-verbatim from maintained Python files; each result retains its own
-termination evidence.</p>
-<p>Container-oriented examples remain in the repository and regression
-suite. The <a
-href="docs/specification.html#binary-search-contract-prototype">binary-search
-proof</a> checks complete search correctness and termination for
-arbitrary sorted lists; the <a href="docs/practical-examples.html">short
-contract exercises</a> cover allocation and window reading. General
-recursive-specification queries can still be inconclusive.</p>
-<p>The playground header has an <strong>EN / JP</strong> switch for
-English and Japanese. It translates controls, example names, editor
-search controls and result summaries entirely in the frontend. Switching
-preserves the source, undo history, selector, current run and existing
-results. The language preference is saved locally when browser storage
-is available; English is the default. Python samples, raw verifier
-diagnostics, proof records, stage identifiers and JSON stay in their
-original form. Guide and Reference content is available in both
-languages. Their Python code blocks remain identical. Linked technical
-documents under <code>docs/</code> remain in English. The three header
-pages use client-side navigation without reloading the editor. Direct
-<code>.html</code> URLs, section links and browser Back/Forward are
-supported; refreshing still resets the source. Documentation load
-failures are shown explicitly.</p>
 <h2 id="value-contracts">Value contracts</h2>
-<p>Attach <code>Refine(lambda ...)</code> metadata to a type with
-<code>Annotated</code>. The lambda’s first parameter is the value being
-constrained. Multiple <code>Refine</code> predicates are combined with
-<code>and</code>.</p>
+<p>Attach <code>Refine(lambda ...)</code> to a type with
+<code>Annotated</code>. The first binder receives the constrained value.
+Multiple predicates are conjoined.</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
@@ -45,12 +10,6 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> increment(x: Nat) <span class="op">-&gt;</span> Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> result, x: result <span class="op">==</span> x <span class="op">+</span> <span class="dv">1</span>)]:</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">+</span> <span class="dv">1</span></span></code></pre></div>
-<p><code>x: Nat</code> requires a nonnegative input. The return contract
-requires the result to be exactly one greater than the input. Additional
-lambda parameters name function inputs: a parameter contract may refer
-to <strong>earlier parameters</strong>, and a return contract may refer
-to <strong>any parameter</strong>. They denote values at function entry,
-even if the body later reassigns those names.</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections.abc <span class="im">import</span> Sequence</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -59,20 +18,20 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    i: Annotated[<span class="bu">int</span>, Refine(<span class="kw">lambda</span> v, xs: <span class="dv">0</span> <span class="op">&lt;=</span> v <span class="op">&lt;</span> <span class="bu">len</span>(xs))],</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
-<p>Aliases and local variable contracts use unary predicates. A local
-declaration such as <code>count: Nat = 0</code> requires every later
-assignment to <code>count</code> to satisfy <code>Nat</code>; a
-parameter contract constrains its entry value only. All function
-parameters and returns need type annotations. Local types can be
-inferred.</p>
+<p>Additional binders name entry inputs: parameter contracts can refer
+to earlier parameters; return contracts can refer to any parameter.
+Reassigning an input in the body does not change its entry value in the
+contract.</p>
+<p>Aliases and local declaration contracts use unary predicates. A local
+contract such as <code>count: Nat = 0</code> applies to later
+assignments; a parameter contract applies only at entry. All parameters
+and returns require types; local types can be inferred.</p>
 <h2 id="literal-contracts-and-fixed-tuples">Literal contracts and fixed
 tuples</h2>
-<p><code>Literal</code> becomes a base type plus a contract restricting
-its allowed values. Use nonempty sets of int, bool, str or None
-literals, all with the same base type. Signed integers, static aliases
-and quoted annotations are supported. Combine Literal with Annotated,
-optional payloads, tuple fields and scalar container elements under
-their usual restrictions.</p>
+<p><code>Literal</code> restricts a value to a nonempty set of same-base
+<code>int</code>, <code>bool</code>, <code>str</code> or
+<code>None</code> literals. Signed integers, static type aliases and
+quoted annotations are supported.</p>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Refine</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal</span>
@@ -84,90 +43,51 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_pair(pair: <span class="bu">tuple</span>[Literal[<span class="dv">0</span>, <span class="dv">1</span>], Mode]) <span class="op">-&gt;</span> <span class="bu">tuple</span>[Mode, Literal[<span class="dv">0</span>, <span class="dv">1</span>]]:</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pair[::<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div>
-<p>Mixed bases (including int/bool), computed/named arguments, enums and
-nested Literal applications are unsupported. Integer Literal uses the
-existing numeric embedding: True satisfies <code>Literal[1]</code>;
-<code>Literal[True]</code> requires bool and excludes integer 1.
-Contracts are checked on assignments, returns and call arguments;
-defaults are base-checked at definition and refinement-checked when a
-call uses them.</p>
-<p>Fixed tuples support <code>==</code>/<code>!=</code> in bodies and
-predicates. Equality is fieldwise, with numeric bool/int comparisons.
-Optional fields compare their tags and present payloads, nested tuples
-compare recursively, and list fields compare valid-domain contents with
-matching recursively comparable element sorts. Mapping/abstract-sequence
-field equality and mismatched list element sorts are unsupported.
-Different arities or unrelated scalar field types are unequal. Both
-operands are evaluated once, including empty products. Tuple literals
-and <code>a + b</code> construct fixed products in bodies and
-predicates. Slicing preserves the selected field types and accepts
-static integer or omitted/None bounds and a nonzero static step,
-including reversal and clipped bounds. Empty results still evaluate the
-source and check its obligations. Dynamic product slice bounds remain
-unsupported. Tuple ordering is lexicographic over the common fields,
-followed by arity for an equal prefix. Common fields must be comparable
-integers/bools, strings, nested fixed tuples or matching None values.
-Optional, container and incompatible common fields are rejected even if
-an earlier field could decide the comparison. Both products are
-evaluated eagerly before comparing.</p>
-<p>Tuple fields may recursively contain supported values, including
-None, optionals, other fixed tuples and supported containers. Contextual
-field types resolve empty container literals. Field and element
-refinements remain checked, and writable list/dict types remain
-invariant inside tuples. Product construction, concatenation and slicing
-preserve possible aliases: storing a written local list in a tuple is
-rejected, and extracting a list field does not certify fresh ownership.
-Directly unpacking a source result with a checked isolation certificate
-can transfer writable lists, as described below. Lists and mappings may
-contain products, optional values and nested supported containers. Reads
-preserve nested contracts. Extracting a nested list does not certify
-fresh ownership, and newly allocated outer lists may retain borrowed
-elements.</p>
+<p>Mixed bases, computed/named values, enums and nested
+<code>Literal</code> are unsupported. <code>True</code> satisfies
+<code>Literal[1]</code>; integer <code>1</code> does not satisfy
+<code>Literal[True]</code>. Defaults are base-checked at definition and
+refinement-checked when used.</p>
+<p>Fixed tuples support construction, literal indexing, concatenation,
+equality and static slicing with a nonzero step. Slice bounds must be
+static or omitted/None. Every field is evaluated and checked, even for
+an empty slice or a comparison whose result is already known. Equality
+compares fields recursively; list fields need matching comparable
+element sorts. Mapping and abstract-sequence field equality are
+unsupported. Different arities or unrelated scalar types are
+unequal.</p>
+<p>Ordering is lexicographic over compatible integer/bool, string,
+nested-tuple or matching None fields, then arity. Optional and container
+common fields are rejected. Tuples can contain nested supported values,
+but preserve aliases: storing a written list in a tuple or extracting a
+list field does not establish writable ownership.</p>
 <h2 id="function-preconditions">Function preconditions</h2>
-<p>Use <code>@requires(lambda ...)</code> for a relation across function
-inputs, including a parameter declared later. Multiple preconditions are
-combined.</p>
+<p><code>@requires(lambda ...)</code> constrains entry inputs, including
+later parameters. Multiple preconditions are conjoined.</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> requires</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requires</span>(<span class="kw">lambda</span> xs, i: <span class="dv">0</span> <span class="op">&lt;=</span> i <span class="op">&lt;</span> <span class="bu">len</span>(xs))</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_at(xs: Sequence[<span class="bu">int</span>], i: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[i]</span></code></pre></div>
-<p>The companion also exports <code>ensures</code>,
-<code>decreases</code> and <code>reflect</code>.
-<code>import refinepy as rp</code> and
-<code>from refinepy import requires as pre</code> work with
-<code>@rp.requires(...)</code> and <code>@pre(...)</code>. Re-exports
-are resolved too; same-named user functions are unsupported. Use exactly
-one positional literal lambda for <code>requires</code>,
-<code>ensures</code> and <code>decreases</code>, with ordinary required
-positional parameters. Parentheses allow multiline conditions.
-<code>@reflect</code> takes no parentheses. Duplicate
-<code>reflect</code> or <code>decreases</code> markers are errors;
-decorator order does not change the contract.</p>
-<p>These decorators preserve the original function and its type. They
-never execute predicates or check contracts at runtime. Running the
-Python code requires the refinepy companion package; the verifier does
-not import the checked code. Decorator imports must be available before
-the function definition and cannot be inside <code>TYPE_CHECKING</code>.
-Other decorators remain unsupported. Loop <code>invariant</code>
-comments are deprecated; use ordinary marker calls as described below.
-The old function-comment forms are errors.</p>
-<p>Calls must satisfy the callee’s parameter contracts and
-preconditions. Source callees are checked too; their postconditions
-become available to callers. A source function callable in a body is not
-automatically callable in a predicate.</p>
+<p><code>requires</code>, <code>ensures</code> and
+<code>decreases</code> each take one positional literal lambda with
+ordinary required positional binders. Imports, aliases and re-exports
+work; same-named user functions do not. <code>@reflect</code> takes no
+parentheses. Duplicate <code>reflect</code> or <code>decreases</code>
+markers are errors; decorator order has no effect. Imports must be
+available before the definition, outside <code>TYPE_CHECKING</code>.
+Other decorators and old function-comment directives are
+unsupported.</p>
+<p>Calls must satisfy parameter contracts and preconditions. Source
+callees are checked before their return contracts can be used. The
+companion decorators do not execute predicates or enforce contracts at
+runtime; the verifier does not import the checked code.</p>
 <h2 id="function-postconditions">Function postconditions</h2>
-<p><code>@ensures(lambda result, n: result == n + 1)</code> adds a
-return refinement to a function annotated <code>-&gt; int</code>. The
-first lambda parameter denotes the result; additional parameters name
-immutable function-entry inputs, regardless of source reassignment. For
-a <code>None</code> result, omit the result binder:
-<code>@ensures(lambda n: proposition)</code> on a function annotated
-<code>-&gt; None</code>. A parameterless
-<code>lambda: proposition</code> is allowed for <code>None</code>
-results only. The return base annotation remains required; aliases use
-the same binding rules.</p>
+<p><code>@ensures</code> adds a return predicate while retaining the
+required base return type. The first binder receives the result; others
+name immutable entry inputs. For <code>-&gt; None</code>, omit the
+result binder; <code>lambda: proposition</code> is also allowed.</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> ensures</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -178,75 +98,41 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">@ensures</span>(<span class="kw">lambda</span> n: n <span class="op">+</span> <span class="dv">0</span> <span class="op">==</span> n)</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> identity_lemma(n: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
-<p>Multiple <code>ensures</code> decorators and existing return
-<code>Refine</code> metadata are conjoined. They use the same logical
-subset, independent definedness checks, return checks and caller
-contracts as annotated refinements. A postcondition cannot justify its
-own definedness or that of a sibling. Ordinary required literal-lambda
-parameters are mandatory; imports, aliases and re-exports follow the
-precondition rules. Decorator order does not change the contract. The
-companion never invokes these predicates or changes callable identity,
-type, annotations or runtime execution. Reflected definitions still
-require plain return contracts, excluding <code>ensures</code>. For a
-decreasing recursive <code>None</code> lemma, <code>ensures</code>
-supplies the same proposition as an annotated return refinement; see <a
-href="#inductive-lemmas">Inductive lemmas</a>.</p>
+<p>Multiple <code>ensures</code> decorators and return
+<code>Refine</code> metadata are conjoined. Each predicate must
+independently be safe to evaluate; it cannot justify its own or another
+predicate’s definedness. Reflected definitions require plain return
+contracts and cannot use <code>ensures</code>.</p>
 <h2 id="termination-measures">Termination measures</h2>
-<p>One <code>@decreases(lambda n: expression)</code> decorator may mark
-a top-level function. Lambda binders name entry parameters and the
-result must be <code>int</code> or a literal nonempty fixed tuple of
-plain integer components, with the predicate language’s purity
-restrictions. The measure must be defined under entry contracts and
-preconditions. At each direct self-call, bind arguments normally and
-prove measure definedness and strict lexicographic descent. Every
-current and next component must be nonnegative; for a scalar this is
-<code>0 &lt;= next &lt; entry</code>. The first unequal tuple component
-must decrease; later components can reset. Empty/nested tuples, boolean
-components and dynamic tuple construction are errors. A base case need
-not have a nonnegative measure. <code>max(n, 0)</code> and
-<code>len(xs)</code> work. Local reassignment does not change the
-function-entry measure.</p>
-<p>Loops use a preceding ordinary <code>decreases(lambda ...)</code>
-call, optionally with <code>invariant(lambda ...)</code> calls. Every
-taken iteration snapshots a defined, nonnegative measure over bound
-source header locals, before binding a <code>for</code> target. Every
-normal or <code>continue</code> back edge must establish definedness,
-nonnegativity and strict scalar/lexicographic decrease from that
-snapshot. <code>break</code>, return and zero trips require no decrease.
-Even the final back edge must have a defined nonnegative next measure;
-<code>max(n - i, 0)</code> can prevent underflow. Each nested loop needs
-its own measure. Initially unbound iteration targets and hidden iterator
-counters cannot be lambda binders.</p>
-<p>All callees must independently terminate. Trusted models and mutual
-recursion remain unsupported. A requested proof requires measures on
-every loop, including unreachable loops. The separate descent proof
-ignores all call-result contracts and rechecks fixed invariant
-definedness, initiation and preservation. Thus result-dependent descent
-or invariants may remain unproved. Every generic specialization must
-pass before evidence is published.</p>
-<p>Nonrecursive functions with no loops or with all loops explicitly
-measured also obtain termination evidence when their complete checked
-call closure terminates. Reports include
-<code>termination:&lt;identity&gt;:verified;</code> evidence. Recursive
-measures add <code>termination-measure-definedness</code> and
-<code>termination-decrease</code>; loop measures add
-<code>termination-loop-measure-definedness</code>,
-<code>termination-loop-nonnegative</code> and
-<code>termination-loop-decrease</code> (when a back edge exists). A
-<code>verified</code> status alone does not promise termination. The
-playground shows an explicit termination summary using the exact
-target’s evidence; termination of a dependency alone does not certify
-the selected function. <strong>Proof evidence</strong> exposes the
-underlying records. Failed or uncertain targets never display verified
-termination. This does not by itself supply reflected equations or
-guarantee freedom from recursion-depth or resource exhaustion. See the
-<a href="docs/specification.html#decreasing-measures">specification</a>,
-<a href="guide.html#check-recursive-termination">recursive Guide</a> and
-<a href="guide.html#check-loop-termination">loop Guide</a>.</p>
+<p>Use one <code>@decreases(lambda ...)</code> on a directly recursive
+function. Binders name entry inputs; the measure is an integer or a
+literal nonempty flat tuple of plain integers. Each self-call must
+establish definedness and strict descent, with all current/next
+components nonnegative. For a scalar:
+<code>0 &lt;= next &lt; entry</code>. Tuple descent is lexicographic;
+later components may reset after an earlier decrease. Base cases need
+not have nonnegative measures. Boolean components are rejected.</p>
+<p>A <code>decreases(lambda ...)</code> call immediately before a loop
+uses current bound header locals. Every normal or <code>continue</code>
+back edge must establish a defined, nonnegative, strictly smaller
+measure, including the final iteration. <code>break</code>, return and
+zero iterations need no decrease. Every nested loop needs a measure; an
+unbound <code>for</code> target or hidden iterator counter cannot be a
+binder.</p>
+<p>All callees must independently terminate. Descent is checked without
+call-result contracts, so result-dependent descent may remain unproved.
+Trusted external models and mutual recursion cannot establish
+termination. A requested proof requires measures on every loop,
+including unreachable loops.</p>
+<p><code>verified</code> alone establishes normal-return contracts.
+Termination needs evidence for the selected function and its checked
+calls. It does not guarantee Python recursion-depth safety or available
+resources.</p>
 <h2 id="static-assertions">Static assertions</h2>
-<p>Use <code>Refine(lambda ...)</code> for a value contract. Use
-<code>Assert</code> for a proposition checked at a particular source
-position:</p>
+<p><code>Assert</code> checks a proposition at a source position without
+imposing a contract on later assignments. The target must be a
+definitely bound function local; the unquoted annotation has no
+initializer and exactly one <code>Assert</code> item.</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> Assert</span>
@@ -255,178 +141,71 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">abs</span>(n)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    x: Annotated[<span class="bu">int</span>, Assert(<span class="kw">lambda</span> value: value <span class="op">&gt;=</span> <span class="dv">0</span>)]</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code></pre></div>
-<p>The target must be a definitely bound function local and the
-annotation must have no initializer. Its base type must match the
-current value; existing <code>Refine</code> predicates on that type are
-also checked. Exactly one <code>Assert</code> metadata item is
-permitted. Repeating assertions is allowed. They do not install a
-contract on later assignments or replace an existing declaration
-contract.</p>
+<p>The base type must match the current value; existing refinements are
+checked too. The first lambda binder receives that value; additional
+binders name current bound locals. Free local captures, defaults and
+variadic binders are unsupported. Later rebinding does not update the
+established fact.</p>
 <p><code>Assert(lambda v: P(v), using=lambda arg: lemma(arg))</code>
-additionally supplies a supporting lemma. Both literal lambdas start
-with a binder denoting the current value. Additional ordinary required
-parameters explicitly name definitely bound current locals; for example,
-<code>lambda value, y: value &lt; y</code>. The lambdas can use
-different dependency lists. They observe current SSA values rather than
-entry inputs, and later rebinding does not update an established fact.
-Defaults, variadic/duplicate binders, unresolved names and free local
-captures are unsupported. <code>using</code> contains one direct
-refined-<code>None</code> source lemma call with logical arguments from
-its listed binders. The verifier checks its arguments and preconditions
-before importing the postcondition to prove <code>P</code>. It requires
-independent termination of the entire lemma closure; ordinary partial
-correctness, external trusted models, loops, mutual recursion and
-circular assertion evidence are insufficient. A lemma can establish a
-stronger or different proposition from which <code>P</code> follows.</p>
-<p>Without <code>using</code>, the proposition must follow from current
-facts and admitted reflected equations. Neither form supplies an
-unchecked assumption. Failed checks and solver uncertainty cannot
-verify. Local annotations are not evaluated by Python, so the predicate
-and lemma calls incur no runtime cost. Supporting functions keep their
-ordinary executable definitions.</p>
-<p><code>Assert</code> is restricted to unquoted, declaration-only
-annotations of bound local names. It is not valid in parameters,
-returns, aliases, module annotations, nested types or annotations with
-additional metadata. Reports include <code>static-assertion</code>
-obligations and <code>static-lemma:</code> dependency evidence. See the
-<a href="docs/specification.html#static-assertions">specification</a>
-for soundness and binding rules.</p>
+uses one direct refined-None source lemma call. Arguments and
+preconditions are checked first; the complete lemma closure must
+independently terminate. External models, loops, mutual recursion and
+circular assertion evidence cannot supply this static proof. Without
+<code>using</code>, the proposition must follow from current facts and
+admitted reflected equations. Python does not evaluate these local
+annotations. <code>Assert</code> cannot appear in parameters, returns,
+aliases, nested types or module annotations.</p>
 <h2 id="reflected-functions-and-lemmas">Reflected functions and
 lemmas</h2>
-<p>Use bare <code>@reflect</code> on a top-level function to make its
-checked definition available in predicates and assertions. Definitions
-can call other reflected functions, including through regular imports
-and re-exports. The decorator returns the original function without
-changing its execution.</p>
-<p>Definitions may use local assignments, flat unpacking, assertions,
-if/elif/else branches and returns, with an optional docstring. Bare
-returns and fallthrough use the usual None typing. Plain supported
-input/result annotations include scalars, None, optionals, fixed
-products and supported containers (including mappings). Fixed
-positional/keyword signatures and supported immutable literal defaults
-are supported. Construction, product operations, list
-concatenation/slicing, optional tests/projections, mapping
-membership/lookup/<code>get</code>, existing scalar operations and
-immutable constants are permitted. Every evaluated read, optional
-projection and divisor must be proved safe over the entire input domain
-by checking the source body before caller proofs use its definition.
-Refined signatures (including nested contracts), preconditions, loops,
-container writes, erased proof calls, mutual recursion, generics and
-unreflected or trusted external calls are excluded. Definition chains
-deeper than 32 or expanded serialized terms above 128 KiB produce
-<code>unsupported</code>; statement CFG expansion is also limited to 128
-edges. Checks from discarded computations and assertions remain
-obligations in the original source body. Recursive signatures retain the
-limits below.</p>
-<p>Reflected calls work in annotations, <code>requires</code>, loop
-invariants, assertions and bodies. All argument evaluations are checked,
-even if the definition ignores an argument. Ordinary function contracts
-do not make a function callable in logic.</p>
-<p>A lemma is an ordinary checked function whose return refinement
-states a proposition, often using
-<code>Annotated[None, Refine(lambda _, x: ...)]</code>. Its body must
-prove that proposition. Calling a verified lemma makes its normal-return
-contract available to the caller. Recursive refined-<code>None</code>
-lemmas with an explicit <code>decreases</code> measure support the
-restricted induction rule below. See the <a
-href="guide.html#prove-an-equation-about-a-function">Guide</a> for an
-example and the <a
-href="docs/specification.html#reflected-scalar-definitions-and-lemmas">specification</a>
-for the verification boundary.</p>
+<p><code>@reflect</code> makes a checked definition callable in
+predicates. Inputs and results must have plain supported types, without
+nested refinements, preconditions or <code>ensures</code>. Assignments,
+flat unpacking, assertions, branches and returns are supported; loops
+and container writes are not. The original body and every argument
+evaluation must be safe, even when a computation is discarded.</p>
+<p>A lemma is a checked function whose return contract states a
+proposition, often
+<code>Annotated[None, Refine(lambda _, x: ...)]</code> or
+<code>@ensures</code> on <code>-&gt; None</code>. Its body must prove
+that proposition. Calling it supplies the normal-return contract.
+Ordinary contracts alone do not make a function callable in logic. See
+the <a href="guide.html#prove-an-equation-about-a-function">Guide
+example</a>.</p>
 <h2 id="recursive-scalar-reflection">Recursive reflection</h2>
-<p>A reflected function may call itself by its declaration name with
-plain supported input/result types, including products, optionals and
-supported containers, a loop-free body, no preconditions, and an
-explicit integer <code>decreases</code> measure. The driver verifies raw
-self-calls and independently checks descent before any caller proof uses
-its template. All other callees must verify and terminate too; failed or
-uncertain admission blocks caller equations.</p>
-<p>Indexing in recursive definitions must pass raw-body safety checks
-under its branch guards. Calls retain a canonical uninterpreted function
-identity. Each query adds admitted one-step ground definition equations,
-up to eight layers for scalar-only signatures or three when a signature
-contains a container. Inductive lemma queries use one layer and their
-checked self-call contracts. These are local instances, not universally
-quantified recursive defining axioms.</p>
-<p>Equations recursively preserve product fields and optional tags.
-Sequence results compare lengths and valid elements; mapping results
-compare domains and present values. Argument guards and result facts
-preserve valid nested snapshots and string observations. Internal
-equality does not enable source mapping or abstract-sequence comparison.
-Lambda array arguments use exact full-domain aliases; scoped map/element
-applications are left uninterpreted. Queries allow 64 equations and 128
-KiB of ground equations; oversized default expansion retries one layer,
-and exhausting that budget returns <code>unknown</code> with
-<code>analysis-limit</code>. Satisfiable queries containing applications
-also return <code>unknown</code>, since their function interpretations
-are not reconstructed. This includes some false equations. Stored
-one-step definitions and acyclic expansions retain their 128 KiB bound;
-definition dependencies remain limited to 32. Recursive
-bounded-expansion admission preflight has a separate 4 MiB
-serialized-term budget. It checks each substitution and assembled
-result, and excess produces <code>unsupported</code>. Its expanded term
-is discarded; proof queries still use the separately bounded ground
-equations above. The Fibonacci example
-(<code>examples/fibonacci/README.md</code>) uses this preflight to admit
-a branching recurrence and a checked inductive addition lemma,
-specialized directly in <code>pair</code> by a static assertion, to
-prove both fast doubling results without an index upper bound. Mutual
-recursion, aliased self-calls and composite container elements remain
-excluded. Nonrecursive reflection remains exact.</p>
-<p>Successful admission records
-<code>reflection:&lt;identity&gt;:verified recursive definition;</code>
-evidence with
-<code>unfolding depth=&lt;depth&gt;; residual calls uninterpreted</code>,
-alongside <code>termination:</code> evidence. Worker protocol v17
-supports structural composite container values and nested element
-evidence, and validates their complete models. Nested conditions retain
-separate lexical binders and recursive observation checks. Strings use
-complete code-point sequences, including as mapping keys. Python
-container elements may use supported composite types; report schema v3
-is unchanged. See the <a
-href="guide.html#reflect-a-recursive-scalar-function">Guide</a>, <a
-href="guide.html#reflect-a-recursive-list-function">recursive list
-example</a> and <a
-href="docs/specification.html#recursive-scalar-reflection">specification</a>.</p>
+<p>A reflected definition may call itself by its declaration name with
+plain supported input/result types, a loop-free body, no preconditions
+and an explicit integer <code>decreases</code> measure. Raw-body safety
+and descent must verify before its equations can be used; every other
+callee must also verify and terminate.</p>
+<p>Unfolding is bounded: eight layers for scalar-only signatures, three
+for signatures containing containers. Remaining calls are uninterpreted.
+Queries that cannot resolve them may return <code>unknown</code>,
+including some false equations; expansion limits can also prevent
+admission or proof. Mutual recursion, aliased self-calls and recursive
+signatures with composite container elements are excluded. Use a checked
+inductive lemma for equations beyond bounded unfolding.</p>
 <h2 id="inductive-lemmas">Inductive lemmas</h2>
 <p>A directly recursive function with a refined <code>None</code> result
-and explicit integer or lexicographic <code>decreases</code> measure
-proves its return proposition by well-founded induction. No additional
-directive is required. Check the arguments and preconditions of every
-self-call, use its declared return proposition as the local induction
-hypothesis, and prove all base and recursive returns. Independently
-prove strict nonnegative descent with every call-result summary erased.
-All dependencies must independently verify and terminate; any loops need
-checked measures. Reflected definitions are admitted separately, before
-their ground equations can enter the lemma’s proof.</p>
-<p>Successful proofs carry
-<code>induction:&lt;identity&gt;:verified return proposition;</code>
-evidence with <code>checked integer descent at every self-call</code>,
-plus <code>termination:</code> evidence. Evidence propagates to callers
-and cache hits. Failed or uncertain proofs publish neither induction
-success nor reusable cache entries. Lemmas without a measure retain
-normal-return partial correctness and have no induction evidence.
-Explicit branch returns can avoid inconclusive qualifier inference at
-joins. There is no automatic induction search, mutual induction or
-arbitrary inductive-data-type facility. See the <a
-href="guide.html#prove-a-list-equation-by-induction">Guide</a> and <a
-href="docs/specification.html#inductive-lemma-functions">specification</a>.</p>
+and an integer or lexicographic <code>decreases</code> measure can prove
+its return proposition by induction. Every self-call must satisfy its
+contracts and strictly descend; its declared return proposition is the
+local induction hypothesis. All base and recursive returns must prove
+the proposition. Descent is independently checked without call-result
+summaries; dependencies must verify and terminate, and loops need
+measures. Reflected definitions are admitted separately.</p>
+<p>There is no automatic induction search or mutual induction. Without a
+measure, a lemma establishes normal-return partial correctness only.</p>
 <h2 id="containers-and-optional-values">Containers and optional
 values</h2>
-<p>An element contract and a container contract apply at different
-levels. <code>Sequence[Nat]</code> constrains every element; the outer
-predicate below requires at least one element so the index is safe.</p>
+<p>Element contracts apply to every valid element; outer contracts
+constrain the container. Reads require bounds or key-presence proofs.
+Negative sequence indices are supported. <code>T | None</code> and
+<code>Optional[T]</code> support absence checks and narrowing.</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>NonEmptyNats <span class="op">=</span> Annotated[Sequence[Nat], Refine(<span class="kw">lambda</span> xs: <span class="bu">len</span>(xs) <span class="op">&gt;</span> <span class="dv">0</span>)]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first(xs: NonEmptyNats) <span class="op">-&gt;</span> Nat:</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xs[<span class="dv">0</span>]</span></code></pre></div>
-<p>Sequence reads require in-bounds indices; negative indices are
-supported. Element refinements apply throughout the valid snapshot
-domain. Their lambda parameters are local bindings; nested logical
-computations preserve that scope. Dictionary reads require the key to be
-present. Guard a lookup with membership, or use <code>get</code> and
-handle its optional result.</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections.abc <span class="im">import</span> Mapping</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -435,74 +214,32 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a hr
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> port <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> port</span></code></pre></div>
-<p><code>T | None</code> and <code>Optional[T]</code> support absence
-checks and narrowing. Containers have supported elements or values,
-including products, optionals and nested containers. Certified exclusive
-local lists also support standalone
+<p>Fresh unshared local lists permit standalone
 <code>append</code>/<code>extend</code>, <code>+=</code> and integer
-item assignment. Input or shared-list writes, <code>pop</code>, slice
-assignment and dictionary updates remain unsupported. See <a
-href="docs/specification.html#exclusive-local-list-writes">exclusive
-local lists</a>.</p>
-<p>Source helpers returning lists may transfer a checked allocation
-certificate. A caller can append to, extend or update the fresh result
-under one local name. Every return and assignment must preserve
-allocation provenance; both branches and all generic specializations are
-checked. Contracts asserting equal contents cannot establish ownership.
-Failed dependencies, borrowed/mixed results, ungrounded recursive
-certificate cycles and trusted model allocation claims cannot justify
-writes. Abstract Sequence and optional results do not transfer
-certificates. Input and live-iterator protections remain in force.
-Certificate discovery visits at most 64 distinct source functions per
-discovery and stops conservatively at that bound. Reports expose
-<code>ownership:&lt;identity&gt;:fresh-list-result; checked source allocation and aliases</code>
-only after successful dependency verification; this evidence does not
-imply termination. See the <a
-href="guide.html#build-and-update-a-local-list">Guide</a>.</p>
-<p>A source helper returning a fixed tuple may instead establish an
-isolation certificate: all reachable mutable containers are allocated
-and each field’s reference graph is disjoint from the others. Direct
-flat unpacking (<code>left, right = split(xs)</code>) then permits list
-writes. Forwarding, imported helpers, reflected calls and all generic
-specializations retain checked dependencies. A conditional result must
-have certified alternatives. Repeated references, borrowed fields and
-nested sharing prevent isolation. Saving the tuple first, extracting a
-field, or nested unpacking does not transfer ownership. Successful
-reports expose
-<code>ownership:&lt;identity&gt;:isolated-product-result; checked source allocations and disjoint fields</code>.
-The same 64-function discovery bound applies; loop allocation histories
-have a 64-round convergence bound. See the <a
-href="guide.html#build-and-update-a-local-list">Guide example</a>.</p>
-<p>For nested containers, a list-result certificate describes the outer
-list only. Newly stored elements must not retain another written local
-list, and extracting an inner list does not establish exclusivity. List
-equality recursively permits scalar, optional, product and list
-elements; abstract Sequence and mapping elements block it, even when
-nested inside a product.</p>
-<p>List content equality permits different element refinements when
-recursively comparable element sorts match, for example
-<code>list[Nat]</code> compared with <code>list[int]</code>. This
-observation does not permit assigning a plain list to a refined writable
-list. Concatenation still requires matching element contracts. The
-local-list example proves exact range construction, complete stable even
-filtering and replacement with all other positions preserved; see the <a
-href="docs/specification.html#exclusive-local-list-writes">specification</a>.</p>
+item assignment. Element and whole-list refinements remain checked.
+Input/shared lists, live iterators, <code>pop</code>, slice assignment
+and dictionary writes are unsupported.</p>
+<p>A checked source helper returning a fresh list can transfer writable
+ownership under one local name. A helper returning a tuple of
+independently allocated, disjoint mutable containers can transfer lists
+through direct flat unpacking: <code>left, right = split(xs)</code>.
+Borrowed or shared fields, saving the tuple before unpacking, and nested
+unpacking cannot establish that ownership. Equal-content contracts alone
+are insufficient; every dependency and return alternative must verify.
+Abstract Sequence and optional results do not transfer ownership.</p>
+<p>Container elements may be supported products, optionals or nested
+containers. Owning an outer list does not make extracted inner lists
+writable. Storing another written local list as an element is rejected.
+List equality accepts matching recursively comparable scalar, optional,
+tuple and list element sorts, even with different refinements; abstract
+Sequence and mapping elements block it. Concatenation requires matching
+element contracts, and writable container types remain invariant. See
+the <a href="guide.html#build-and-update-a-local-list">Guide</a>.</p>
 <h2 id="loops-and-assertions">Loops and assertions</h2>
-<p>Use <code>if</code>, <code>while</code> and supported
-<code>for</code> loops as ordinary Python. When automatic inference
-cannot establish a loop property, place
-<code>invariant(lambda ...)</code> calls directly before the loop.
-Lambda binders name current header locals, not their function-entry
-values. Use one <code>decreases(lambda ...)</code> call to request
-termination. Resolve trusted companion identities through imports,
-aliases and re-exports. These expression statements take exactly one
-positional literal lambda; named callables, defaults, variadic binders
-and keyword arguments are errors. Consecutive markers attach to the next
-loop in the same block; another statement detaches them and is an error.
-Blank lines and ordinary comments may intervene. The marker calls create
-lambdas at runtime but never invoke them or enforce their contracts.
-They are not source-call dependencies. The legacy invariant comment form
-is deprecated and remains accepted for compatibility.</p>
+<p>Place <code>invariant(lambda ...)</code> calls directly before the
+loop when inference cannot establish the needed property. Binders name
+current header locals. Add one <code>decreases(lambda ...)</code> to
+request termination.</p>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> refinepy <span class="im">import</span> invariant, decreases</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -513,26 +250,19 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> n:</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i</span></code></pre></div>
-<p>The invariant must hold before the loop and after every iteration. It
-is checked, not accepted as an unchecked assumption. An
-<code>assert</code> condition is also a proof obligation; it must use
-the predicate language below.</p>
+<p>Each marker takes one positional literal lambda with required
+binders. Consecutive markers attach to the next loop in the same block;
+comments and blank lines may intervene, other statements may not.
+Imports, aliases and re-exports work. Markers do not execute their
+predicates at runtime. Legacy invariant comments remain accepted but are
+deprecated.</p>
+<p>The invariant is checked initially and after every iteration. An
+<code>assert</code> is also a proof obligation and must use the
+supported predicate language.</p>
 <h2 id="supported-forms-and-limits">Supported forms and limits</h2>
-<p>Solver model reconstruction retains complete array defaults, stores
-and certified piecewise-constant regions. It permits at most 4,096
-stores per native array, structural depth 128 and 65,536 decoding steps
-per query binding. Strings are reconstructed completely, up to 4,096
-code points per string; mappings use string contents as keys.
-Unsupported representations or exhausted limits produce
-<code>unknown</code>, never a sampled counterexample. See <a
-href="docs/specification.html#model-validation-and-execution-witnesses">model
-validation</a>. Model checks distinguish stored representation from
-observable values: absent optional payloads and out-of-domain entries
-still require valid types and number formats, while source-domain
-restrictions follow presence and domain guards.</p>
-<p>“Supported” here means the form is admitted under the listed
-restrictions. It does not guarantee that every property written with
-that form can be proved.</p>
+<p>Admission does not guarantee a proof for every property. Unsupported
+forms, solver uncertainty or exhausted analysis/model-reconstruction
+limits cannot produce a successful verification result.</p>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -674,9 +404,8 @@ aliases</td>
 </table>
 <h2 id="predicate-expressions-and-built-ins">Predicate expressions and
 built-ins</h2>
-<p>Predicates must produce a boolean and be safe to evaluate under the
-declared types and established contracts. Short-circuit guards can
-justify a read, for example
+<p>Predicates must return bool and be safe under the declared types and
+established facts. Short-circuit guards can justify reads:
 <code>len(xs) &gt; 0 and xs[0] &gt;= 0</code>.</p>
 <table>
 <colgroup>
@@ -728,51 +457,29 @@ two positional arguments</td>
 </tr>
 </tbody>
 </table>
-<p>List literals, <code>+</code>, <code>==</code>, <code>!=</code>, and
-constant-step slices are admitted in predicates for modeled lists. Empty
-lists need a contextual element type. Equality compares lengths and all
-valid elements, ignoring array values outside the domain; internal
-snapshot constraints retain full array equality. See the <a
-href="guide.html#prove-a-list-equation">Guide list equation</a> and the
-<a
-href="docs/specification.html#list-content-equality-and-concatenation">list
-model</a>. Fixed-tuple literals, concatenation and static slicing are
-also admitted in predicates and erased lemma arguments. Every field must
-be safe even when a comparison has a statically known result or a slice
-selects no fields. No unreflected user-defined predicate calls, explicit
-quantifiers, mapping construction or comprehensions are admitted inside
-predicates. Body support for a literal or call does not imply predicate
-support. Built-ins such as <code>sum</code>, <code>all</code>,
-<code>any</code>, <code>sorted</code>, <code>isinstance</code> and
-conversions with <code>int</code>/<code>bool</code>/<code>str</code>
-have no supported model. Third-party library APIs are not supported by
-default.</p>
+<p>List literals, equality, concatenation and constant-step slices are
+allowed; empty lists need a contextual element type. Tuple construction,
+concatenation and static slicing are allowed too, with every field
+checked for safety. Unreflected user calls, explicit quantifiers,
+mapping construction and comprehensions are not allowed in predicates.
+<code>sum</code>, <code>all</code>, <code>any</code>,
+<code>sorted</code>, <code>isinstance</code>, scalar conversions and
+third-party APIs have no default model.</p>
 <h2 id="scope-of-a-result">Scope of a result</h2>
-<p>The results start with counts of <strong>Verified</strong>,
-<strong>Needs review</strong> and <strong>Failed</strong> selected
-functions. Needs review groups <code>unproved</code>,
-<code>unknown</code> and <code>unsupported</code>; Failed groups
-<code>counterexample</code> and <code>error</code>, whose individual
-meanings remain visible on each card. An error does not necessarily
-indicate a source bug. Report-level diagnostics appear separately and
-prevent an all-verified summary. Each card gives a short conclusion and
-a separate termination summary. Expand <strong>Verification
-details</strong> for solver costs, checked scope, inferred invariants,
-source dependencies and <strong>Proof evidence</strong>, including
-ownership records. <strong>Full JSON report</strong> retains the
-complete report.</p>
-<p>A <code>verified</code> result applies to inputs satisfying the
-contracts and the modeled built-in runtime. It checks modeled runtime
-errors and normal return contracts; termination is additional evidence
-for admitted measured call closures. Direct recursion requires a checked
-integer or lexicographic measure, and every loop requires its own
-measure, to obtain that evidence. Annotations do not enforce contracts
-when ordinary Python code runs.</p>
-<p>The playground reads one module without executing Python. Package
-resolution and external model registration belong to native workflows.
-Internally, refinepy infers candidate properties and checks proof
-obligations with Z3.</p>
-<p>For exact edge cases, consult the <a
-href="docs/python-support.html">Python support matrix</a> and <a
-href="docs/specification.html">specification</a>. This page summarizes
-those documents; it does not expand the supported subset.</p>
+<p>A verified contract applies to inputs satisfying entry contracts and
+to the modeled built-in runtime. It checks modeled runtime errors and
+normal returns; termination is separate evidence. Python annotations do
+not enforce contracts. The browser reads one module without executing
+Python; package resolution and external model registration use the
+native workflow. Page navigation supports <code>#/playground</code>,
+<code>#/guide</code>, <code>#/reference</code> and their section links.
+Samples use <code>#/playground/&lt;sample&gt;</code> with
+<code>bounds</code>, <code>fibonacci</code>, <code>squareRoot</code>,
+<code>series</code>, <code>rounding</code> or <code>division</code>.</p>
+<p><strong>Needs review</strong> groups <code>unproved</code>,
+<code>unknown</code> and <code>unsupported</code>;
+<strong>Failed</strong> groups <code>counterexample</code> and
+<code>error</code>. Individual statuses remain visible. Report-level
+diagnostics prevent an all-verified summary. See <a
+href="guide.html#read-the-results">Guide</a> for status meanings and
+termination summaries.</p>
