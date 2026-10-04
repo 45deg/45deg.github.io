@@ -17,6 +17,51 @@ MiBの単一モジュールを扱い、Python を実行せずに検証します�
 の形です。従来の <code>.html</code>
 リンクも使えます。サンプルを選ぶとURLも更新します。<code>#/playground/division</code>
 を直接開くと、符号付き除算を読み込みます。</p>
+<h2 id="algorithm-demos">アルゴリズムのデモ</h2>
+<p>次の4つのサンプルでアルゴリズムの契約を試せます。</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>サンプル</th>
+<th>保証と対象範囲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GCD</td>
+<td>正の整数2つに対する最大公約数を、除数の降順探索で仕様化。停止性も検査</td>
+</tr>
+<tr>
+<td>Union-Find</td>
+<td>任意長の配列を使うQuick-Find方式の初期化・照会・グループ番号の正確な置き換え。入力の保存と停止性も検査</td>
+</tr>
+<tr>
+<td>クイックソート</td>
+<td>ピボットで分割して再帰する任意長リストの整列。昇順・重複数の保存・停止性を証明</td>
+</tr>
+<tr>
+<td>ヒープソート</td>
+<td>任意長の整数リストについて、昇順・重複数の保存・ヒープ条件・添字の安全性・停止性を証明</td>
+</tr>
+</tbody>
+</table>
+<p><code>#/playground/gcd</code>、<code>#/playground/unionFind</code>、<code>#/playground/heapSort</code>、<code>#/playground/quickSort</code>
+で読み込めます。<code>*</code>
+を選ぶと実装と補助関数を検査します。GCDは除数を探索する版です。Union-Findは各要素にグループ番号を直接持たせ、親ポインターや経路圧縮を使いません。ヒープソートは任意長の最大ヒープを構築し、根を順に取り出して昇順に結合します。<code>heap_sort</code>
+と <code>heap_sort_ordered</code>
+は、昇順であり、入力の各値の個数と全体の長さを保つことを証明します。ヒープ条件や個数保存の補題を含む34対象が検証されます。証明の適用は実行時に消去される注釈で記述し、仕様と実装を別途Pythonの有限ケースでも確認します。所有権の制約に合わせて配列をコピーするため、通常の配列内で処理するヒープソートとは実行コストが異なります。計算量の上限は証明しません。</p>
+<p>GCDで共通約数を見つけたときに1を返す、unionの比較対象を
+<code>labels[b]</code> にする、<code>larger_child</code>
+が常に左の子を選ぶようにする、といった編集を試せます。それぞれ最大性・グループ統合・子の選択を壊します。静的な証明の失敗と、Python実行で確認した具体的な失敗例は区別します。</p>
+<p>クイックソートは独立したデモとして
+<code>#/playground/quickSort</code>
+で選べます。先頭の値をピボットとして残りを二分し、左右を再帰的に整列して連結します。<code>quick_sort</code>
+は昇順・長さ・各値の個数の保存を証明します。再帰的な分割関数の契約から、再帰の入力が必ず短くなることも検証します。証明の適用は実行時に消去されます。分割関数は入力長に比例する再帰を使い、整列済み入力や同じ値ばかりの入力では整列側の再帰も深くなります。リストのコピーにもコストがかかります。停止性の証明にPythonの再帰上限は含みません。分割条件を逆にする、右側の値をピボットへ置き換える、左右の連結順を逆にする、ピボットを省く変更を試せます。<a
+href="reference.html#scope-of-a-result">契約の説明</a>も参照してください。</p>
 <h2 id="write-a-contract">契約を書く</h2>
 <p><code>Annotated</code> と <code>Refine</code>
 で値に条件を付けます。lambda

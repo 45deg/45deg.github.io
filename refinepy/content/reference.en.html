@@ -475,9 +475,24 @@ native workflow. Page navigation supports <code>#/playground</code>,
 <code>#/guide</code>, <code>#/reference</code> and their section links.
 Samples use <code>#/playground/&lt;sample&gt;</code> with
 <code>bounds</code>, <code>fibonacci</code>, <code>squareRoot</code>,
-<code>series</code>, <code>rounding</code> or <code>division</code>. The
-results pane scrolls within the same height as the code pane, including
-expanded proof details and JSON.</p>
+<code>series</code>, <code>rounding</code>, <code>division</code>,
+<code>gcd</code>, <code>unionFind</code>, <code>heapSort</code> or
+<code>quickSort</code>. GCD admits strictly positive inputs and
+specifies the largest common divisor by divisor search. Union-Find uses
+arbitrary-length Quick-Find labels and returns fresh merged lists. Heap
+sort proves ascending order and complete multiplicity preservation for
+arbitrary-length lists, together with heap invariants, bounds and
+termination. Both <code>heap_sort</code> and
+<code>heap_sort_ordered</code> require <code>ordered(result)</code> and
+<code>permutation(input, result)</code>: equal lengths and equal counts
+for every input value exclude both lost values and additional values.
+All 34 heap-sort targets verify; inductive lemmas are applied through
+erased annotations. The public <code>sift_down</code> requires heap
+edges beyond its root, and <code>take_max</code> requires a nonempty
+max-heap. List copying changes the cost from classic in-place heapsort.
+These samples do not prove complexity bounds. The results pane scrolls
+within the same height as the code pane, including expanded proof
+details and JSON.</p>
 <p><strong>Needs review</strong> groups <code>unproved</code>,
 <code>unknown</code> and <code>unsupported</code>;
 <strong>Failed</strong> groups <code>counterexample</code> and
@@ -485,3 +500,15 @@ expanded proof details and JSON.</p>
 diagnostics prevent an all-verified summary. See <a
 href="guide.html#read-the-results">Guide</a> for status meanings and
 termination summaries.</p>
+<p>The independent quicksort sample
+(<code>#/playground/quickSort</code>) proves
+<code>ordered(result) and permutation(input, result)</code> for
+arbitrary-length integer lists. Its first-element pivot partitions into
+<code>&lt; pivot</code> and <code>&gt;= pivot</code> parts. The
+recursive partition contract establishes smaller sorting inputs. A
+decreasing size bound establishes recursion descent without callee
+summaries, and checked inductive lemmas establish element bounds, sorted
+concatenation and occurrence-count preservation. Proof applications are
+erased. The input is preserved; copying, linear partition recursion
+depth, Python recursion limits and memory use are not covered by a
+complexity or resource guarantee.</p>

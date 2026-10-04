@@ -1,5 +1,5 @@
 {
-  "source_commit": "3b6eb9d7bbcd0972796dcc85cbca77359d79f44a",
+  "source_commit": "8807a6fcbacda2f85aab50f3bc02d5b7bdf89bf0",
   "rust": "1.97.1",
   "z3": "4.15.4",
   "emscripten": "5.0.5",
@@ -827,21 +827,21 @@
   "sha256": {
     "LICENSE": "de39e0f64f62c620f4565fcd0b9984c1fe8b3434c80d7167ab9e1b11b226cd4e",
     "THIRD_PARTY_NOTICES.txt": "47a239162dfcc00f3412ab653393b594101a9f9624aec35c2006ce96b709440f",
-    "app.js": "eb11da9d6d5e961edbe248343c63935a43246da39c1f4969c2d990a7363b71e0",
-    "content/guide.en.html": "63ad275e16a985de00e6dfadc7b2d439249c25c515fed32c0c8e23b32e99e0c6",
-    "content/guide.ja.html": "a7fb4217dded2cc8f7611f750ce0764b8453924c1fc7c8e286c534379743b3ec",
-    "content/reference.en.html": "0a855c1c08742442ef8b794f65e808daf33f8ade39af9caf12bff2c4a3474562",
-    "content/reference.ja.html": "4f8b2f8f8fc997955ef96ae6367912a638157c1c589d1fbb213dcc893b168262",
-    "docs/compatibility.json": "94604d171791f96d13ef000848f9d96fb0658bca32679b1913b9ad45a355872f",
+    "app.js": "6c52b3c2c36b427918b0b5dd5b3c746cfaf43f59408c7582279d21e98472e983",
+    "content/guide.en.html": "12ba3a0ac5816677fcc817de117057bf16488e7f03460b42b65ed2a6d99360eb",
+    "content/guide.ja.html": "b692b02dd3b834e13371040b89eff12f38e138b35ea4ccc7121429f3031e3dc7",
+    "content/reference.en.html": "093dfe7765a3362832c9bc53c6555636216ba7308ea5a8cab32208a80c8c4e2b",
+    "content/reference.ja.html": "c582ba19c7dc4f0213c2998d09d5da36af22b6f0f7af53860d230f9f828e0131",
+    "docs/compatibility.json": "d5b4a465876914f1d39a2d05d5277a40b088214075cfb0463510817ddbf302be",
     "docs/report-schema-v3.json": "79bfa991f2f78bb7f5f81669db441e075a965466b913c386d96dbc3b4d3bdacb",
     "favicon.svg": "4e1d5d3c376d7d8e7fd5059876e63515bdd22acd12fd6be64006872f7b1976c1",
-    "guide.html": "0cb8eabb7b93771782513ae0afa73a21256c08e3286cbef928fa2a578b526970",
-    "index.html": "7106f64398f40cee12f16fa69c62c8e68dec864aff31391cdbc61b74dc41e361",
-    "reference.html": "f97ee0274e5c2c1d16f25f9dc7394a6158a6940ede2e4cb5da9626d31815ba5b",
+    "guide.html": "1a6c200c7d08475e1e9b20d2a2fd22d5a4c325466f953e483e919883c8b4df33",
+    "index.html": "320e71014ac6b672edc151e177ed41fa4e09009959ca2729f7c421c0ae5a3885",
+    "reference.html": "211f590759116452d3080ec60cce0d66c23326b22993e921a452f4bf7ef1266f",
     "refinepy.js": "aad96cc6e8b09086f2f025d0d87ad0307d8b841f3d600536b6f627da7934139e",
-    "refinepy.wasm": "f3da5da6e7d67412ce56ab629d05cbe94c1b9316196cb13b9ebfc7ccd199217f",
+    "refinepy.wasm": "2a984faa216bf64f5cceff7cbc7cbc429d59245e5b84b6938028616364cd5b45",
     "runner.js": "96561a3348a778ddf6a5301e671e3cf54f35c0eea6370e4f151447d53ee9caf5",
-    "samples.js": "5997276ba303d3eae59e0088d69bfc6912f7d94728f7f8edf3b3244ea9e59308",
+    "samples.js": "7efd28d54d4eaa75e170c40ccfee23e2b50063fab75f6eefc5cc12450181ee5e",
     "social-card.png": "e5e6fc0a9b3366bf009da8835ca66e30612c82c88b4c27abccfebe92904ea0e5",
     "style.css": "a99685d3a8c6a4deac9f2ce930d721cc424c86613448a59701619b7ee0dd5c9b",
     "third-party/@codemirror_autocomplete-6.20.3/LICENSE": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
@@ -1000,6 +1000,6 @@
     "third-party/zmij-1.0.23/LICENSE-MIT": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
     "worker.js": "c73cbbf554d1df235e909645cc71ff1a77972b99b9c407493039adc4ecb31821"
   },
-  "frontend_source_commit": "1c286cfc05f2d3ef45098c369b284df4609b8e9b",
-  "frontend_worktree_dirty": true
+  "frontend_source_commit": "8807a6fcbacda2f85aab50f3bc02d5b7bdf89bf0",
+  "frontend_worktree_dirty": false
 }

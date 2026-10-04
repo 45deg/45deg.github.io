@@ -22,6 +22,80 @@ and verifies it without executing Python.</p>
 <code>#/reference/value-contracts</code>. Existing <code>.html</code>
 links also work. Sample selection updates the URL;
 <code>#/playground/division</code> loads signed division directly.</p>
+<h2 id="algorithm-demos">Algorithm demos</h2>
+<p>Four additional samples exercise algorithm contracts:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Sample</th>
+<th>Guarantee and domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GCD</td>
+<td>Greatest common divisor of two strictly positive integers, specified
+by descending divisor search; checked termination</td>
+</tr>
+<tr>
+<td>Union-Find</td>
+<td>Quick-Find initialization, queries and exact component-label
+replacement on arbitrary-length lists; input preservation and checked
+termination</td>
+</tr>
+<tr>
+<td>Quicksort</td>
+<td>Ascending permutation and termination for arbitrary-length integer
+lists, using pivot partitioning and recursion</td>
+</tr>
+<tr>
+<td>Heap sort</td>
+<td>Ascending order, complete multiplicity preservation, heap
+invariants, bounds and termination for arbitrary-length integer
+lists</td>
+</tr>
+</tbody>
+</table>
+<p>Load them with <code>#/playground/gcd</code>,
+<code>#/playground/unionFind</code>, <code>#/playground/heapSort</code>
+or <code>#/playground/quickSort</code>. Select <code>*</code> to check
+the implementation and its helpers. GCD uses a divisor scan. Union-Find
+stores direct component labels, without parent pointers or path
+compression. Heap sort builds and drains a max-heap of arbitrary length.
+Both <code>heap_sort</code> and <code>heap_sort_ordered</code> prove an
+ascending permutation: equal lengths and equal counts for every input
+value. All 34 heap-sort targets verify, including heap-invariant and
+count-preservation lemmas. Proof applications use erased annotations;
+independent finite Python checks also exercise the algorithm and its
+specifications. List copies preserve exclusive ownership, with different
+costs from classic in-place heapsort. These samples do not prove
+complexity bounds.</p>
+<p>Try returning 1 when GCD finds a common divisor, comparing against
+<code>labels[b]</code> in union, or making <code>larger_child</code>
+always choose the left child. These edits break maximality, component
+merging or child selection respectively. In
+<code>heap_sort_ordered</code>, try
+<code>return heap_sort(xs)[::-1]</code> to break ordering, or
+<code>return heap_sort([0 for item in xs])</code> to keep sortedness but
+lose multiplicities. Static proof failures remain distinct from concrete
+Python execution witnesses.</p>
+<p>The separate quicksort demo partitions around the first value,
+recursively sorts both sides and joins them around the pivot.
+<code>quick_sort</code> proves ascending order, equal length and equal
+counts for every input value. Its recursive partition helper proves that
+both recursive sorting inputs shrink. Proof applications are erased.
+Sorted or all-equal inputs can cause deep sorting recursion; the
+partition helper also uses linear recursion depth. Copying adds further
+costs, and termination evidence does not cover Python recursion limits.
+Try reversing <code>value &lt; pivot</code>, replacing
+<code>return left[:], [value] + right</code> with
+<code>return left[:], [pivot] + right</code>, reversing the joined
+parts, or omitting the pivot. See the <a
+href="reference.html#scope-of-a-result">quicksort contract</a>.</p>
 <h2 id="write-a-contract">Write a contract</h2>
 <p>Use <code>Annotated</code> and <code>Refine</code> to constrain a
 value. The first lambda parameter receives that value; additional

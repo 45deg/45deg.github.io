@@ -351,10 +351,20 @@ API には既定のモデルがありません。</p>
 <code>#/playground</code>、<code>#/guide</code>、<code>#/reference</code>
 と見出しへのリンクを使えます。サンプルは
 <code>#/playground/&lt;sample&gt;</code>
-で指定し、<code>bounds</code>、<code>fibonacci</code>、<code>squareRoot</code>、<code>series</code>、<code>rounding</code>、<code>division</code>
-を使えます。結果ペインはコードペインと同じ高さで、展開した証拠やJSONも内部でスクロールします。</p>
+で指定し、<code>bounds</code>、<code>fibonacci</code>、<code>squareRoot</code>、<code>series</code>、<code>rounding</code>、<code>division</code>、<code>gcd</code>、<code>unionFind</code>、<code>heapSort</code>、<code>quickSort</code>
+を使えます。GCDは正の整数を入力とし、除数探索で最大公約数を仕様化します。Union-Findは任意長のQuick-Find方式で、統合後の配列を新しく返します。ヒープソートは任意長のリストについて、昇順・重複数の保存・ヒープ条件・添字の安全性・停止性を証明します。<code>heap_sort</code>
+と <code>heap_sort_ordered</code> の契約は <code>ordered(result)</code>
+と <code>permutation(input, result)</code>
+です。入力の各値の個数と全体の長さが等しいため、値の欠落も追加もありません。帰納的な補題を含む34対象が検証され、証明の適用は実行時に消去されます。<code>sift_down</code>
+は根より後のヒープ条件を、<code>take_max</code>
+は空でない最大ヒープを事前条件とします。配列のコピーにより、通常の配列内で処理するヒープソートとは実行コストが異なります。計算量は証明しません。結果ペインはコードペインと同じ高さで、展開した証拠やJSONも内部でスクロールします。</p>
 <p><strong>要確認</strong>は
 <code>unproved</code>、<code>unknown</code>、<code>unsupported</code>、<strong>失敗</strong>は
 <code>counterexample</code>、<code>error</code>
 をまとめたものです。個別の状態も表示します。レポート全体に診断がある場合は「すべて検証済み」にはなりません。状態の意味と停止性の要約は<a
 href="guide.html#read-the-results">ガイド</a>を参照してください。</p>
+<p>独立したクイックソートのデモ（<code>#/playground/quickSort</code>）は、任意長の整数リストについて
+<code>ordered(result) and permutation(input, result)</code>
+を証明します。先頭のピボットを基準に <code>&lt; pivot</code> と
+<code>&gt;= pivot</code>
+へ分割します。分割後の長さと、再帰ごとに減る長さの上限を証明します。上限の減少は呼び出し先の要約に頼らず検証し、上下限・連結後の整列・各値の個数の保存は検証済みの帰納的補題で示します。証明の適用は実行時に消去され、入力は変更しません。コピーのコスト、分割時の線形な再帰の深さ、Pythonの再帰上限、メモリー使用量は保証の対象外です。</p>

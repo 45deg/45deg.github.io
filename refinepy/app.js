@@ -1,7 +1,7 @@
 (() => {
   // route.js
   var pages = { "": "playground", "index.html": "playground", "guide.html": "guide", "reference.html": "reference" };
-  var samples = /* @__PURE__ */ new Set(["bounds", "fibonacci", "squareRoot", "series", "rounding", "division"]);
+  var samples = /* @__PURE__ */ new Set(["bounds", "fibonacci", "squareRoot", "series", "rounding", "division", "gcd", "unionFind", "heapSort", "quickSort"]);
   var names = /* @__PURE__ */ new Set(["playground", "guide", "reference"]);
   function routeFor(href, baseHref) {
     const base3 = new URL(baseHref);
@@ -219,12 +219,17 @@
     "Example": "\u30B5\u30F3\u30D7\u30EB",
     "Basics": "\u57FA\u672C",
     "Numerical algorithms": "\u6570\u5024\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0",
+    "Data structure algorithms": "\u30C7\u30FC\u30BF\u69CB\u9020\u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0",
     "Keep a value within bounds": "\u5024\u3092\u6307\u5B9A\u3057\u305F\u7BC4\u56F2\u306B\u53CE\u3081\u308B",
     "Fibonacci: verified fast doubling": "\u30D5\u30A3\u30DC\u30CA\u30C3\u30C1\u6570\uFF1A\u9AD8\u901F\u500D\u52A0\u6CD5\u306E\u691C\u8A3C",
     "Integer square root by bisection": "\u4E8C\u5206\u6CD5\u306B\u3088\u308B\u6574\u6570\u5E73\u65B9\u6839",
     "Series sums and their closed form": "\u6570\u5217\u306E\u548C\u3068\u9589\u5F62\u5F0F",
     "Exact rounding and rational rescaling": "\u53B3\u5BC6\u306A\u4E38\u3081\u3068\u6709\u7406\u6570\u306B\u3088\u308B\u30B9\u30B1\u30FC\u30EB\u5909\u63DB",
     "Signed quotient and remainder": "\u7B26\u53F7\u4ED8\u304D\u6574\u6570\u306E\u5546\u3068\u4F59\u308A",
+    "GCD: greatest common divisor": "GCD\uFF1A\u6700\u5927\u516C\u7D04\u6570",
+    "Union-Find: exact component merging": "Union-Find\uFF1A\u30B0\u30EB\u30FC\u30D7\u7D71\u5408\u306E\u691C\u8A3C",
+    "Quicksort: partition and recurse": "\u30AF\u30A4\u30C3\u30AF\u30BD\u30FC\u30C8\uFF1A\u5206\u5272\u3068\u518D\u5E30",
+    "Heap sort: arbitrary-length lists": "\u4EFB\u610F\u9577\u30EA\u30B9\u30C8\u306E\u30D2\u30FC\u30D7\u30BD\u30FC\u30C8",
     "Function selector": "\u691C\u8A3C\u3059\u308B\u95A2\u6570",
     "Verify": "\u691C\u8A3C",
     "Cancel": "\u30AD\u30E3\u30F3\u30BB\u30EB",
