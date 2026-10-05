@@ -1,0 +1,50 @@
+[
+  {
+    "name": "static-sat",
+    "description": "自己ループを除いたNode間の関係を探索します。runでインスタンスが見つかる例です。",
+    "expected": "SAT",
+    "source": "sig Node { edge: set Node }\nrun { some edge and no iden & edge } for 3\n"
+  },
+  {
+    "name": "static-unsat",
+    "description": "非循環の制約と循環の要求を組み合わせます。指定範囲では両立せずUNSATになります。",
+    "expected": "UNSAT",
+    "source": "sig Node { edge: set Node }\nfact { no iden & ^edge }\nrun { some n: Node | n in n.^edge } for 3\n"
+  },
+  {
+    "name": "check-counterexample",
+    "description": "edgeが常に対称かをcheckします。対称でない関係が反例として見つかります。",
+    "expected": "SAT",
+    "source": "sig Node { edge: set Node }\nassert Symmetric { edge = ~edge }\ncheck Symmetric for 3\n"
+  },
+  {
+    "name": "check-no-counterexample",
+    "description": "関係を二度転置すると元に戻る性質をcheckします。指定範囲では反例がありません。",
+    "expected": "UNSAT",
+    "source": "sig Node { edge: set Node }\nassert DoubleTranspose { edge = ~(~edge) }\ncheck DoubleTranspose for 3\n"
+  },
+  {
+    "name": "ordering",
+    "description": "util/orderingでNodeに全順序を与え、3個のNodeを持つインスタンスを探索します。",
+    "expected": "SAT",
+    "source": "open util/ordering[Node]\nsig Node {}\nrun { #Node = 3 and some first.next } for exactly 3 Node\n"
+  },
+  {
+    "name": "temporal-sat",
+    "description": "Lightの状態を交互に切り替えます。eventuallyで点灯に到達する時間トレースを探索します。",
+    "expected": "SAT",
+    "source": "one sig Light {}\nvar sig On in Light {}\nfact { no On and always (On' = Light - On) }\nrun { eventually some On } for 1 Light, 2..4 steps\n"
+  },
+  {
+    "name": "alloy6-farmer-solution",
+    "description": "農夫・狐・鶏・穀物の川渡り問題。状態と遷移、安全性をモデル化します。 このサンプルの探索範囲での判定はSATです。",
+    "expected": "SAT",
+    "source": "module examples/tutorial/farmer\n\n/*\n * The classic river crossing puzzle. A farmer is carrying a fox, a\n * chicken, and a sack of grain. He must cross a river using a boat\n * that can only hold the farmer and at most one other thing. If the\n * farmer leaves the fox alone with the chicken, the fox will eat the\n * chicken; and if he leaves the chicken alone with the grain, the\n * chicken will eat the grain. How can the farmer bring everything\n * to the far side of the river intact?\n *\n * authors: Greg Dennis, Rob Seater\n *\n * Acknowledgements to Derek Rayside and his students for finding and\n * fixing a bug in the \"crossRiver\" predicate.\n */\n\nopen util/ordering[State] as ord\n\n/**\n * The farmer and all his possessions will be represented as Objects.\n * Some objects eat other objects when the Farmer's not around.\n */\nabstract sig Object { eats: set Object }\none sig Farmer, Fox, Chicken, Grain extends Object {}\n\n/**\n * Define what eats what when the Farmer' not around.\n * Fox eats the chicken and the chicken eats the grain.\n */\nfact eating { eats = Fox->Chicken + Chicken->Grain }\n\n/**\n * The near and far relations contain the objects held on each\n * side of the river in a given state, respectively.\n */\nsig State {\n   near: set Object,\n   far: set Object\n}\n\n/**\n * In the initial state, all objects are on the near side.\n */\nfact initialState {\n   let s0 = ord/first |\n     s0.near = Object && no s0.far\n}\n\n/**\n * Constrains at most one item to move from 'from' to 'to'.\n * Also constrains which objects get eaten.\n */\npred crossRiver [from, from\", to, to\": set Object] {\n   // either the Farmer takes no items\n   (from\" = from - Farmer - from\".eats and\n    to\" = to + Farmer) or\n    // or the Farmer takes one item\n    (one x : from - Farmer | {\n       from\" = from - Farmer - x - from\".eats\n       to\" = to + Farmer + x })\n}\n\n/**\n * crossRiver transitions between states\n */\nfact stateTransition {\n  all s: State, s\": ord/next[s] {\n    Farmer in s.near =>\n      crossRiver[s.near, s\".near, s.far, s\".far] else\n      crossRiver[s.far, s\".far, s.near, s\".near]\n  }\n}\n\n/**\n * the farmer moves everything to the far side of the river.\n */\npred solvePuzzle {\n     ord/last.far = Object\n}\n\n\n// Sample command\nrun solvePuzzle for 8 State expect 1\nrun solvePuzzle for 8 State expect 1\n\n/**\n * no Object can be in two places at once\n * this is implied by both definitions of crossRiver \n */\nassert NoQuantumObjects {\n   no s : State | some x : Object | x in s.near and x in s.far\n}\n\ncheck NoQuantumObjects for 8 State expect 0"
+  },
+  {
+    "name": "alloy6-trash-run",
+    "description": "ごみ箱の状態変化を時間論理で記述したAlloy公式例です。 このサンプルの探索範囲での判定はSATです。",
+    "expected": "SAT",
+    "source": "var sig File {}\nvar sig Trash in File {}\n\npred delete [f: File] {\n\tf not in Trash\n\tTrash' = Trash + f\n\tFile' = File\n}\n\npred restore [f: File] {\n\tf in Trash\n\tTrash' = Trash - f\n\tFile' = File\n}\n\npred empty {\n\tsome Trash\n\tno Trash'\n\tFile' = File - Trash\n}\n\npred do_nothing {\n\tFile' = File\n\tTrash' = Trash\n}\n\npred restoreEnabled [f:File] {\n  f in Trash\n}\n\nfact Behaviour {\n\tno Trash\n\talways {\n//\t\t(some f: File | delete[f] or restore[f]) or empty\n\t\t(some f: File | delete[f] or restore[f]) or empty or do_nothing\n\t}\n} \n\n\n// Sample command\nrun {} for 3 but 1..4 steps\nexample: run {}\n\nassert restoreAfterDelete {\n\talways (all f : File | restore[f] implies once delete[f])\n}\n\ncheck restoreAfterDelete for 10 steps\ncheck restoreAfterDelete for 1.. steps\n\nassert deleteAll {\n//\talways ((File in Trash and empty) implies always no File)\n\talways ((File in Trash and empty) implies after always no File)\n}\n\ncheck deleteAll\n\ncheck Exercise1 {\n\t-- The set of files never increases\n\talways (File' in File)\n}\n\n\ncheck Exercise2 {\n\t-- The set of files only changes when empty is performed\n\talways (File' != File implies empty)\n}\n\ncheck Exercise3 {\n  (always all f : File | not delete[f]) implies always not empty\n}\n\ncheck Exercise4 {\n\t-- Once you have no files you never have files again\n\talways (no File implies always no File)\n}\n\nassert restoreIsPossibleBeforeEmpty {\n  --  a deleted file can still be restored if the trash is not emptied\n  --  always (all f:File | delete[f] implies (empty releases restoreEnabled[f]))\n  --  always (all f:File | delete[f] implies ((empty or restore[f]) releases restoreEnabled[f]))\n  always (all f:File | delete[f] implies after ((empty or restore[f]) releases restoreEnabled[f]))\n}\n\ncheck restoreIsPossibleBeforeEmpty for 3 but 1.. steps\n"
+  }
+]

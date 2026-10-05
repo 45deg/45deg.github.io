@@ -96,6 +96,25 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./alloy-wasm/
+    homeButton: false
+    featured: false
+    title:
+      ja: Alloy Analyzer WASM (unofficial)
+      en: Alloy Analyzer WASM (unofficial)
+    year: 2026
+    description_html:
+      ja: Alloyモデルをブラウザ内で解析する非公式IDE。コードを編集し、インスタンス・反例・時間トレースを確認できる。
+      en: An unofficial browser IDE for analyzing Alloy models. Edit code and inspect instances, counterexamples, and temporal traces.
+    tags:
+      - Programming
+      - Editor
+      - WebAssembly
+    image:
+      src: ./images/i58.png
+      alt:
+        ja: Alloyモデルと時間トレースの解析結果を左右に表示したIDE
+        en: Alloy IDE with a model on the left and temporal trace results on the right
   - href: ./wordkin/
     featured: true
     title:
