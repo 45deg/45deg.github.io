@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>proofglyph</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css" integrity="sha384-3rdsX6e5mueWyoweR9NIVmtEsUkokpBT/0ALqKKIBMr9j4qhHkaIkAcGgsE6uVlp" crossorigin="anonymous">
+  <style>
+    :root { color-scheme: light dark; --bg:#fff; --surface:#f7f7f8; --text:#202123; --muted:#62646b; --line:#dedee2; --hover:#eeeef0; --accent:#0969da; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    button,select,textarea { font:inherit; color:inherit; }
+    button,select { min-height:40px; border:1px solid var(--line); border-radius:6px; background:var(--bg); padding:7px 12px; }
+    button { cursor:pointer; } button:hover { background:var(--hover); } button:disabled { opacity:.55; cursor:wait; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    a { color:var(--accent); text-underline-offset:3px; }
+    .skip-link { position:absolute; top:-60px; left:16px; padding:8px; background:var(--bg); z-index:2; } .skip-link:focus { top:8px; }
+    .app-header { border-bottom:1px solid var(--line); }
+    .header-inner,main { max-width:1500px; margin:auto; padding:0 28px; }
+    .brand-row { display:flex; align-items:baseline; gap:18px; padding:18px 0 14px; }
+    h1 { font-size:20px; letter-spacing:-.5px; margin:0; font-weight:650; }
+    .brand-row p { margin:0; color:var(--muted); font-size:13px; }
+    .repository-link { margin-left:auto; font-size:13px; white-space:nowrap; }
+    .tabs { display:flex; gap:24px; overflow-x:auto; }
+    .tabs button { flex-shrink:0; border:0; border-radius:0; background:transparent; padding:12px 2px; color:var(--muted); border-bottom:2px solid transparent; }
+    .tabs button[aria-selected="true"] { color:var(--text); border-bottom-color:var(--text); font-weight:600; }
+    main { padding-top:24px; padding-bottom:48px; }
+    [hidden] { display:none !important; }
+    .toolbar { display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+    .toolbar label { font-weight:600; } .toolbar select { width: min(480px,100%); }
+    .toolbar .note { margin:0 0 0 auto; }
+    .panes { display:grid; grid-template-columns:minmax(220px,var(--hieratic-width,1fr)) minmax(220px,var(--proofglyph-width,2fr)) minmax(220px,1fr); border:1px solid var(--line); border-radius:8px; overflow:auto; }
+    .pane { min-width:0; display:flex; flex-direction:column; overflow:auto; } .pane + .pane { border-left:1px solid var(--line); }
+    .pane-header { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface); }
+    .pane-header label,.pane-header h2 { margin:0; font-size:13px; font-weight:600; } .file-ext { font:12px ui-monospace,monospace; color:var(--muted); }
+    textarea { display:block; width:100%; min-width:220px; height:52vh; min-height:160px; border:0; border-radius:0; padding:18px 16px; background:var(--bg); font:13px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; resize:both; tab-size:2; }
+    textarea:focus-visible { outline-offset:-3px; } .pane-footer { margin-top:auto; padding:12px 16px; border-top:1px solid var(--line); }
+    .primary { background:var(--text); color:var(--bg); border-color:var(--text); } .primary:hover { opacity:.85; background:var(--text); }
+    .results { height:52vh; min-height:320px; overflow:auto; padding:16px; }
+    #status { margin:14px 0 0; font-size:13px; min-height:1.65em; overflow-wrap:anywhere; }
+    .note { color:var(--muted); font-size:12px; }
+    .theorem { padding:16px 0; border-bottom:1px solid var(--line); } .theorem:first-child { padding-top:0; }
+    .theorem h3 { margin:0 0 8px; font:600 13px/1.6 ui-monospace,monospace; overflow-wrap:anywhere; }
+    .theorem h3 span { display:block; margin-top:4px; font:12px system-ui,sans-serif; color:var(--muted); }
+    .formula { overflow-x:auto; padding:10px 2px; } .formula .katex-display { margin:0; text-align:left; } .formula .katex-display > .katex { text-align:left; }
+    .results pre { white-space:pre-wrap; overflow-wrap:anywhere; } summary { cursor:pointer; padding:12px 0; }
+    .doc { max-width:860px; margin:4px auto; font-size:15px; }
+    .doc h2 { margin:0 0 14px; font-size:24px; font-weight:650; letter-spacing:-.5px; }
+    .doc h3 { margin:32px 0 10px; font-size:17px; font-weight:600; }
+    .doc h4 { margin:24px 0 8px; font-size:15px; }
+    .doc p,.doc li { line-height:1.9; } .doc p { margin:12px 0; }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.9em; overflow-wrap:anywhere; }
+    .doc pre { padding:16px 18px; border:1px solid var(--line); border-radius:6px; background:var(--surface); white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.8; }
+    .stack-diagram { margin:20px 0; overflow-x:auto; }
+    .stack-diagram svg { display:block; width:100%; min-width:650px; max-width:860px; margin:auto; color:var(--text); }
+    .stack-diagram.compact svg { min-width:760px; }
+    .stack-diagram.compact text { font-size:13px; }
+    .stack-diagram rect { fill:var(--surface); stroke:currentColor; }
+    .stack-diagram text { fill:currentColor; font:15px ui-monospace,SFMono-Regular,Consolas,monospace; text-anchor:middle; }
+    .stack-diagram .step-label { font:14px system-ui,sans-serif; }
+    .doc table { width:100%; border-collapse:collapse; font-size:14px; }
+    .doc th,.doc td { text-align:left; vertical-align:top; padding:12px 10px; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+    .doc th { color:var(--muted); font-weight:500; } .doc th:first-child,.doc td:first-child { width:32%; }
+    .grammar + .grammar { margin-top:44px; padding-top:32px; border-top:1px solid var(--line); }
+    .example-block { padding:24px 0; border-bottom:1px solid var(--line); } .example-block h3 { margin-top:0; }
+    .doc-nav { display:flex; gap:16px; flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid var(--line); }
+    @media (prefers-color-scheme:dark) { :root { --bg:#181818; --surface:#202020; --text:#ececec; --muted:#ababaf; --line:#424246; --hover:#2e2e30; --accent:#78b7ff; } }
+    @media (max-width:1000px) { .panes { grid-template-columns:minmax(220px,var(--hieratic-width,1fr)) minmax(220px,var(--proofglyph-width,1fr)); } .pane:last-child { grid-column:1/-1; border-left:0; border-top:1px solid var(--line); } .results { height:auto; max-height:480px; min-height:160px; } }
+    @media (max-width:640px) { .header-inner,main { padding-left:16px; padding-right:16px; } .brand-row { display:grid; grid-template-columns:1fr auto; gap:4px 12px; } .brand-row p { grid-column:1/-1; grid-row:2; } .repository-link { grid-column:2; grid-row:1; } .tabs { gap:20px; } .panes { grid-template-columns:1fr; } .pane + .pane { border-left:0; border-top:1px solid var(--line); } textarea { height:300px; } .toolbar .note { margin-left:0; width:100%; } .doc { font-size:14px; } .doc th,.doc td { padding:10px 6px; } }
+  </style>
+  <script src="browser.bc.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js" integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk" crossorigin="anonymous" defer></script>
+  <script src="math.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ</a>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-row"><h1>proofglyph</h1><p>λΠ 計算に基づく証明検査器</p><a class="repository-link" href="https://github.com/45deg/proofglyph">Repository</a></div>
+    <nav class="tabs" role="tablist" aria-label="ワークスペースとドキュメント">
+      <button id="tab-workspace" role="tab" aria-selected="true" aria-controls="workspace" tabindex="0">エディタ</button>
+      <button id="tab-foundations" role="tab" aria-selected="false" aria-controls="foundations" tabindex="-1">基礎・背景</button>
+      <button id="tab-specification" role="tab" aria-selected="false" aria-controls="specification" tabindex="-1">言語仕様</button>
+      <button id="tab-examples" role="tab" aria-selected="false" aria-controls="examples" tabindex="-1">例</button>
+      <button id="tab-writing" role="tab" aria-selected="false" aria-controls="writing" tabindex="-1">書き方</button>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section id="workspace" role="tabpanel" aria-labelledby="tab-workspace" tabindex="0">
+    <div class="toolbar">
+      <label for="example">証明例</label>
+      <select id="example" disabled><option value="">証明例を選択…</option></select>
+      <p class="note">コンパイル・検査はブラウザ内で実行</p>
+    </div>
+    <div class="panes">
+      <section class="pane">
+        <div class="pane-header"><label for="hieratic">Hieratic</label><span class="file-ext">.ht</span></div>
+        <textarea id="hieratic" spellcheck="false" autocapitalize="off" autocomplete="off">axiom A : Type;
+def id (x : A) : A := x;
+theorem keep (x : A) (y : A) : A := x;</textarea>
+        <div class="pane-footer"><button id="compile" class="primary" disabled>コンパイルして検査</button></div>
+      </section>
+      <section class="pane">
+        <div class="pane-header"><label for="proofglyph">Proofglyph</label><span class="file-ext">.pg</span></div>
+        <textarea id="proofglyph" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+        <div class="pane-footer"><button id="check" disabled>記号列を検査</button></div>
+      </section>
+      <section class="pane">
+        <div class="pane-header"><h2 id="result-heading">検査結果・定理</h2></div>
+        <div id="result" class="results" role="region" aria-labelledby="result-heading" tabindex="0"></div>
+      </section>
+    </div>
+    <p id="status" role="status" aria-live="polite">読み込み中…</p>
+  </section>
+  <section id="foundations" class="doc" role="tabpanel" aria-labelledby="tab-foundations" tabindex="0" hidden>
+    <h2>Proofglyph の証明検査</h2>
+    <p>Proofglyph の <code>.pg</code> ファイルでは、型と証明項を最小限の記号列で記述します。検査器はその記号列を読み込み、各証明項が指定された型を持つかを検証します。検査の体系は、<a href="https://en.wikipedia.org/wiki/Logical_framework">LF（Logical Framework）</a>の型理論である λΠ 計算（依存型付きラムダ計算）に基づいています。</p>
+    <p>LF は、多様な論理の構文・推論規則・証明を<a href="https://ja.wikipedia.org/wiki/依存型">依存型</a>付き<a href="https://ja.wikipedia.org/wiki/ラムダ計算">ラムダ計算</a>上で統一的に表現・検証するためのメタ言語です。Robert Harper、Furio Honsell、Gordon Plotkin が論文 <cite><a href="https://homepages.inf.ed.ac.uk/gdp/publications/Framework_Def_Log.pdf" type="application/pdf">A Framework for Defining Logics</a></cite>（1987 / 1993）において提案しました。</p>
+    <p><a href="https://ja.wikipedia.org/wiki/自然演繹">自然演繹</a>やシーケント計算、集合論など、論理体系ごとに記号や推論規則は異なります。LF では、これらを「シグネチャ」と呼ばれる定数宣言の列として定義します。検査器はその宣言をもとに、関数の引数・戻り値の型、変数のスコープ、型の同値性を判定します。</p>
+    <p>例えば高水準言語 Hieratic では、命題の型 <code>Prop</code> と、命題からその証明の型への写像 <code>Prf</code>（カインド <code>Prop -&gt; Type</code>）を次のように宣言します。命題 <code>P</code> は型 <code>Prop</code> を持ち、その証明は型 <code>Prf P</code> を持つ項として表現されます。このコードをコンパイルして Proofglyph 形式で検査します。</p>
+    <pre><code>axiom Prop : Type;
+axiom Prf : Prop -&gt; Type;
+axiom P : Prop;
+theorem identity (p : Prf P) : Prf P := p;</code></pre>
+    <p>このコードをコンパイルすると、次の <code>.pg</code> が生成されます。</p>
+    <pre><code>*:
+#0*&gt;:
+#0:
+#1#2@#1#2@&gt;#1#2@$0\!</code></pre>
+    <p>上記の Proofglyph コードにおいて、<code>#0</code> は <code>Prop</code>、<code>#1</code> は <code>Prf</code>、<code>#2</code> は <code>P</code> を指します。演算子 <code>:</code> で前提（公理）を登録し、最後の <code>!</code> で <code>identity</code> の型と証明項を検査して登録します。</p>
+    <p>定理 <code>identity</code> は「<code>P</code> の証明を受け取ってそのまま返す関数」です。引数として <code>P</code> の証明を必要とするため、これは <code>P</code> を無条件に証明したのではなく、含意 P → P に相当する仮定付きの証明です。自然演繹における仮定の導入と解消が、ラムダ計算における関数の引数受け取りとラムダ抽象に対応しています。</p>
+    <p><code>Prf P</code> は、命題 <code>P</code> の値に依存する型（依存型 / 型族）です。<code>forall (P : Prop), Prf P -&gt; Prf P</code> は、任意の命題 <code>P</code> とその証明を受け取り、同じ命題の証明を返す関数の型を表します。Hieratic では <code>forall</code> 構文を用いて、引数の値に依存する<a href="https://ja.wikipedia.org/wiki/依存型">関数型（依存積型 / Π型）</a>を記述します。</p>
+    <table><thead><tr><th scope="col">役割</th><th scope="col">例</th></tr></thead><tbody>
+      <tr><td>項（Object）</td><td><code>P : Prop</code>、<code>p : Prf P</code></td></tr>
+      <tr><td>型 / 型族（Type / Family）</td><td><code>Prop : Type</code>、<code>Prf P : Type</code></td></tr>
+      <tr><td>カインド（Kind）</td><td><code>Type</code>、<code>Prop -&gt; Type</code>。いずれも <code>Kind</code> に分類されます。<code>Kind</code> 自体には型が存在しません。</td></tr>
+    </tbody></table>
+    <p>対象論理の全称量化子を <code>All : (U -&gt; Prop) -&gt; Prop</code> と宣言すると、「すべての x について F x」という命題は <code>All (fun (x : U) =&gt; F x)</code> と表現できます。このように、対象論理の変数束縛を LF のラムダ束縛で表現する手法を <a href="https://en.wikipedia.org/wiki/Higher-order_abstract_syntax">HOAS（Higher-Order Abstract Syntax）</a> と呼びます。Proofglyph の内部表現では <a href="https://en.wikipedia.org/wiki/De_Bruijn_index">de Bruijn インデックス</a> を採用し、変数名の違い（α 同値性）の吸収や変数捕獲を防ぐ代入を安全かつ決定論的に行います。</p>
+    <p>型検査器の役割は、宣言された前提のもとで証明項が指定された型を持つかを機械的に確かめることです。前提（公理系）自体の無矛盾性や、記述した規則が意図した対象論理を正確に捉えているかは、型検査器の保証範囲外です。LF の元論文では、対象論理の構文・演繹木と LF の正準項の 1 対 1 対応が「適合性（Adequacy）」として証明されています。</p>
+    <p>Proofglyph のカーネルは、Π型、λ項、関数適用、ソート（<code>Type / Kind</code>）、変数、不透明な定数のみを扱う最小構成です。型の同値判定には β 簡約のみを用います。論理の推論規則や公理はすべて前提として宣言し、証明項は明示的に記述します（自動証明探索、タクティクス、暗黙引数などの機能はありません）。</p>
+  </section>
+  <section id="specification" class="doc" role="tabpanel" aria-labelledby="tab-specification" tabindex="0" hidden>
+    <h2>言語仕様</h2>
+    <p>Hieratic（<code>.ht</code>）は変数名や定数名を用いて人間が読み書きしやすい形式で記述する高水準言語であり、Proofglyph（<code>.pg</code>）は型と証明項を最小限の記号列で記述するスタック指向の中間言語です。Hieratic で記述されたコードは Proofglyph へとコンパイルされ、カーネルによって型検査されます。Proofglyph を直接入力して検査することも可能です。</p>
+    <nav class="doc-nav" aria-label="言語仕様の目次"><a href="#proofglyph-grammar">Proofglyph</a><a href="#hieratic-grammar">Hieratic</a><a href="#typing-rules">型付け・同値性</a></nav>
+    <div class="grammar-panes">
+
+  <section class="grammar" aria-labelledby="proofglyph-grammar">
+    <h2 id="proofglyph-grammar">Proofglyph（記号列）の構文</h2>
+    <p>Proofglyph は記号列を先頭から順に走査し、構文要素をスタックへ積んで式を組み立てます。二項演算子 <code>&gt;</code>、<code>\</code>、<code>@</code> はスタックトップから 2 つの要素を取り出し、新たな型や項を構築してスタックへプッシュします（表中の <code>A B</code> や <code>f x</code> は、右側の要素がスタックの最上位を示します）。</p>
+    <table>
+      <thead><tr><th scope="col">記号</th><th scope="col">操作</th></tr></thead>
+      <tbody>
+        <tr><td><code>*</code></td><td><code>Type</code> をプッシュ</td></tr>
+        <tr><td><code>^</code></td><td><code>Kind</code> をプッシュ</td></tr>
+        <tr><td><code>$n</code></td><td>変数（de Bruijn インデックス、<code>$0</code> が最も内側の引数）</td></tr>
+        <tr><td><code>#n</code></td><td>登録済み定数（0 から始まる連番）</td></tr>
+        <tr><td><code>&gt;</code></td><td>スタックから <code>A</code> と <code>B</code> を取り出し、引数の型が <code>A</code>、戻り値の型が <code>B</code> である依存関数型（Π型）を積む（<code>B</code> の内部から引数を参照可能）</td></tr>
+        <tr><td><code>\</code></td><td>スタックから <code>A</code> と <code>b</code> を取り出し、型 <code>A</code> の引数を受け取って <code>b</code> を返す関数（λ項）を積む</td></tr>
+        <tr><td><code>@</code></td><td>スタックから <code>f</code> と <code>x</code> を取り出し、関数 <code>f</code> を引数 <code>x</code> に適用した項（関数適用）を積む</td></tr>
+        <tr><td><code>:</code></td><td>スタックが <code>[型]</code>（1 要素のみ）のとき、その型を持つ前提（公理）を定数として登録し、スタックを空にする</td></tr>
+        <tr><td><code>!</code></td><td>スタックが <code>[型, 項]</code>（2 要素のみ）のとき、項がその型を持つかを型検査して証明済み定数として登録し、スタックを空にする</td></tr>
+      </tbody>
+    </table>
+    <h3>関数を書く</h3>
+    <p>型 <code>A</code> と <code>B</code>、関数 <code>f : A -&gt; B</code> を前提として、引数 <code>x : A</code> に <code>f</code> を適用する関数を書きます。</p>
+    <pre><code>*:
+*:
+#0#1&gt;:
+#0#1&gt;#0#2$0@\!</code></pre>
+    <p>最初の二つの <code>*:</code> で <code>A</code>（<code>#0</code>）と <code>B</code>（<code>#1</code>）を登録します。<code>#0#1&gt;:</code> は関数型 <code>A -&gt; B</code> を作り、その型を持つ <code>f</code>（<code>#2</code>）を前提として登録します。<code>#0#1&gt;:</code> を読むときのスタックは次のように変わります。</p>
+    <figure class="stack-diagram" tabindex="0" aria-label="スタック図。狭い画面では横にスクロールできます。">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-labelledby="stack-title stack-description">
+        <title id="stack-title">#0#1&gt;: のスタックの変化</title>
+        <desc id="stack-description">型 A（#0）と B（#1）が登録済みの場合。#0 で A を積み、#1 で B を積む。上が最後に積んだ項。&gt; で二つを取り出し、関数型 A → B を一つ積む。: でその型を持つ f（#2）を前提として登録し、スタックを空にする。</desc>
+        <text class="step-label" x="100" y="28">#0 を読む</text>
+        <text class="step-label" x="300" y="28">#1 を読む</text>
+        <text class="step-label" x="500" y="28">&gt; を読む</text>
+        <text class="step-label" x="700" y="28">: を読む</text>
+        <rect x="40" y="116" width="120" height="40" rx="3"/>
+        <text x="100" y="141">A（#0）</text>
+        <rect x="240" y="72" width="120" height="40" rx="3"/>
+        <text x="300" y="97">B（#1）</text>
+        <rect x="240" y="116" width="120" height="40" rx="3"/>
+        <text x="300" y="141">A（#0）</text>
+        <rect x="440" y="116" width="120" height="40" rx="3"/>
+        <text x="500" y="141">A → B</text>
+        <text class="step-label" x="700" y="141">空</text>
+        <g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M180 116 H220 m-7 -6 7 6 -7 6 M380 116 H420 m-7 -6 7 6 -7 6 M580 116 H620 m-7 -6 7 6 -7 6"/>
+          <path d="M34 162 H166 M234 162 H366 M434 162 H566 M634 162 H766"/>
+        </g>
+        <text class="step-label" x="100" y="188">1 項</text>
+        <text class="step-label" x="300" y="188">2 項</text>
+        <text class="step-label" x="500" y="188">1 項（関数型）</text>
+        <text class="step-label" x="700" y="188">f（#2）: A → B</text>
+      </svg>
+    </figure>
+    <p>図では上がスタックの最上部です。<code>&gt;</code> は二つの項から関数型を作り、<code>:</code> はその型を持つ前提を登録してスタックを空にします。</p>
+    <p>最後の行では、<code>#0#1&gt;</code> で結論の型 <code>A -&gt; B</code> を積みます。続く <code>#0#2$0@\</code> が <code>fun (x : A) =&gt; f x</code> に対応します。<code>#2$0@</code> は <code>f</code> を引数 <code>x</code> に適用し、<code>\</code> は型 <code>A</code> の引数を受け取る関数を作ります。末尾の <code>!</code> で型と本体を検査し、成功すると証明済み定数 <code>#3</code> を登録します。</p>
+    <figure class="stack-diagram compact" tabindex="0" aria-label="関数の本体と検査のスタック図。狭い画面では横にスクロールできます。">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 158" role="img" aria-labelledby="body-stack-title body-stack-description">
+        <title id="body-stack-title">#0#1&gt;#0#2$0@\! のスタックの変化</title>
+        <desc id="body-stack-description">最初に結論の型 A → B を積む。次に引数の型 A、関数 f、引数 x を積む。@ で f と x を適用 f x に置き換え、バックスラッシュで A と f x をラムダ項 λx:A. f x に置き換える。! で残った型と本体を検査し、#3 を証明済み定数として登録してスタックを空にする。</desc>
+        <text x="75" y="18">#0#1&gt;</text>
+        <rect x="10" y="104" width="130" height="20" rx="2"/>
+        <text x="75" y="118">A → B</text>
+        <path d="M6 130 H144" fill="none" stroke="currentColor"/>
+        <path d="M149 85 h27 m-6 -5 6 5 -6 5" fill="none" stroke="currentColor"/>
+        <text x="250" y="18">#0#2$0</text>
+        <rect x="185" y="104" width="130" height="20" rx="2"/>
+        <text x="250" y="118">A → B</text>
+        <rect x="185" y="82" width="130" height="20" rx="2"/>
+        <text x="250" y="96">A（#0）</text>
+        <rect x="185" y="60" width="130" height="20" rx="2"/>
+        <text x="250" y="74">f（#2）</text>
+        <rect x="185" y="38" width="130" height="20" rx="2"/>
+        <text x="250" y="52">x（$0）</text>
+        <path d="M181 130 H319" fill="none" stroke="currentColor"/>
+        <path d="M324 85 h27 m-6 -5 6 5 -6 5" fill="none" stroke="currentColor"/>
+        <text x="425" y="18">@</text>
+        <rect x="360" y="104" width="130" height="20" rx="2"/>
+        <text x="425" y="118">A → B</text>
+        <rect x="360" y="82" width="130" height="20" rx="2"/>
+        <text x="425" y="96">A（#0）</text>
+        <rect x="360" y="60" width="130" height="20" rx="2"/>
+        <text x="425" y="74">f x</text>
+        <path d="M356 130 H494" fill="none" stroke="currentColor"/>
+        <path d="M499 85 h27 m-6 -5 6 5 -6 5" fill="none" stroke="currentColor"/>
+        <text x="600" y="18">\</text>
+        <rect x="535" y="104" width="130" height="20" rx="2"/>
+        <text x="600" y="118">A → B</text>
+        <rect x="535" y="82" width="130" height="20" rx="2"/>
+        <text x="600" y="96">λx:A. f x</text>
+        <path d="M531 130 H669" fill="none" stroke="currentColor"/>
+        <path d="M674 85 h27 m-6 -5 6 5 -6 5" fill="none" stroke="currentColor"/>
+        <text x="775" y="18">!</text>
+        <text class="step-label" x="775" y="118">空</text>
+        <path d="M706 130 H844" fill="none" stroke="currentColor"/>
+        <text class="step-label" x="775" y="151">#3 : A → B（証明済み）</text>
+      </svg>
+    </figure>
+    <p>変数 <code>$0</code> は最も内側のバインダの引数、<code>$1</code> はその一つ外側の引数を表します。この変数番号付け方式を <a href="https://en.wikipedia.org/wiki/De_Bruijn_index">de Bruijn インデックス</a> と呼びます。例えば <code>#0#0$1\\</code> は、型 <code>#0</code> の引数を 2 つ受け取り、第 1 引数（先に渡された値）を返す関数を表します。</p>
+    <p>定数番号 <code>#0</code>, <code>#1</code>, … は登録順に 0 から連番で割り振られます。参照できるのは、それ以前に登録済みの定数のみです（前方参照や自己参照は不可）。</p>
+    <p>トークン間の空白や改行は自由に省略・挿入できますが、<code>$&nbsp;0</code>&nbsp;や&nbsp;<code>#&nbsp;12</code>&nbsp;のようにプレフィックス記号と数字の間に空白を入れることはできません（<code>$0</code>&nbsp;や&nbsp;<code>#12</code>&nbsp;のように詰めて記述します）。なお、Proofglyph にはコメント構文は存在しません。</p>
+    <p>型検査は <code>:</code> および <code>!</code> による定数登録のタイミングで実行されます。操作に必要なスタック要素が不足している場合、登録時にスタックに余分な項が残っている場合、ファイル終端（EOF）でスタックが空でない場合などはすべて構文エラーとなります。</p>
+  </section>
+  <section class="grammar" aria-labelledby="hieratic-grammar">
+    <h2 id="hieratic-grammar">Hieratic の構文</h2>
+    <p>Hieratic では、Proofglyph のような数値インデックスの代わりに、識別子（変数名・定数名）を用いて人間が読み書きしやすい形式で記述します。関数型は <code>A -&gt; B</code>、関数適用は <code>f x</code> のように表現し、コンパイル時に名前解決が行われて番号へと変換されます。</p>
+    <h3>宣言</h3>
+    <table>
+      <thead><tr><th scope="col">構文</th><th scope="col">説明</th></tr></thead>
+      <tbody>
+        <tr><td><code>axiom 名前 : 型;</code></td><td>公理（前提）の宣言</td></tr>
+        <tr><td><code>def 名前 : 型 := 項;</code></td><td>定義の登録</td></tr>
+        <tr><td><code>theorem 名前 : 型 := 証明項;</code></td><td>定理の証明（内部的には <code>def</code> と同一）</td></tr>
+      </tbody>
+    </table>
+    <h3>型と項</h3>
+    <table>
+      <thead><tr><th scope="col">構文</th><th scope="col">説明</th></tr></thead>
+      <tbody>
+        <tr><td><code>Type</code> / <code>Kind</code></td><td><code>Type</code> は通常の型の型（ソート）。<code>Type : Kind</code> が成り立つ。<code>Kind</code> 自体には型が存在しない</td></tr>
+        <tr><td><code>f x y</code></td><td>関数適用（左結合: <code>(f x) y</code>）</td></tr>
+        <tr><td><code>A -&gt; B</code></td><td>関数型（右結合: <code>A -&gt; (B -&gt; C)</code>）</td></tr>
+        <tr><td><code>forall (x : A), B</code></td><td>依存関数型（Π型）</td></tr>
+        <tr><td><code>fun (x : A) =&gt; b</code></td><td>ラムダ抽象（λ項）</td></tr>
+      </tbody>
+    </table>
+    <h3>Proofglyph との対応</h3>
+    <pre><code>axiom A : Type;
+def id (x : A) : A := x;</code></pre>
+    <p>このコードは <code>*:#0#0&gt;#0$0\!</code> に変換されます。<code>A</code> が定数 <code>#0</code> に、関数の引数 <code>x</code> が変数 <code>$0</code> に対応します。定数名 <code>id</code> は Proofglyph の記号列には含まれません。</p>
+    <p>宣言の引数リストは、型側では <code>forall</code>、本体側では <code>fun</code> へと展開（糖衣構文展開）されます。上記の定義は次のように書くことと同値です。</p>
+    <pre><code>def id : A -&gt; A := fun (x : A) =&gt; x;</code></pre>
+    <p>関数適用 <code>f x y</code> は左結合（<code>(f x) y</code>）、関数型 <code>A -&gt; B -&gt; C</code> は右結合（<code>A -&gt; (B -&gt; C)</code>）として解釈されます。依存関数型 <code>forall (x : A), B</code> では、戻り値の型 <code>B</code> の内部で引数 <code>x</code> を参照できます。</p>
+    <p>付属の証明例では、<code>Prop</code> を命題の型、<code>Prf P</code> を命題 <code>P</code> の証明を表す型として扱っています。<code>theorem 名前 : Prf P := 項;</code> は、与えられた証明項が型 <code>Prf P</code> を持つかを型検査します。論理の推論規則やペアノの公理などは、すべて前提（<code>axiom</code>）として宣言します。</p>
+    <p><code>def</code> と <code>theorem</code> は機能的に同一であり、どちらも型検査を経て Proofglyph の <code>!</code> に変換されます。登録済み定数の定義本体は型比較時にも展開されません（不透明な定数 / opaque constants）。そのため、インラインで直接記述したラムダ式 <code>(fun (x : A) =&gt; x) a</code> は <code>a</code> へ β 簡約されますが、登録済みの定数適用 <code>id a</code> は展開されません。</p>
+    <p>検査結果の「検査成功」は、入力に含まれる前提のもとで証明項の型付けが妥当であることを意味します。前提（公理）自体の正しさや無矛盾性までは判定しません。</p>
+    <h3>名前・束縛・宣言順</h3>
+    <p>識別子は正規表現 <code>[A-Za-z_][A-Za-z0-9_']*</code> で表されます。<code>axiom</code>, <code>def</code>, <code>theorem</code>, <code>import</code>, <code>forall</code>, <code>fun</code>, <code>Type</code>, <code>Kind</code> は予約語です。アンダースコア <code>_</code> も通常の識別子名であり、型推論の穴（ワイルドカード）ではありません。また、数値リテラルや中置の算術演算子（<code>+</code> や <code>*</code> など）は言語機能として組み込まれていません。</p>
+    <p>名前解決は最も内側の引数から外側へ向かって探索し、見つからなければ先行する大域宣言を検索します。内側の引数名で外側の名前を覆い隠すシャドーイング（shadowing）は可能です。大域的な宣言名の重複、前方参照（未定義の参照）、自己参照（再帰定義）はエラーとなります。引数の省略記法 <code>(x y : A)</code> は <code>(x : A) (y : A)</code> に展開されます。</p>
+    <h3>ファイルの分割（CLI）</h3>
+    <pre><code>import "commons/logic/propositional.ht";</code></pre>
+    <p>CLI の <code>compile</code> コマンドは、インポート元のファイルを基準に相対パスを解決し、依存先ファイルの宣言をその位置へインライン展開します。同一の実体ファイルは重複して読み込まれません。循環インポート、存在しないファイル、インポート展開後の名前の重複はエラーとなります（名前空間や別名定義の機能はありません）。</p>
+    <p><code>//</code> から行末まではコメントとして扱われます。引数はすべて明示的に渡す必要があります（型推論による穴やタクティクスはありません）。なお、この Web デモでは単一ファイル内での編集となるため、証明例には依存する前提宣言があらかじめすべてインラインで展開されています。</p>
+    <p>Hieratic を編集した場合は「コンパイルして検査」を、Proofglyph を直接編集した場合は「記号列を検査」を押してください。Proofglyph を直接編集・検査した場合は、ソースマップが存在しないため定数名が <code>c0</code>, <code>c1</code>, … として表示されます。</p>
+  </section>
+  </div>
+  <section class="grammar" aria-labelledby="typing-rules">
+    <h3 id="typing-rules">型付けと同値性</h3>
+    <table><thead><tr><th scope="col">構成</th><th scope="col">条件・型</th></tr></thead><tbody>
+      <tr><td><code>Type</code></td><td><code>Kind</code> 型を持つ。<code>Kind</code> 自体には型が存在しない。</td></tr>
+      <tr><td><code>forall (x : A), B</code></td><td><code>A : Type</code> が必要。<code>x : A</code> のもとで <code>B : Type</code> または <code>B : Kind</code> が整形式であること。</td></tr>
+      <tr><td><code>fun (x : A) =&gt; b</code></td><td><code>b : B</code> ならば、形成可能な <code>forall (x : A), B</code> 型を持つ。</td></tr>
+      <tr><td><code>f u</code></td><td><code>f : forall (x : A), B</code> かつ <code>u : A</code> ならば、型は <code>B</code> 中の <code>x</code> を <code>u</code> に代入（置換）したもの。</td></tr>
+    </tbody></table>
+    <p>束縛変数として導入できるのは、型 <code>Type</code> を持つ項に限られます（一階依存型）。<code>Type : Kind</code> であるため、<code>forall (A : Type), A -&gt; A</code> のようなカインドの抽象化（多相型）は拒否されます（公理として固定された特定の <code>A : Type</code> に対する恒等関数は記述可能です）。</p>
+    <p>型の同値性判定には完全な <a href="https://ja.wikipedia.org/wiki/ラムダ計算#β-簡約">β 簡約</a> を用います。η 同値、定数の展開、証明無関係性（proof irrelevance）、ユーザー定義の書換え規則などはサポートしていません。また、自然数や帰納型は言語に組み込まれておらず、すべてシグネチャ上の前提として公理化します。</p>
+    <p>無限ループによるブラウザの停止を防ぐため、型検査の簡約ステップ数には計算上限（fuel）が設定されています。fuel を使い切ると検査は中断されますが、これは計算上限に達したことを意味し、直ちに証明項が誤っていることを示すわけではありません（CLI では <code>--fuel N</code> オプションで上限を変更可能です）。</p>
+  </section>
+  </section>
+  <section id="examples" class="doc" role="tabpanel" aria-labelledby="tab-examples" tabindex="0" hidden>
+    <h2>実行できる証明例（Hieratic）</h2>
+    <p>以下の各例は単独で実行可能です。「エディタで試す」をクリックすると、エディタの内容が該当コードに置き換わり、コンパイルと型検査が実行されます。</p>
+    <article class="example-block"><h3>恒等関数と第 1 引数の射影</h3>
+      <p><code>id</code> は受け取った引数をそのまま返します。<code>keep</code> は同じ型の引数を 2 つ受け取り、第 1 引数（先に渡された値）を返します。</p>
+      <pre><code id="snippet-identity">axiom A : Type;
+def id (x : A) : A := x;
+theorem keep (x y : A) : A := x;</code></pre>
+      <button data-snippet="snippet-identity">エディタで試す</button>
+    </article>
+    <article class="example-block"><h3>関数の合成（含意の推移律）</h3>
+      <p>項 <code>ab x</code> は型 <code>B</code> を持ち、それに <code>bc</code> を適用した <code>bc (ab x)</code> は型 <code>C</code> を持ちます。命題の証明を引数にとれば、同一の構造で含意の推移律（三段論法）を導出できます。</p>
+      <pre><code id="snippet-compose">axiom A : Type;
+axiom B : Type;
+axiom C : Type;
+theorem compose (ab : A -&gt; B) (bc : B -&gt; C)
+  (x : A) : C := bc (ab x);</code></pre>
+      <button data-snippet="snippet-compose">エディタで試す</button>
+    </article>
+    <article class="example-block"><h3>依存関数（引数によって決まる型）</h3>
+      <p>型族 <code>B</code> のカインドは <code>A -&gt; Type</code> であり、引数 <code>x : A</code> に応じて <code>B x</code> が具体的な型となります。<code>dependent_id</code> は <code>y : B x</code> を受け取ってそのまま返す依存型の恒等関数です。</p>
+      <pre><code id="snippet-dependent">axiom A : Type;
+axiom B : A -&gt; Type;
+theorem dependent_id (x : A) (y : B x) : B x := y;</code></pre>
+      <button data-snippet="snippet-dependent">エディタで試す</button>
+    </article>
+    <article class="example-block"><h3>含意の導入と除去（自然演繹）</h3>
+      <p><code>Imp P Q</code> は対象論理における含意命題、<code>Prf P -&gt; Prf Q</code> は仮定 <code>P</code> の証明から <code>Q</code> の証明を導く LF の関数型です。<code>imp_i</code> はその証明変換関数から含意の証明を導出し（含意の導入規則）、<code>imp_e</code> は含意の証明と前提の証明から結論の証明を導出します（含意の除去規則 / モーダス・ポネンス）。</p>
+      <pre><code id="snippet-implication">axiom Prop : Type;
+axiom Prf : Prop -&gt; Type;
+axiom Imp : Prop -&gt; Prop -&gt; Prop;
+axiom imp_i (P Q : Prop) :
+  (Prf P -&gt; Prf Q) -&gt; Prf (Imp P Q);
+axiom imp_e (P Q : Prop) :
+  Prf (Imp P Q) -&gt; Prf P -&gt; Prf Q;
+theorem self_imp (P : Prop) : Prf (Imp P P) :=
+  imp_i P P (fun (p : Prf P) =&gt; p);
+theorem apply_self (P : Prop) (p : Prf P) : Prf P :=
+  imp_e P P (self_imp P) p;</code></pre>
+      <button data-snippet="snippet-implication">エディタで試す</button>
+    </article>
+    <article class="example-block"><h3>型レベルの β 簡約</h3>
+      <p>戻り値の型 <code>(fun (x : A) =&gt; B x) a</code> は β 簡約によって <code>B a</code> と同値になるため、型 <code>B a</code> を持つ <code>b</code> をそのまま関数本体として返すことができます。</p>
+      <pre><code id="snippet-beta">axiom A : Type;
+axiom B : A -&gt; Type;
+axiom a : A;
+axiom b : B a;
+theorem beta : (fun (x : A) =&gt; B x) a := b;</code></pre>
+      <button data-snippet="snippet-beta">エディタで試す</button>
+    </article>
+    <h3>収録されている数学の証明</h3>
+    <p>エディタ上部の「証明例」ドロップダウンから、命題論理、等式の性質、自然数（ペアノ公理）、整除性、二項定理、素数の無限性、$\sqrt{2}$ の無理性、フェルマーの小定理、ラッセルのパラドックス（普遍集合の非存在）などを選択できます。依存する前提宣言を含めて展開され、選択した主要定理が検査結果の先頭に表示されます。</p>
+  </section>
+  <section id="writing" class="doc" role="tabpanel" aria-labelledby="tab-writing" tabindex="0" hidden>
+    <h2>証明項の書き方ガイド</h2>
+    <p>基本型、型族、公理、推論規則はすべて <code>axiom</code> として宣言します。これらはシグネチャ上の前提となります。導出したい結論を証明する際は <code>theorem</code>（または <code>def</code>）を用います。結論そのものを <code>axiom</code> で宣言してしまうと、証明ではなく単なる仮定になってしまう点に注意してください。</p>
+    <pre><code>axiom A : Type;
+axiom B : Type;</code></pre>
+    <p>型 <code>A -&gt; B -&gt; A</code> の項を構成するには、<code>x : A</code> と <code>y : B</code> を引数として受け取り、型 <code>A</code> の項を返す関数を記述します。関数本体として <code>x</code> を返せば、この型を満たす証明項となります。</p>
+    <pre><code>theorem first (x : A) (y : B) : A := x;
+// 同じ宣言を引数の省略形なしで書くと：
+// theorem first : A -&gt; B -&gt; A :=
+//   fun (x : A) (y : B) =&gt; x;</code></pre>
+    <p>項 <code>f : A -&gt; B</code> が存在する場合、<code>x : A</code> に対する関数適用 <code>f x</code> によって型 <code>B</code> の項が得られます。依存型理論に基づく規則では、命題や対象に関する引数も明示的に渡す必要があります。たとえば「例」タブの <code>imp_e P P (self_imp P) p</code> では、対象となる 2 つの命題 <code>P, P</code>、含意の証明 <code>self_imp P</code>、そして前提の証明 <code>p</code> を順番に渡しています。</p>
+    <p>Hieratic を編集した後は「コンパイルして検査」を押してください。検査に成功した宣言は、以降の証明から名前で参照できるようになります。複雑な証明は補題ごとに <code>theorem</code> として分割し、依存順（トポロジカル順）に並べます。エディタの入力を変更すると前回の検査結果はクリアされるため、編集完了後に再度検査を実行してください。</p>
+    <h3>エラーの読み方と対処法</h3>
+    <table><thead><tr><th scope="col">エラーの種類</th><th scope="col">確認する点</th></tr></thead><tbody>
+      <tr><td>構文エラー</td><td>宣言末尾のセミコロン <code>;</code>、型注釈のコロン <code>:</code>、定義本体の <code>:=</code>、括弧 <code>()</code> の対応関係を確認してください。</td></tr>
+      <tr><td>名前が見つからない</td><td>識別子の綴りと宣言の順序を確認してください。未宣言の定数、後続の宣言、および自分自身（再帰）は参照できません。</td></tr>
+      <tr><td>引数の型が合わない</td><td>規則の型定義を先頭から確認し、渡している引数の数・順序・型が合致しているか確認してください（暗黙引数はないため、命題引数などもすべて明示が必要です）。</td></tr>
+      <tr><td>証明の型が合わない</td><td>宣言した結論の型と、証明項本体から推論された型を比較してください。tinyprover では登録済み定数の本体を展開しないため、定義の展開に依存した型一致は行われません。</td></tr>
+      <tr><td>Π型を形成できない</td><td>引数の型が <code>Type</code> であるか確認してください。カインドである <code>Type</code> そのものを引数として束縛する <code>(A : Type)</code> は形成できません。</td></tr>
+      <tr><td>Proofglyph のスタックエラー</td><td><code>:</code>（前提登録）の実行時はスタックに型 1 つのみ、<code>!</code>（定理検査）の実行時はスタックに型と項の 2 つのみが存在する必要があります。余分な項が残っているか、スタックが不足しています。</td></tr>
+    </tbody></table>
+    <h3>定義（def）を使用する際の注意</h3>
+    <p><code>def id (x : A) : A := x;</code> を登録しても、定数は不透明（opaque）として扱われるため、<code>id a</code> は <code>a</code> へと定義的に簡約されません。型レベルの計算で β 簡約を利用したい場合は、定数呼び出しではなくインラインのラムダ式を直接記述します。式の変形や等価性の移送には、定義の展開ではなく等式に関する証明項（置換規則など）を使用します。</p>
+  </section>
+
+</main>
+</body>
+</html>

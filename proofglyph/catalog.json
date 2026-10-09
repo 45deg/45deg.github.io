@@ -1,0 +1,261 @@
+{
+  "proofs": {
+    "入門：恒等関数・依存型・β同値": [{
+      "name": "id",
+      "path": "examples/basics.ht",
+      "line": 3
+    },{
+      "name": "dependent_id",
+      "path": "examples/basics.ht",
+      "line": 7
+    },{
+      "name": "beta",
+      "path": "examples/basics.ht",
+      "line": 15
+    }],
+    "入門：証明済みの含意の合成を使う": [{
+      "name": "composition_example",
+      "path": "examples/logic.ht",
+      "line": 4
+    }],
+    "論理：含意の合成 (A → B) → (B → C) → A → C": [{
+      "name": "implication_composition",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 49
+    }],
+    "論理：引数の交換・複製、関数の合成": [{
+      "name": "exchange",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 45
+    },{
+      "name": "duplicate",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 42
+    },{
+      "name": "function_composition",
+      "path": "examples/commons/logic/quantifiers.ht",
+      "line": 13
+    }],
+    "論理：連言の交換則・結合則（両方向）": [{
+      "name": "and_comm",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 15
+    },{
+      "name": "and_assoc_forward",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 10
+    },{
+      "name": "and_assoc_backward",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 4
+    }],
+    "論理：選言の交換則・場合分け": [{
+      "name": "or_comm",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 53
+    },{
+      "name": "cases",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 18
+    }],
+    "論理：対偶 (A → B) → (¬B → ¬A)": [{
+      "name": "contraposition",
+      "path": "examples/commons/logic/propositional.ht",
+      "line": 21
+    }],
+    "論理：ド・モルガン則 ¬(A ∨ B) ⇔ (¬A ∧ ¬B)、¬(A ∧ B) ⇔ (¬A ∨ ¬B)": [{
+      "name": "demorgan_or_forward",
+      "path": "examples/commons/logic/demorgan.ht",
+      "line": 3
+    },{
+      "name": "demorgan_or_backward",
+      "path": "examples/commons/logic/demorgan.ht",
+      "line": 9
+    },{
+      "name": "demorgan_and_forward",
+      "path": "examples/commons/logic/demorgan.ht",
+      "line": 15
+    },{
+      "name": "demorgan_and_backward",
+      "path": "examples/commons/logic/demorgan.ht",
+      "line": 22
+    }],
+    "論理：全称の具体化・存在への証人導入": [{
+      "name": "forall_specialize",
+      "path": "examples/commons/logic/quantifiers.ht",
+      "line": 7
+    },{
+      "name": "exists_witness",
+      "path": "examples/commons/logic/quantifiers.ht",
+      "line": 4
+    },{
+      "name": "forall_to_exists",
+      "path": "examples/commons/logic/quantifiers.ht",
+      "line": 10
+    }],
+    "等式：対称律・推移律・関数による保存": [{
+      "name": "eq_sym",
+      "path": "examples/commons/equality.ht",
+      "line": 8
+    },{
+      "name": "eq_trans",
+      "path": "examples/commons/equality.ht",
+      "line": 11
+    },{
+      "name": "eq_cong",
+      "path": "examples/commons/equality.ht",
+      "line": 4
+    }],
+    "自然数：強い帰納法": [{
+      "name": "nat_strong_induction",
+      "path": "examples/commons/nat/induction.ht",
+      "line": 4
+    }],
+    "自然数：0 + n = n, n + 0 = n": [{
+      "name": "add_zero_left",
+      "path": "examples/commons/nat/addition.ht",
+      "line": 107
+    },{
+      "name": "add_zero_right",
+      "path": "examples/commons/nat/addition.ht",
+      "line": 48
+    }],
+    "自然数：加算の結合則・交換則": [{
+      "name": "add_assoc",
+      "path": "examples/commons/nat/addition.ht",
+      "line": 6
+    },{
+      "name": "add_comm",
+      "path": "examples/commons/nat/addition.ht",
+      "line": 55
+    }],
+    "自然数：乗算の分配則（両側）・結合則・交換則": [{
+      "name": "mul_add_left",
+      "path": "examples/commons/nat/multiplication.ht",
+      "line": 4
+    },{
+      "name": "mul_add_right",
+      "path": "examples/commons/nat/multiplication.ht",
+      "line": 83
+    },{
+      "name": "mul_assoc",
+      "path": "examples/commons/nat/multiplication.ht",
+      "line": 92
+    },{
+      "name": "mul_comm",
+      "path": "examples/commons/nat/multiplication.ht",
+      "line": 73
+    }],
+    "自然数：a^(m+n) = a^m a^n": [{
+      "name": "pow_add",
+      "path": "examples/commons/nat/powers.ht",
+      "line": 23
+    }],
+    "自然数：偶数同士・奇数同士の和は偶数": [{
+      "name": "even_add",
+      "path": "examples/commons/nat/parity.ht",
+      "line": 5
+    },{
+      "name": "odd_add",
+      "path": "examples/commons/nat/parity.ht",
+      "line": 18
+    }],
+    "自然数：2Σ(k=1..n) k = n(n+1)": [{
+      "name": "triangular_double",
+      "path": "examples/commons/nat/sums.ht",
+      "line": 125
+    }],
+    "自然数：1 + 3 + … + (2n−1) = n²": [{
+      "name": "odd_sum_square",
+      "path": "examples/commons/nat/sums.ht",
+      "line": 190
+    }],
+    "整数論：整除性の推移律・和・積への保存": [{
+      "name": "divides_trans",
+      "path": "examples/commons/nat/divisibility.ht",
+      "line": 77
+    },{
+      "name": "divides_add",
+      "path": "examples/commons/nat/divisibility.ht",
+      "line": 64
+    },{
+      "name": "divides_mul_right",
+      "path": "examples/commons/nat/divisibility.ht",
+      "line": 6
+    },{
+      "name": "divides_mul_left",
+      "path": "examples/commons/nat/divisibility.ht",
+      "line": 19
+    }],
+    "整数論：合同式の加算・乗算・累乗による保存": [{
+      "name": "cong_add",
+      "path": "examples/commons/nat/congruence.ht",
+      "line": 17
+    },{
+      "name": "cong_mul",
+      "path": "examples/commons/nat/congruence.ht",
+      "line": 108
+    },{
+      "name": "cong_pow",
+      "path": "examples/commons/nat/congruence.ht",
+      "line": 113
+    }],
+    "整数論：除法の原理（商と余りの存在）": [{
+      "name": "division_algorithm",
+      "path": "examples/commons/nat/division.ht",
+      "line": 6
+    }],
+    "整数論：素因数の存在": [{
+      "name": "prime_factor",
+      "path": "examples/commons/nat/factorization.ht",
+      "line": 26
+    }],
+    "整数論：ユークリッドの補題・平方の整除性": [{
+      "name": "prime_mul_elim",
+      "path": "examples/commons/nat/euclid.ht",
+      "line": 5
+    },{
+      "name": "prime_divides_square",
+      "path": "examples/commons/nat/euclid.ht",
+      "line": 35
+    }],
+    "整数論：素数 p は C(p,k) を割り切る（0 < k < p）": [{
+      "name": "prime_divides_choose",
+      "path": "examples/commons/nat/prime_binomial.ht",
+      "line": 5
+    }],
+    "整数論：二項定理": [{
+      "name": "binomial_theorem",
+      "path": "examples/commons/nat/binomial_theorem.ht",
+      "line": 5
+    }],
+    "整数論：素数は無限に存在する": [{
+      "name": "primes_infinite",
+      "path": "examples/commons/nat/prime_infinitude.ht",
+      "line": 66
+    }],
+    "整数論：√2 の無理性": [{
+      "name": "sqrt_two_coprime_contradiction",
+      "path": "examples/commons/nat/sqrt_two.ht",
+      "line": 57
+    },{
+      "name": "sqrt_two_irrational",
+      "path": "examples/commons/nat/sqrt_two.ht",
+      "line": 134
+    }],
+    "整数論：フェルマーの小定理と和への適用": [{
+      "name": "fermat",
+      "path": "examples/commons/nat/fermat.ht",
+      "line": 54
+    },{
+      "name": "fermat_sum",
+      "path": "examples/commons/nat/fermat.ht",
+      "line": 62
+    }],
+    "集合論：ラッセルのパラドックスから普遍集合の非存在を示す": [{
+      "name": "no_universal_set",
+      "path": "examples/commons/sets/russell.ht",
+      "line": 55
+    }]
+  }
+}

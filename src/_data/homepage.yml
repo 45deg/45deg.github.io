@@ -96,6 +96,25 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./proofglyph/
+    homeButton: false
+    featured: false
+    title:
+      ja: Proofglyph
+      en: Proofglyph
+    year: 2026
+    description_html:
+      ja: LF（λΠ計算）に基づく証明検査器。HieraticのコードをProofglyphの記号列に変換し、ブラウザ内で型と証明項を検査する。
+      en: A proof checker based on LF (lambda-Pi calculus). Compile Hieratic into Proofglyph symbol sequences and check types and proof terms in the browser.
+    tags:
+      - Programming
+      - Compiler
+      - Mathematics
+    image:
+      src: ./images/i59.png
+      alt:
+        ja: 黒地に白いProofglyphの記号列を斜めに敷き詰めた画像
+        en: White Proofglyph symbol sequences tiled diagonally on a black background
   - href: ./alloy-wasm/
     homeButton: false
     featured: false
