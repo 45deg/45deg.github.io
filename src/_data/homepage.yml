@@ -97,7 +97,6 @@ filters:
       en: Code
 works:
   - href: ./proofglyph/
-    homeButton: false
     featured: false
     title:
       ja: Proofglyph
