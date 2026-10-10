@@ -37,8 +37,20 @@
     .file-tabs button { flex:0 0 auto; border:0; border-radius:0; border-bottom:2px solid transparent; background:transparent; font:12px/1.6 ui-monospace,monospace; white-space:nowrap; }
     .file-tabs button[aria-selected="true"] { border-bottom-color:var(--text); background:var(--bg); font-weight:600; }
     .file-path { margin:0; padding:6px 16px; font:11px/1.6 ui-monospace,monospace; color:var(--muted); overflow-wrap:anywhere; border-bottom:1px solid var(--line); }
-    textarea { display:block; width:100%; min-width:220px; height:52vh; min-height:160px; border:0; border-radius:0; padding:18px 16px; background:var(--bg); font:13px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; resize:both; tab-size:2; }
-    textarea:focus-visible { outline-offset:-3px; } .pane-footer { margin-top:auto; padding:12px 16px; border-top:1px solid var(--line); }
+    textarea { display:block; width:100%; min-width:220px; height:var(--editor-height,52vh); flex-shrink:0; min-height:160px; border:0; border-radius:0; padding:18px 16px; background:var(--bg); font:13px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; resize:both; tab-size:2; }
+    @media (min-width:641px) {
+      .panes { grid-template-rows:auto auto auto auto; }
+      .editor-pane { display:grid; grid-row:1 / span 4; grid-template-rows:subgrid; }
+      .editor-pane .pane-header { grid-row:1; }
+      #editor-navigation { grid-row:2; }
+      #file-panel { grid-row:3; }
+      #proofglyph { grid-row:2 / span 2; height:100%; }
+      .editor-pane .pane-footer { grid-row:4; margin-top:0; }
+      .pane:last-child { grid-row:1 / span 4; }
+    }
+    @media (min-width:641px) and (max-width:1000px) { .pane:last-child { grid-row:5; } }
+    textarea:focus-visible { outline-offset:-3px; } .pane-footer { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:auto; padding:12px 16px; border-top:1px solid var(--line); }
+    .instruction-count { display:inline-block; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
     .primary { background:var(--text); color:var(--bg); border-color:var(--text); } .primary:hover { opacity:.85; background:var(--text); }
     .results { height:52vh; min-height:320px; overflow:auto; padding:16px; }
     #status { margin:14px 0 0; font-size:13px; min-height:1.65em; overflow-wrap:anywhere; }
@@ -86,9 +98,9 @@
     .doc-nav { display:flex; gap:16px; flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid var(--line); }
     @media (prefers-color-scheme:dark) { :root { --bg:#181818; --surface:#202020; --text:#ececec; --muted:#ababaf; --line:#424246; --hover:#2e2e30; --accent:#78b7ff; } }
     @media (max-width:1000px) { .panes { grid-template-columns:minmax(220px,var(--hieratic-width,1fr)) minmax(220px,var(--proofglyph-width,1fr)); } .pane:last-child { grid-column:1/-1; border-left:0; border-top:1px solid var(--line); } .results { height:auto; max-height:480px; min-height:160px; } }
-    @media (max-width:640px) { .header-inner,main { padding-left:16px; padding-right:16px; } .brand-row { display:grid; grid-template-columns:1fr auto; gap:4px 12px; } .brand-row p { grid-column:1/-1; grid-row:2; } .repository-link { grid-column:2; grid-row:1; } .tabs { gap:20px; } .panes { grid-template-columns:1fr; } .pane + .pane { border-left:0; border-top:1px solid var(--line); } textarea { height:300px; } .toolbar .note { margin-left:0; width:100%; } .doc { font-size:14px; } .doc th,.doc td { padding:10px 6px; } }
+    @media (max-width:640px) { .header-inner,main { padding-left:16px; padding-right:16px; } .brand-row { display:grid; grid-template-columns:1fr auto; gap:4px 12px; } .brand-row p { grid-column:1/-1; grid-row:2; } .repository-link { grid-column:2; grid-row:1; } .tabs { gap:20px; } .panes { grid-template-columns:1fr; } .pane + .pane { border-left:0; border-top:1px solid var(--line); } textarea { height:var(--editor-height,300px); } .toolbar .note { margin-left:0; width:100%; } .doc { font-size:14px; } .doc th,.doc td { padding:10px 6px; } }
   </style>
-  <script src="browser.bc.js" defer></script>
+  <script src="worker-client.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js" integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk" crossorigin="anonymous" defer></script>
   <script src="math.js" defer></script>
   <script src="app.js" defer></script>
@@ -115,21 +127,23 @@
       <p class="note">コンパイル・検査はブラウザ内で実行</p>
     </div>
     <div class="panes">
-      <section class="pane">
+      <section class="pane editor-pane">
         <div class="pane-header"><label for="hieratic">Hieratic</label><span class="file-ext">.ht</span></div>
+        <div id="editor-navigation">
         <div id="file-tabs" class="file-tabs" role="tablist" aria-label="Hieratic files"></div>
         <p id="file-path" class="file-path"></p>
+        </div>
         <div id="file-panel" role="tabpanel">
         <textarea id="hieratic" spellcheck="false" autocapitalize="off" autocomplete="off">symbol A : Type;
 def id (x : A) : A := x;
 theorem keep (x : A) (y : A) : A := x;</textarea>
         </div>
-        <div class="pane-footer"><button id="compile" class="primary" disabled>コンパイルして検査</button></div>
+        <div class="pane-footer"><button id="compile" class="primary" disabled>コンパイルして検査</button><button id="cancel" hidden>処理を中止</button></div>
       </section>
-      <section class="pane">
+      <section class="pane editor-pane">
         <div class="pane-header"><label for="proofglyph">Proofglyph</label><span class="file-ext">.pg</span></div>
         <textarea id="proofglyph" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
-        <div class="pane-footer"><button id="check" disabled>記号列を検査</button></div>
+        <div class="pane-footer"><button id="check" disabled>記号列を検査</button><span id="instruction-count" class="instruction-count" title="空白・改行を除外し、#123 や $12 はそれぞれ1命令として数えます。">命令数: 0</span></div>
       </section>
       <section class="pane">
         <div class="pane-header"><h2 id="result-heading">検査結果・定理</h2></div>

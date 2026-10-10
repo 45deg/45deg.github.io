@@ -8,7 +8,32 @@ const result = document.getElementById("result");
 const status = document.getElementById("status");
 const compileButton = document.getElementById("compile");
 const checkButton = document.getElementById("check");
+const instructionCount = document.getElementById("instruction-count");
+function updateInstructionCount() {
+  // Match the reader's tokens; an incomplete/unknown token has no valid count.
+  const tokens = /[ \t\r\n]+|[$#][0-9]+|[*^>\\@:!]/gy;
+  const source = proofglyph.value;
+  let count = 0;
+  while (tokens.lastIndex < source.length) {
+    const token = tokens.exec(source);
+    if (!token) {
+      instructionCount.textContent = "命令数: —（記号列が不正）";
+      return;
+    }
+    if (!/^[ \t\r\n]/.test(token[0])) count++;
+  }
+  instructionCount.textContent = `命令数: ${count.toLocaleString("ja-JP")}`;
+}
+function setProofglyph(source) {
+  proofglyph.value = source;
+  updateInstructionCount();
+}
+updateInstructionCount();
 let selectedNames = new Set();
+const compiler = new ProofglyphWorker();
+const cancelButton = document.getElementById("cancel");
+let initialized = false;
+let operation = 0;
 
 const fileTabs = document.getElementById("file-tabs");
 const filePath = document.getElementById("file-path");
@@ -76,14 +101,6 @@ function renderFileTabs() {
   });
   selectFile(activePath, false, false);
 }
-function refreshFiles() {
-  saveFile();
-  const loaded = globalThis.proofglyph.projectFiles(sourcePath, projectJSON());
-  // Keep existing tabs available when an edited file has a syntax/import error.
-  if (loaded.ok) openPaths = JSON.parse(loaded.output);
-  if (!openPaths.includes(activePath)) activePath = sourcePath;
-  renderFileTabs();
-}
 function openProject(path, source) {
   saveFile();
   sourcePath = path;
@@ -91,17 +108,24 @@ function openProject(path, source) {
   openPaths = [path];
   sources.set(path, source);
   hieratic.value = source;
-  refreshFiles();
+  renderFileTabs();
 }
 
-// Native textarea resizing sets an inline width. Let the grid follow that width
-// so a resized editor does not overlap the adjacent pane.
+const panes = hieratic.closest(".panes");
+
+// Native resizing sets inline dimensions. Share height and let the grid follow width.
 const editorResize = new ResizeObserver(entries => {
-  if (window.matchMedia("(max-width: 640px)").matches) return;
   for (const {target} of entries) {
-    if (!target.style.width) continue;
-    target.closest(".panes").style.setProperty(`--${target.id}-width`, target.style.width);
-    target.style.width = "";
+    if (target.style.height) {
+      const navigationHeight = target === proofglyph && !window.matchMedia("(max-width: 640px)").matches
+        ? document.getElementById("editor-navigation").getBoundingClientRect().height : 0;
+      panes.style.setProperty("--editor-height", `${Math.max(160, parseFloat(target.style.height) - navigationHeight)}px`);
+      target.style.height = "";
+    }
+    if (target.style.width && !window.matchMedia("(max-width: 640px)").matches) {
+      panes.style.setProperty(`--${target.id}-width`, target.style.width);
+      target.style.width = "";
+    }
   }
 });
 editorResize.observe(hieratic);
@@ -147,7 +171,7 @@ selectHashTab();
 
 document.querySelectorAll("[data-snippet]").forEach(button => {
   button.addEventListener("click", () => {
-    if (!globalThis.proofglyph) return;
+    if (!initialized) return;
     openProject("examples/browser.ht", document.getElementById(button.dataset.snippet).textContent);
     selectedNames = new Set();
     example.value = "";
@@ -212,43 +236,96 @@ function showProofs(entries) {
   }
 }
 
-function check() {
-  const checked = (sourcemap ? globalThis.proofglyph.checkMapped : globalThis.proofglyph.check)(proofglyph.value);
-  if (checked.ok) showProofs(JSON.parse(checked.entries));
-  else showText(`検査失敗\n${checked.output}`);
-  status.textContent = checked.ok ? "検査成功" : "検査失敗";
-}
-
-function compile() {
-  sourcemap = null;
-  refreshFiles();
-  const compiled = globalThis.proofglyph.compileProject(sourcePath, projectJSON());
-  if (!compiled.ok) {
-    proofglyph.value = "";
-    showText(compiled.output);
-    status.textContent = "コンパイル失敗";
-    return;
+function setBusy(busy, kind) {
+  if (busy) {
+    const button = kind === "compile" ? compileButton : checkButton;
+    button.insertAdjacentElement("afterend", cancelButton);
   }
-  proofglyph.value = compiled.output;
-  sourcemap = JSON.parse(compiled.sourcemap);
-  check();
+  compileButton.disabled = busy;
+  checkButton.disabled = busy;
+  if (!busy && document.activeElement === cancelButton) {
+    cancelButton.previousElementSibling.focus();
+  }
+  cancelButton.hidden = !busy;
+  result.setAttribute("aria-busy", String(busy));
 }
+function cancelOperation() {
+  if (!initialized) return;
+  operation++;
+  compiler.cancel();
+  setBusy(false);
+}
+cancelButton.addEventListener("click", () => {
+  cancelOperation();
+  status.textContent = "処理を中止しました。";
+});
+async function run(kind) {
+  cancelOperation();
+  const current = operation;
+  saveFile();
+  const request = kind === "compile"
+    ? {kind, path: sourcePath, files: projectJSON()}
+    : {kind, source: proofglyph.value, mapped: Boolean(sourcemap)};
+  if (kind === "compile") sourcemap = null;
+  setBusy(true, kind);
+  result.replaceChildren();
+  status.textContent = kind === "compile" ? "コンパイル・検査中…" : "検査中…";
+  try {
+    const response = await compiler.request(request);
+    if (current !== operation) return;
+    if (response.files?.ok) {
+      openPaths = JSON.parse(response.files.output);
+      if (!openPaths.includes(activePath)) activePath = sourcePath;
+      renderFileTabs();
+    }
+    if (response.compiled) {
+      const compiled = response.compiled;
+      if (!compiled.ok) {
+        setProofglyph("");
+        showText(compiled.output);
+        status.textContent = "コンパイル失敗";
+        return;
+      }
+      setProofglyph(compiled.output);
+      sourcemap = JSON.parse(compiled.sourcemap);
+    }
+    const checked = response.checked;
+    if (checked.ok) showProofs(JSON.parse(checked.entries));
+    else showText(`検査失敗\n${checked.output}`);
+    status.textContent = checked.ok ? "検査成功" : "検査失敗";
+  } catch (error) {
+    if (current !== operation) return;
+    showText(error.message);
+    status.textContent = "処理に失敗しました。再実行してください。";
+  } finally {
+    if (current === operation) setBusy(false);
+  }
+}
+function check() { return run("check"); }
+function compile() { return run("compile"); }
 
 hieratic.addEventListener("input", () => {
+  cancelOperation();
   saveFile();
   sourcemap = null;
   result.replaceChildren();
   status.textContent = "Hieratic の入力が変更されました。「コンパイルして検査」を実行してください。";
 });
 proofglyph.addEventListener("input", () => {
+  updateInstructionCount();
+  cancelOperation();
   sourcemap = null;
   result.replaceChildren();
   selectedNames = new Set();
   status.textContent = "Proofglyph の入力が変更されました。「記号列を検査」を実行してください。";
 });
 async function initialize() {
-if (globalThis.proofglyph) {
-  for (const {path, source} of JSON.parse(globalThis.proofglyph.examples)) sources.set(path, source);
+try {
+  const {examples} = await compiler.request({kind: "examples"});
+  for (const {path, source} of JSON.parse(examples)) {
+    if (!sources.has(path)) sources.set(path, source);
+  }
+  initialized = true;
   compileButton.disabled = false;
   checkButton.disabled = false;
   compileButton.addEventListener("click", compile);
@@ -303,7 +380,7 @@ if (globalThis.proofglyph) {
     if (path.endsWith(".pg")) {
       sourcemap = null;
       openProject("examples/browser.ht", "");
-      proofglyph.value = source;
+      setProofglyph(source);
       check();
     } else {
       openProject(path, source);
@@ -311,8 +388,8 @@ if (globalThis.proofglyph) {
     }
   });
 
-} else {
-  status.textContent = "初期化に失敗しました。";
+} catch (error) {
+  status.textContent = `初期化に失敗しました: ${error.message}`;
 }
 
 }
