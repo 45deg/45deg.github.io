@@ -62,6 +62,22 @@
     .stack-diagram rect { fill:var(--surface); stroke:currentColor; }
     .stack-diagram text { fill:currentColor; font:15px ui-monospace,SFMono-Regular,Consolas,monospace; text-anchor:middle; }
     .stack-diagram .step-label { font:14px system-ui,sans-serif; }
+    .foundation-diagram { margin:24px 0; overflow-x:auto; }
+    .foundation-diagram svg { display:block; width:100%; height:auto; }
+    .foundation-diagram .fd-mobile { display:none; }
+    .foundation-diagram text { font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill:var(--text); }
+    .foundation-diagram .fd-group { font-size:18px; font-weight:600; }
+    .foundation-diagram .fd-name { font-size:19px; font-weight:600; }
+    .foundation-diagram .fd-detail { font-size:16px; }
+    .foundation-diagram .fd-label { font-size:15px; fill:var(--muted); }
+    .foundation-diagram .fd-panel { fill:var(--surface); stroke:var(--line); }
+    .foundation-diagram .fd-card { fill:var(--bg); stroke:var(--muted); stroke-opacity:.65; }
+    .foundation-diagram .fd-background { fill:var(--bg); }
+    .foundation-diagram .fd-edge,.foundation-diagram .fd-arrow { fill:none; stroke:var(--muted); stroke-width:1.5; }
+    @media (max-width:640px) {
+      .foundation-diagram .fd-desktop { display:none; }
+      .foundation-diagram .fd-mobile { display:block; min-width:360px; max-width:430px; margin:auto; }
+    }
     .doc table { width:100%; border-collapse:collapse; font-size:14px; }
     .doc th,.doc td { text-align:left; vertical-align:top; padding:12px 10px; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
     .doc th { color:var(--muted); font-weight:500; } .doc th:first-child,.doc td:first-child { width:32%; }
@@ -125,6 +141,101 @@ theorem keep (x : A) (y : A) : A := x;</textarea>
   <section id="foundations" class="doc" role="tabpanel" aria-labelledby="tab-foundations" tabindex="0" hidden>
     <h2>Proofglyph の証明検査</h2>
     <p>Proofglyph の <code>.pg</code> ファイルでは、型と証明項を最小限の記号列で記述します。検査器はその記号列を読み込み、各証明項が指定された型を持つかを検証します。検査の体系は、<a href="https://en.wikipedia.org/wiki/Logical_framework">LF（Logical Framework）</a>の型理論である λΠ 計算（依存型付きラムダ計算）に基づいています。</p>
+    <div class="foundation-diagram">
+      <svg class="fd-desktop" xmlns="http://www.w3.org/2000/svg" width="860" height="600" viewBox="0 0 860 600" role="img" aria-labelledby="fd-desktop-title fd-desktop-desc">
+      <title id="fd-desktop-title">論理体系と Proofglyph の構成</title>
+      <desc id="fd-desktop-desc">対象論理を LF の λΠ 計算で表現する。Proofglyph 言語は λΠ 計算に基づき、Hieratic から変換された型と証明項を型検査器が検査する。</desc>
+      <defs>
+      <marker id="fd-desktop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path class="fd-arrow" d="M1 1 L9 5 L1 9" fill="none" stroke="#777980" stroke-width="1.5"/>
+      </marker>
+      </defs>
+      <rect width="860" height="600" fill="#fff" class="fd-background"/>
+      <rect x="16" y="16" width="828" height="304" rx="8" class="fd-panel"/>
+      <text x="36" y="48" class="fd-group" text-anchor="start">理論の基盤</text>
+      <rect x="36" y="73" width="280" height="97" rx="6" class="fd-card"/>
+      <text x="176.0" y="106" class="fd-name" text-anchor="middle">論理・証明体系</text>
+      <text x="176.0" y="136" class="fd-detail" text-anchor="middle">NK・LK ／ 一階論理・ZFC</text>
+      <rect x="36" y="190" width="280" height="97" rx="6" class="fd-card"/>
+      <text x="176.0" y="223" class="fd-name" text-anchor="middle">対象言語の型システム</text>
+      <text x="176.0" y="253" class="fd-detail" text-anchor="middle">型付け規則・判断・導出</text>
+      <rect x="440" y="93" width="384" height="178" rx="6" class="fd-card"/>
+      <text x="632.0" y="126" class="fd-name" text-anchor="middle">LF</text>
+      <text x="632.0" y="156" class="fd-detail" text-anchor="middle">λΠ計算に基づく論理的枠組み</text>
+      <text x="632.0" y="181" class="fd-detail" text-anchor="middle">推論規則 → 定数宣言</text>
+      <text x="632.0" y="206" class="fd-detail" text-anchor="middle">判断 → 型　／　導出 → 項</text>
+      <text x="632.0" y="231" class="fd-detail" text-anchor="middle">対象体系を型と項で表現</text>
+      <path d="M316 122 H367 V149 H440" class="fd-edge" marker-end="url(#fd-desktop-arrow)"/>
+      <path d="M316 239 H367 V216 H440" class="fd-edge" marker-end="url(#fd-desktop-arrow)"/>
+      <text x="374" y="184" class="fd-label" text-anchor="middle">符号化</text>
+      <rect x="16" y="390" width="828" height="190" rx="8" class="fd-panel"/>
+      <text x="36" y="422" class="fd-group" text-anchor="start">記述と検査</text>
+      <rect x="36" y="450" width="224" height="108" rx="6" class="fd-card"/>
+      <text x="148.0" y="483" class="fd-name" text-anchor="middle">Hieratic · .ht</text>
+      <text x="148.0" y="513" class="fd-detail" text-anchor="middle">名前付きの高水準言語</text>
+      <text x="148.0" y="538" class="fd-detail" text-anchor="middle">定義・証明項を記述</text>
+      <rect x="318" y="450" width="224" height="108" rx="6" class="fd-card"/>
+      <text x="430.0" y="483" class="fd-name" text-anchor="middle">Proofglyph · .pg</text>
+      <text x="430.0" y="513" class="fd-detail" text-anchor="middle">型と証明項の記号言語</text>
+      <text x="430.0" y="538" class="fd-detail" text-anchor="middle">変数を番号で表現</text>
+      <rect x="600" y="450" width="224" height="108" rx="6" class="fd-card"/>
+      <text x="712.0" y="483" class="fd-name" text-anchor="middle">型検査器</text>
+      <text x="712.0" y="513" class="fd-detail" text-anchor="middle">証明項の型を検査</text>
+      <text x="712.0" y="538" class="fd-detail" text-anchor="middle">型の比較はβ同値</text>
+      <path d="M260 505 H318" class="fd-edge" marker-end="url(#fd-desktop-arrow)"/>
+      <text x="289" y="484" class="fd-label" text-anchor="middle">変換</text>
+      <path d="M544 505 H600" class="fd-edge" marker-end="url(#fd-desktop-arrow)"/>
+      <text x="571" y="484" class="fd-label" text-anchor="middle">検査</text>
+      <path d="M632 271 V355 H430 V450" class="fd-edge" marker-end="url(#fd-desktop-arrow)"/>
+      <text x="531" y="343" class="fd-label" text-anchor="middle">言語の基盤</text>
+      </svg>
+      <svg class="fd-mobile" xmlns="http://www.w3.org/2000/svg" width="390" height="1090" viewBox="0 0 390 1090" role="img" aria-labelledby="fd-mobile-title fd-mobile-desc">
+      <title id="fd-mobile-title">論理体系と Proofglyph の構成</title>
+      <desc id="fd-mobile-desc">対象論理と型システムを LF で符号化する。LF の λΠ 計算が Proofglyph 言語の基盤。Hieratic から変換した Proofglyph の証明項を型検査する。</desc>
+      <defs>
+      <marker id="fd-mobile-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path class="fd-arrow" d="M1 1 L9 5 L1 9" fill="none" stroke="#777980" stroke-width="1.5"/>
+      </marker>
+      </defs>
+      <rect width="390" height="1090" fill="#fff" class="fd-background"/>
+      <rect x="8" y="8" width="374" height="468" rx="6" class="fd-panel"/>
+      <text x="24" y="40" class="fd-group" text-anchor="start">理論の基盤</text>
+      <rect x="40" y="62" width="310" height="90" rx="6" class="fd-card"/>
+      <text x="195" y="92" class="fd-name" text-anchor="middle">論理・証明体系</text>
+      <text x="195" y="121" class="fd-detail" text-anchor="middle">NK・LK ／ 一階論理・ZFC</text>
+      <rect x="40" y="172" width="310" height="90" rx="6" class="fd-card"/>
+      <text x="195" y="202" class="fd-name" text-anchor="middle">対象言語の型システム</text>
+      <text x="195" y="231" class="fd-detail" text-anchor="middle">型付け規則・判断・導出</text>
+      <path d="M350 107 H366 V290 H230 V308" class="fd-edge" marker-end="url(#fd-mobile-arrow)"/>
+      <path d="M195 262 V308" class="fd-edge" marker-end="url(#fd-mobile-arrow)"/>
+      <text x="145" y="291" class="fd-label" text-anchor="middle">符号化</text>
+      <rect x="40" y="308" width="310" height="148" rx="6" class="fd-card"/>
+      <text x="195" y="338" class="fd-name" text-anchor="middle">LF</text>
+      <text x="195" y="367" class="fd-detail" text-anchor="middle">λΠ計算に基づく論理的枠組み</text>
+      <text x="195" y="392" class="fd-detail" text-anchor="middle">推論規則 → 定数宣言</text>
+      <text x="195" y="417" class="fd-detail" text-anchor="middle">判断 → 型 ／ 導出 → 項</text>
+      <rect x="8" y="546" width="374" height="528" rx="6" class="fd-panel"/>
+      <text x="24" y="578" class="fd-group" text-anchor="start">記述と検査</text>
+      <rect x="40" y="602" width="310" height="106" rx="6" class="fd-card"/>
+      <text x="195" y="632" class="fd-name" text-anchor="middle">Hieratic · .ht</text>
+      <text x="195" y="661" class="fd-detail" text-anchor="middle">名前付きの高水準言語</text>
+      <text x="195" y="686" class="fd-detail" text-anchor="middle">定義・証明項を記述</text>
+      <rect x="40" y="774" width="310" height="106" rx="6" class="fd-card"/>
+      <text x="195" y="804" class="fd-name" text-anchor="middle">Proofglyph · .pg</text>
+      <text x="195" y="833" class="fd-detail" text-anchor="middle">型と証明項の記号言語</text>
+      <text x="195" y="858" class="fd-detail" text-anchor="middle">変数を番号で表現</text>
+      <rect x="40" y="946" width="310" height="106" rx="6" class="fd-card"/>
+      <text x="195" y="976" class="fd-name" text-anchor="middle">型検査器</text>
+      <text x="195" y="1005" class="fd-detail" text-anchor="middle">証明項の型を検査</text>
+      <text x="195" y="1030" class="fd-detail" text-anchor="middle">型の比較はβ同値</text>
+      <path d="M195 708 V774" class="fd-edge" marker-end="url(#fd-mobile-arrow)"/>
+      <text x="220" y="749" class="fd-label" text-anchor="start">変換</text>
+      <path d="M195 880 V946" class="fd-edge" marker-end="url(#fd-mobile-arrow)"/>
+      <text x="220" y="920" class="fd-label" text-anchor="start">検査</text>
+      <path d="M195 456 V510 H366 V827 H350" class="fd-edge" marker-end="url(#fd-mobile-arrow)"/>
+      <text x="280" y="503" class="fd-label" text-anchor="middle">言語の基盤</text>
+      </svg>
+    </div>
     <p>LF は、多様な論理の構文・推論規則・証明を<a href="https://ja.wikipedia.org/wiki/依存型">依存型</a>付き<a href="https://ja.wikipedia.org/wiki/ラムダ計算">ラムダ計算</a>上で統一的に表現・検証するためのメタ言語です。Robert Harper、Furio Honsell、Gordon Plotkin が論文 <cite><a href="https://homepages.inf.ed.ac.uk/gdp/publications/Framework_Def_Log.pdf" type="application/pdf">A Framework for Defining Logics</a></cite>（1987 / 1993）において提案しました。</p>
     <p><a href="https://ja.wikipedia.org/wiki/自然演繹">自然演繹</a>やシーケント計算、集合論など、論理体系ごとに記号や推論規則は異なります。LF では、これらを「シグネチャ」と呼ばれる定数宣言の列として定義します。検査器はその宣言をもとに、関数の引数・戻り値の型、変数のスコープ、型の同値性を判定します。</p>
     <p>例えば高水準言語 Hieratic では、命題の型 <code>Prop</code> と、命題からその証明の型への写像 <code>Prf</code>（カインド <code>Prop -&gt; Type</code>）を次のように宣言します。命題 <code>P</code> は型 <code>Prop</code> を持ち、その証明は型 <code>Prf P</code> を持つ項として表現されます。このコードをコンパイルして Proofglyph 形式で検査します。</p>
