@@ -1,5 +1,6 @@
 "use strict";
-// Format the kernel's checked AST. All arbitrary identifiers are escaped for TeX.
+// Format checked kernel types or their corresponding named source types.
+// All arbitrary identifiers are escaped for TeX.
 (function (root) {
   const identifier = name => /^[A-Za-z]$/.test(name) ? name
     : `\\mathrm{${name.replace(/[\\{}_$%&#^~]/g, c => ({"\\": "\\backslash{}", "^": "\\textasciicircum{}", "~": "\\textasciitilde{}"}[c] || `\\${c}`))}}`;
