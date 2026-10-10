@@ -40,7 +40,8 @@
     textarea { display:block; width:100%; min-width:220px; height:var(--editor-height,52vh); flex-shrink:0; min-height:160px; border:0; border-radius:0; padding:18px 16px; background:var(--bg); font:13px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; resize:both; tab-size:2; }
     @media (min-width:641px) {
       .panes { grid-template-rows:auto auto auto auto; }
-      .editor-pane { display:grid; grid-row:1 / span 4; grid-template-rows:subgrid; }
+      .editor-pane { display:grid; grid-row:1 / span 4; grid-template-columns:minmax(0,1fr); grid-template-rows:subgrid; }
+      .editor-pane > * { min-width:0; }
       .editor-pane .pane-header { grid-row:1; }
       #editor-navigation { grid-row:2; }
       #file-panel { grid-row:3; }
