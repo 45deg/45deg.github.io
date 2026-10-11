@@ -96,6 +96,24 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./yada/
+    featured: false
+    title:
+      ja: YADA
+      en: YADA
+    year: 2026
+    description_html:
+      ja: SQLite・DuckDBやCSV・Parquetのファイルをブラウザ内で閲覧。テーブルデータ・スキーマ・統計の確認ができる。
+      en: View SQLite, DuckDB, CSV and Parquet files in your browser. Inspect table data, schemas and statistics.
+    tags:
+      - Viewer
+      - Data
+      - WebAssembly
+    image:
+      src: ./images/i60.png
+      alt:
+        ja: YADAでcustomersテーブルのデータと左側のオブジェクト一覧を表示した画面
+        en: YADA displaying the customers table with the database object explorer on the left
   - href: ./proofglyph/
     featured: false
     title:
