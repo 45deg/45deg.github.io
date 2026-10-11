@@ -18,9 +18,9 @@ class ProofglyphWorker {
         };
         this.worker.onerror = event => {
           event.preventDefault();
-          this.cancel(new Error(event.message || "Worker の読み込みに失敗しました。"));
+          this.cancel(new Error(event.message || globalThis.proofglyphI18n?.t("workerLoadFailed") || "Could not load the worker."));
         };
-        this.worker.onmessageerror = () => this.cancel(new Error("Worker の応答を読み取れませんでした。"));
+        this.worker.onmessageerror = () => this.cancel(new Error(globalThis.proofglyphI18n?.t("workerResponseFailed") || "Could not read the worker response."));
       }
       const id = ++this.nextId;
       this.pending.set(id, {resolve, reject});
@@ -28,7 +28,7 @@ class ProofglyphWorker {
       catch (error) { this.cancel(error); }
     });
   }
-  cancel(error = new Error("処理を中止しました。")) {
+  cancel(error = new Error(globalThis.proofglyphI18n?.t("cancelled") || "Operation cancelled.")) {
     // Keep an idle worker: checkMapped needs the previous compilation cache.
     if (!this.pending.size) return;
     this.worker?.terminate();

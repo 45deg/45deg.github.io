@@ -1,4 +1,6 @@
 "use strict";
+const i18n = globalThis.proofglyphI18n;
+const setText = i18n.setText;
 const example = document.getElementById("example");
 let sourcemap = null;
 let sourcePath = "examples/browser.ht";
@@ -17,18 +19,27 @@ function updateInstructionCount() {
   while (tokens.lastIndex < source.length) {
     const token = tokens.exec(source);
     if (!token) {
-      instructionCount.textContent = "命令数: —（記号列が不正）";
+      setText(instructionCount, "invalidInstructions");
       return;
     }
     if (!/^[ \t\r\n]/.test(token[0])) count++;
   }
-  instructionCount.textContent = `命令数: ${count.toLocaleString("ja-JP")}`;
+  setText(instructionCount, "instructions", {count: i18n.number(count)});
 }
 function setProofglyph(source) {
   proofglyph.value = source;
   updateInstructionCount();
 }
 updateInstructionCount();
+window.addEventListener("proofglyph:languagechange", () => {
+  updateInstructionCount();
+  for (const tab of fileTabs.children) {
+    tab.title = tab.dataset.path === sourcePath ? i18n.t("entryFile", {path: sourcePath}) : tab.dataset.path;
+  }
+  for (const label of result.querySelectorAll("[data-origin]")) {
+    label.textContent = `${label.dataset.declarationKind ?? i18n.t(label.dataset.origin === "assumption" ? "assumption" : "proven")} ${label.dataset.name}`;
+  }
+});
 let selectedNames = new Set();
 const compiler = new ProofglyphWorker();
 const cancelButton = document.getElementById("cancel");
@@ -85,7 +96,7 @@ function renderFileTabs() {
     tab.setAttribute("aria-controls", "file-panel");
     tab.dataset.path = path;
     tab.textContent = path.split("/").pop();
-    tab.title = path === sourcePath ? `${path} (entry file)` : path;
+    tab.title = path === sourcePath ? i18n.t("entryFile", {path}) : path;
     tab.addEventListener("click", () => selectFile(path));
     tab.addEventListener("keydown", event => {
       let next;
@@ -181,9 +192,10 @@ document.querySelectorAll("[data-snippet]").forEach(button => {
   });
 });
 
-function showText(text) {
+function showText(text, key, values) {
   const pre = document.createElement("pre");
-  pre.textContent = text;
+  if (key) setText(pre, key, values);
+  else pre.textContent = text;
   result.replaceChildren(pre);
 }
 
@@ -201,14 +213,23 @@ function showProofs(entries) {
   formulaObserver.disconnect();
   result.replaceChildren();
   const proofs = entries;
-  if (!proofs.length) { showText("検査成功（証明済みの宣言はありません）"); return; }
+  if (!proofs.length) { showText("", "noProofs"); return; }
   function card(entry, parent) {
     const article = document.createElement("article");
     article.className = "theorem";
     const heading = document.createElement("h3");
-    heading.textContent = `${entry.declarationKind ?? (entry.origin === "assumption" ? "前提" : "証明済み")} ${entry.name}`;
+    const label = document.createElement("span");
+    function translateLabel() {
+      label.textContent = `${entry.declarationKind ?? i18n.t(entry.origin === "assumption" ? "assumption" : "proven")} ${entry.name}`;
+    }
+    translateLabel();
+    label.dataset.origin = entry.origin;
+    label.dataset.name = entry.name;
+    if (entry.declarationKind) label.dataset.declarationKind = entry.declarationKind;
+    heading.append(label);
     const state = document.createElement("span");
-    state.textContent = "検査成功";
+    state.className = "check-state";
+    setText(state, "passed");
     heading.append(state);
     const formula = document.createElement("div");
     formula.className = "formula";
@@ -229,7 +250,7 @@ function showProofs(entries) {
   if (others.length) {
     const details = document.createElement("details");
     const summary = document.createElement("summary");
-    summary.textContent = `その他の宣言（${others.length}件）`;
+    setText(summary, "otherDeclarations", {count: i18n.number(others.length)});
     details.append(summary);
     others.forEach(entry => card(entry, details));
     result.append(details);
@@ -257,7 +278,7 @@ function cancelOperation() {
 }
 cancelButton.addEventListener("click", () => {
   cancelOperation();
-  status.textContent = "処理を中止しました。";
+  setText(status, "cancelled");
 });
 async function run(kind) {
   cancelOperation();
@@ -269,7 +290,7 @@ async function run(kind) {
   if (kind === "compile") sourcemap = null;
   setBusy(true, kind);
   result.replaceChildren();
-  status.textContent = kind === "compile" ? "コンパイル・検査中…" : "検査中…";
+  setText(status, kind === "compile" ? "compiling" : "checking");
   try {
     const response = await compiler.request(request);
     if (current !== operation) return;
@@ -283,7 +304,7 @@ async function run(kind) {
       if (!compiled.ok) {
         setProofglyph("");
         showText(compiled.output);
-        status.textContent = "コンパイル失敗";
+        setText(status, "compileFailed");
         return;
       }
       setProofglyph(compiled.output);
@@ -291,12 +312,12 @@ async function run(kind) {
     }
     const checked = response.checked;
     if (checked.ok) showProofs(JSON.parse(checked.entries));
-    else showText(`検査失敗\n${checked.output}`);
-    status.textContent = checked.ok ? "検査成功" : "検査失敗";
+    else showText("", "checkFailure", {error: checked.output});
+    setText(status, checked.ok ? "passed" : "failed");
   } catch (error) {
     if (current !== operation) return;
     showText(error.message);
-    status.textContent = "処理に失敗しました。再実行してください。";
+    setText(status, "operationFailed");
   } finally {
     if (current === operation) setBusy(false);
   }
@@ -309,7 +330,7 @@ hieratic.addEventListener("input", () => {
   saveFile();
   sourcemap = null;
   result.replaceChildren();
-  status.textContent = "Hieratic の入力が変更されました。「コンパイルして検査」を実行してください。";
+  setText(status, "hieraticChanged");
 });
 proofglyph.addEventListener("input", () => {
   updateInstructionCount();
@@ -317,7 +338,7 @@ proofglyph.addEventListener("input", () => {
   sourcemap = null;
   result.replaceChildren();
   selectedNames = new Set();
-  status.textContent = "Proofglyph の入力が変更されました。「記号列を検査」を実行してください。";
+  setText(status, "proofglyphChanged");
 });
 async function initialize() {
 try {
@@ -337,7 +358,7 @@ try {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     catalog = await response.json();
   } catch (error) {
-    status.textContent = `カタログの読み込みに失敗しました: ${error.message}`;
+    setText(status, "catalogFailed", {error: error.message});
     return;
   }
   function addGroup(label, prefix, items) {
@@ -346,6 +367,8 @@ try {
     for (const [name, key] of items) {
       const option = document.createElement("option");
       option.value = JSON.stringify([prefix, ...key]);
+      option.dataset.catalogKey = key[0];
+      option.dataset.catalogIndex = key[1];
       option.textContent = name;
       group.append(option);
     }
@@ -354,17 +377,33 @@ try {
   const subjects = new Map();
   for (const [name, matches] of Object.entries(catalog.proofs)) {
     const separator = name.indexOf("：");
-    const subject = separator < 0 ? "証明例" : name.slice(0, separator);
+    const subject = separator < 0 ? i18n.t("examples") : name.slice(0, separator);
     const title = separator < 0 ? name : name.slice(separator + 1);
     if (!subjects.has(subject)) subjects.set(subject, []);
     const paths = [...new Set(matches.map(match => match.path))];
     for (const path of paths) {
       const index = matches.findIndex(match => match.path === path);
-      const label = paths.length === 1 ? title : `${title}（${matches[index].name}）`;
+      const label = paths.length === 1 ? title : `${title} (${matches[index].name})`;
       subjects.get(subject).push([label, [name, index]]);
     }
   }
   for (const [subject, items] of subjects) addGroup(subject, "proof", items);
+  function translateCatalog() {
+    for (const group of example.querySelectorAll("optgroup")) {
+      const first = group.querySelector("option");
+      const localized = i18n.catalog(first.dataset.catalogKey);
+      group.label = localized.includes("：") ? localized.split("：")[0] : i18n.t("examples");
+      for (const option of group.children) {
+        const key = option.dataset.catalogKey;
+        const title = i18n.catalog(key).split("：").slice(1).join("：") || i18n.catalog(key);
+        const matches = catalog.proofs[key];
+        const multiple = new Set(matches.map(match => match.path)).size > 1;
+        option.textContent = multiple ? `${title} (${matches[option.dataset.catalogIndex].name})` : title;
+      }
+    }
+  }
+  translateCatalog();
+  window.addEventListener("proofglyph:languagechange", translateCatalog);
   example.disabled = false;
   example.addEventListener("change", () => {
     if (!example.value) return;
@@ -372,7 +411,7 @@ try {
     const path = catalog.proofs[name][index].path;
     const source = sources.get(path);
     if (source === undefined) {
-      status.textContent = `ソースが見つかりません: ${path}`;
+      setText(status, "sourceMissing", {path});
       return;
     }
     result.replaceChildren();
@@ -389,7 +428,7 @@ try {
   });
 
 } catch (error) {
-  status.textContent = `初期化に失敗しました: ${error.message}`;
+  setText(status, "initializeFailed", {error: error.message});
 }
 
 }
