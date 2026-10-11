@@ -115,7 +115,7 @@ works:
         ja: YADAでcustomersテーブルのデータと左側のオブジェクト一覧を表示した画面
         en: YADA displaying the customers table with the database object explorer on the left
   - href: ./proofglyph/
-    featured: false
+    featured: true
     title:
       ja: Proofglyph
       en: Proofglyph
@@ -152,7 +152,7 @@ works:
         ja: Alloyモデルと時間トレースの解析結果を左右に表示したIDE
         en: Alloy IDE with a model on the left and temporal trace results on the right
   - href: ./wordkin/
-    featured: true
+    featured: false
     title:
       ja: Wordkin
       en: Wordkin
