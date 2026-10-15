@@ -111,8 +111,8 @@ const proofglyphTranslations = {
       "ja": "推論規則 → 定数宣言"
     },
     "copy-027": {
-      "en": "Judgments → types / Proofs → terms",
-      "ja": "判断 → 型　／　導出 → 項"
+      "en": "Judgments → types / Derivations → terms",
+      "ja": "判断 → 型 / 導出 → 項"
     },
     "copy-028": {
       "en": "Represent systems as types and terms",
@@ -611,8 +611,8 @@ const proofglyphTranslations = {
       "ja": "収録されている数学の証明"
     },
     "copy-181": {
-      "en": "The “Proof examples” dropdown includes propositional logic, equality, natural numbers (Peano axioms), divisibility, the binomial theorem, infinitely many primes, irrationality of $\\sqrt{2}$, Fermat's little theorem, and Russell's paradox (no universal set). Dependencies include the required assumptions; selected main theorems appear first in the results.",
-      "ja": "エディタ上部の「証明例」ドロップダウンから、命題論理、等式の性質、自然数（ペアノ公理）、整除性、二項定理、素数の無限性、$\\sqrt{2}$ の無理性、フェルマーの小定理、ラッセルのパラドックス（普遍集合の非存在）などを選択できます。依存する前提宣言を含めて展開され、選択した主要定理が検査結果の先頭に表示されます。"
+      "en": "The “Proof examples” dropdown includes propositional logic, equality, natural numbers (Peano axioms), divisibility, the binomial theorem, infinitely many primes, irrationality of √2, Fermat's little theorem, and Russell's paradox (no universal set). Dependencies include the required assumptions; selected main theorems appear first in the results.",
+      "ja": "エディタ上部の「証明例」ドロップダウンから、命題論理、等式の性質、自然数（ペアノ公理）、整除性、二項定理、素数の無限性、√2 の無理性、フェルマーの小定理、ラッセルのパラドックス（普遍集合の非存在）などを選択できます。依存する前提宣言を含めて展開され、選択した主要定理が検査結果の先頭に表示されます。"
     },
     "copy-182": {
       "en": "Writing proof terms",
@@ -938,8 +938,8 @@ const proofglyphTranslations = {
       "en": "Number theory：Fermat's little theorem and application to sums",
       "ja": "整数論：フェルマーの小定理と和への適用"
     },
-    "Set theory：No universal set via Russell’s paradox": {
-      "en": "Set theory：No universal set via Russell’s paradox",
+    "Set theory：No universal set via Russell's paradox": {
+      "en": "Set theory：No universal set via Russell's paradox",
       "ja": "集合論：ラッセルのパラドックスから普遍集合の非存在を示す"
     }
   }
