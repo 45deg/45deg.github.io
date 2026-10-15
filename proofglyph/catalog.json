@@ -252,7 +252,7 @@
       "path": "examples/commons/nat/fermat.ht",
       "line": 62
     }],
-    "Set theory：No universal set via Russell’s paradox": [{
+    "Set theory：No universal set via Russell's paradox": [{
       "name": "no_universal_set",
       "path": "examples/commons/sets/russell.ht",
       "line": 55
