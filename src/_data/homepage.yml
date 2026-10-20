@@ -96,6 +96,27 @@ filters:
       ja: Code
       en: Code
 works:
+  - href:
+      ja: https://45deg.github.io/mogami-stream/ja/
+      en: https://45deg.github.io/mogami-stream/
+    featured: false
+    title:
+      ja: mogami-stream
+      en: mogami-stream
+    year: 2026
+    description_html:
+      ja: >-
+        非同期ストリーム処理のためのTypeScriptオペレータ集。並行数・バッファの上限管理、キャンセル、非同期の後処理に対応。
+        <a href="https://www.npmjs.com/package/mogami-stream">npm</a> · <a href="https://github.com/45deg/mogami-stream">GitHub</a>
+      en: >-
+        TypeScript operators for asynchronous streams, with concurrency and buffer limits, cancellation, and asynchronous cleanup.
+        <a href="https://www.npmjs.com/package/mogami-stream">npm</a> · <a href="https://github.com/45deg/mogami-stream">GitHub</a>
+    tags:
+      - Programming
+      - Data
+    placeholder:
+      class: placeholder-code
+      emoji: ≋
   - href: ./yada/
     featured: false
     title:
