@@ -1,0 +1,42 @@
+{
+  "name": "Git Observatory",
+  "version": "0.1.0",
+  "base": "/git-observatory/",
+  "files": [
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 429403,
+      "sha256": "4485dce2b54e302ac5f400f19bf5854822f4c19fe1ef1eef50ba645bcd1044a2"
+    },
+    {
+      "path": "assets/git-reader-DgtB2PIQ.wasm",
+      "bytes": 261986,
+      "sha256": "fd87e37b138992d931ff874b81bad1041ced88a13b9233e2f0fb3f5a4d3afffb"
+    },
+    {
+      "path": "assets/graph-layout.worker-C8T8wEx6.js",
+      "bytes": 447670,
+      "sha256": "48b9c56a9a2e5961327416a63d2b3106492e36f426a0a58fb6d125ae3002d64c"
+    },
+    {
+      "path": "assets/index-CDOI26uy.css",
+      "bytes": 18580,
+      "sha256": "712952e0bdb41f043e30ce9fccad35b4b7d19379975a552865756156e7716902"
+    },
+    {
+      "path": "assets/index-D0v1AQyj.js",
+      "bytes": 484809,
+      "sha256": "f82dfbec2b76f6ba8662a7eca0c20d9ff988b57e4a2005987e9dc4c4e6c45962"
+    },
+    {
+      "path": "assets/worker-JSSCDHaq.js",
+      "bytes": 37213,
+      "sha256": "fd4b7a4ac3486255a5238d4b651c4b2b8baf168a4b5ed20f7e38ed101a909a03"
+    },
+    {
+      "path": "index.html",
+      "bytes": 524,
+      "sha256": "edfc7f6e781033a4b494328992a5e00f24b25f4bdaabed96b85bd2f0bc9919e6"
+    }
+  ]
+}

@@ -96,6 +96,26 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./git-observatory/
+    homeButton: false
+    featured: false
+    title:
+      ja: Git Observatory
+      en: Git Observatory
+    year: 2026
+    description_html:
+      ja: Gitリポジトリをブラウザ内で読み取り、オブジェクト・pack圧縮・参照関係を可視化。ファイルは外部送信しません。
+      en: Inspect Git objects, pack compression and references locally in your browser. Repository files stay on your device.
+    tags:
+      - Viewer
+      - Visualization
+      - Programming
+      - WebAssembly
+    image:
+      src: ./images/i61.png
+      alt:
+        ja: Git Observatoryのデモデータで参照・コミット・オブジェクトの関係を表示したグラフ
+        en: Git Observatory graph showing references, commits and objects in demo data
   - href:
       ja: https://45deg.github.io/mogami-stream/ja/
       en: https://45deg.github.io/mogami-stream/
