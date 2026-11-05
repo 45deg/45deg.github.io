@@ -97,7 +97,6 @@ filters:
       en: Code
 works:
   - href: ./git-observatory/
-    homeButton: false
     featured: false
     title:
       ja: Git Observatory
