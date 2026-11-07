@@ -96,6 +96,25 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./ezcensor/
+    featured: false
+    homeButton: false
+    title:
+      ja: ezcensor
+      en: ezcensor
+    year: 2026
+    description_html:
+      ja: 写真の顔を自動検出し、モザイク・ぼかし・黒塗り・絵文字で隠すツール。画像は端末内で処理し、外部へ送信しません。
+      en: Detect and hide faces in photos with mosaic, blur, black boxes or emoji. Images are processed on your device without uploads.
+    tags:
+      - Image
+      - AI
+      - Editor
+    image:
+      src: ./images/i62.png
+      alt:
+        ja: ezcensorで写真の顔を隠す編集画面
+        en: ezcensor photo editor with faces obscured
   - href: ./git-observatory/
     featured: false
     title:
