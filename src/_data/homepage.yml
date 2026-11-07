@@ -100,12 +100,12 @@ works:
     featured: false
     homeButton: false
     title:
-      ja: ezcensor
-      en: ezcensor
+      ja: 自動顔検出でモザイク・ぼかし
+      en: Auto-detect faces to blur or pixelate
     year: 2026
     description_html:
-      ja: 写真の顔を自動検出し、モザイク・ぼかし・黒塗り・絵文字で隠すツール。画像は端末内で処理し、外部へ送信しません。
-      en: Detect and hide faces in photos with mosaic, blur, black boxes or emoji. Images are processed on your device without uploads.
+      ja: ezcensorは写真の顔を自動検出して隠すツールです。モザイク・ぼかし・黒塗り・絵文字を選べます。写真のアップロードは不要。ブラウザー内で加工・保存できます。
+      en: ezcensor detects faces and hides them with pixelation, blur, black boxes or emoji. Edit and save in your browser without uploading your photos.
     tags:
       - Image
       - AI
