@@ -1,21 +1,23 @@
 <!DOCTYPE html>
+<!-- App shell: ui.js connects file/capture and appearance controls;
+     main.js connects media sources to the CRT renderer. -->
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRT Phosphor Simulator</title>
-    <meta name="description" content="A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.">
-    <meta name="keywords" content="CRT, phosphor, WebGL, image viewer, video viewer, RGB, visualization">
+    <meta name="description" content="A 3D/WebGL experiment for viewing images, videos, camera feeds, or shared screens with CRT-style RGB phosphor elements.">
+    <meta name="keywords" content="CRT, phosphor, WebGL, image viewer, video viewer, camera, screen capture, RGB, visualization">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://45deg.github.io/crt/">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://45deg.github.io/crt/">
     <meta property="og:title" content="CRT Phosphor Simulator">
-    <meta property="og:description" content="A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.">
+    <meta property="og:description" content="A 3D/WebGL experiment for viewing images, videos, camera feeds, or shared screens with CRT-style RGB phosphor elements.">
     <meta property="og:image" content="https://45deg.github.io/images/i25.jpg">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="CRT Phosphor Simulator">
-    <meta name="twitter:description" content="A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.">
+    <meta name="twitter:description" content="A 3D/WebGL experiment for viewing images, videos, camera feeds, or shared screens with CRT-style RGB phosphor elements.">
     <meta name="twitter:image" content="https://45deg.github.io/images/i25.jpg">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -24,17 +26,29 @@
         <h1>CRT蛍光体シミュレータ</h1>
         <div id="panel-content">
             <div class="preset-grid" aria-label="CRT プリセット">
-                <button type="button" class="preset-btn is-active" data-preset="consumer">Consumer</button>
-                <button type="button" class="preset-btn" data-preset="broadcast">Broadcast</button>
-                <button type="button" class="preset-btn" data-preset="arcade">Arcade</button>
-                <button type="button" class="preset-btn" data-preset="pvm">PVM</button>
-                <button type="button" class="preset-btn" data-preset="rf">RF</button>
-                <button type="button" class="preset-btn" data-preset="aged">Aged</button>
+                <button type="button" class="preset-btn is-active" data-preset="consumer">Consumer<span class="preset-description">色にじみ・家庭用</span></button>
+                <button type="button" class="preset-btn" data-preset="broadcast">Broadcast<span class="preset-description">RGB・適度な発光</span></button>
+                <button type="button" class="preset-btn" data-preset="arcade">Arcade<span class="preset-description">強い発光・粗い粒</span></button>
+                <button type="button" class="preset-btn" data-preset="pvm">PVM<span class="preset-description">RGB・残光控えめ</span></button>
+                <button type="button" class="preset-btn" data-preset="rf">RF<span class="preset-description">受信ノイズ・残光</span></button>
+                <button type="button" class="preset-btn" data-preset="aged">Aged<span class="preset-description">汚れ・長い残光</span></button>
             </div>
             <label class="upload-btn">
                 + 画像 / 動画を読み込む
                 <input type="file" id="media-upload" accept="image/*,video/*">
             </label>
+            <div id="capture-controls" role="group" aria-label="ライブ映像の入力">
+                <button type="button" id="camera-start" aria-describedby="capture-support">カメラ</button>
+                <button type="button" id="screen-start" aria-describedby="capture-support">画面共有</button>
+                <button type="button" id="capture-stop" hidden>キャプチャ停止</button>
+            </div>
+            <p id="capture-support" class="capture-note" hidden></p>
+            <p id="media-status" role="status" aria-live="polite" aria-atomic="true"></p>
+            <div id="video-controls" role="group" aria-label="動画操作" hidden>
+                <button type="button" id="video-rewind">5秒戻る</button>
+                <button type="button" id="video-toggle">再生</button>
+                <button type="button" id="video-forward">5秒進む</button>
+            </div>
             <div class="info">
                 <span class="highlight">マウスホイール</span> : ズーム<br>
                 <span class="highlight">ドラッグ</span> : 視点移動<br>
@@ -43,7 +57,7 @@
                 RGBの蛍光素子に分解されます。
             </div>
         </div>
-        <button type="button" id="panel-toggle" aria-label="パネルを閉じる" aria-expanded="true">▲</button>
+        <button type="button" id="panel-toggle" aria-label="パネルを閉じる" aria-expanded="true" aria-controls="panel-content">▲</button>
     </div>
 
     <script type="importmap">

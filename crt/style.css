@@ -1,3 +1,5 @@
+/* Responsive app panel; upload, capture and playback controls share keyboard
+   focus styles. Capture support notes explain unavailable browser features. */
 body {
     margin: 0;
     overflow: hidden;
@@ -16,7 +18,8 @@ canvas {
     left: 20px;
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
-    min-width: 236px;
+    width: 236px;
+    max-width: calc(100vw - 82px);
     padding: 20px 20px 0;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -38,8 +41,8 @@ h1 {
 }
 
 #panel-content {
-    max-height: 320px;
-    overflow: hidden;
+    max-height: calc(100dvh - 160px);
+    overflow-y: auto;
     transition: max-height 0.22s ease, opacity 0.18s ease, margin 0.2s ease;
 }
 
@@ -71,6 +74,14 @@ h1 {
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
+.preset-description {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
 .preset-btn:hover {
     color: #fff;
     background: #303030;
@@ -84,7 +95,11 @@ h1 {
 }
 
 input[type="file"] {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
 }
 
 .upload-btn {
@@ -139,4 +154,52 @@ input[type="file"] {
     color: #ffffff;
     border-top-color: #4da6ff;
     background: rgba(36, 36, 36, 0.72);
+}
+
+[hidden] { display: none !important; }
+button:focus-visible, .upload-btn:focus-within {
+    outline: 3px solid #9ed6ff;
+    outline-offset: 3px;
+}
+#media-status {
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+#media-status:empty { display: none; }
+#video-controls, #capture-controls {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+#video-controls button, #capture-controls button {
+    flex: 1;
+    min-height: 36px;
+    color: #fff;
+    background: #2a2a2a;
+    border: 1px solid #666;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 7px 8px;
+}
+#capture-controls #capture-stop { flex-basis: 100%; }
+#capture-controls button:disabled {
+    color: #aaa;
+    border-color: #444;
+    cursor: not-allowed;
+}
+#capture-controls button:hover:not(:disabled), #video-controls button:hover {
+    background: #404040;
+}
+.capture-note {
+    color: #bbb;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: reduce) {
+    #ui-container, #panel-content, .preset-btn, .upload-btn { transition: none; }
 }

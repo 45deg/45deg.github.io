@@ -869,8 +869,8 @@ works:
       en: CRT Phosphor Simulator
     year: 2026
     description_html:
-      ja: 画像や動画を読み込み、ブラウン管テレビのRGB蛍光体までズームして観察する3D/WebGL実験。
-      en: A 3D/WebGL experiment for loading images or videos and zooming into CRT-style RGB phosphor elements.
+      ja: 画像・動画・カメラ・画面共有の映像をCRT風に表示し、RGB蛍光体までズームして観察する3D/WebGL実験。
+      en: A 3D/WebGL experiment for viewing images, videos, camera feeds, or shared screens with CRT-style RGB phosphor elements.
     tags:
       - Image
       - Video
