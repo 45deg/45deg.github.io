@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- File selection and ZIP download are wired up in src/main.js. -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content=".gz、.tar.gz、.tgz を ZIP に変換。ファイルはアップロードされません。">
+  <title>gz2zip</title>
+  <script type="module" crossorigin src="./assets/index-CQIN5RmV.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DO7D5erT.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="heading">
+        <h1>gz2zip</h1>
+        <select id="language" data-label="language" aria-label="表示言語">
+          <option value="ja" lang="ja">日本語</option>
+          <option value="en" lang="en">English</option>
+        </select>
+      </div>
+      <p data-text="description">.gz、.tar.gz、.tgz を ZIP に変換</p>
+    </header>
+    <section class="card" data-label="converter" aria-label="ZIP 変換">
+      <div id="drop-zone" class="drop-zone">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M5 11V7a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v4M7 11v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V11M5 11h22m-14 5h6"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p data-text="drop">ここにファイルをドロップ</p>
+        <button id="choose" type="button" data-text="choose">ファイルを選択</button>
+        <input id="file" type="file" accept=".gz,.tgz" hidden>
+      </div>
+      <div id="result" class="result" hidden>
+        <dl class="file-info">
+          <div class="file-row">
+            <dt data-text="source">変換元</dt>
+            <dd><span id="source-name" class="filename"></span><span id="source-size" class="filesize"></span></dd>
+          </div>
+          <div id="zip-info" class="file-row" hidden>
+            <dt data-text="output">変換後</dt>
+            <dd><span id="zip-name" class="filename"></span><span id="zip-size" class="filesize"></span></dd>
+          </div>
+        </dl>
+        <div class="result-actions">
+          <a id="download" class="button" data-text="download" hidden>ZIP を保存</a>
+          <button id="cancel" class="secondary" type="button" data-text="cancel" hidden>中止</button>
+        </div>
+      </div>
+      <p id="status" class="status" role="status"></p>
+    </section>
+    <p class="privacy" data-text="privacy">ファイルは端末内で変換され、外部に送信されることはありません。</p>
+  </main>
+</body>
+</html>
