@@ -96,6 +96,23 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./gz2zip/
+    featured: false
+    title:
+      ja: GZ・TAR.GZ を ZIP に変換
+      en: Convert GZ and TAR.GZ to ZIP
+    year: 2026
+    description_html:
+      ja: .gz、.tar.gz、.tgz をブラウザーで ZIP に変換します。ファイルは端末内で処理し、外部には送信しません。
+      en: Convert .gz, .tar.gz, and .tgz files to ZIP in your browser. Files stay on your device.
+    tags:
+      - Converter
+      - Utility
+    image:
+      src: ./images/i64.svg
+      alt:
+        ja: gz2zip のロゴと GZ から ZIP への変換
+        en: gz2zip logo with GZ to ZIP conversion
   - href: ./heic2jpg/
     featured: false
     title:
