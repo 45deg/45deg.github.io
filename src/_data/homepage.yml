@@ -96,6 +96,23 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./heic2jpg/
+    featured: false
+    title:
+      ja: HEIC・HEIF を JPEG・PNG に変換
+      en: Convert HEIC and HEIF to JPEG or PNG
+    year: 2026
+    description_html:
+      ja: iPhone の写真をブラウザーで変換します。画質や画像サイズを調整でき、複数枚は ZIP で保存できます。写真は端末内で処理します。
+      en: Convert iPhone photos in your browser, adjust quality and size, and save batches as ZIP files. Photos stay on your device.
+    tags:
+      - Image
+      - Converter
+    image:
+      src: ./images/i63.png
+      alt:
+        ja: heic2jpg のロゴと HEIC から JPEG・PNG への変換
+        en: heic2jpg logo with HEIC to JPEG or PNG
   - href: ./ezcensor/
     featured: false
     homeButton: false

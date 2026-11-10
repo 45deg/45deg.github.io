@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- Photo selection, conversion settings, and download actions are wired up in src/main.js. -->
+<html lang="ja" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HEIC・HEIF を JPEG・PNG に変換 | heic2jpg</title>
+  <meta name="description" content="iPhone の HEIC・HEIF 写真をブラウザーで JPEG や PNG に変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できます。写真は端末内で処理し、外部に送信しません。">
+  <link rel="canonical" href="https://45deg.github.io/heic2jpg/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="heic2jpg">
+  <meta property="og:title" content="HEIC・HEIF を JPEG・PNG に変換 | heic2jpg">
+  <meta property="og:description" content="iPhone の HEIC・HEIF 写真をブラウザーで JPEG や PNG に変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できます。写真は端末内で処理し、外部に送信しません。">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://45deg.github.io/heic2jpg/">
+  <meta property="og:image" content="https://45deg.github.io/images/i63.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="320">
+  <meta property="og:image:alt" content="heic2jpg で HEIC を JPEG や PNG に変換">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon-iHCHuvO6.svg">
+  <script type="module" crossorigin src="./assets/index-D90dEeVN.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-KzD-3Vue.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="heading">
+        <h1>heic2jpg</h1>
+        <select id="language" data-label="language" aria-label="表示言語">
+          <option value="ja" lang="ja">日本語</option>
+          <option value="en" lang="en">English</option>
+        </select>
+      </div>
+      <p data-text="description">iPhone の写真を JPEG・PNG に変換</p>
+    </header>
+    <section class="card" data-label="converter" aria-label="写真の変換">
+      <button id="drop-zone" class="drop-zone" type="button" aria-labelledby="choose" aria-describedby="drop-hint input-formats">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="5" width="24" height="22" rx="3" stroke="currentColor" stroke-width="2"/>
+          <circle cx="11" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
+          <path d="m4 23 7-6 4 3 6-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="drop-hint" data-text="drop">ここに写真をドロップ</span>
+        <span id="choose" class="button" data-text="choose">写真を選ぶ</span>
+        <small id="input-formats">HEIC / HEIF / JPEG / PNG / WebP / AVIF</small>
+      </button>
+      <input id="file" type="file" accept="image/heic,image/heif,image/jpeg,image/png,image/webp,image/avif,.heic,.heif,.jpg,.jpeg,.png,.webp,.avif" multiple hidden>
+      <p id="status" class="status" role="status" aria-atomic="true"></p>
+      <ul id="results" class="results" hidden></ul>
+      <div class="actions">
+        <button id="download" type="button" data-text="downloadAll" aria-haspopup="dialog" hidden>まとめてダウンロード</button>
+        <button id="cancel" class="secondary" type="button" data-text="cancel" hidden>中止</button>
+        <button id="clear" class="secondary" type="button" data-text="clear" hidden>すべて外す</button>
+      </div>
+      <dialog id="download-settings" aria-labelledby="settings-title">
+        <form id="settings">
+          <h2 id="settings-title" data-text="settings">ダウンロード設定</h2>
+          <p id="batch-note" data-text="batchNote" hidden>変換した写真を ZIP にまとめて保存します。</p>
+          <p id="photo-note" hidden>
+            <strong id="download-filename" dir="auto"></strong>
+            <span id="source-dimensions"></span>
+          </p>
+          <div class="settings-grid">
+            <span id="format-label" data-text="format">保存形式</span>
+            <div class="radio-buttons" role="radiogroup" aria-labelledby="format-label">
+              <label><input type="radio" name="format" value="jpeg" checked><span>JPEG</span></label>
+              <label><input type="radio" name="format" value="png"><span>PNG</span></label>
+            </div>
+            <label id="quality-label" for="quality" data-text="quality">JPEG の画質</label>
+            <div id="quality-control" class="quality-control">
+              <input id="quality" type="range" min="1" max="100" value="92" aria-valuetext="92%">
+              <span id="quality-value" aria-hidden="true">92%</span>
+            </div>
+            <span id="resize-label" data-text="resize">サイズ指定</span>
+            <div class="radio-buttons" role="radiogroup" aria-labelledby="resize-label">
+              <label><input type="radio" name="resize" value="percent" checked><span data-text="percentMode">パーセント</span></label>
+              <label><input type="radio" name="resize" value="limit"><span id="pixel-mode" data-text="limitMode">長辺の上限</span></label>
+            </div>
+            <label id="percent-label" for="resize-percent" data-text="percent">元のサイズに対する割合（%）</label>
+            <div id="percent-control" class="resize-control">
+              <input id="resize-percent" class="size-input" type="number" min="1" max="100" step="1" inputmode="numeric" value="100" required>
+              <output id="percent-dimensions" for="resize-percent" hidden></output>
+            </div>
+            <label id="long-edge-label" for="long-edge" data-text="longEdge" hidden>長辺の上限（px）</label>
+            <div id="long-edge-control" class="resize-control" hidden>
+              <input id="long-edge" class="size-input" type="number" min="1" step="1" inputmode="numeric" placeholder="元のサイズ" aria-describedby="resize-hint" disabled>
+              <small id="resize-hint" data-text="resizeHint">空欄なら元のサイズで保存</small>
+            </div>
+            <label for="photo-width" data-text="photoWidth" hidden>幅（px）</label>
+            <input id="photo-width" class="size-input" type="number" min="1" step="1" inputmode="numeric" required disabled hidden>
+            <label for="photo-height" data-text="photoHeight" hidden>高さ（px）</label>
+            <input id="photo-height" class="size-input" type="number" min="1" step="1" inputmode="numeric" required disabled hidden>
+          </div>
+          <div class="actions">
+            <button id="convert" type="submit" data-text="convert">変換してダウンロード</button>
+            <button id="close-settings" class="secondary" type="button" data-text="back">戻る</button>
+          </div>
+        </form>
+      </dialog>
+      <div id="zip-actions" class="actions" hidden>
+        <button id="make-zip" class="secondary" type="button" data-text="makeZip">ZIP を保存</button>
+        <a id="save-zip" class="button" download="photos.zip" data-text="saveZip" hidden>ZIP をもう一度保存</a>
+      </div>
+    </section>
+    <p id="privacy" class="privacy" data-text="privacy">写真はこの端末内で処理し、外部に送信しません。</p>
+  </main>
+</body>
+</html>

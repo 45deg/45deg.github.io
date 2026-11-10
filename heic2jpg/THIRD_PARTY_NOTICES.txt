@@ -1,0 +1,10 @@
+heic-to 1.6.7 — GNU LGPL v3 or later
+License: licenses/heic-to.txt
+Project: https://github.com/hoppergee/heic-to
+Source and build files for the packaged version:
+https://registry.npmjs.org/heic-to/-/heic-to-1.6.7.tgz
+libheif 1.23.7: https://github.com/strukturag/libheif/tree/v1.23.7
+
+@zip.js/zip.js 2.24.0 — BSD 3-Clause
+License: licenses/zip.js.txt
+Project: https://github.com/gildas-lormeau/zip.js
