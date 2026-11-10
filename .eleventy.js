@@ -1,3 +1,5 @@
+// Build the homepages and copy projects; after output, injectHomeButtons adds
+// navigation and injectAnalytics adds GA4 to both homepages and local work entries.
 import fs from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
@@ -84,6 +86,40 @@ function injectHomeButtons(homepage) {
   }
 }
 
+function injectAnalytics(homepage) {
+  const measurementId = "G-11X4D6T3M0";
+  const hostname = new URL(homepage.site_url).hostname;
+  const snippet = `<script data-45deg-analytics>
+  if (location.hostname === ${JSON.stringify(hostname)}) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', '${measurementId}');
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=${measurementId}';
+    document.head.appendChild(tag);
+  }
+</script>`;
+  const htmlPaths = new Set([
+    "_site/index.html",
+    "_site/index_en.html",
+    ...homepage.works.map(getWorkOutputHtmlPath).filter(Boolean)
+  ]);
+
+  for (const htmlPath of htmlPaths) {
+    if (!fs.existsSync(htmlPath)) continue;
+
+    const html = fs.readFileSync(htmlPath, "utf8");
+    if (html.includes("data-45deg-analytics")) continue;
+
+    const head = /<head\b[^>]*>/i.exec(html);
+    const insertIndex = head ? head.index + head[0].length : 0;
+    fs.writeFileSync(htmlPath,
+      `${html.slice(0, insertIndex)}\n${snippet}\n${html.slice(insertIndex)}`);
+  }
+}
+
 export default function(eleventyConfig) {
   const homepage = yaml.load(fs.readFileSync("src/_data/homepage.yml", "utf8"));
 
@@ -117,6 +153,7 @@ export default function(eleventyConfig) {
 
   eleventyConfig.on("eleventy.after", () => {
     injectHomeButtons(homepage);
+    injectAnalytics(homepage);
   });
 
   return {
