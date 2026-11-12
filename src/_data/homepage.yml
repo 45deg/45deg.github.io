@@ -110,10 +110,10 @@ works:
       - AI
       - Utility
     image:
-      src: ./images/i66.png
+      src: ./images/i66.jpg
       alt:
-        ja: デモ動画の4人の顔をモザイクで隠し、タイムラインで加工範囲を確認する画面
-        en: Four faces pixelated in the demo video, with mask intervals shown on the timeline
+        ja: 5人の顔にモザイクを適用した動画と再生操作・加工設定を表示する英語の編集画面
+        en: English editor showing five pixelated faces, playback controls, and mosaic settings
   - href: ./ezcensor/
     featured: false
     title:
@@ -128,7 +128,7 @@ works:
       - AI
       - Editor
     image:
-      src: ./images/i62.png
+      src: ./images/i62.jpg
       alt:
         ja: ezcensorで写真の顔を隠す編集画面
         en: ezcensor photo editor with faces obscured
