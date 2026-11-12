@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- English entry point; main.js loads the English examples and runs the selected program. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shift / reset Playground — Delimited continuations in JavaScript</title>
+  <meta name="description" content="Explore delimited continuations in JavaScript with 14 editable shift and reset examples, from basic control flow to backtracking and algebraic effects.">
+  <link rel="canonical" href="https://45deg.github.io/shift-reset-js/index_en.html">
+  <link rel="alternate" hreflang="ja" href="https://45deg.github.io/shift-reset-js/">
+  <link rel="alternate" hreflang="en" href="https://45deg.github.io/shift-reset-js/index_en.html">
+  <link rel="alternate" hreflang="x-default" href="https://45deg.github.io/shift-reset-js/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="shift / reset Playground — Delimited continuations in JavaScript">
+  <meta property="og:description" content="Try delimited continuations in JavaScript with 14 editable shift and reset examples.">
+  <meta property="og:url" content="https://45deg.github.io/shift-reset-js/index_en.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ja_JP">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="titlebar">
+      <h1>shift / reset Playground</h1>
+      <nav aria-label="Related links">
+        <a href="./guide_en.html">Guide</a>
+        <a href="./" lang="ja" hreflang="ja">日本語</a>
+        <a href="https://github.com/45deg/boa/tree/delimited-continuations">GitHub: <code>delimited-continuations</code></a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <label for="example">Example</label>
+      <select id="example"></select>
+      <button id="restore" type="button">Restore example</button>
+      <button id="run" type="button" title="⌘ / Ctrl + Enter">Run</button>
+    </div>
+    <div class="example-note"><a id="example-guide" href="./guide_en.html#examples">About this example</a></div>
+    <section class="editor" aria-label="Code editor">
+      <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+      <textarea id="source" aria-label="JavaScript source code" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea>
+    </section>
+    <section class="console" aria-labelledby="console-title">
+      <div class="output-heading"><h2 id="console-title">Output</h2><button id="clear" type="button">Clear</button></div>
+      <pre id="output" tabindex="0" aria-label="Program output" aria-live="polite"></pre>
+    </section>
+  </main>
+  <script src="./vendor/prism.js" data-manual></script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

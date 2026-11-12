@@ -460,6 +460,24 @@ works:
       alt:
         ja: stageブロックとエスケープ式がL2からL1、L0へ変換されるMultistage JSの文法図
         en: Multistage JS syntax diagram showing a stage block and escaped expression transforming from L2 to L1 to L0
+  - href:
+      ja: ./shift-reset-js/
+      en: ./shift-reset-js/index_en.html
+    featured: false
+    title:
+      ja: shift / reset Playground
+      en: shift / reset Playground
+    year: 2026
+    description_html:
+      ja: JavaScriptの限定継続を扱うブラウザツール。<code>shift</code>で取り出した継続を何度でも再開でき、バックトラッキングや代数的エフェクトを試せる。
+      en: A browser playground for delimited continuations in JavaScript. Capture a continuation with <code>shift</code> and resume it multiple times in examples of backtracking and algebraic effects.
+    tags:
+      - Programming
+      - Compiler
+      - Education
+    placeholder:
+      class: placeholder-code
+      emoji: ↪️
   - href: ./crypto-demo/
     featured: false
     title:

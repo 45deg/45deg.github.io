@@ -1,0 +1,134 @@
+<!doctype html>
+<!-- Static guide. Example links open the matching program in the playground. -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>限定継続の解説 — shift / reset Playground</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="titlebar">
+      <h1>限定継続の解説</h1>
+      <nav aria-label="関連リンク">
+        <a href="./">実行画面</a>
+        <a href="./guide_en.html" lang="en" hreflang="en">English</a>
+        <a href="https://github.com/45deg/boa/tree/delimited-continuations">GitHub: <code>delimited-continuations</code></a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="guide" class="guide" aria-labelledby="guide-title">
+      <h2 id="guide-title">限定継続（Delimited Continuations）とは？</h2>
+      <p class="guide-lead"><a href="#examples">サンプル一覧</a> · <a href="#resources">参考資料</a></p>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h3>継続とは</h3>
+          <p>途中までの結果を受け取って先へ進む、残りの計算を<strong>継続（continuation）</strong>と呼びます。たとえば <code>1 + (2 * 3)</code> で <code>2 * 3</code> を計算しているとき、残っているのはその結果に <code>1</code> を足す計算です。この継続は <code>v =&gt; 1 + v</code> と書けます。</p>
+        </article>
+        <article class="guide-card">
+          <h3><code>reset</code> と <code>shift</code></h3>
+          <p><code>reset</code> は、継続をどこまで取り出すかの境界（delimiter）を作ります。その内側で <code>shift</code> を呼ぶと、最も内側の <code>reset</code> までの残りの計算が、関数 <code>k</code> としてハンドラーに渡ります。ハンドラーが <code>k</code> を呼ばずに値を返すと、残りの計算は打ち切られます。</p>
+          <p><a href="#sample-1">基本サンプルの解説</a></p>
+        </article>
+        <article class="guide-card">
+          <h3>どこまでの計算を取り出すか</h3>
+          <p>Scheme などの <code>call/cc</code> は、プログラムの末尾までの継続を取り出します。その継続を呼ぶと、呼び出し元の残りの計算を飛ばします。<code>shift</code> で取り出した継続の範囲は <code>reset</code> までです。呼び出し元に値が返るので、関数のように組み合わせて使えます。この仕組みで <code>call/cc</code> も再現できます。</p>
+        </article>
+        <article class="guide-card">
+          <h3>プレイグラウンドの動作範囲</h3>
+          <ul>
+            <li>この画面は、同じ継続を何度でも呼べる multi-shot モードで動きます。再開のたびに、どこまで実行したかを表す制御状態を複製します。<code>shift</code> より前に作った変数やオブジェクトへの変更は残ります。</li>
+            <li>通常の同期 JavaScript 関数で動く実験的な拡張です。<code>async</code> やジェネレーターをまたぐ捕捉や、再開しなかった継続を <code>finally</code> で片付ける処理は対象外です。</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 id="resources">限定継続の参考資料</h2>
+      <ul>
+        <li><a href="https://www.is.ocha.ac.jp/~asai/cw2011tutorial/main-j.pdf" hreflang="ja">shift/reset プログラミング入門</a>（日本語PDF）。浅井健一による入門資料です。</li>
+        <li><a href="https://www.is.ocha.ac.jp/~gradthesis/pdf/grad/2022/2022grad1920515.pdf" hreflang="ja">仕様記述を可能にした継続モナドにおける関数の内部証明</a>（日本語PDF）。窪田唯花の卒業論文です。第2節で <code>shift</code> と <code>reset</code> の動きを式の評価順に追えます。</li>
+        <li><a href="https://www.is.ocha.ac.jp/~asai/cw2011tutorial/main-e.pdf" hreflang="en"><span lang="en">Introduction to Programming with Shift and Reset</span></a>（英語PDF）。浅井健一と Oleg Kiselyov による入門資料です。コルーチンや非決定的探索の例と練習問題があります。</li>
+        <li><a href="https://arxiv.org/abs/cs/0508048" hreflang="en"><span lang="en">An Operational Foundation for Delimited Continuations in the CPS Hierarchy</span></a>（英語論文）。Biernacka、Biernacki、Danvy が限定継続の評価規則と抽象機械を示します。</li>
+      </ul>
+
+      <h2 id="examples">サンプル一覧</h2>
+      <p class="guide-lead">サンプル名を選ぶと、実行画面でそのコードが開きます。</p>
+      <div class="guide-stages">
+        <section class="guide-stage">
+          <h3>基礎編：捕捉の境界・破棄・実行順序</h3>
+          <ul>
+            <li id="sample-1">
+              <a href="./?example=1">1. 基本：1 + shift</a>
+              <p>shift は、最も内側の reset までの残りの計算（ここでは 1 + [ ]）を関数 k として取り出します。ハンドラーから k(2) を呼ぶと、1 + 2 の結果 3 がハンドラーに返ります。これを 10 倍した 30 が reset の結果です。</p>
+            </li>
+            <li id="sample-2">
+              <a href="./?example=2">2. ネストした reset</a>
+              <p>shift が捕捉するのは、最も内側の reset までの計算です。内側の reset があると、10 を足す計算だけが打ち切られます。外側は戻り値の 7 に 100 を足し、107 を返します。内側の reset を外した場合、結果は 7 です。</p>
+            </li>
+            <li id="sample-3">
+              <a href="./?example=3">3. 残りの計算のスキップ</a>
+              <p>shift のハンドラーが継続 k を呼ばずに 42 を返すと、reset 内の残りの計算は打ち切られます。reset の結果も 42 です。</p>
+            </li>
+            <li id="sample-4">
+              <a href="./?example=4">4. 実行順序の確認</a>
+              <p>ログの番号 1〜6 を追うと、計算がどこで中断し、どこへ戻るかがわかります。shift でハンドラーに移り、k(2) で中断箇所から再開します。reset の末尾まで進むと、結果の 3 がハンドラーに返ります。</p>
+            </li>
+          </ul>
+        </section>
+        <section class="guide-stage">
+          <h3>継続の操作：持ち出し・分岐・再捕捉</h3>
+          <ul>
+            <li id="sample-5">
+              <a href="./?example=5">5. 継続の持ち出し</a>
+              <p>shift(k =&gt; k) は、継続 k を reset の外へ返します。変数に保存しておけば、後から別の値で再開できます。このデモは multi-shot モードなので、同じ継続を何度でも呼べます。</p>
+            </li>
+            <li id="sample-6">
+              <a href="./?example=6">6. 計算の分岐</a>
+              <p>一つのハンドラーで k(2) と k(3) を呼ぶと、残りの計算 1 + [ ] がそれぞれの値で実行されます。結果の 3 と 4 を足して 7 を返します。</p>
+            </li>
+            <li id="sample-7">
+              <a href="./?example=7">7. カウンター</a>
+              <p>multi-shot は再開のたびに制御状態を複製します。変数やヒープの状態は巻き戻りません。shift の前に作った count はすべての再開で共有されるので、呼ぶたびに 1, 2, 3 と増えます。</p>
+            </li>
+            <li id="sample-8">
+              <a href="./?example=8">8. 複数の shift の組み合わせ</a>
+              <p>再開した計算から、もう一度 shift を呼べます。first(2) は最初の値を 2 に固定した継続 a を返し、first(5) は 5 に固定した継続 b を返します。a と b はそれぞれ独立して再開できます。</p>
+            </li>
+          </ul>
+        </section>
+        <section class="guide-stage">
+          <h3>応用パターン</h3>
+          <ul>
+            <li id="sample-9">
+              <a href="./?example=9">9. 応用：条件を満たす組み合わせ探索</a>
+              <p>choose は配列の要素を一つずつ k(item) に渡します。x と y の両方を choose で選ぶと、ループを入れ子にせず全通りの組み合わせを試せます。</p>
+            </li>
+            <li id="sample-10">
+              <a href="./?example=10">10. バックトラッキング：4クイーン</a>
+              <p>choose で候補を試し、条件に合わない枝は guard で打ち切ります。guard 内の shift は k を呼びません。共有配列への変更は巻き戻らないため、枝ごとに columns.concat([column]) で新しい配列を作ります。</p>
+            </li>
+            <li id="sample-11">
+              <a href="./?example=11">11. Same Fringe：木の遅延走査</a>
+              <p>二分木を再帰でたどり、葉を見つけるたびに値と継続を返します。両方の木から葉を1枚ずつ取り出して比べます。2回目の比較では 2 と 9 が異なるため、最後の葉 3 を読む前に止まります。</p>
+            </li>
+            <li id="sample-12">
+              <a href="./?example=12">12. 確率プログラミング</a>
+              <p>flip(p) は、表と裏の両方で同じ継続を再開します。それぞれの結果に起こる確率を掛け、足し合わせます。表の確率が 0.25 と 0.75 の独立なコインを使い、表がちょうど1回出る確率と、その条件で最初のコインが表である確率を求めます。</p>
+            </li>
+            <li id="sample-13">
+              <a href="./?example=13">13. Call/CC：プログラム全体の継続</a>
+              <p>外側の reset を境界にして、Scheme 風の call/cc を shift で再現します。callCC が渡した関数を呼ぶと、shift(ignored =&gt; k(value)) が呼び出し側の残りの計算を捨て、callCC の位置へ戻ります。</p>
+            </li>
+            <li id="sample-14">
+              <a href="./?example=14">14. Algebraic Effects：状態とログ</a>
+              <p>perform は操作名、引数、再開用の継続 resume を要求オブジェクトにまとめます。handle は要求に応じて状態を更新したりログを記録したりし、step.resume(response) で計算を再開します。program には計算を書き、副作用の実装は handle に置きます。</p>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

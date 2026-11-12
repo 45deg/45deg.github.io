@@ -1,0 +1,86 @@
+[
+  {
+    "label": "1. Basics: 1 + shift",
+    "mode": "multi",
+    "source": "// shift captures the rest of the computation as k: add 1 to the supplied value.\n// k(2) returns 3. The handler multiplies it by 10, so reset returns 30.\n\nconsole.log(reset(() => 1 + shift(k => k(2) * 10)));",
+    "expected": "30"
+  },
+  {
+    "label": "2. Nested resets",
+    "mode": "multi",
+    "source": "// stop discards the remaining computation up to the nearest reset and returns 7.\n// The two calls compare how much is discarded with and without the inner reset.\nfunction stop() {\n  return shift(() => 7);\n}\n\nconsole.log(reset(() => 100 + reset(() => 10 + stop())));\nconsole.log(reset(() => 100 + 10 + stop()));",
+    "expected": "107\n7"
+  },
+  {
+    "label": "3. Skip the rest of a computation",
+    "mode": "multi",
+    "source": "// The handler returns 42 without calling k, so the rest of the reset body is skipped.\n// The reset expression returns 42.\n\nconsole.log(reset(() => {\n  const value = shift(k => 42);\n  console.log(\"Unreachable\");\n  return value + 1;\n}));",
+    "expected": "42"
+  },
+  {
+    "label": "4. Trace the order of execution",
+    "mode": "multi",
+    "source": "// The numbered log messages trace the execution order. k(2) resumes at the shift expression.\n// When the resumed computation reaches the end of the reset body,\n// its result goes back to the shift handler.\n\nconsole.log(\"1. Before reset\");\nconst result = reset(() => {\n  console.log(\"2. Before shift\");\n  const value = shift(k => {\n    console.log(\"3. In the shift handler before resuming\");\n    const resumed = k(2);\n    console.log(\"5. Back in the shift handler:\", resumed);\n    return resumed * 10;\n  });\n  console.log(\"4. In the resumed computation:\", value);\n  return value + 1;\n});\nconsole.log(\"6. Final result:\", result);",
+    "expected": "1. Before reset\n2. Before shift\n3. In the shift handler before resuming\n4. In the resumed computation: 2\n5. Back in the shift handler: 3\n6. Final result: 30"
+  },
+  {
+    "label": "5. Resume a continuation outside reset",
+    "mode": "multi",
+    "source": "// Returning the captured continuation k from reset allows calling it repeatedly later.\n\nconst k = reset(() => 10 + shift(k => k));\nconsole.log(k(2));\nconsole.log(k(5));",
+    "expected": "12\n15"
+  },
+  {
+    "label": "6. Branch a computation",
+    "mode": "multi",
+    "source": "// The handler resumes the same continuation with 2 and again with 3.\n// It adds (1 + 2) and (1 + 3), giving 7.\n\nconsole.log(reset(() => 1 + shift(k => k(2) + k(3))));",
+    "expected": "7"
+  },
+  {
+    "label": "7. A counter with shared state",
+    "mode": "multi",
+    "source": "// Each resumption shares the count variable created before capture.\n// Every call to next increments it.\n\nconst next = reset(() => {\n  let count = 0;\n  shift(k => k);\n  return ++count;\n});\nconsole.log(next(), next(), next());",
+    "expected": "1 2 3"
+  },
+  {
+    "label": "8. Capture again after resuming",
+    "mode": "multi",
+    "source": "// A resumed computation can call shift again. Resuming first yields a new\n// continuation each time. The resulting continuations a and b can be resumed separately.\n\nconst first = reset(() => {\n  function inner() {\n    return shift(k => k) + shift(k => k);\n  }\n  return 10 + inner();\n});\nconst a = first(2);\nconst b = first(5);\nconsole.log(a(3), b(4), a(9));",
+    "expected": "15 19 21"
+  },
+  {
+    "label": "9. Search for pairs with a given sum",
+    "mode": "multi",
+    "source": "// choose uses shift to try every pair of candidates,\n// and the body prints each pair that adds up to 10.\n\nfunction choose(items) {\n  return shift(k => {\n    for (const item of items) k(item);\n  });\n}\n\nreset(() => {\n  const x = choose([2, 4, 7]);\n  const y = choose([3, 6, 8]);\n  if (x + y === 10) {\n    console.log(`${x} + ${y} = 10`);\n  }\n});",
+    "expected": "2 + 8 = 10\n4 + 6 = 10\n7 + 3 = 10"
+  },
+  {
+    "label": "10. Backtracking: four queens",
+    "mode": "multi",
+    "source": "// choose resumes the computation for each candidate. guard drops a failed branch.\n// place creates a new board per branch. Changes to shared objects are not rolled back.\nfunction choose(values) {\n  return shift(k => {\n    for (let i = 0; i < values.length; i++) k(values[i]);\n  });\n}\n\nfunction guard(condition) {\n  if (!condition) shift(k => undefined);\n}\n\nfunction place(columns) {\n  if (columns.length === 4) {\n    console.log(JSON.stringify(columns));\n    return;\n  }\n  const column = choose([0, 1, 2, 3]);\n  const row = columns.length;\n  for (let previous = 0; previous < row; previous++) {\n    guard(columns[previous] !== column);\n    guard(Math.abs(columns[previous] - column) !== row - previous);\n  }\n  place(columns.concat([column]));\n}\n\n// Array indices are rows and values are columns. Both start at zero.\nreset(() => place([]));",
+    "expected": "[1,3,0,2]\n[2,0,3,1]"
+  },
+  {
+    "label": "11. Same Fringe: lazy tree traversal",
+    "mode": "multi",
+    "source": "// visitLeaves walks the tree recursively and suspends at each leaf.\n// sameFringe advances the two walks one leaf at a time and compares their values.\nfunction visitLeaves(tree, side) {\n  if (Array.isArray(tree)) {\n    visitLeaves(tree[0], side);\n    visitLeaves(tree[1], side);\n    return;\n  }\n\n  console.log(side + \": \" + tree);\n  shift(resume => ({ value: tree, resume }));\n}\n\nfunction sameFringe(left, right) {\n  let leftStep = reset(() => visitLeaves(left, \"left\"));\n  let rightStep = reset(() => visitLeaves(right, \"right\"));\n\n  while (leftStep !== undefined && rightStep !== undefined) {\n    if (leftStep.value !== rightStep.value) return false;\n    leftStep = leftStep.resume();\n    rightStep = rightStep.resume();\n  }\n\n  return leftStep === undefined && rightStep === undefined;\n}\n\nconsole.log(sameFringe([[1, 2], 3], [1, [2, 3]]));\nconsole.log(sameFringe([[1, 2], 3], [1, [9, 3]]));",
+    "expected": "left: 1\nright: 1\nleft: 2\nright: 2\nleft: 3\nright: 3\ntrue\nleft: 1\nright: 1\nleft: 2\nright: 9\nfalse"
+  },
+  {
+    "label": "12. Probabilistic programming",
+    "mode": "multi",
+    "source": "// flip evaluates both heads and tails. An event returns 1 on branches where it occurs\n// and 0 elsewhere, so the weighted sum gives its probability.\nfunction flip(p) {\n  return shift(resume => p * resume(true) + (1 - p) * resume(false));\n}\n\nfunction probabilityOf(event) {\n  return reset(() => {\n    const firstHeads = flip(0.25);\n    const secondHeads = flip(0.75);\n    return event(firstHeads, secondHeads) ? 1 : 0;\n  });\n}\n\nconst exactlyOneHead = probabilityOf((first, second) => first !== second);\nconst onlyFirstHead = probabilityOf((first, second) => first && !second);\n\nconsole.log(\"P(exactly one head):\", exactlyOneHead);\nconsole.log(\"P(first is heads | exactly one head):\", onlyFirstHead / exactlyOneHead);",
+    "expected": "P(exactly one head): 0.625\nP(first is heads | exactly one head): 0.1"
+  },
+  {
+    "label": "13. Call/CC within an outer reset",
+    "mode": "multi",
+    "source": "// callCC passes a function that jumps to the captured continuation.\n// Calling it discards the rest of the caller’s computation.\nfunction callCC(f) {\n  return shift(k =>\n    k(f(value => shift(ignored => k(value))))\n  );\n}\n\n// This reset bounds the entire example. There is no inner reset,\n// so callCC captures the rest of the computation up to this boundary.\nreset(() => {\n  // If the continuation is not called, the callback returns normally.\n  const normal = callCC(k => 7);\n  console.log(\"Normal return:\", normal);\n\n  // Even a deeply nested call can jump back to the callCC expression with a value.\n  const found = callCC(exit => {\n    function search() {\n      for (let i = 1; i <= 10; i++) {\n        if (i * i > 20) exit(i);\n      }\n    }\n    search();\n    console.log(\"Unreachable after the jump\");\n    return -1;\n  });\n  console.log(\"Search result:\", found);\n\n  let saved;\n  let jumps = 0;\n  const value = callCC(k => {\n    saved = k;\n    return 10;\n  });\n\n  // saved captures everything from this point to the end of the reset.\n  // The jumps counter is not rolled back. The code jumps to the same continuation twice.\n  console.log(\"Value at resumption:\", value);\n  if (jumps < 2) {\n    jumps++;\n    saved(value + 10);\n    console.log(\"The jump does not return here\");\n  }\n  console.log(\"End of program\");\n});",
+    "expected": "Normal return: 7\nSearch result: 5\nValue at resumption: 10\nValue at resumption: 20\nValue at resumption: 30\nEnd of program"
+  },
+  {
+    "label": "14. Algebraic effects: state and logging",
+    "mode": "multi",
+    "source": "// perform returns a request containing an operation, its argument, and a continuation.\n// handle interprets the request and resumes it, so program does not need to know where state lives.\n// The same handler processes later requests. This example runs synchronously.\n// Unknown operations throw. The example has no outer or composed handlers.\nfunction perform(operation, argument) {\n  return shift(resume => ({ kind: \"effect\", operation, argument, resume }));\n}\n\nfunction handle(program, initialState) {\n  let state = initialState;\n  const logs = [];\n  let step = reset(() => ({ kind: \"done\", value: program() }));\n  while (step.kind === \"effect\") {\n    let response;\n    switch (step.operation) {\n      case \"get\":\n        response = state;\n        break;\n      case \"put\":\n        state = step.argument;\n        break;\n      case \"log\":\n        logs.push(step.argument);\n        break;\n      default:\n        throw new Error(\"Unhandled operation: \" + step.operation);\n    }\n    step = step.resume(response);\n  }\n  return { value: step.value, state, logs };\n}\n\nfunction program() {\n  const before = perform(\"get\");\n  perform(\"put\", before + 1);\n  const after = perform(\"get\");\n  perform(\"log\", `${before} → ${after}`);\n  return after * 2;\n}\n\n// The same computation is interpreted with two different initial states.\nconsole.log(JSON.stringify(handle(program, 0)));\nconsole.log(JSON.stringify(handle(program, 10)));",
+    "expected": "{\"value\":2,\"state\":1,\"logs\":[\"0 → 1\"]}\n{\"value\":22,\"state\":11,\"logs\":[\"10 → 11\"]}"
+  }
+]

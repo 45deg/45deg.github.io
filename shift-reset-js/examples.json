@@ -1,0 +1,86 @@
+[
+  {
+    "label": "1. 基本：1 + shift",
+    "mode": "multi",
+    "source": "// shift で「受け取った値に 1 を足す」残りの計算を関数 k として取り出します。k(2)\n// の結果である 3 を 10 倍するため、全体の値は 30 になります。\n\nconsole.log(reset(() => 1 + shift(k => k(2) * 10)));",
+    "expected": "30"
+  },
+  {
+    "label": "2. ネストした reset",
+    "mode": "multi",
+    "source": "// stop は、最も近い reset までの残りの計算を打ち切って 7 を返します。\n// 内側の reset の有無で、どこまで打ち切られるかを比べます。\nfunction stop() {\n  return shift(() => 7);\n}\n\nconsole.log(reset(() => 100 + reset(() => 10 + stop())));\nconsole.log(reset(() => 100 + 10 + stop()));",
+    "expected": "107\n7"
+  },
+  {
+    "label": "3. 残りの計算のスキップ",
+    "mode": "multi",
+    "source": "// shift 内で k を呼ばずに 42 をそのまま返すと、reset\n// 内の残りの処理は実行されず、42 が全体の結果になります。\n\nconsole.log(reset(() => {\n  const value = shift(k => 42);\n  console.log(\"ここには到達しない\");\n  return value + 1;\n}));",
+    "expected": "42"
+  },
+  {
+    "label": "4. 実行順序の確認",
+    "mode": "multi",
+    "source": "// console.log で処理が移る順序を確認できます。k(2)\n// で中断箇所から再開し、reset の末尾まで進んだあと、その結果を持って shift\n// 内に戻ります。\n\nconsole.log(\"1. reset の前\");\nconst result = reset(() => {\n  console.log(\"2. shift の前\");\n  const value = shift(k => {\n    console.log(\"3. shift 内（再開前）\");\n    const resumed = k(2);\n    console.log(\"5. shift 内（再開後）:\", resumed);\n    return resumed * 10;\n  });\n  console.log(\"4. 再開後:\", value);\n  return value + 1;\n});\nconsole.log(\"6. 最終結果:\", result);",
+    "expected": "1. reset の前\n2. shift の前\n3. shift 内（再開前）\n4. 再開後: 2\n5. shift 内（再開後）: 3\n6. 最終結果: 30"
+  },
+  {
+    "label": "5. 継続の持ち出し",
+    "mode": "multi",
+    "source": "// 取り出した継続 k を reset の外へ返すと、後から繰り返し呼び出せます。\n\nconst k = reset(() => 10 + shift(k => k));\nconsole.log(k(2));\nconsole.log(k(5));",
+    "expected": "12\n15"
+  },
+  {
+    "label": "6. 計算の分岐",
+    "mode": "multi",
+    "source": "// 取り出した同じ継続 k を 2 と 3 でそれぞれ再開します。(1 + 2) と (1 + 3)\n// が計算され、合計の 7 が返ります。\n\nconsole.log(reset(() => 1 + shift(k => k(2) + k(3))));",
+    "expected": "7"
+  },
+  {
+    "label": "7. カウンター",
+    "mode": "multi",
+    "source": "// 継続を取り出す前に定義した変数 count は、再開のたびに引き継がれます。関数 next\n// を呼ぶたびに値が増えます。\n\nconst next = reset(() => {\n  let count = 0;\n  shift(k => k);\n  return ++count;\n});\nconsole.log(next(), next(), next());",
+    "expected": "1 2 3"
+  },
+  {
+    "label": "8. 複数の shift の組み合わせ",
+    "mode": "multi",
+    "source": "// 再開した計算の中でさらに shift を実行できます。最初の継続 first\n// と、そこから得られる 2 段目の継続 a・b をそれぞれ呼び出せます。\n\nconst first = reset(() => {\n  function inner() {\n    return shift(k => k) + shift(k => k);\n  }\n  return 10 + inner();\n});\nconst a = first(2);\nconst b = first(5);\nconsole.log(a(3), b(4), a(9));",
+    "expected": "15 19 21"
+  },
+  {
+    "label": "9. 応用：条件を満たす組み合わせ探索",
+    "mode": "multi",
+    "source": "// 候補の配列から要素を選ぶ choose 関数を shift で定義し、和が 10\n// になるペアをすべて探索します。\n\nfunction choose(items) {\n  return shift(k => {\n    for (const item of items) k(item);\n  });\n}\n\nreset(() => {\n  const x = choose([2, 4, 7]);\n  const y = choose([3, 6, 8]);\n  if (x + y === 10) {\n    console.log(`${x} + ${y} = 10`);\n  }\n});",
+    "expected": "2 + 8 = 10\n4 + 6 = 10\n7 + 3 = 10"
+  },
+  {
+    "label": "10. バックトラッキング：4クイーン",
+    "mode": "multi",
+    "source": "// choose が候補ごとに残りの計算を再開し、guard が失敗した枝を打ち切ります。\n// place は盤面を枝ごとに新しく作ります。共有オブジェクトの変更は巻き戻りません。\nfunction choose(values) {\n  return shift(k => {\n    for (let i = 0; i < values.length; i++) k(values[i]);\n  });\n}\n\nfunction guard(condition) {\n  if (!condition) shift(k => undefined);\n}\n\nfunction place(columns) {\n  if (columns.length === 4) {\n    console.log(JSON.stringify(columns));\n    return;\n  }\n  const column = choose([0, 1, 2, 3]);\n  const row = columns.length;\n  for (let previous = 0; previous < row; previous++) {\n    guard(columns[previous] !== column);\n    guard(Math.abs(columns[previous] - column) !== row - previous);\n  }\n  place(columns.concat([column]));\n}\n\n// 配列の添字が行、値が列です（どちらも0始まり）。\nreset(() => place([]));",
+    "expected": "[1,3,0,2]\n[2,0,3,1]"
+  },
+  {
+    "label": "11. Same Fringe：木の遅延走査",
+    "mode": "multi",
+    "source": "// visitLeaves は再帰で木をたどり、葉を見つけるたびに中断します。\n// sameFringe は2本の木を1枚ずつ進め、葉の並びを比べます。\nfunction visitLeaves(tree, side) {\n  if (Array.isArray(tree)) {\n    visitLeaves(tree[0], side);\n    visitLeaves(tree[1], side);\n    return;\n  }\n\n  console.log(side + \": \" + tree);\n  shift(resume => ({ value: tree, resume }));\n}\n\nfunction sameFringe(left, right) {\n  let leftStep = reset(() => visitLeaves(left, \"left\"));\n  let rightStep = reset(() => visitLeaves(right, \"right\"));\n\n  while (leftStep !== undefined && rightStep !== undefined) {\n    if (leftStep.value !== rightStep.value) return false;\n    leftStep = leftStep.resume();\n    rightStep = rightStep.resume();\n  }\n\n  return leftStep === undefined && rightStep === undefined;\n}\n\nconsole.log(sameFringe([[1, 2], 3], [1, [2, 3]]));\nconsole.log(sameFringe([[1, 2], 3], [1, [9, 3]]));",
+    "expected": "left: 1\nright: 1\nleft: 2\nright: 2\nleft: 3\nright: 3\ntrue\nleft: 1\nright: 1\nleft: 2\nright: 9\nfalse"
+  },
+  {
+    "label": "12. 確率プログラミング",
+    "mode": "multi",
+    "source": "// flip は表と裏の両方を評価します。事象が起きた枝は 1、ほかの枝は 0 を返すため、\n// 枝の重み付き和が事象の確率になります。\nfunction flip(p) {\n  return shift(resume => p * resume(true) + (1 - p) * resume(false));\n}\n\nfunction probabilityOf(event) {\n  return reset(() => {\n    const firstHeads = flip(0.25);\n    const secondHeads = flip(0.75);\n    return event(firstHeads, secondHeads) ? 1 : 0;\n  });\n}\n\nconst exactlyOneHead = probabilityOf((first, second) => first !== second);\nconst onlyFirstHead = probabilityOf((first, second) => first && !second);\n\nconsole.log(\"P(exactly one head):\", exactlyOneHead);\nconsole.log(\"P(first is heads | exactly one head):\", onlyFirstHead / exactlyOneHead);",
+    "expected": "P(exactly one head): 0.625\nP(first is heads | exactly one head): 0.1"
+  },
+  {
+    "label": "13. Call/CC：プログラム全体の継続",
+    "mode": "multi",
+    "source": "// callCC は捕捉した継続へ値を渡します。\n// 渡された継続を呼ぶと、呼び出し側の残りの計算を捨ててジャンプします。\nfunction callCC(f) {\n  return shift(k =>\n    k(f(value => shift(ignored => k(value))))\n  );\n}\n\n// この reset がプログラム全体の実行境界です。\n// 内側に別の reset は置きません。callCC はここまでの残り全体を捕捉します。\nreset(() => {\n  // 継続を呼ばなければ、コールバックの戻り値で計算が続きます。\n  const normal = callCC(k => 7);\n  console.log(\"通常の戻り値:\", normal);\n\n  // 深い呼び出しからでも、callCC の位置へ値を渡して脱出できます。\n  const found = callCC(exit => {\n    function search() {\n      for (let i = 1; i <= 10; i++) {\n        if (i * i > 20) exit(i);\n      }\n    }\n    search();\n    console.log(\"脱出後なので実行されない\");\n    return -1;\n  });\n  console.log(\"探索結果:\", found);\n\n  let saved;\n  let jumps = 0;\n  const value = callCC(k => {\n    saved = k;\n    return 10;\n  });\n\n  // saved はこの出力を含め、プログラム末尾までの継続を保持します。\n  // jumps の変更は巻き戻りません。同じ継続へ2回ジャンプします。\n  console.log(\"再開した値:\", value);\n  if (jumps < 2) {\n    jumps++;\n    saved(value + 10);\n    console.log(\"ジャンプ元には戻らない\");\n  }\n  console.log(\"プログラム終了\");\n});",
+    "expected": "通常の戻り値: 7\n探索結果: 5\n再開した値: 10\n再開した値: 20\n再開した値: 30\nプログラム終了"
+  },
+  {
+    "label": "14. Algebraic Effects：状態とログ",
+    "mode": "multi",
+    "source": "// perform は操作名・引数・継続を要求として返します。\n// handle が要求を解釈して再開するので、program は状態の保存方法を知りません。\n// 再開後の要求も同じハンドラーで扱います。この例は同期・単一ハンドラーです。\n// 未知の操作はエラーにし、外側への転送やハンドラーの合成は扱いません。\nfunction perform(operation, argument) {\n  return shift(resume => ({ kind: \"effect\", operation, argument, resume }));\n}\n\nfunction handle(program, initialState) {\n  let state = initialState;\n  const logs = [];\n  let step = reset(() => ({ kind: \"done\", value: program() }));\n  while (step.kind === \"effect\") {\n    let response;\n    switch (step.operation) {\n      case \"get\":\n        response = state;\n        break;\n      case \"put\":\n        state = step.argument;\n        break;\n      case \"log\":\n        logs.push(step.argument);\n        break;\n      default:\n        throw new Error(\"未処理の操作: \" + step.operation);\n    }\n    step = step.resume(response);\n  }\n  return { value: step.value, state, logs };\n}\n\nfunction program() {\n  const before = perform(\"get\");\n  perform(\"put\", before + 1);\n  const after = perform(\"get\");\n  perform(\"log\", `${before} → ${after}`);\n  return after * 2;\n}\n\n// 同じ計算を異なる初期状態で解釈します。\nconsole.log(JSON.stringify(handle(program, 0)));\nconsole.log(JSON.stringify(handle(program, 10)));",
+    "expected": "{\"value\":2,\"state\":1,\"logs\":[\"0 → 1\"]}\n{\"value\":22,\"state\":11,\"logs\":[\"10 → 11\"]}"
+  }
+]

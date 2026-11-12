@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Japanese entry point; main.js loads the examples and runs the selected program. -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shift / reset Playground — JavaScript の限定継続</title>
+  <meta name="description" content="JavaScript の限定継続 shift / reset を、基本操作からバックトラッキングや代数的エフェクトまで、14のサンプルで試せます。">
+  <link rel="canonical" href="https://45deg.github.io/shift-reset-js/">
+  <link rel="alternate" hreflang="ja" href="https://45deg.github.io/shift-reset-js/">
+  <link rel="alternate" hreflang="en" href="https://45deg.github.io/shift-reset-js/index_en.html">
+  <link rel="alternate" hreflang="x-default" href="https://45deg.github.io/shift-reset-js/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="shift / reset Playground — JavaScript の限定継続">
+  <meta property="og:description" content="JavaScript の限定継続 shift / reset を14のサンプルで試せます。">
+  <meta property="og:url" content="https://45deg.github.io/shift-reset-js/">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:locale:alternate" content="en_US">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="titlebar">
+      <h1>shift / reset Playground</h1>
+      <nav aria-label="関連リンク">
+        <a href="./guide.html">解説</a>
+        <a href="./index_en.html" lang="en" hreflang="en">English</a>
+        <a href="https://github.com/45deg/boa/tree/delimited-continuations">GitHub: <code>delimited-continuations</code></a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <label for="example">サンプル</label>
+      <select id="example"></select>
+      <button id="restore" type="button">サンプルに戻す</button>
+      <button id="run" type="button" title="⌘ / Ctrl + Enter">実行</button>
+    </div>
+    <div class="example-note"><a id="example-guide" href="./guide.html#examples">このサンプルの解説</a></div>
+    <section class="editor" aria-label="コードエディター">
+      <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+      <textarea id="source" aria-label="JavaScript ソースコード" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea>
+    </section>
+    <section class="console" aria-labelledby="console-title">
+      <div class="output-heading"><h2 id="console-title">出力</h2><button id="clear" type="button">クリア</button></div>
+      <pre id="output" tabindex="0" aria-label="実行出力" aria-live="polite"></pre>
+    </section>
+  </main>
+  <script src="./vendor/prism.js" data-manual></script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

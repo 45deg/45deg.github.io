@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- Static guide. Example links open the matching program in the playground. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delimited Continuations Guide — shift / reset Playground</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="titlebar">
+      <h1>Delimited Continuations Guide</h1>
+      <nav aria-label="Related links">
+        <a href="./index_en.html">Playground</a>
+        <a href="./guide.html" lang="ja" hreflang="ja">日本語</a>
+        <a href="https://github.com/45deg/boa/tree/delimited-continuations">GitHub: <code>delimited-continuations</code></a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="guide" class="guide" aria-labelledby="guide-title">
+      <h2 id="guide-title">What are Delimited Continuations?</h2>
+      <p class="guide-lead"><a href="#examples">Examples</a> · <a href="#resources">Further reading</a></p>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h3>1. Continuation = “the rest of the computation”</h3>
+          <p>While evaluating an expression, the remaining work waiting for its value is called the <strong>continuation</strong>. For example, while computing <code>2 * 3</code> in <code>1 + (2 * 3)</code>, the continuation is “add <code>1</code> to whatever value comes back” (<code>v =&gt; 1 + v</code>).</p>
+        </article>
+        <article class="guide-card">
+          <h3>2. How <code>reset</code> and <code>shift</code> work</h3>
+          <p><code>reset(() =&gt; ...)</code> establishes a <strong>delimiter</strong> (boundary). Calling <code>shift(k =&gt; ...)</code> inside it captures the computation from the <code>shift</code> site up to the nearest enclosing <code>reset</code> as a function <code>k</code>, and passes <code>k</code> to the handler.</p>
+          <p>If the handler returns without calling <code>k</code>, the rest of the computation inside <code>reset</code> is discarded.</p>
+          <p><a href="#sample-1">Read about the basic example</a></p>
+        </article>
+        <article class="guide-card">
+          <h3>3. Why “Delimited”?</h3>
+          <p>Traditional undelimited <code>call/cc</code> (as in Scheme) captures the entire rest of the program, and invoking it jumps without returning to the caller. In contrast, <code>shift</code> / <code>reset</code> captures only up to <code>reset</code>, so <code>k</code> behaves like a <strong>normal composable function</strong> that returns a value (and can even be used to build <code>call/cc</code> itself).</p>
+        </article>
+        <article class="guide-card">
+          <h3>4. Notes for this playground</h3>
+          <ul>
+            <li><strong>Multi-shot and shared state:</strong> This playground runs in multi-shot mode, allowing the same continuation to be resumed multiple times. Only control state (execution frames up to <code>reset</code>) is duplicated; variables and objects created before <code>shift</code> are shared and never rolled back.</li>
+            <li><strong>Experimental synchronous JS extension:</strong> Capturing is supported across normal synchronous JS calls, excluding <code>async</code>, generators, active iterators, and <code>finally</code> cleanup on discarded continuations.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 id="resources">Further reading on delimited continuations</h2>
+      <ul>
+        <li><a href="https://www.is.ocha.ac.jp/~asai/cw2011tutorial/main-e.pdf">Introduction to Programming with Shift and Reset</a> (PDF). Kenichi Asai and Oleg Kiselyov introduce <code>shift</code> and <code>reset</code> with exercises on coroutines and nondeterministic search.</li>
+        <li><a href="https://www.is.ocha.ac.jp/~asai/cw2011tutorial/main-j.pdf" hreflang="ja"><span lang="ja">shift/reset プログラミング入門</span></a> (Japanese PDF). Kenichi Asai introduces programming with <code>shift</code> and <code>reset</code>.</li>
+        <li><a href="https://www.is.ocha.ac.jp/~gradthesis/pdf/grad/2022/2022grad1920515.pdf" hreflang="ja"><span lang="ja">仕様記述を可能にした継続モナドにおける関数の内部証明</span></a> (Japanese PDF). Section 2 of this undergraduate thesis walks through the evaluation of an expression using <code>shift</code> and <code>reset</code>.</li>
+        <li><a href="https://arxiv.org/abs/cs/0508048">An Operational Foundation for Delimited Continuations in the CPS Hierarchy</a>. Biernacka, Biernacki, and Danvy present reduction rules and an abstract machine for delimited continuations.</li>
+      </ul>
+
+      <h2 id="examples">Examples</h2>
+      <p class="guide-lead">Select a title to open that example in the editor.</p>
+      <div class="guide-stages">
+        <section class="guide-stage">
+          <h3>Basics: Capture Boundaries, Abort, and Control Flow</h3>
+          <ul>
+            <li id="sample-1">
+              <a href="./index_en.html?example=1">1. Basics: 1 + shift</a>
+              <p>shift captures the rest of the computation up to the nearest reset (here 1 + [ ]) as a function k. Calling k(2) evaluates 1 + 2 = 3 and returns it to the handler, which multiplies by 10 to produce 30.</p>
+            </li>
+            <li id="sample-2">
+              <a href="./index_en.html?example=2">2. Nested resets</a>
+              <p>shift captures up to the innermost reset. With the inner reset in place, only the addition of 10 is abandoned. The outer computation adds 100 to the returned value of 7. Removing the inner reset gives 7.</p>
+            </li>
+            <li id="sample-3">
+              <a href="./index_en.html?example=3">3. Skip the rest of a computation</a>
+              <p>If the shift handler returns a value without calling k, the remaining computation inside reset is discarded and 42 becomes the result of reset.</p>
+            </li>
+            <li id="sample-4">
+              <a href="./index_en.html?example=4">4. Trace the order of execution</a>
+              <p>Logs 1–6 trace how control moves: shift transfers control to its handler, k(2) resumes from the shift site until the end of reset, and the result (3) returns to k(2) inside the handler.</p>
+            </li>
+          </ul>
+        </section>
+        <section class="guide-stage">
+          <h3>Manipulating Continuations: Escape, Branch, Re-capture</h3>
+          <ul>
+            <li id="sample-5">
+              <a href="./index_en.html?example=5">5. Resume a continuation outside reset</a>
+              <p>Returning k directly from shift(k =&gt; k) carries the continuation outside reset so it can be invoked multiple times later (this playground runs in multi-shot mode).</p>
+            </li>
+            <li id="sample-6">
+              <a href="./index_en.html?example=6">6. Branch a computation</a>
+              <p>Calling k(2) and k(3) inside the same handler evaluates the remaining 1 + [ ] computation along two branches and adds their results (3 + 4 = 7).</p>
+            </li>
+            <li id="sample-7">
+              <a href="./index_en.html?example=7">7. A counter with shared state</a>
+              <p>Multi-shot duplicates control state (where execution paused), not variable bindings or heap objects. Because count was created before shift, every resumption shares and increments the same variable.</p>
+            </li>
+            <li id="sample-8">
+              <a href="./index_en.html?example=8">8. Capture again after resuming</a>
+              <p>A resumed continuation can call shift again. Calling first(2) binds the first operand to 2 and yields a second-stage continuation a, while first(5) yields an independent continuation b.</p>
+            </li>
+          </ul>
+        </section>
+        <section class="guide-stage">
+          <h3>Applications</h3>
+          <ul>
+            <li id="sample-9">
+              <a href="./index_en.html?example=9">9. Search for pairs with a given sum</a>
+              <p>choose resumes the rest of the computation for each element in an array. Using choose for x and y explores all pairs without writing nested loops.</p>
+            </li>
+            <li id="sample-10">
+              <a href="./index_en.html?example=10">10. Backtracking: four queens</a>
+              <p>This example builds backtracking from choose and guard (a shift that drops a branch by not calling k). Because shared arrays are not rolled back on resumption, place passes a new array columns.concat([column]) to each branch.</p>
+            </li>
+            <li id="sample-11">
+              <a href="./index_en.html?example=11">11. Same Fringe: lazy tree traversal</a>
+              <p>A recursive walk returns each leaf together with its continuation. Comparing the two trees one leaf at a time stops at the first mismatch. In the second comparison, 2 and 9 differ, so the final leaf 3 is never visited.</p>
+            </li>
+            <li id="sample-12">
+              <a href="./index_en.html?example=12">12. Probabilistic programming</a>
+              <p>flip(p) resumes the same continuation for heads and tails and sums the results weighted by their probabilities. With two independent coins whose chances of heads are 0.25 and 0.75, this example computes the chance of exactly one head and the chance that the first coin landed heads given that exactly one did.</p>
+            </li>
+            <li id="sample-13">
+              <a href="./index_en.html?example=13">13. Call/CC within an outer reset</a>
+              <p>callCC emulates Scheme-style call/cc using shift inside an outer reset. Calling the passed continuation discards the caller’s remaining computation via shift(ignored =&gt; k(value)) and jumps straight back to the callCC site.</p>
+            </li>
+            <li id="sample-14">
+              <a href="./index_en.html?example=14">14. Algebraic effects: state and logging</a>
+              <p>perform suspends program and returns an effect request containing the operation, argument, and resume continuation; handle interprets each request in a loop and resumes via step.resume(response), decoupling logic from side effects. The handler updates state and records logs.</p>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

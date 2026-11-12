@@ -1,5 +1,5 @@
-// Build the homepages and copy projects; after output, injectHomeButtons adds
-// navigation and injectAnalytics adds GA4 to both homepages and local work entries.
+// Build the homepages and copy projects. injectHomeButtons adds navigation to
+// local work pages in each language. injectAnalytics adds GA4 after output.
 import fs from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
@@ -35,10 +35,10 @@ function normalizeLocalWorkHref(href) {
   return href.replace(/^\.\//, "").replace(/^\//, "");
 }
 
-function getWorkOutputHtmlPath(work) {
-  if (!isLocalWorkHref(work.href)) return null;
+function getWorkOutputHtmlPath(href) {
+  if (!isLocalWorkHref(href)) return null;
 
-  const normalizedHref = normalizeLocalWorkHref(work.href);
+  const normalizedHref = normalizeLocalWorkHref(href);
   if (!normalizedHref) return null;
 
   const relativeHtmlPath = normalizedHref.endsWith(".html")
@@ -77,12 +77,16 @@ function injectHomeButtons(homepage) {
   for (const work of homepage.works) {
     if (!shouldInjectHomeButton(work)) continue;
 
-    const htmlPath = getWorkOutputHtmlPath(work);
-    if (!htmlPath) continue;
-    if (!fs.existsSync(htmlPath)) continue;
+    const hrefs = typeof work.href === "string" ? [work.href] : Object.values(work.href ?? {});
+    const position = getHomeButtonPosition(work);
 
-    const html = fs.readFileSync(htmlPath, "utf8");
-    fs.writeFileSync(htmlPath, injectHomeButton(html, getHomeButtonPosition(work)));
+    for (const href of new Set(hrefs)) {
+      const htmlPath = getWorkOutputHtmlPath(href);
+      if (!htmlPath || !fs.existsSync(htmlPath)) continue;
+
+      const html = fs.readFileSync(htmlPath, "utf8");
+      fs.writeFileSync(htmlPath, injectHomeButton(html, position));
+    }
   }
 }
 
@@ -104,7 +108,7 @@ function injectAnalytics(homepage) {
   const htmlPaths = new Set([
     "_site/index.html",
     "_site/index_en.html",
-    ...homepage.works.map(getWorkOutputHtmlPath).filter(Boolean)
+    ...homepage.works.map(work => getWorkOutputHtmlPath(work.href)).filter(Boolean)
   ]);
 
   for (const htmlPath of htmlPaths) {

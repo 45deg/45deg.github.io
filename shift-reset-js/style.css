@@ -1,0 +1,53 @@
+/* Minimal workspace; identical editor layers keep Prism tokens aligned with native text input. */
+:root { color-scheme: dark; font: 14px/1.6 system-ui, sans-serif; color: #e6edf3; background: #0d1117; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { padding: 14px 22px; border-bottom: 1px solid #2e3a4b; }
+.titlebar, .titlebar nav { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 20px; }
+.titlebar { justify-content: space-between; }
+.titlebar a { color: #91c4ff; overflow-wrap: anywhere; }
+h1 { margin: 0; font-size: 16px; font-weight: 600; }
+main { max-width: 1400px; margin: auto; }
+.toolbar, .output-heading { display: flex; align-items: center; gap: 12px; padding: 12px 20px; }
+select, button { font: inherit; color: inherit; background: #212a38; border: 1px solid #45566e; border-radius: 4px; padding: 6px 12px; cursor: pointer; }
+select { min-width: 0; max-width: 100%; margin-right: auto; }
+#run { background: #285e9c; border-color: #6e9ed5; }
+button:hover { background: #31415a; }
+button:disabled, select:disabled { opacity: .55; cursor: wait; }
+.editor { position: relative; height: max(380px, 56vh); background: #10161e; border-block: 1px solid #2e3a4b; }
+#source, #highlight { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 20px; border: 0; font: 14px/1.8 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: normal; tab-size: 2; white-space: pre; overflow: auto; }
+#highlight { pointer-events: none; }
+#highlight code { font: inherit; }
+#source { resize: none; background: transparent; color: transparent; caret-color: #e6edf3; -webkit-text-fill-color: transparent; }
+#source::selection { background: #42679988; }
+.token.comment { color: #a8b6c8; }
+.token.keyword { color: #ff9ba8; }
+.token.string, .token.template-string { color: #b4dba0; }
+.token.function { color: #d8b4fe; }
+.token.number, .token.boolean { color: #91c4ff; }
+.token.operator, .token.punctuation { color: #cbd5e1; }
+.token.interpolation { color: #e6edf3; }
+.output-heading { justify-content: space-between; }
+h2 { font-size: 13px; font-weight: 500; margin: 0; }
+#output { margin: 0; padding: 0 20px 24px; min-height: 150px; max-height: 40vh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.8 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:focus-visible { outline: 2px solid #91c4ff; outline-offset: -2px; }
+.example-note { padding: 0 20px 8px; }
+.example-note a { display: inline-block; padding-block: 2px; }
+.example-note a, .guide a { color: #91c4ff; }
+.guide { padding: 24px 20px 48px; }
+.guide h2 { font-size: 16px; font-weight: 600; margin: 28px 0 12px; color: #e6edf3; }
+.guide h2:first-child { margin-top: 0; }
+.guide h3 { font-size: 14px; font-weight: 600; margin: 0 0 8px; color: #e6edf3; }
+.guide p, .guide li { color: #cbd5e1; }
+.guide code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; color: #e6edf3; }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.guide-card, .guide-stage { background: #10161e; border: 1px solid #2e3a4b; border-radius: 6px; padding: 14px 16px; }
+.guide-card p:last-child, .guide-card ul:last-child { margin-bottom: 0; }
+.guide-card ul, .guide-stage ul { margin: 8px 0 0; padding-left: 18px; }
+.guide-card li, .guide-stage li { margin-bottom: 6px; }
+.guide-lead { margin: 0 0 12px; }
+.guide-stages { display: grid; gap: 12px; }
+.guide-stage p { margin: 4px 0 12px; }
+.guide-stage li:target { outline: 2px solid #91c4ff; outline-offset: 4px; border-radius: 2px; }
+@media (max-width: 600px) { .toolbar { flex-wrap: wrap; gap: 8px; padding: 12px; } .toolbar label { width: 100%; } select { flex: 1 1 100%; } #restore { margin-left: auto; } #source, #highlight { padding: 14px; } .example-note { padding-inline: 12px; } .guide { padding: 20px 12px 36px; } }
+@media (forced-colors: active) { #source { color: CanvasText; -webkit-text-fill-color: CanvasText; } #highlight { visibility: hidden; } }
