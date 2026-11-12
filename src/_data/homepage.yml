@@ -96,6 +96,44 @@ filters:
       ja: Code
       en: Code
 works:
+  - href: ./movie-censor/
+    featured: false
+    homeButton: false
+    title:
+      ja: MovieFaceVeil
+      en: MovieFaceVeil
+    year: 2026
+    description_html:
+      ja: 動画の顔を端末内で検出し、モザイク・ぼかしを適用して MP4 に保存。デモ動画で試せる。公開前に仕上がりの確認が必要。
+      en: Detect faces on your device, apply mosaic or blur, and export an MP4. Try the demo video and review the result before sharing.
+    tags:
+      - Video
+      - AI
+      - Utility
+    image:
+      src: ./images/i66.png
+      alt:
+        ja: デモ動画の4人の顔をモザイクで隠し、タイムラインで加工範囲を確認する画面
+        en: Four faces pixelated in the demo video, with mask intervals shown on the timeline
+  - href: ./ezcensor/
+    featured: false
+    homeButton: false
+    title:
+      ja: ezcensor
+      en: ezcensor
+    year: 2026
+    description_html:
+      ja: 写真の顔を自動検出して隠すツール。モザイク・ぼかし・黒塗り・絵文字を選べる。写真のアップロードは不要。ブラウザー内で加工・保存できる。
+      en: ezcensor detects faces and hides them with pixelation, blur, black boxes or emoji. Edit and save in your browser without uploading your photos.
+    tags:
+      - Image
+      - AI
+      - Editor
+    image:
+      src: ./images/i62.png
+      alt:
+        ja: ezcensorで写真の顔を隠す編集画面
+        en: ezcensor photo editor with faces obscured
   - href: ./gz2zip/
     featured: false
     title:
@@ -103,7 +141,7 @@ works:
       en: Convert GZ and TAR.GZ to ZIP
     year: 2026
     description_html:
-      ja: .gz、.tar.gz、.tgz をブラウザーで ZIP に変換します。ファイルは端末内で処理し、外部には送信しません。
+      ja: .gz、.tar.gz、.tgz をブラウザーで ZIP に変換。ファイルは端末内で処理し、外部には送信しない。
       en: Convert .gz, .tar.gz, and .tgz files to ZIP in your browser. Files stay on your device.
     tags:
       - Converter
@@ -120,7 +158,7 @@ works:
       en: Convert HEIC and HEIF to JPEG or PNG
     year: 2026
     description_html:
-      ja: iPhone の写真をブラウザーで変換します。画質や画像サイズを調整でき、複数枚は ZIP で保存できます。写真は端末内で処理します。
+      ja: iPhone の写真をブラウザーで変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できる。写真は端末内で処理する。
       en: Convert iPhone photos in your browser, adjust quality and size, and save batches as ZIP files. Photos stay on your device.
     tags:
       - Image
@@ -130,25 +168,6 @@ works:
       alt:
         ja: heic2jpg のロゴと HEIC から JPEG・PNG への変換
         en: heic2jpg logo with HEIC to JPEG or PNG
-  - href: ./ezcensor/
-    featured: false
-    homeButton: false
-    title:
-      ja: 自動顔検出でモザイク・ぼかし
-      en: Auto-detect faces to blur or pixelate
-    year: 2026
-    description_html:
-      ja: ezcensorは写真の顔を自動検出して隠すツールです。モザイク・ぼかし・黒塗り・絵文字を選べます。写真のアップロードは不要。ブラウザー内で加工・保存できます。
-      en: ezcensor detects faces and hides them with pixelation, blur, black boxes or emoji. Edit and save in your browser without uploading your photos.
-    tags:
-      - Image
-      - AI
-      - Editor
-    image:
-      src: ./images/i62.png
-      alt:
-        ja: ezcensorで写真の顔を隠す編集画面
-        en: ezcensor photo editor with faces obscured
   - href: ./git-observatory/
     featured: false
     title:
@@ -156,7 +175,7 @@ works:
       en: Git Observatory
     year: 2026
     description_html:
-      ja: Gitリポジトリをブラウザ内で読み取り、オブジェクト・pack圧縮・参照関係を可視化。ファイルは外部送信しません。
+      ja: Gitリポジトリをブラウザ内で読み取り、オブジェクト・pack圧縮・参照関係を可視化。ファイルは外部送信しない。
       en: Inspect Git objects, pack compression and references locally in your browser. Repository files stay on your device.
     tags:
       - Viewer
