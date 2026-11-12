@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">shift and reset</title>
+  <desc id="desc">In reset, shift captures the addition of 1. The handler resumes with 2 and multiplies the returned 3 by 10, giving 30.</desc>
+  <rect width="512" height="320" fill="#ffffff"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#111827">
+    <rect x="107" y="36" width="298" height="147" rx="12" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
+    <g font-size="26" font-weight="700">
+      <text x="127" y="76"><tspan fill="#6d28d9">reset</tspan>(() =&gt;</text>
+      <text x="143" y="116">1 + <tspan fill="#6d28d9">shift</tspan>(k =&gt;</text>
+      <text x="159" y="156">k(2) * 10))</text>
+    </g>
+    <path d="M256 196v23m-9-9 9 9 9-9" fill="none" stroke="#334155" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="193" y="233" width="126" height="51" rx="12" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
+    <text x="256" y="269" font-size="32" font-weight="800" text-anchor="middle">30</text>
+  </g>
+</svg>
