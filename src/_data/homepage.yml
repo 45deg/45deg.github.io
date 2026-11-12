@@ -121,7 +121,7 @@ works:
       en: ezcensor
     year: 2026
     description_html:
-      ja: 写真の顔を自動検出して隠すツール。モザイク・ぼかし・黒塗り・絵文字を選べる。写真のアップロードは不要。ブラウザー内で加工・保存できる。
+      ja: 写真の顔を自動検出して隠すツール。モザイク・ぼかし・黒塗り・絵文字を選べる。写真のアップロードは不要。ブラウザ内で加工・保存できる。
       en: ezcensor detects faces and hides them with pixelation, blur, black boxes or emoji. Edit and save in your browser without uploading your photos.
     tags:
       - Image
@@ -139,7 +139,7 @@ works:
       en: Convert GZ and TAR.GZ to ZIP
     year: 2026
     description_html:
-      ja: .gz、.tar.gz、.tgz をブラウザーで ZIP に変換。ファイルは端末内で処理し、外部には送信しない。
+      ja: .gz、.tar.gz、.tgz をブラウザで ZIP に変換。ファイルは端末内で処理し、外部には送信しない。
       en: Convert .gz, .tar.gz, and .tgz files to ZIP in your browser. Files stay on your device.
     tags:
       - Converter
@@ -156,7 +156,7 @@ works:
       en: Convert HEIC and HEIF to JPEG or PNG
     year: 2026
     description_html:
-      ja: iPhone の写真をブラウザーで変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できる。写真は端末内で処理する。
+      ja: iPhone の写真をブラウザで変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できる。写真は端末内で処理する。
       en: Convert iPhone photos in your browser, adjust quality and size, and save batches as ZIP files. Photos stay on your device.
     tags:
       - Image
@@ -475,9 +475,11 @@ works:
       - Programming
       - Compiler
       - Education
-    placeholder:
-      class: placeholder-code
-      emoji: ↪️
+    image:
+      src: ./images/i67.svg
+      alt:
+        ja: shift で取り出した継続を 2 で再開し、reset の結果が 30 になるコード例
+        en: A shift and reset example that resumes a continuation with 2 and returns 30
   - href: ./crypto-demo/
     featured: false
     title:
@@ -799,7 +801,7 @@ works:
       en: Intl API Comparison Viewer
     year: 2026
     description_html:
-      ja: JavaScript の Intl API を一覧比較し、ローケル別に主要コンストラクターの出力差を確認する実験ページ
+      ja: JavaScript の Intl API を一覧比較し、ロケール別に主要コンストラクターの出力差を確認する実験ページ。
       en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
     tags:
       - Article
@@ -830,7 +832,7 @@ works:
       en: Practical Zustand Notes
     year: 2026
     description_html:
-      ja: React で Zustand を使うときの基本、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモ
+      ja: React で Zustand を使うときの基本、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモ。
       en: Practical notes on Zustand basics, selectors, typing, middleware, SSR, and design trade-offs in React.
     tags:
       - Article
@@ -875,8 +877,8 @@ works:
       en: Lucide Shape Search
     year: 2026
     description_html:
-      ja: Lucideアイコンを手書きで検索できるツール
-      en: A tool for searching Lucide icons by handwriting
+      ja: Lucideアイコンを手書きで検索できるツール。
+      en: A tool for searching Lucide icons by handwriting.
     tags:
       - Icons
       - Search
@@ -1016,8 +1018,7 @@ works:
     description_html:
       ja: >-
         <a
-        href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">指を用いた遊び</a>でCPUと対戦
-        をブラウザゲーム化したもの。CPUと対戦できます。
+        href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">指を用いた遊び</a>をブラウザゲーム化したもの。CPUと対戦できる。
       en: A browser game version of a small finger-counting game, with a CPU opponent and a compact state space.
     tags:
       - Game
@@ -1066,7 +1067,7 @@ works:
       en: Browser-only Video Converter
     year: 2026
     description_html:
-      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ
+      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ。
       en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
     tags:
       - Video
@@ -1081,7 +1082,7 @@ works:
       en: AsciiArt Table Parser
     year: 2026
     description_html:
-      ja: アスキーアート等のテーブルを解析してプレーンにするツール
+      ja: アスキーアート等のテーブルを解析してプレーンにするツール。
       en: A tool that parses ASCII-art style tables and turns them into plain structured text.
     tags:
       - Text
@@ -1096,7 +1097,7 @@ works:
       en: ZIP Generation in Plain JavaScript with Compression API
     year: 2026
     description_html:
-      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事
+      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事。
       en: An article explaining how to generate ZIP files in JavaScript with the Compression API.
     tags:
       - Article
@@ -1111,7 +1112,7 @@ works:
       en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
     year: 2026
     description_html:
-      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事
+      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事。
       en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
     tags:
       - Article
@@ -1127,8 +1128,7 @@ works:
     year: 2026
     description_html:
       ja: >-
-        1命令でチューリング完全となる<a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a>に翻訳されるコンパイラ
-        <a href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a>。高級寄りの構文を単一命令へ落とし込むコンパイラ実験。
+        1命令でチューリング完全となる <a href="https://ja.wikipedia.org/wiki/OISC#Subleq"><code>SUBLEQ</code></a> へ高級寄りの構文を翻訳するコンパイラ実験（<a href="https://github.com/45deg/subleq-ide/blob/main/SPEC.md">言語仕様</a>）。
       en: A compiler experiment that lowers a higher-level syntax into the one-instruction SUBLEQ architecture.
     tags:
       - Compiler
@@ -1241,7 +1241,7 @@ works:
       en: CRT-style Image Effector
     year: 2025
     description_html:
-      ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト
+      ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト。
       en: A WebGL image effect tool that processes images into a CRT television look.
     tags:
       - Image
@@ -1256,7 +1256,7 @@ works:
       en: JPEG Artifact Generator
     year: 2025
     description_html:
-      ja: JPEG圧縮を繰り返してガビガビ質感を作るツール
+      ja: JPEG圧縮を繰り返してガビガビ質感を作るツール。
       en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
     tags:
       - Image
@@ -1271,7 +1271,7 @@ works:
       en: Images to PDF
     year: 2025
     description_html:
-      ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール
+      ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール。
       en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
     tags:
       - PDF
@@ -1288,8 +1288,7 @@ works:
     year: 2024
     description_html:
       ja: >-
-        手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>を使って2次元にマッピングしたものの可視化
-        し、数字ごとのクラスタや混ざり方を探索する可視化。
+        手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>で2次元にマッピングし、数字ごとのクラスタや混ざり方を探索する可視化ツール。
       en: >-
         A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and
         overlap easy to explore.
@@ -1306,7 +1305,7 @@ works:
       en: Nahuatl Text Helper
     year: 2024
     description_html:
-      ja: ナワトル語の長音記号入力を補助するテキストエディタ
+      ja: ナワトル語の長音記号入力を補助するテキストエディタ。
       en: A text editor that helps input long-vowel marks for Nahuatl.
     tags:
       - Editor
@@ -1321,7 +1320,7 @@ works:
       en: Safetensors Metadata Viewer
     year: 2023
     description_html:
-      ja: safetensors ファイルのメタデータを表示するビューア
+      ja: safetensors ファイルのメタデータを表示するビューア。
       en: A viewer for inspecting metadata inside safetensors files.
     tags:
       - Viewer
@@ -1336,7 +1335,7 @@ works:
       en: Jinja2 Template Renderer
     year: 2022
     description_html:
-      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー
+      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー。
       en: A browser renderer that runs Jinja2 templates on Pyodide.
     tags:
       - Web Development
@@ -1402,8 +1401,7 @@ works:
     year: 2016
     description_html:
       ja: >-
-        <a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>
-        研究室所属時の課題で作った、音を記述して再生するScheme風の言語です。<strong>音が出ます。</strong>
+        研究室所属時の課題で作った、音を記述して再生するScheme風の言語（<a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>）。<strong>音が出ます。</strong>
       en: A Scheme-like sound programming language made as a lab assignment. It plays sound.
     tags:
       - Audio
@@ -1419,9 +1417,7 @@ works:
     year: 2016
     description_html:
       ja: >-
-        <a
-        href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書きなおしたものです。素子の種類や学習器などが調整できるようになりました。
-        層や学習器の設定を変えながら学習の進み方を観察できるConvnetJS版。
+        <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書き直したニューラルネットワーク可視化。層や素子の種類、学習器の設定を変えながら学習の進み方を観察できる。
       en: >-
         A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for
         observing training behavior.
@@ -1458,8 +1454,7 @@ works:
     year: 2014
     description_html:
       ja: >-
-        BPNNの可視化です。Slide: <a href="http://www.slideshare.net/z_kro/html5-36655060">HTML5によるニューラルネットワークの可視化</a>
-        。BPNNの重みやノード状態を描画し、学習プロセスを追う初期の可視化実験。
+        BPNNの重みやノード状態を描画し、学習プロセスを追う初期の可視化実験（<a href="http://www.slideshare.net/z_kro/html5-36655060">スライド</a>）。
       en: An early browser visualization of BPNN weights, node states, and the learning process.
     tags:
       - AI
