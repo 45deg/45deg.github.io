@@ -734,13 +734,13 @@ works:
       en: Lecture Scheduler
     year: 2026
     description_html:
-      ja: 月間カレンダー上で講義スケジュールを作成・編集するツール。
-      en: A tool for creating and editing lecture schedules on a monthly calendar.
+      ja: 講義を期間内に自動配置し、手動調整・ファイル保存・カレンダー印刷ができるツール。
+      en: Automatically schedule lectures within a date range, adjust individual sessions, export files, and print a monthly calendar.
     tags:
       - Productivity
       - Editor
     image:
-      src: ./images/i31.png
+      src: ./images/i65.png
       alt: Lecture Scheduler
   - href: ./articles/katex2svg.html
     featured: false
