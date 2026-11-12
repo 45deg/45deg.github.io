@@ -98,7 +98,6 @@ filters:
 works:
   - href: ./movie-censor/
     featured: false
-    homeButton: false
     title:
       ja: MovieFaceVeil
       en: MovieFaceVeil
@@ -117,7 +116,6 @@ works:
         en: Four faces pixelated in the demo video, with mask intervals shown on the timeline
   - href: ./ezcensor/
     featured: false
-    homeButton: false
     title:
       ja: ezcensor
       en: ezcensor
