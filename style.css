@@ -16,13 +16,13 @@ body {
 
 /* Headings */
 header {
-    margin-bottom: 2rem;
-}
-
-header::after {
-    clear: both;
-    content: "";
-    display: block;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.15rem;
+    border-bottom: 1px solid #222;
 }
 
 h1 {
@@ -80,9 +80,14 @@ a:hover {
 }
 
 /* About Section */
-.about-section {
-    margin-bottom: 2.5rem;
-    max-width: 760px;
+.about-summary {
+    color: #444;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.about-summary a {
+    margin-left: 0.4rem;
 }
 
 .page-flow {
@@ -91,7 +96,7 @@ a:hover {
 
 .language-switch {
     display: flex;
-    float: right;
+    margin-left: auto;
     gap: 0.45rem;
     background: #fff;
 }
@@ -130,7 +135,7 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .work-filters button {
@@ -352,6 +357,15 @@ a:hover {
 }
 
 @media (max-width: 960px) {
+    header {
+        gap: 0.65rem 1rem;
+    }
+
+    .about-summary {
+        order: 3;
+        flex-basis: 100%;
+    }
+
     .works-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -360,6 +374,16 @@ a:hover {
 @media (max-width: 600px) {
     body {
         padding: 1.5rem 1rem;
+    }
+
+    header {
+        gap: 0.5rem 0.75rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.9rem;
+    }
+
+    .about-summary {
+        font-size: 0.82rem;
     }
 
     .language-switch {

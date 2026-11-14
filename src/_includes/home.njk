@@ -75,6 +75,7 @@
 <body>
     <header>
         <h1>{{ homepage.title }}</h1>
+        <p class="about-summary">{{ homepage.about | locale(lang) }} <a href="{{ homepage.github_url }}">GitHub</a> <a href="{{ homepage.profile_url }}">X</a></p>
         <nav class="language-switch" aria-label="Language">
             {% if lang == "ja" %}
             <a class="is-active" href="./" aria-current="page">日本語</a>
@@ -85,11 +86,6 @@
             {% endif %}
         </nav>
     </header>
-
-    <section class="about-section">
-        <h2>About</h2>
-        <p>{{ homepage.about | locale(lang) }} <a href="{{ homepage.github_url }}">GitHub</a> <a href="{{ homepage.profile_url }}">X</a></p>
-    </section>
 
     <div class="page-flow">
         <main class="main">
