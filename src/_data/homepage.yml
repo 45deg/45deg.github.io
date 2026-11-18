@@ -167,6 +167,24 @@ works:
       alt:
         ja: heic2jpg のロゴと HEIC から JPEG・PNG への変換
         en: heic2jpg logo with HEIC to JPEG or PNG
+  - href: ./chunk-viz/
+    featured: false
+    title:
+      ja: Chunk visualizer
+      en: Chunk visualizer
+    year: 2026
+    description_html:
+      ja: PNG・JPEG・MP4・PDF・ZIP・WASM などのバイナリ構造をブラウザ上で可視化・検査。ファイルは端末内のみで処理する。
+      en: Inspect and visualize binary chunk structures of PNG, JPEG, MP4, PDF, ZIP, WASM, and more directly in your browser.
+    tags:
+      - Visualization
+      - Viewer
+      - Utility
+    image:
+      src: ./images/i68.png
+      alt:
+        ja: color-study.png のチャンク構造（IHDR、sRGB、IDAT など）と画像プレビューを表示する Chunk visualizer の画面
+        en: Chunk visualizer showing PNG chunk structure (IHDR, sRGB, IDAT) and image preview for color-study.png
   - href: ./git-observatory/
     featured: false
     title:
