@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Neo-brutalist JavaScript ZIP archive zipper</title>
+  <desc id="desc">Vibrant yellow poster with black interlocking zipper teeth, JS label, and sharp-cornered .zip stamp.</desc>
+  <rect width="512" height="320" fill="#facc15"/>
+
+  <!-- JS & deflate labels -->
+  <text x="194" y="76" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="42" font-weight="800" fill="#0f172a" text-anchor="middle">JS</text>
+  <text x="318" y="68" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="800" fill="#713f12" text-anchor="middle">deflate</text>
+
+  <!-- Interlocking jet-black zipper teeth -->
+  <path d="M256 18v128" stroke="#0f172a" stroke-width="4"/>
+  <g fill="#0f172a">
+    <rect x="236" y="22" width="20" height="11"/>
+    <rect x="256" y="32" width="20" height="11"/>
+    <rect x="236" y="46" width="20" height="11"/>
+    <rect x="256" y="56" width="20" height="11"/>
+    <rect x="236" y="70" width="20" height="11"/>
+    <rect x="256" y="80" width="20" height="11"/>
+    <rect x="236" y="94" width="20" height="11"/>
+    <rect x="256" y="104" width="20" height="11"/>
+    <rect x="236" y="118" width="20" height="11"/>
+    <rect x="256" y="128" width="20" height="11"/>
+    <!-- Slider & pull-tab -->
+    <rect x="234" y="144" width="44" height="28"/>
+    <rect x="242" y="176" width="28" height="36"/>
+  </g>
+  <rect x="250" y="190" width="12" height="14" fill="#facc15"/>
+
+  <!-- Brutalist .zip stamp with hard shadow -->
+  <rect x="196" y="238" width="132" height="58" fill="#0f172a"/>
+  <rect x="188" y="230" width="132" height="58" fill="#ffffff" stroke="#0f172a" stroke-width="5"/>
+  <text x="254" y="269" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="30" font-weight="800" fill="#0f172a" text-anchor="middle">.zip</text>
+</svg>

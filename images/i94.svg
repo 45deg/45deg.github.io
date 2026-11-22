@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Terracotta Nahuatl macron typography</title>
+  <desc id="desc">Large cream serif letter a crowned with a bold turquoise macron bar above long vowels on warm terracotta.</desc>
+  <rect width="512" height="320" fill="#9a3412"/>
+
+  <!-- Geometric border bands -->
+  <rect width="512" height="16" fill="#7c2d12"/>
+  <rect y="304" width="512" height="16" fill="#7c2d12"/>
+
+  <!-- Giant serif 'a' + turquoise macron bar -->
+  <rect x="214" y="68" width="84" height="14" rx="4" fill="#2dd4bf"/>
+  <text x="256" y="198" font-family="Georgia, 'Times New Roman', serif" font-size="172" font-weight="700" fill="#fef3c7" text-anchor="middle">a</text>
+
+  <!-- Long vowel companions -->
+  <text x="256" y="268" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700" fill="#fed7aa" text-anchor="middle">ē  ī  ō  ū</text>
+</svg>

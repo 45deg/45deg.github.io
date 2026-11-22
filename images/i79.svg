@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Public-key cryptography and digital signature</title>
+  <desc id="desc">Public and private key pair used for encryption and signature verification.</desc>
+  <rect width="512" height="320" fill="#f8fafc"/>
+
+  <!-- Top: Public and Private key cards -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800">
+    <!-- PUB key -->
+    <rect x="168" y="24" width="80" height="102" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="4"/>
+    <circle cx="192" cy="56" r="12" fill="none" stroke="#2563eb" stroke-width="5"/>
+    <path d="M204 56h30v10m-10-10v8" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="180" y="88" width="56" height="26" rx="7" fill="#2563eb"/>
+    <text x="208" y="106" font-size="15" fill="#ffffff" text-anchor="middle">PUB</text>
+
+    <!-- PRV key -->
+    <rect x="264" y="24" width="80" height="102" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="4"/>
+    <circle cx="288" cy="56" r="12" fill="none" stroke="#d97706" stroke-width="5"/>
+    <path d="M300 56h30v10m-10-10v8" fill="none" stroke="#d97706" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="276" y="88" width="56" height="26" rx="7" fill="#d97706"/>
+    <text x="304" y="106" font-size="15" fill="#ffffff" text-anchor="middle">PRV</text>
+  </g>
+
+  <!-- Middle: Arrow -->
+  <path d="M256 134v38m-10-10 10 11 10-11" fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Bottom: Padlock + verified signature seal -->
+  <g>
+    <path d="M194 228v-16a18 18 0 0 1 36 0v16" fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+    <rect x="180" y="228" width="64" height="56" rx="10" fill="#0f172a"/>
+    <circle cx="212" cy="250" r="6" fill="#ffffff"/>
+    <path d="M212 254v14" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+
+    <circle cx="298" cy="248" r="36" fill="#ecfdf5" stroke="#047857" stroke-width="5"/>
+    <circle cx="298" cy="248" r="24" fill="#047857"/>
+    <path d="M286 248l8 8 16-17" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Known-plaintext ZIP cipher break in WebAssembly</title>
+  <desc id="desc">Acid-lime cracked ZIP padlock over a dark green hex matrix background with WASM label.</desc>
+  <rect width="512" height="320" fill="#09090b"/>
+
+  <!-- Subtle full-bleed hex dump backdrop -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#14532d" opacity="0.7">
+    <text x="16" y="34">4A 6F 8C 1B 90 E2 51 77 3D A4 09 F1 28 6C B0</text>
+    <text x="16" y="70">9E 11 4F C3 72 08 D4 55 8A 20 E7 41 6B 93 1C</text>
+    <text x="16" y="106">37 B2 04 6E A9 5C 12 88 F0 3B 7D C1 45 9A 0E</text>
+    <text x="16" y="142">C8 50 2F 91 34 7A E6 19 63 D0 84 2A B7 0F 58</text>
+    <text x="16" y="178">15 A7 69 D3 42 8F 0B C5 96 31 E0 74 22 8B 4D</text>
+    <text x="16" y="214">F3 2C 81 5E 07 B9 46 A0 1D 68 9F 33 C7 52 E4</text>
+    <text x="16" y="250">60 D8 14 7F A2 39 C0 85 4B 16 E9 27 5A B4 90</text>
+    <text x="16" y="286">8E 43 B1 0A 65 F7 29 D2 7C 03 94 5D E1 6A 38</text>
+  </g>
+
+  <!-- Broken acid-lime padlock + ZIP -->
+  <path d="M214 118V78a42 42 0 0 1 82-10" fill="none" stroke="#84cc16" stroke-width="14" stroke-linecap="round"/>
+  <path d="M294 86l14-10-6 18 14-8" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="184" y="118" width="144" height="114" rx="16" fill="#84cc16"/>
+  <text x="256" y="191" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="46" font-weight="800" fill="#09090b" text-anchor="middle">ZIP</text>
+
+  <!-- WASM tag -->
+  <rect x="206" y="252" width="100" height="34" rx="6" fill="#18181b" stroke="#84cc16" stroke-width="3"/>
+  <text x="256" y="275" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" fill="#a3e635" text-anchor="middle">WASM</text>
+</svg>

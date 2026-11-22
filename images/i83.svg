@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Swiss typographic Intl locale comparison</title>
+  <desc id="desc">Clean Swiss grid comparing formatted currency output across ja, en, and de locales.</desc>
+  <rect width="512" height="320" fill="#1d4ed8"/>
+
+  <!-- Header & rules -->
+  <text x="166" y="44" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" fill="#93c5fd">Intl</text>
+  <path d="M164 58h184" stroke="#ffffff" stroke-width="3.5"/>
+  <path d="M164 134h184" stroke="#60a5fa" stroke-width="2"/>
+  <path d="M164 210h184" stroke="#60a5fa" stroke-width="2"/>
+  <path d="M164 286h184" stroke="#ffffff" stroke-width="3.5"/>
+
+  <!-- Locale comparison rows -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800">
+    <text x="166" y="104" font-size="15" fill="#93c5fd">JA</text>
+    <text x="346" y="109" font-size="30" fill="#ffffff" text-anchor="end">¥1,234</text>
+
+    <text x="166" y="180" font-size="15" fill="#93c5fd">EN</text>
+    <text x="346" y="185" font-size="30" fill="#ffffff" text-anchor="end">$1,234</text>
+
+    <text x="166" y="256" font-size="15" fill="#93c5fd">DE</text>
+    <text x="346" y="261" font-size="30" fill="#ffffff" text-anchor="end">1.234€</text>
+  </g>
+</svg>

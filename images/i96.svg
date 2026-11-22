@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Lavender Jinja2 architectural braces typography</title>
+  <desc id="desc">Giant deep-violet Jinja2 curly braces flanking a warm saffron variable pill resolving to Hi! below.</desc>
+  <rect width="512" height="320" fill="#ede9fe"/>
+
+  <!-- Giant braces + saffron variable pill -->
+  <text x="190" y="122" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="68" font-weight="800" fill="#5b21b6" text-anchor="middle">{{</text>
+  <rect x="230" y="70" width="52" height="54" rx="14" fill="#f59e0b"/>
+  <text x="256" y="108" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">x</text>
+  <text x="322" y="122" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="68" font-weight="800" fill="#5b21b6" text-anchor="middle">}}</text>
+
+  <!-- Subtle dotted stitch -->
+  <path d="M256 142v44" fill="none" stroke="#7c3aed" stroke-width="4" stroke-dasharray="5 7" stroke-linecap="round"/>
+  <path d="M248 180l8 9 8-9" fill="none" stroke="#7c3aed" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Crisp white output ribbon -->
+  <rect x="166" y="202" width="180" height="78" rx="12" fill="#ffffff"/>
+  <text x="256" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="34" font-weight="800" fill="#4c1d95" text-anchor="middle">Hi!</text>
+</svg>

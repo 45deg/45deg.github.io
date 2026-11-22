@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">HAR network waterfall resource inspector</title>
+  <desc id="desc">Dark DevTools waterfall timeline showing extracted IMG, JS, CSS, and JSON resources from a HAR file.</desc>
+  <rect width="512" height="320" fill="#18181b"/>
+
+  <!-- Full-bleed DevTools vertical timing grid -->
+  <g stroke="#27272a" stroke-width="1.5">
+    <path d="M64 0v320M128 0v320M192 0v320M256 0v320M320 0v320M384 0v320M448 0v320"/>
+    <path d="M108 134h296M108 182h296M108 230h296"/>
+  </g>
+
+  <!-- Top header bar -->
+  <rect x="108" y="40" width="296" height="36" rx="6" fill="#27272a"/>
+  <text x="124" y="64" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" fill="#fbbf24">.har</text>
+  <text x="390" y="63" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#34d399" text-anchor="end">200 OK</text>
+
+  <!-- Waterfall rows -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800" text-anchor="middle">
+    <!-- IMG -->
+    <rect x="110" y="96" width="56" height="28" rx="5" fill="#0284c7"/>
+    <text x="138" y="115" font-size="15" fill="#ffffff">IMG</text>
+    <rect x="180" y="102" width="142" height="16" rx="4" fill="#38bdf8"/>
+
+    <!-- JS -->
+    <rect x="110" y="144" width="56" height="28" rx="5" fill="#d97706"/>
+    <text x="138" y="163" font-size="15" fill="#ffffff">JS</text>
+    <rect x="216" y="150" width="118" height="16" rx="4" fill="#fbbf24"/>
+
+    <!-- CSS -->
+    <rect x="110" y="192" width="56" height="28" rx="5" fill="#7c3aed"/>
+    <text x="138" y="211" font-size="15" fill="#ffffff">CSS</text>
+    <rect x="242" y="198" width="84" height="16" rx="4" fill="#a78bfa"/>
+
+    <!-- JSON -->
+    <rect x="110" y="240" width="56" height="28" rx="5" fill="#059669"/>
+    <text x="138" y="259" font-size="14" fill="#ffffff">JSON</text>
+    <rect x="276" y="246" width="126" height="16" rx="4" fill="#34d399"/>
+  </g>
+</svg>

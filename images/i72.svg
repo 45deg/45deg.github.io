@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Split PDF into chapter pages on drafting paper</title>
+  <desc id="desc">A bound PDF cut along a dashed line into three separate chapter pages numbered 01, 02, and 03.</desc>
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.6" fill="#d6d3d1"/>
+    </pattern>
+  </defs>
+  <rect width="512" height="320" fill="#f5f5f4"/>
+  <rect width="512" height="320" fill="url(#dots)"/>
+
+  <!-- Left: Bound crimson PDF spine/cover -->
+  <rect x="110" y="54" width="96" height="212" rx="8" fill="#e11d48"/>
+  <rect x="110" y="54" width="16" height="212" rx="4" fill="#9f1239"/>
+  <text x="166" y="102" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">PDF</text>
+  <rect x="140" y="128" width="52" height="7" rx="3.5" fill="#fda4af"/>
+  <rect x="140" y="146" width="42" height="7" rx="3.5" fill="#fecdd3"/>
+  <rect x="140" y="164" width="48" height="7" rx="3.5" fill="#fecdd3"/>
+
+  <!-- Dashed cut line -->
+  <path d="M222 36v248" fill="none" stroke="#57534e" stroke-width="3.5" stroke-dasharray="8 7" stroke-linecap="round"/>
+
+  <!-- Right: 3 exploded chapter pages -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800">
+    <!-- Chapter 01 -->
+    <g transform="rotate(-4 320 84)">
+      <rect x="242" y="48" width="154" height="66" rx="6" fill="#ffffff" stroke="#1c1917" stroke-width="3"/>
+      <rect x="242" y="48" width="48" height="66" rx="5" fill="#2563eb"/>
+      <text x="266" y="89" font-size="22" fill="#ffffff" text-anchor="middle">01</text>
+      <rect x="304" y="67" width="74" height="9" rx="4" fill="#57534e"/>
+      <rect x="304" y="86" width="52" height="8" rx="4" fill="#d6d3d1"/>
+    </g>
+
+    <!-- Chapter 02 -->
+    <g>
+      <rect x="246" y="127" width="154" height="66" rx="6" fill="#ffffff" stroke="#1c1917" stroke-width="3"/>
+      <rect x="246" y="127" width="48" height="66" rx="5" fill="#059669"/>
+      <text x="270" y="168" font-size="22" fill="#ffffff" text-anchor="middle">02</text>
+      <rect x="308" y="146" width="74" height="9" rx="4" fill="#57534e"/>
+      <rect x="308" y="165" width="56" height="8" rx="4" fill="#d6d3d1"/>
+    </g>
+
+    <!-- Chapter 03 -->
+    <g transform="rotate(4 320 236)">
+      <rect x="242" y="206" width="154" height="66" rx="6" fill="#ffffff" stroke="#1c1917" stroke-width="3"/>
+      <rect x="242" y="206" width="48" height="66" rx="5" fill="#d97706"/>
+      <text x="266" y="247" font-size="22" fill="#ffffff" text-anchor="middle">03</text>
+      <rect x="304" y="225" width="74" height="9" rx="4" fill="#57534e"/>
+      <rect x="304" y="244" width="48" height="8" rx="4" fill="#d6d3d1"/>
+    </g>
+  </g>
+</svg>

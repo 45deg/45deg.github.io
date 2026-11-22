@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Bold red collage merging images into a PDF</title>
+  <desc id="desc">Three Polaroid-style photo tiles cascading into a white folded-corner PDF stamp on a crimson background.</desc>
+  <rect width="512" height="320" fill="#dc2626"/>
+
+  <!-- Cascading white Polaroid photo tiles -->
+  <g transform="rotate(-11 206 76)">
+    <rect x="168" y="28" width="76" height="90" rx="5" fill="#ffffff"/>
+    <rect x="176" y="36" width="60" height="58" rx="3" fill="#dbeafe"/>
+    <path d="M176 94l22-28 14 14 10-12 14 26z" fill="#2563eb"/>
+  </g>
+  <g transform="rotate(10 306 80)">
+    <rect x="268" y="32" width="76" height="90" rx="5" fill="#ffffff"/>
+    <rect x="276" y="40" width="60" height="58" rx="3" fill="#fef3c7"/>
+    <path d="M276 98l20-26 16 14 10-12 14 24z" fill="#d97706"/>
+  </g>
+  <g>
+    <rect x="218" y="54" width="76" height="92" rx="5" fill="#ffffff"/>
+    <rect x="226" y="62" width="60" height="60" rx="3" fill="#d1fae5"/>
+    <circle cx="242" cy="78" r="6" fill="#f59e0b"/>
+    <path d="M226 122l22-26 14 14 10-10 14 22z" fill="#059669"/>
+  </g>
+
+  <!-- Folded-corner white PDF stamp -->
+  <path d="M184 190a10 10 0 0 1 10-10h92l38 38v68a10 10 0 0 1-10 10H194a10 10 0 0 1-10-10v-96z" fill="#ffffff"/>
+  <path d="M286 180v30a8 8 0 0 0 8 8h30z" fill="#fca5a5"/>
+  <text x="254" y="264" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="42" font-weight="800" fill="#dc2626" text-anchor="middle">PDF</text>
+</svg>

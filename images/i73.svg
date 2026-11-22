@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">PDFUnbinder desktop outline splitter</title>
+  <desc id="desc">Desktop app window with checked PDF outline rows and three chapter pages emerging below.</desc>
+  <rect width="512" height="320" fill="#cbd5e1"/>
+
+  <!-- Desktop window -->
+  <rect x="164" y="22" width="184" height="174" rx="7" fill="#ffffff" stroke="#334155" stroke-width="3.5"/>
+  <path d="M164 52V29a7 7 0 0 1 7-7h170a7 7 0 0 1 7 7v23z" fill="#334155"/>
+  <circle cx="180" cy="37" r="4.5" fill="#f87171"/>
+  <circle cx="195" cy="37" r="4.5" fill="#fbbf24"/>
+  <circle cx="210" cy="37" r="4.5" fill="#34d399"/>
+  <text x="332" y="42" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="800" fill="#e2e8f0" text-anchor="end">PDF</text>
+
+  <!-- Checked outline rows -->
+  <g>
+    <rect x="180" y="68" width="22" height="22" rx="4" fill="#2563eb"/>
+    <path d="M185 79l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="212" y="74" width="118" height="10" rx="4" fill="#475569"/>
+
+    <rect x="180" y="106" width="22" height="22" rx="4" fill="#059669"/>
+    <path d="M185 117l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="212" y="112" width="102" height="10" rx="4" fill="#64748b"/>
+
+    <rect x="180" y="144" width="22" height="22" rx="4" fill="#d97706"/>
+    <path d="M185 155l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="212" y="150" width="112" height="10" rx="4" fill="#64748b"/>
+  </g>
+
+  <!-- Emerging chapter slips at bottom edge -->
+  <path d="M174 188h164" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800" text-anchor="middle">
+    <rect x="176" y="190" width="46" height="106" rx="5" fill="#ffffff" stroke="#334155" stroke-width="3"/>
+    <rect x="176" y="190" width="46" height="16" fill="#2563eb"/>
+    <text x="199" y="246" font-size="26" fill="#1e293b">1</text>
+    <rect x="186" y="268" width="26" height="6" rx="3" fill="#cbd5e1"/>
+
+    <rect x="233" y="190" width="46" height="106" rx="5" fill="#ffffff" stroke="#334155" stroke-width="3"/>
+    <rect x="233" y="190" width="46" height="16" fill="#059669"/>
+    <text x="256" y="246" font-size="26" fill="#1e293b">2</text>
+    <rect x="243" y="268" width="26" height="6" rx="3" fill="#cbd5e1"/>
+
+    <rect x="290" y="190" width="46" height="106" rx="5" fill="#ffffff" stroke="#334155" stroke-width="3"/>
+    <rect x="290" y="190" width="46" height="16" fill="#d97706"/>
+    <text x="313" y="246" font-size="26" fill="#1e293b">3</text>
+    <rect x="300" y="268" width="26" height="6" rx="3" fill="#cbd5e1"/>
+  </g>
+</svg>

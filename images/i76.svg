@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Dark-mode Python refinement type verification</title>
+  <desc id="desc">Python clamp function with a green-highlighted Refine interval verified by Z3.</desc>
+  <rect width="512" height="320" fill="#111827"/>
+
+  <!-- Left: Borderless syntax-highlighted Python code -->
+  <rect x="66" y="150" width="192" height="38" rx="8" fill="#064e3b"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21" font-weight="700">
+    <text x="42" y="88" fill="#c084fc">def</text>
+    <text x="92" y="88" fill="#f8fafc">clamp(x, lo, hi)</text>
+    <text x="64" y="130" fill="#94a3b8">-&gt;</text>
+    <text x="98" y="130" fill="#c084fc">Refine[</text>
+    <text x="80" y="176" fill="#34d399" font-weight="800">lo &lt;= r &lt;= hi</text>
+    <text x="64" y="220" fill="#c084fc">]</text>
+    <text x="64" y="262" fill="#4b5563">return ...</text>
+  </g>
+
+  <!-- Right: Emerald Z3 verification stamp -->
+  <circle cx="408" cy="138" r="52" fill="#064e3b" stroke="#10b981" stroke-width="5"/>
+  <path d="M382 138l18 18 36-38" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="358" y="210" width="100" height="34" rx="17" fill="#10b981"/>
+  <text x="408" y="234" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" fill="#022c22" text-anchor="middle">Z3 OK</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">CRT television RGB phosphor and scanline effector</title>
+  <desc id="desc">Retro CRT television displaying glowing RGB phosphor stripes and horizontal scanlines.</desc>
+  <defs>
+    <clipPath id="crt-screen">
+      <rect x="190" y="98" width="132" height="112" rx="14"/>
+    </clipPath>
+  </defs>
+  <rect width="512" height="320" fill="#0f172a"/>
+
+  <!-- Antenna -->
+  <path d="M224 32l32 40 32-40" fill="none" stroke="#94a3b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="222" cy="30" r="6" fill="#cbd5e1"/>
+  <circle cx="290" cy="30" r="6" fill="#cbd5e1"/>
+  <rect x="236" y="64" width="40" height="12" rx="4" fill="#475569"/>
+
+  <!-- TV feet & cabinet -->
+  <rect x="192" y="272" width="22" height="16" rx="4" fill="#475569"/>
+  <rect x="298" y="272" width="22" height="16" rx="4" fill="#475569"/>
+  <rect x="168" y="76" width="176" height="198" rx="22" fill="#334155" stroke="#94a3b8" stroke-width="4"/>
+
+  <!-- Inner screen with RGB phosphor stripes + scanlines -->
+  <rect x="184" y="92" width="144" height="124" rx="18" fill="#020617" stroke="#0f172a" stroke-width="4"/>
+  <g clip-path="url(#crt-screen)">
+    <rect x="190" y="98" width="11" height="112" fill="#ef4444"/>
+    <rect x="201" y="98" width="11" height="112" fill="#22c55e"/>
+    <rect x="212" y="98" width="11" height="112" fill="#3b82f6"/>
+    <rect x="223" y="98" width="11" height="112" fill="#ef4444"/>
+    <rect x="234" y="98" width="11" height="112" fill="#22c55e"/>
+    <rect x="245" y="98" width="11" height="112" fill="#3b82f6"/>
+    <rect x="256" y="98" width="11" height="112" fill="#ef4444"/>
+    <rect x="267" y="98" width="11" height="112" fill="#22c55e"/>
+    <rect x="278" y="98" width="11" height="112" fill="#3b82f6"/>
+    <rect x="289" y="98" width="11" height="112" fill="#ef4444"/>
+    <rect x="300" y="98" width="11" height="112" fill="#22c55e"/>
+    <rect x="311" y="98" width="11" height="112" fill="#3b82f6"/>
+    <path d="M190 110h132M190 124h132M190 138h132M190 152h132M190 166h132M190 180h132M190 194h132" stroke="#020617" stroke-width="4"/>
+  </g>
+
+  <!-- Speaker grille and knobs -->
+  <path d="M194 236h48M194 246h48M194 256h48" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="278" cy="246" r="11" fill="#64748b" stroke="#0f172a" stroke-width="3"/>
+  <path d="M278 246l5-6" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="310" cy="246" r="11" fill="#64748b" stroke="#0f172a" stroke-width="3"/>
+  <path d="M310 246l6 4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

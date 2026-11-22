@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Warm espresso bear silhouette for Zustand store</title>
+  <desc id="desc">Minimalist bear head holding shared state n: 42 feeding components A and B.</desc>
+  <rect width="512" height="320" fill="#431407"/>
+
+  <!-- Geometric bear silhouette -->
+  <circle cx="196" cy="54" r="24" fill="#fef3c7"/>
+  <circle cx="196" cy="54" r="11" fill="#d97706"/>
+  <circle cx="316" cy="54" r="24" fill="#fef3c7"/>
+  <circle cx="316" cy="54" r="11" fill="#d97706"/>
+  <ellipse cx="256" cy="108" rx="76" ry="58" fill="#fef3c7"/>
+  <circle cx="226" cy="86" r="5.5" fill="#431407"/>
+  <circle cx="286" cy="86" r="5.5" fill="#431407"/>
+
+  <!-- Snout with state -->
+  <ellipse cx="256" cy="126" rx="46" ry="26" fill="#fde68a"/>
+  <text x="256" y="133" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" fill="#431407" text-anchor="middle">n: 42</text>
+
+  <!-- Curved broadcast arcs -->
+  <g fill="none" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round">
+    <path d="M226 172Q204 202 204 232"/>
+    <path d="M286 172Q308 202 308 232"/>
+  </g>
+
+  <!-- Compact subscriber tags -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20" font-weight="800" text-anchor="middle">
+    <rect x="166" y="240" width="78" height="46" rx="10" fill="#78350f"/>
+    <text x="205" y="270" fill="#fef3c7">&lt;A/&gt;</text>
+
+    <rect x="268" y="240" width="78" height="46" rx="10" fill="#78350f"/>
+    <text x="307" y="270" fill="#fef3c7">&lt;B/&gt;</text>
+  </g>
+</svg>

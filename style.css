@@ -325,7 +325,7 @@ a:hover {
 }
 
 .card-title::before {
-    content: "» ";
+    content: "\00BB ";
 }
 
 .card-desc {

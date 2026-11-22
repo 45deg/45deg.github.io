@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Chalkboard succinct data structures diagram</title>
+  <desc id="desc">Chalk-drawn bitvector showing rank1(5) equals 3 above a succinct tree and balanced parentheses.</desc>
+  <rect width="512" height="320" fill="#1b3a34"/>
+  <rect x="10" y="10" width="492" height="300" rx="6" fill="none" stroke="#2d5a51" stroke-width="4"/>
+
+  <!-- Bitvector 1 0 1 1 0 1 0 0 -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" text-anchor="middle">
+    <rect x="117" y="34" width="33" height="38" rx="5" fill="#fde047"/>
+    <text x="133.5" y="61" fill="#1b3a34">1</text>
+    <rect x="152" y="34" width="33" height="38" rx="5" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+    <text x="168.5" y="61" fill="#f8fafc">0</text>
+    <rect x="187" y="34" width="33" height="38" rx="5" fill="#fde047"/>
+    <text x="203.5" y="61" fill="#1b3a34">1</text>
+    <rect x="222" y="34" width="33" height="38" rx="5" fill="#fde047"/>
+    <text x="238.5" y="61" fill="#1b3a34">1</text>
+    <rect x="257" y="34" width="33" height="38" rx="5" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+    <text x="273.5" y="61" fill="#f8fafc">0</text>
+    <rect x="292" y="34" width="33" height="38" rx="5" fill="#fde047"/>
+    <text x="308.5" y="61" fill="#1b3a34">1</text>
+    <rect x="327" y="34" width="33" height="38" rx="5" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+    <text x="343.5" y="61" fill="#f8fafc">0</text>
+    <rect x="362" y="34" width="33" height="38" rx="5" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
+    <text x="378.5" y="61" fill="#f8fafc">0</text>
+  </g>
+
+  <!-- Yellow chalk bracket + rank equation -->
+  <path d="M119 82v10h169V82M203.5 92v12" fill="none" stroke="#fde047" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="136" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="800" fill="#fde047" text-anchor="middle">rank₁(5) = 3</text>
+
+  <!-- Chalkboard succinct tree + balanced parens -->
+  <g stroke="#f8fafc" stroke-width="3.5" stroke-linecap="round">
+    <path d="M214 176l-40 42"/>
+    <path d="M214 176l40 42"/>
+    <path d="M174 218l-28 42"/>
+    <path d="M174 218l28 42"/>
+  </g>
+  <circle cx="214" cy="176" r="12" fill="#fde047"/>
+  <circle cx="174" cy="218" r="12" fill="#fde047"/>
+  <circle cx="254" cy="218" r="11" fill="#1b3a34" stroke="#f8fafc" stroke-width="3.5"/>
+  <circle cx="146" cy="260" r="11" fill="#1b3a34" stroke="#f8fafc" stroke-width="3.5"/>
+  <circle cx="202" cy="260" r="11" fill="#1b3a34" stroke="#f8fafc" stroke-width="3.5"/>
+
+  <text x="338" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" fill="#f8fafc" text-anchor="middle">((()())())</text>
+  <path d="M282 240h112" stroke="#5eead4" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Blueprint state automaton for Alloy temporal trace</title>
+  <desc id="desc">Technical blueprint showing a SAT state loop between off state S0 and lit state S1.</desc>
+  <defs>
+    <pattern id="bpgrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0v32" fill="none" stroke="#1e3a5f" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <rect width="512" height="320" fill="#0f2942"/>
+  <rect width="512" height="320" fill="url(#bpgrid)"/>
+
+  <!-- Top blueprint header -->
+  <text x="116" y="56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="700" fill="#93c5fd">sig Light</text>
+  <rect x="336" y="36" width="60" height="28" rx="4" fill="#059669"/>
+  <text x="366" y="56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">SAT</text>
+
+  <!-- Transition arcs -->
+  <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M204 126Q256 76 308 126" stroke="#38bdf8"/>
+    <path d="M296 126h13v-13" stroke="#38bdf8"/>
+    <path d="M308 214Q256 264 204 214" stroke="#fbbf24"/>
+    <path d="M216 214h-13v13" stroke="#fbbf24"/>
+  </g>
+  <text x="256" y="88" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#bae6fd" text-anchor="middle">always</text>
+
+  <!-- Node S0 (off) -->
+  <circle cx="164" cy="170" r="46" fill="#0f2942" stroke="#f8fafc" stroke-width="4.5"/>
+  <text x="164" y="166" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">S0</text>
+  <text x="164" y="190" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#93c5fd" text-anchor="middle">off</text>
+
+  <!-- Node S1 (lit) -->
+  <circle cx="348" cy="170" r="46" fill="#fbbf24" stroke="#fef08a" stroke-width="4.5"/>
+  <text x="348" y="166" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" fill="#0f172a" text-anchor="middle">S1</text>
+  <text x="348" y="190" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#78350f" text-anchor="middle">On</text>
+</svg>

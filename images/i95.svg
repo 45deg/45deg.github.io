@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Safetensors binary memory-map cross-section</title>
+  <desc id="desc">Electric-blue JSON metadata header slice sitting directly above a dark matrix of binary tensor weights.</desc>
+  <rect width="512" height="320" fill="#18181b"/>
+
+  <!-- Top glowing JSON metadata header slice -->
+  <rect x="166" y="26" width="180" height="88" rx="8" fill="#2563eb"/>
+  <text x="180" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="800" fill="#bfdbfe">8B len</text>
+  <text x="256" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="800" fill="#ffffff" text-anchor="middle">{ meta }</text>
+
+  <!-- Lower binary tensor weight matrix -->
+  <g>
+    <rect x="166" y="128" width="32" height="24" rx="3" fill="#27272a"/><rect x="203" y="128" width="32" height="24" rx="3" fill="#3f3f46"/><rect x="240" y="128" width="32" height="24" rx="3" fill="#1e3a8a"/><rect x="277" y="128" width="32" height="24" rx="3" fill="#334155"/><rect x="314" y="128" width="32" height="24" rx="3" fill="#27272a"/>
+    <rect x="166" y="157" width="32" height="24" rx="3" fill="#334155"/><rect x="203" y="157" width="32" height="24" rx="3" fill="#1e3a8a"/><rect x="240" y="157" width="32" height="24" rx="3" fill="#3f3f46"/><rect x="277" y="157" width="32" height="24" rx="3" fill="#27272a"/><rect x="314" y="157" width="32" height="24" rx="3" fill="#1d4ed8"/>
+    <rect x="166" y="186" width="32" height="24" rx="3" fill="#27272a"/><rect x="203" y="186" width="32" height="24" rx="3" fill="#334155"/><rect x="240" y="186" width="32" height="24" rx="3" fill="#27272a"/><rect x="277" y="186" width="32" height="24" rx="3" fill="#1e3a8a"/><rect x="314" y="186" width="32" height="24" rx="3" fill="#3f3f46"/>
+    <rect x="166" y="215" width="32" height="24" rx="3" fill="#1e3a8a"/><rect x="203" y="215" width="32" height="24" rx="3" fill="#27272a"/><rect x="240" y="215" width="32" height="24" rx="3" fill="#1d4ed8"/><rect x="277" y="215" width="32" height="24" rx="3" fill="#3f3f46"/><rect x="314" y="215" width="32" height="24" rx="3" fill="#27272a"/>
+    <rect x="166" y="244" width="32" height="24" rx="3" fill="#3f3f46"/><rect x="203" y="244" width="32" height="24" rx="3" fill="#334155"/><rect x="240" y="244" width="32" height="24" rx="3" fill="#27272a"/><rect x="277" y="244" width="32" height="24" rx="3" fill="#334155"/><rect x="314" y="244" width="32" height="24" rx="3" fill="#1e3a8a"/>
+    <rect x="166" y="273" width="32" height="24" rx="3" fill="#27272a"/><rect x="203" y="273" width="32" height="24" rx="3" fill="#1e3a8a"/><rect x="240" y="273" width="32" height="24" rx="3" fill="#3f3f46"/><rect x="277" y="273" width="32" height="24" rx="3" fill="#27272a"/><rect x="314" y="273" width="32" height="24" rx="3" fill="#334155"/>
+  </g>
+</svg>

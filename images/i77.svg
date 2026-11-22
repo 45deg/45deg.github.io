@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Concurrent async streams with cancellation</title>
+  <desc id="desc">Parallel async stream channels with concurrency control and cancellation.</desc>
+  <rect width="512" height="320" fill="#f0fdfa"/>
+
+  <!-- Input nodes -->
+  <circle cx="192" cy="38" r="12" fill="#0d9488" stroke="#0f172a" stroke-width="3.5"/>
+  <circle cx="256" cy="38" r="12" fill="#0d9488" stroke="#0f172a" stroke-width="3.5"/>
+  <circle cx="320" cy="38" r="12" fill="#94a3b8" stroke="#475569" stroke-width="3.5"/>
+
+  <!-- Parallel channels -->
+  <path d="M192 50v158l64 26" fill="none" stroke="#0d9488" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M256 50v184" fill="none" stroke="#0d9488" stroke-width="5" stroke-linecap="round"/>
+  <path d="M320 50v94" fill="none" stroke="#64748b" stroke-width="4.5" stroke-dasharray="8 8" stroke-linecap="round"/>
+
+  <!-- Stream items -->
+  <circle cx="192" cy="96" r="8" fill="#14b8a6" stroke="#0f172a" stroke-width="3"/>
+  <circle cx="192" cy="148" r="8" fill="#14b8a6" stroke="#0f172a" stroke-width="3"/>
+  <circle cx="256" cy="116" r="8" fill="#14b8a6" stroke="#0f172a" stroke-width="3"/>
+  <circle cx="256" cy="172" r="8" fill="#14b8a6" stroke="#0f172a" stroke-width="3"/>
+
+  <!-- Cancelled lane -->
+  <circle cx="320" cy="164" r="16" fill="#fee2e2" stroke="#dc2626" stroke-width="4"/>
+  <path d="M313 157l14 14m0-14-14 14" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Converge arrow -->
+  <path d="M256 226v24m-8-8 8 9 8-9" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Output pill -->
+  <rect x="196" y="256" width="120" height="42" rx="21" fill="#0d9488" stroke="#0f172a" stroke-width="4"/>
+  <text x="256" y="284" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">async</text>
+</svg>

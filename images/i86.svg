@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Cinema viewfinder crop and MP4 conversion</title>
+  <desc id="desc">Filmstrip sprocket rails framing an orange crop viewfinder around a play icon and .mp4 badge.</desc>
+  <rect width="512" height="320" fill="#1c1917"/>
+
+  <!-- Vertical filmstrip sprocket holes -->
+  <g fill="#44403c">
+    <rect x="164" y="24" width="14" height="22" rx="3"/>
+    <rect x="164" y="72" width="14" height="22" rx="3"/>
+    <rect x="164" y="120" width="14" height="22" rx="3"/>
+    <rect x="164" y="168" width="14" height="22" rx="3"/>
+    <rect x="164" y="216" width="14" height="22" rx="3"/>
+    <rect x="164" y="264" width="14" height="22" rx="3"/>
+
+    <rect x="334" y="24" width="14" height="22" rx="3"/>
+    <rect x="334" y="72" width="14" height="22" rx="3"/>
+    <rect x="334" y="120" width="14" height="22" rx="3"/>
+    <rect x="334" y="168" width="14" height="22" rx="3"/>
+    <rect x="334" y="216" width="14" height="22" rx="3"/>
+    <rect x="334" y="264" width="14" height="22" rx="3"/>
+  </g>
+
+  <!-- WebCodecs micro-label -->
+  <text x="256" y="44" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="800" fill="#fdba74" text-anchor="middle">WebCodecs</text>
+
+  <!-- Vermilion crop viewfinder L-brackets -->
+  <g fill="none" stroke="#f97316" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M194 96V68h28"/>
+    <path d="M290 68h28v28"/>
+    <path d="M194 200v28h28"/>
+    <path d="M318 200v28h-28"/>
+  </g>
+
+  <!-- Play emblem inside viewfinder -->
+  <circle cx="256" cy="148" r="36" fill="#292524" stroke="#f97316" stroke-width="4"/>
+  <path d="M246 130l28 18-28 18z" fill="#ffffff"/>
+
+  <!-- .mp4 cinema badge -->
+  <rect x="208" y="250" width="96" height="38" rx="6" fill="#f97316"/>
+  <text x="256" y="276" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" font-weight="800" fill="#1c1917" text-anchor="middle">.mp4</text>
+</svg>

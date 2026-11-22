@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">PDF to Markdown and extracted images</title>
+  <desc id="desc">Split editorial view converting a PDF page on the left into dark-mode Markdown and an extracted image on the right.</desc>
+  <!-- Full-bleed split background -->
+  <rect width="256" height="320" fill="#fff1f2"/>
+  <rect x="256" width="256" height="320" fill="#0f172a"/>
+
+  <!-- Left: PDF sheet on warm rose paper -->
+  <g>
+    <path d="M114 68a10 10 0 0 1 10-10h74l32 32v156a10 10 0 0 1-10 10h-96a10 10 0 0 1-10-10V68z" fill="#ffffff" stroke="#be123c" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M198 58v24a8 8 0 0 0 8 8h24" fill="#fecdd3" stroke="#be123c" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="128" y="76" width="52" height="24" rx="5" fill="#e11d48"/>
+    <text x="154" y="94" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">PDF</text>
+    <rect x="128" y="114" width="88" height="8" rx="4" fill="#64748b"/>
+    <rect x="128" y="130" width="66" height="8" rx="4" fill="#cbd5e1"/>
+    <rect x="128" y="152" width="88" height="86" rx="7" fill="#ffe4e6"/>
+    <circle cx="150" cy="176" r="9" fill="#fb7185"/>
+    <path d="M128 238l24-30 18 18 16-20 30 32z" fill="#e11d48"/>
+  </g>
+
+  <!-- Right: Dark editor Markdown + extracted photo -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800">
+    <text x="284" y="84" font-size="24" fill="#38bdf8">#</text>
+    <rect x="308" y="70" width="84" height="12" rx="4" fill="#f8fafc"/>
+    <text x="284" y="118" font-size="18" fill="#e2e8f0">**md**</text>
+    <circle cx="290" cy="140" r="3.5" fill="#38bdf8"/>
+    <rect x="302" y="136" width="76" height="8" rx="4" fill="#94a3b8"/>
+    <circle cx="290" cy="158" r="3.5" fill="#38bdf8"/>
+    <rect x="302" y="154" width="58" height="8" rx="4" fill="#64748b"/>
+
+    <rect x="284" y="178" width="112" height="82" rx="9" fill="#ecfdf5" stroke="#10b981" stroke-width="3.5"/>
+    <rect x="292" y="186" width="96" height="66" rx="5" fill="#dbeafe"/>
+    <circle cx="316" cy="206" r="9" fill="#f59e0b"/>
+    <path d="M292 252l26-30 18 18 18-22 34 34z" fill="#059669"/>
+  </g>
+
+  <!-- Center bridge chevron -->
+  <circle cx="256" cy="160" r="20" fill="#ffffff" stroke="#0f172a" stroke-width="3.5"/>
+  <path d="M251 150l11 10-11 10" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

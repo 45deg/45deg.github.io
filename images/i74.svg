@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Ruled notebook start-to-end range selection</title>
+  <desc id="desc">Select text across notebook lines between cobalt start marker A and vermilion end marker B.</desc>
+  <!-- Full-bleed cream ruled notebook -->
+  <rect width="512" height="320" fill="#fffdf7"/>
+  <g stroke="#e5e7eb" stroke-width="2">
+    <path d="M0 44h512M0 84h512M0 124h512M0 164h512M0 204h512M0 244h512M0 284h512"/>
+  </g>
+  <path d="M138 0v320" stroke="#fca5a5" stroke-width="2.5"/>
+
+  <!-- Line 1 (unselected) -->
+  <rect x="166" y="64" width="168" height="12" rx="6" fill="#cbd5e1"/>
+
+  <!-- Line 2 (partial highlight from A) -->
+  <rect x="166" y="104" width="42" height="12" rx="6" fill="#94a3b8"/>
+  <rect x="216" y="96" width="128" height="28" rx="4" fill="#7dd3fc"/>
+  <rect x="222" y="104" width="116" height="12" rx="6" fill="#0f172a"/>
+
+  <!-- Line 3 (full highlight) -->
+  <rect x="166" y="136" width="178" height="28" rx="4" fill="#7dd3fc"/>
+  <rect x="172" y="144" width="166" height="12" rx="6" fill="#0f172a"/>
+
+  <!-- Line 4 (partial highlight to B) -->
+  <rect x="166" y="176" width="126" height="28" rx="4" fill="#7dd3fc"/>
+  <rect x="172" y="184" width="114" height="12" rx="6" fill="#0f172a"/>
+  <rect x="300" y="184" width="44" height="12" rx="6" fill="#94a3b8"/>
+
+  <!-- Line 5 (unselected) -->
+  <rect x="166" y="264" width="116" height="12" rx="6" fill="#cbd5e1"/>
+
+  <!-- Cobalt circle pin A -->
+  <path d="M216 86v42" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="216" cy="70" r="17" fill="#2563eb" stroke="#fffdf7" stroke-width="3"/>
+  <text x="216" y="76" font-family="sans-serif" font-size="18" font-weight="800" fill="#ffffff" text-anchor="middle">A</text>
+
+  <!-- Vermilion square pin B -->
+  <path d="M292 172v44" fill="none" stroke="#ea580c" stroke-width="5" stroke-linecap="round"/>
+  <rect x="276" y="214" width="32" height="32" rx="7" fill="#ea580c" stroke="#fffdf7" stroke-width="3"/>
+  <text x="292" y="236" font-family="sans-serif" font-size="18" font-weight="800" fill="#ffffff" text-anchor="middle">B</text>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Mid-century multi-armed bandit reward chart</title>
+  <desc id="desc">Three vertical bandit reward columns with arm B peaking in gold above learning curves.</desc>
+  <rect width="512" height="320" fill="#7f1d1d"/>
+  <rect y="172" width="512" height="148" fill="#450a0a"/>
+
+  <!-- 3 flat mid-century bandit reward columns -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="800" text-anchor="middle">
+    <!-- Arm A -->
+    <text x="194" y="88" font-size="20" fill="#fecaca">A</text>
+    <rect x="172" y="100" width="44" height="72" rx="4" fill="#fecaca"/>
+
+    <!-- Arm B (winner) -->
+    <polygon points="256,22 268,34 256,46 244,34" fill="#fbbf24"/>
+    <rect x="234" y="54" width="44" height="118" rx="4" fill="#fbbf24"/>
+    <text x="256" y="86" font-size="22" fill="#450a0a">B</text>
+
+    <!-- Arm C -->
+    <text x="318" y="68" font-size="20" fill="#fca5a5">C</text>
+    <rect x="296" y="80" width="44" height="92" rx="4" fill="#f87171"/>
+  </g>
+
+  <!-- Sweeping cumulative learning curves -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M172 282Q228 212 340 194" stroke="#fbbf24" stroke-width="6.5"/>
+    <path d="M172 282Q238 244 340 230" stroke="#fecdd3" stroke-width="4.5"/>
+    <path d="M172 282Q248 268 340 262" stroke="#b91c1c" stroke-width="4"/>
+  </g>
+</svg>

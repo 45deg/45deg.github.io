@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" role="img" aria-labelledby="title desc">
+  <title id="title">Terminal ASCII table to clean grid</title>
+  <desc id="desc">Top dark green terminal ASCII table splitting seamlessly into a crisp white spreadsheet grid below.</desc>
+  <!-- Full-bleed horizontal split -->
+  <rect width="512" height="156" fill="#052e16"/>
+  <rect y="156" width="512" height="164" fill="#ffffff"/>
+  <path d="M0 156h512" stroke="#22c55e" stroke-width="4"/>
+
+  <!-- Top: Phosphor green ASCII table -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="25" font-weight="800" fill="#4ade80" text-anchor="middle">
+    <text x="256" y="58">+---+---+</text>
+    <text x="256" y="92">| a | 1 |</text>
+    <text x="256" y="126">+---+---+</text>
+  </g>
+
+  <!-- Bottom: Clean spreadsheet grid -->
+  <rect x="170" y="178" width="172" height="36" fill="#2563eb"/>
+  <rect x="170" y="214" width="172" height="36" fill="#f1f5f9"/>
+  <path d="M256 178v72" stroke="#cbd5e1" stroke-width="2.5"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" font-weight="800" text-anchor="middle">
+    <text x="213" y="203" fill="#ffffff">a</text>
+    <text x="299" y="203" fill="#ffffff">b</text>
+    <text x="213" y="239" fill="#0f172a">1</text>
+    <text x="299" y="239" fill="#0f172a">2</text>
+  </g>
+  <rect x="216" y="264" width="80" height="28" rx="4" fill="#0f172a"/>
+  <text x="256" y="284" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">CSV</text>
+</svg>

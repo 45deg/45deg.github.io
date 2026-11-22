@@ -244,9 +244,11 @@ works:
     tags:
       - Programming
       - Data
-    placeholder:
-      class: placeholder-code
-      emoji: ≋
+    image:
+      src: ./images/i77.svg
+      alt:
+        ja: 並行実行されるストリームとキャンセル処理を示す図
+        en: Diagram of parallel async streams with cancellation
   - href: ./yada/
     featured: false
     size: medium
@@ -301,10 +303,10 @@ works:
       - Editor
       - WebAssembly
     image:
-      src: ./images/i58.png
+      src: ./images/i75.svg
       alt:
-        ja: Alloyモデルと時間トレースの解析結果を左右に表示したIDE
-        en: Alloy IDE with a model on the left and temporal trace results on the right
+        ja: "ブループリント上に状態S0(off)とS1(On)のSAT遷移ループを描いた図"
+        en: "Blueprint state automaton showing a SAT transition loop between off state S0 and lit state S1"
   - href: ./wordkin/
     featured: false
     size: medium
@@ -339,10 +341,10 @@ works:
       - Compiler
       - WebAssembly
     image:
-      src: ./images/i56.jpg
+      src: ./images/i76.svg
       alt:
-        ja: refinepyでclamp関数の範囲・返り値の契約と停止性が検証された画面
-        en: refinepy showing verified range and return-value contracts and termination for the clamp function
+        ja: ダーク画面のPython clamp関数のRefine型注釈とZ3 OK検証スタンプの図
+        en: Dark-mode Python clamp refinement type snippet with a Z3 OK verification stamp
   - href: ./qepcad/
     featured: false
     size: small
@@ -435,10 +437,10 @@ works:
       - Text
       - Utility
     image:
-      src: ./images/i52.jpg
+      src: ./images/i74.svg
       alt:
-        ja: a-b textで日本語の文章を範囲選択し、開始・終了カーソルとコピーなどの操作を表示した画面
-        en: A Japanese passage selected in a-b text, with start and end cursors and copy, cut, and delete controls
+        ja: 始点Aと終点Bのマーカーで文章を範囲選択する図
+        en: Diagram showing text range selection between start handle A and end handle B
   - href: ./cifarviz/
     featured: true
     size: medium
@@ -473,9 +475,11 @@ works:
       - Image
       - Security
       - Viewer
-    placeholder:
-      class: placeholder-data
-      emoji: 🔎
+    image:
+      src: ./images/i78.svg
+      alt:
+        ja: PNG画像からC2PAの来歴・署名検証シールドを確認する図
+        en: Diagram of inspecting embedded C2PA provenance and signature verification in a PNG image
   - href: ./scroll-stitch/
     homeButton: false
     featured: true
@@ -549,9 +553,11 @@ works:
     tags:
       - Security
       - Web
-    placeholder:
-      class: placeholder-data
-      emoji: 🔐
+    image:
+      src: ./images/i79.svg
+      alt:
+        ja: 公開鍵PUBと秘密鍵PRVによる暗号化・署名検証を示す図
+        en: Diagram of public and private key encryption and signature verification
   - href: ./morf/
     featured: true
     size: large
@@ -623,9 +629,11 @@ works:
       - Data Structure
       - Visualization
       - Education
-    placeholder:
-      class: placeholder-data
-      emoji: "01"
+    image:
+      src: ./images/i80.svg
+      alt:
+        ja: 黒板にチョークで描いたビット列rank₁(5) = 3と簡潔木・括弧列表現の図
+        en: Chalkboard diagram showing bitvector rank₁(5) = 3 alongside a succinct tree and balanced parentheses
   - href: ./colorange/
     featured: false
     size: medium
@@ -661,9 +669,11 @@ works:
       - AI
       - Visualization
       - Education
-    placeholder:
-      class: placeholder-data
-      emoji: 🎰
+    image:
+      src: ./images/i81.svg
+      alt:
+        ja: 3本の報酬バーA・B・Cと学習曲線を比較する図
+        en: Diagram comparing three bandit reward columns A, B, and C with learning curves
   - href: ./har-tools/
     featured: false
     size: medium
@@ -678,10 +688,10 @@ works:
       - Web
       - Utility
     image:
-      src: ./images/i44.jpg
+      src: ./images/i71.svg
       alt:
-        ja: HAR ToolsでHARファイル内のリソースを一覧表示している画面
-        en: HAR Tools displaying a list of resources from a HAR file
+        ja: HARアーカイブからIMG・JS・CSS・JSONリソースを抽出するウォーターフォール図
+        en: Dark DevTools waterfall diagram showing IMG, JS, CSS, and JSON resources extracted from a HAR file
   - href: ./jelly/
     featured: true
     size: large
@@ -865,9 +875,11 @@ works:
     tags:
       - Article
       - Web Development
-    placeholder:
-      class: placeholder-article
-      emoji: π
+    image:
+      src: ./images/i82.svg
+      alt:
+        ja: 数式∑ x²をWOFF2サブセット化で単体.svgへ変換する図
+        en: Editorial diagram converting math expression ∑ x² into a standalone .svg via WOFF2 subsetting
   - href: ./articles/intl.html
     featured: false
     size: small
@@ -881,9 +893,11 @@ works:
     tags:
       - Article
       - Web Development
-    placeholder:
-      class: placeholder-article
-      emoji: 🌐
+    image:
+      src: ./images/i83.svg
+      alt:
+        ja: 青地にIntlのja・en・de通貨フォーマットを比較配置した図
+        en: Swiss-style grid comparing ja, en, and de currency formatting via the Intl API
   - href: ./pixelate/
     featured: false
     size: medium
@@ -914,9 +928,11 @@ works:
     tags:
       - Article
       - Web Development
-    placeholder:
-      class: placeholder-article
-      emoji: 🐻
+    image:
+      src: ./images/i84.svg
+      alt:
+        ja: "n: 42の状態を持つクマのアイコンからコンポーネントA・Bへ状態が伝わる図"
+        en: "Minimalist bear head holding state n: 42 feeding components A and B"
   - href: ./stitch/
     featured: true
     size: large
@@ -1079,9 +1095,11 @@ works:
     tags:
       - Security
       - WebAssembly
-    placeholder:
-      class: placeholder-code
-      emoji: 🔓
+    image:
+      src: ./images/i85.svg
+      alt:
+        ja: 16進ダンプ背景の前で壊れたZIPの錠前とWASMタグを示す図
+        en: Cracked lime-green ZIP padlock over a dark hex dump with a WASM label
   - href: ./quickcalc/
     featured: false
     size: small
@@ -1162,9 +1180,11 @@ works:
     tags:
       - Video
       - Converter
-    placeholder:
-      class: placeholder-video
-      emoji: 🎞️
+    image:
+      src: ./images/i86.svg
+      alt:
+        ja: フィルム枠と切り抜きファインダー内に再生ボタンと.mp4を表示した図
+        en: Filmstrip viewfinder framing a play icon and .mp4 badge for WebCodecs conversion
   - href: ./deaatable/
     featured: false
     size: small
@@ -1178,9 +1198,11 @@ works:
     tags:
       - Text
       - Converter
-    placeholder:
-      class: placeholder-code
-      emoji: ▦
+    image:
+      src: ./images/i87.svg
+      alt:
+        ja: 緑のターミナル上のアスキーアート表が下のきれいな表とCSVに変わる分割図
+        en: Split diagram transforming a green terminal ASCII table into a clean grid and CSV badge
   - href: ./articles/zip.html
     featured: false
     size: small
@@ -1194,9 +1216,11 @@ works:
     tags:
       - Article
       - Compression
-    placeholder:
-      class: placeholder-article
-      emoji: 📦
+    image:
+      src: ./images/i88.svg
+      alt:
+        ja: 黄色い背景にJS・deflateの文字と黒いジッパー、.zipスタンプを配した図
+        en: Yellow neo-brutalist poster with JS, deflate, a black zipper, and a .zip stamp
   - href: ./articles/mp4.html
     featured: false
     size: small
@@ -1210,9 +1234,11 @@ works:
     tags:
       - Article
       - Video
-    placeholder:
-      class: placeholder-article
-      emoji: 🎬
+    image:
+      src: ./images/i89.svg
+      alt:
+        ja: ftyp・moov・mdatのブロックを縦に積んだMP4コンテナ構造図
+        en: Stacked color-coded MP4 container atom blocks ftyp, moov, and mdat
   - href: ./subleq-ide/
     featured: false
     size: medium
@@ -1245,8 +1271,10 @@ works:
       - Markdown
       - Converter
     image:
-      src: ./images/i21.png
-      alt: pdf2md
+      src: ./images/i70.svg
+      alt:
+        ja: 左のPDFページから右のMarkdown構文と抽出画像へ変換する分割図
+        en: Split editorial diagram converting a PDF page into Markdown and an extracted image
   - href: ./pdf-toc-tools/
     featured: true
     size: large
@@ -1296,9 +1324,11 @@ works:
     tags:
       - Article
       - AI
-    placeholder:
-      class: placeholder-article
-      emoji: 🤖
+    image:
+      src: ./images/i90.svg
+      alt:
+        ja: エージェントの循環ループが描かれた日本語版書籍の表紙図
+        en: Book cover diagram with an agentic loop and JA badge
   - href: ./flowtimer/
     featured: false
     size: medium
@@ -1328,8 +1358,10 @@ works:
     tags:
       - PDF
     image:
-      src: ./images/i14.png
-      alt: PDFUnbinder in Browser
+      src: ./images/i72.svg
+      alt:
+        ja: 製本されたPDFを点線で切り離し、01・02・03の章ページへ分割する図
+        en: Diagram of a bound PDF cut into three chapter pages numbered 01, 02, and 03
   - href: ./misc/brownkan.html
     featured: false
     size: small
@@ -1343,9 +1375,11 @@ works:
     tags:
       - Image
       - Visualization
-    placeholder:
-      class: placeholder-image
-      emoji: 📺
+    image:
+      src: ./images/i91.svg
+      alt:
+        ja: RGB蛍光体ストライプと走査線を表示するブラウン管テレビの図
+        en: Diagram of a retro CRT television displaying RGB phosphor stripes and scanlines
   - href: ./misc/gabigabi.html
     featured: false
     size: small
@@ -1359,9 +1393,11 @@ works:
     tags:
       - Image
       - Editor
-    placeholder:
-      class: placeholder-image
-      emoji: 🖼️
+    image:
+      src: ./images/i92.svg
+      alt:
+        ja: 上半分が鮮明で下半分がブロックノイズ化した風景分割図
+        en: Split landscape with a crisp top half degraded into JPEG macroblocks across the bottom
   - href: ./misc/img2pdf.html
     featured: false
     size: small
@@ -1376,9 +1412,11 @@ works:
       - PDF
       - Image
       - Converter
-    placeholder:
-      class: placeholder-data
-      emoji: 🧾
+    image:
+      src: ./images/i93.svg
+      alt:
+        ja: 赤地に並んだ3枚の写真タイルと白いPDFスタンプの図
+        en: Three tilted photo tiles cascading into a white folded-corner PDF stamp on red
   - href: /mnist-viz
     featured: false
     size: small
@@ -1408,9 +1446,11 @@ works:
     tags:
       - Editor
       - Language
-    placeholder:
-      class: placeholder-text
-      emoji: ✍️
+    image:
+      src: ./images/i94.svg
+      alt:
+        ja: テラコッタ地に大きなaとターコイズ色の長音記号マクロンを描いた図
+        en: Large cream serif letter a with a turquoise macron bar above ē ī ō ū on terracotta
   - href: ./misc/safetensors.html
     featured: false
     size: small
@@ -1424,9 +1464,11 @@ works:
     tags:
       - Viewer
       - Data
-    placeholder:
-      class: placeholder-data
-      emoji: 🧬
+    image:
+      src: ./images/i95.svg
+      alt:
+        ja: 先頭の青いメタデータヘッダと下部のバイナリ重み行列を表す断面図
+        en: Cross-section showing a blue metadata header slice above a dark binary tensor weight matrix
   - href: ./misc/jinja2.html
     featured: false
     size: small
@@ -1440,9 +1482,11 @@ works:
     tags:
       - Web Development
       - Programming
-    placeholder:
-      class: placeholder-code
-      emoji: 🧩
+    image:
+      src: ./images/i96.svg
+      alt:
+        ja: "大きな波括弧{{ x }}から下のHi!へ展開されるラベンダー色の図"
+        en: "Lavender typographic diagram of curly braces {{ x }} resolving to Hi!"
   - href: /cedict
     featured: false
     size: small
@@ -1472,8 +1516,10 @@ works:
     tags:
       - PDF
     image:
-      src: ./images/i11.png
-      alt: PDFUnbinder
+      src: ./images/i73.svg
+      alt:
+        ja: デスクトップウィンドウでチェックした目次から1・2・3の章ページが切り出される図
+        en: Desktop window diagram showing checked outline rows splitting into chapter pages 1, 2, and 3
   - href: ./RGBCloud
     featured: false
     size: medium
