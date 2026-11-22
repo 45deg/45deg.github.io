@@ -97,8 +97,28 @@ filters:
       ja: Code
       en: Code
 works:
-  - href: ./movie-censor/
+  - href: ./html-packer/
     featured: false
+    size: medium
+    title:
+      ja: HTML Packer
+      en: HTML Packer
+    year: 2026
+    description_html:
+      ja: HTML・MHTML・フォルダを1つの自己展開HTMLに圧縮。処理はすべてブラウザ内で完結。
+      en: "Convert MHTML/MHT to HTML and pack websites or folders into one self-contained, offline-ready HTML file."
+    tags:
+      - Utility
+      - Converter
+      - Web
+    image:
+      src: ./images/i69.svg
+      alt:
+        ja: HTML Packer のアイコンと HTML・MHTML・フォルダを1つのHTMLに圧縮する説明
+        en: HTML Packer icon with HTML, MHTML, and folder to single HTML conversion
+  - href: ./movie-censor/
+    featured: true
+    size: large
     title:
       ja: MovieFaceVeil
       en: MovieFaceVeil
@@ -117,13 +137,14 @@ works:
         en: English editor showing five pixelated faces, playback controls, and mosaic settings
   - href: ./ezcensor/
     featured: false
+    size: medium
     title:
       ja: ezcensor
       en: ezcensor
     year: 2026
     description_html:
-      ja: 写真の顔を自動検出して隠すツール。モザイク・ぼかし・黒塗り・絵文字を選べる。写真のアップロードは不要。ブラウザ内で加工・保存できる。
-      en: ezcensor detects faces and hides them with pixelation, blur, black boxes or emoji. Edit and save in your browser without uploading your photos.
+      ja: 写真の顔を自動検出してモザイク・ぼかし・黒塗り・絵文字で隠すブラウザ内編集ツール。
+      en: "Detect faces and hide them with pixelation, blur, black boxes, or emoji directly in your browser."
     tags:
       - Image
       - AI
@@ -135,13 +156,14 @@ works:
         en: ezcensor photo editor with faces obscured
   - href: ./gz2zip/
     featured: false
+    size: small
     title:
       ja: GZ・TAR.GZ を ZIP に変換
       en: Convert GZ and TAR.GZ to ZIP
     year: 2026
     description_html:
-      ja: .gz、.tar.gz、.tgz をブラウザで ZIP に変換。ファイルは端末内で処理し、外部には送信しない。
-      en: Convert .gz, .tar.gz, and .tgz files to ZIP in your browser. Files stay on your device.
+      ja: ".gz、.tar.gz、.tgz をブラウザで ZIP に変換。"
+      en: "Convert .gz, .tar.gz, and .tgz files to ZIP."
     tags:
       - Converter
       - Utility
@@ -152,13 +174,14 @@ works:
         en: gz2zip logo with GZ to ZIP conversion
   - href: ./heic2jpg/
     featured: false
+    size: small
     title:
       ja: HEIC・HEIF を JPEG・PNG に変換
       en: Convert HEIC and HEIF to JPEG or PNG
     year: 2026
     description_html:
-      ja: iPhone の写真をブラウザで変換。画質や画像サイズを調整でき、複数枚は ZIP で保存できる。写真は端末内で処理する。
-      en: Convert iPhone photos in your browser, adjust quality and size, and save batches as ZIP files. Photos stay on your device.
+      ja: iPhoneの写真をブラウザで変換。画質調整やZIP一括保存に対応。
+      en: Convert iPhone photos with quality and ZIP batch save.
     tags:
       - Image
       - Converter
@@ -169,13 +192,14 @@ works:
         en: heic2jpg logo with HEIC to JPEG or PNG
   - href: ./chunk-viz/
     featured: false
+    size: medium
     title:
       ja: Chunk visualizer
       en: Chunk visualizer
     year: 2026
     description_html:
-      ja: PNG・JPEG・MP4・PDF・ZIP・WASM などのバイナリ構造をブラウザ上で可視化・検査。ファイルは端末内のみで処理する。
-      en: Inspect and visualize binary chunk structures of PNG, JPEG, MP4, PDF, ZIP, WASM, and more directly in your browser.
+      ja: PNG・JPEG・MP4・PDF・ZIP・WASMなどのバイナリ構造をブラウザ上で可視化・検査。
+      en: "Inspect and visualize binary chunk structures of PNG, JPEG, MP4, PDF, ZIP, and WASM in your browser."
     tags:
       - Visualization
       - Viewer
@@ -187,6 +211,7 @@ works:
         en: Chunk visualizer showing PNG chunk structure (IHDR, sRGB, IDAT) and image preview for color-study.png
   - href: ./git-observatory/
     featured: false
+    size: large
     title:
       ja: Git Observatory
       en: Git Observatory
@@ -208,17 +233,14 @@ works:
       ja: https://45deg.github.io/mogami-stream/ja/
       en: https://45deg.github.io/mogami-stream/
     featured: false
+    size: small
     title:
       ja: mogami-stream
       en: mogami-stream
     year: 2026
     description_html:
-      ja: >-
-        非同期ストリーム処理のためのTypeScriptオペレータ集。並行数・バッファの上限管理、キャンセル、非同期の後処理に対応。
-        <a href="https://www.npmjs.com/package/mogami-stream">npm</a> · <a href="https://github.com/45deg/mogami-stream">GitHub</a>
-      en: >-
-        TypeScript operators for asynchronous streams, with concurrency and buffer limits, cancellation, and asynchronous cleanup.
-        <a href="https://www.npmjs.com/package/mogami-stream">npm</a> · <a href="https://github.com/45deg/mogami-stream">GitHub</a>
+      ja: "並行数管理・キャンセル対応の非同期ストリーム処理集。 <a href=\"https://www.npmjs.com/package/mogami-stream\">npm</a> · <a href=\"https://github.com/45deg/mogami-stream\">GitHub</a>"
+      en: "Async stream operators for TS. <a href=\"https://www.npmjs.com/package/mogami-stream\">npm</a> · <a href=\"https://github.com/45deg/mogami-stream\">GitHub</a>"
     tags:
       - Programming
       - Data
@@ -227,13 +249,14 @@ works:
       emoji: ≋
   - href: ./yada/
     featured: false
+    size: medium
     title:
       ja: YADA
       en: YADA
     year: 2026
     description_html:
-      ja: SQLite・DuckDBやCSV・Parquetのファイルをブラウザ内で閲覧。テーブルデータ・スキーマ・統計の確認ができる。
-      en: View SQLite, DuckDB, CSV and Parquet files in your browser. Inspect table data, schemas and statistics.
+      ja: SQLite・DuckDB・CSV・Parquetをブラウザで閲覧し、データやスキーマ・統計を確認。
+      en: "View SQLite, DuckDB, CSV, and Parquet files in your browser. Inspect tables, schemas, and stats."
     tags:
       - Viewer
       - Data
@@ -245,6 +268,7 @@ works:
         en: YADA displaying the customers table with the database object explorer on the left
   - href: ./proofglyph/
     featured: true
+    size: large
     title:
       ja: Proofglyph
       en: Proofglyph
@@ -264,13 +288,14 @@ works:
   - href: ./alloy-wasm/
     homeButton: false
     featured: false
+    size: medium
     title:
       ja: Alloy Analyzer WASM (unofficial)
       en: Alloy Analyzer WASM (unofficial)
     year: 2026
     description_html:
-      ja: Alloyモデルをブラウザ内で解析する非公式IDE。コードを編集し、インスタンス・反例・時間トレースを確認できる。
-      en: An unofficial browser IDE for analyzing Alloy models. Edit code and inspect instances, counterexamples, and temporal traces.
+      ja: Alloyモデルをブラウザ内で解析する非公式IDE。インスタンス・反例・時間トレースを確認できる。
+      en: An unofficial browser IDE for analyzing Alloy models and inspecting instances and temporal traces.
     tags:
       - Programming
       - Editor
@@ -282,13 +307,14 @@ works:
         en: Alloy IDE with a model on the left and temporal trace results on the right
   - href: ./wordkin/
     featured: false
+    size: medium
     title:
       ja: Wordkin
       en: Wordkin
     year: 2026
     description_html:
       ja: 英単語の語源を系図で辿る辞書。語義や派生語を確認し、複数の語の共通祖先を比較できる。
-      en: An etymology dictionary for exploring English word ancestry, viewing definitions and derivatives, and comparing shared ancestors across words.
+      en: "An etymology dictionary for exploring English word ancestry, derivatives, and shared ancestors."
     tags:
       - Dictionary
       - Visualization
@@ -300,13 +326,14 @@ works:
         en: Part of the etymology tree tracing dictionary through Middle English and Latin
   - href: ./refinepy/
     featured: false
+    size: large
     title:
       ja: refinepy Playground
       en: refinepy Playground
     year: 2026
     description_html:
-      ja: PythonのRefinement Typeと契約を検証するブラウザツール。コードを編集し、関数の事前・事後条件や停止性をZ3で静的に検査できる。
-      en: A browser playground for Python refinement types and contracts. Edit code and use Z3 to check function preconditions, postconditions, and termination statically.
+      ja: PythonのRefinement Typeと事前・事後条件、停止性をZ3で静的に検証するブラウザツール。
+      en: "A browser playground for checking Python refinement types, contracts, and termination with Z3."
     tags:
       - Programming
       - Compiler
@@ -318,13 +345,14 @@ works:
         en: refinepy showing verified range and return-value contracts and termination for the clamp function
   - href: ./qepcad/
     featured: false
+    size: small
     title:
       ja: 実数の量化子消去
       en: Real Quantifier Elimination
     year: 2026
     description_html:
-      ja: QEPCADで実数上の論理式から量化子を消去するブラウザツール。自由変数の条件を求め、射影因子・セル・計算過程を確認できる。
-      en: A browser tool for eliminating quantifiers over the reals with QEPCAD. Find conditions on free variables and inspect projection factors, cells, and calculation steps.
+      ja: QEPCADで実数上の論理式から量化子を消去し、条件と計算過程を表示。
+      en: Eliminate quantifiers over the reals with QEPCAD.
     tags:
       - Mathematics
       - Utility
@@ -336,6 +364,7 @@ works:
         en: "An example converting exists y: y² = x into the quantifier-free condition x ≥ 0"
   - href: ./lufs-view/
     featured: true
+    size: large
     title:
       ja: LUFS view
       en: LUFS view
@@ -354,13 +383,14 @@ works:
         en: LUFS view showing a demo track's loudness timeline, measurements, and Spotify delivery preview
   - href: ./deppy-web/
     featured: false
+    size: large
     title:
       ja: DepPy Playground
       en: DepPy Playground
     year: 2026
     description_html:
-      ja: Python構文で依存型と証明を記述するDepPyのデモ。ブラウザでコードを編集し、型・証明の静的検査とPythonでの実行を別々に試せる。
-      en: A browser demo for DepPy, a dependently typed language with Python syntax. Edit code, check types and proofs statically, and run the source separately as Python.
+      ja: Python構文で依存型と証明を記述するDepPyのデモ。型・証明の静的検査と実行を試せる。
+      en: "A browser demo for DepPy, a dependently typed language with Python syntax for static proof checking."
     tags:
       - Programming
       - Compiler
@@ -372,6 +402,7 @@ works:
         en: Close-up of DepPy code defining a natural number function and an equality proof on a black background
   - href: ./frp-wasm/
     featured: true
+    size: medium
     title:
       ja: frp-wasm
       en: frp-wasm
@@ -391,13 +422,14 @@ works:
   - href: ./textedit/
     homeButton: false
     featured: false
+    size: small
     title:
       ja: a-b text
       en: a-b text
     year: 2026
     description_html:
-      ja: 開始と終了をタップして長文を範囲選択できるテキストエディタ。ミニマップで移動し、選んだ文章をコピー・切り取り・削除。
-      en: A text editor for selecting long passages by tapping their start and end. Navigate with a minimap, then copy, cut, or delete the selected text.
+      ja: 始点と終点をタップして長文を範囲選択・編集できるテキストエディタ。
+      en: Select long text by tapping start and end points.
     tags:
       - Editor
       - Text
@@ -409,6 +441,7 @@ works:
         en: A Japanese passage selected in a-b text, with start and end cursors and copy, cut, and delete controls
   - href: ./cifarviz/
     featured: true
+    size: medium
     title:
       ja: CIFAR / VIZ
       en: CIFAR / VIZ
@@ -428,13 +461,14 @@ works:
   - href: ./misc/c2pa-inspector.html
     homeButton: false
     featured: false
+    size: small
     title:
       ja: C2PA インスペクター
       en: C2PA Inspector
     year: 2026
     description_html:
-      ja: PNG画像に埋め込まれたC2PAの生成ソフト、署名証明書、来歴を端末内で確認・比較するツール。
-      en: A local browser tool for inspecting and comparing C2PA provenance, signing certificates, and declared creation software embedded in PNG images.
+      ja: PNGに埋め込まれたC2PAの生成ソフト・署名証明書・来歴を確認。
+      en: Inspect C2PA provenance and certificates in PNGs.
     tags:
       - Image
       - Security
@@ -445,6 +479,7 @@ works:
   - href: ./scroll-stitch/
     homeButton: false
     featured: true
+    size: large
     title:
       ja: Scroll Stitch
       en: Scroll Stitch
@@ -463,13 +498,14 @@ works:
         en: Scroll Stitch combining a scrolling video into a long image and splitting it into three PNG files
   - href: ./multistage-js/
     featured: false
+    size: medium
     title:
       ja: Multistage JS
       en: Multistage JS
     year: 2026
     description_html:
-      ja: JavaScriptに<code>stage {}</code>と<code>$()</code>を加え、コード生成・実行の段階を進めながら多段階計算を試せるブラウザIDE。
-      en: A browser IDE for exploring multistage computation by extending JavaScript with <code>stage {}</code> and <code>$()</code>, then stepping through code generation and execution.
+      ja: "JavaScriptに<code>stage {}</code>と<code>$()</code>を加え、コード生成・実行を段階的に試せる多段階計算IDE。"
+      en: "Explore multistage computation in JS with <code>stage {}</code> and <code>$()</code> across code generation stages."
     tags:
       - Programming
       - Compiler
@@ -483,13 +519,14 @@ works:
       ja: ./shift-reset-js/
       en: ./shift-reset-js/index_en.html
     featured: false
+    size: medium
     title:
       ja: shift / reset Playground
       en: shift / reset Playground
     year: 2026
     description_html:
-      ja: JavaScriptの限定継続を扱うブラウザツール。<code>shift</code>で取り出した継続を何度でも再開でき、バックトラッキングや代数的エフェクトを試せる。
-      en: A browser playground for delimited continuations in JavaScript. Capture a continuation with <code>shift</code> and resume it multiple times in examples of backtracking and algebraic effects.
+      ja: "JavaScriptの限定継続を扱うツール。<code>shift</code>で取り出した継続を再開し、代数的エフェクト等を試せる。"
+      en: "A JS playground for delimited continuations with <code>shift</code>/<code>reset</code>, backtracking, and algebraic effects."
     tags:
       - Programming
       - Compiler
@@ -501,13 +538,14 @@ works:
         en: A shift and reset example that resumes a continuation with 2 and returns 30
   - href: ./crypto-demo/
     featured: false
+    size: small
     title:
       ja: 公開鍵暗号・署名デモ
       en: Public-Key Cryptography Demo
     year: 2026
     description_html:
-      ja: WebCrypto APIを使い、鍵生成、公開鍵暗号によるメッセージの暗号化・復号、デジタル署名をブラウザ内だけで試せるデモ。
-      en: A browser-only WebCrypto demo for generating keys, encrypting and decrypting messages with public-key cryptography, and creating digital signatures.
+      ja: WebCrypto APIで鍵生成・公開鍵暗号・電子署名を試せるデモ。
+      en: "Try key generation, encryption, and signing in WebCrypto."
     tags:
       - Security
       - Web
@@ -516,6 +554,7 @@ works:
       emoji: 🔐
   - href: ./morf/
     featured: true
+    size: large
     title:
       ja: Morf
       en: Morf
@@ -534,13 +573,14 @@ works:
   - href: ./sudoku-book/
     homeButton: false
     featured: false
+    size: medium
     title:
       ja: 数独を解こう
       en: Solving Sudoku
     year: 2026
     description_html:
-      ja: 同じ数独を探索、論理、数理最適化など異なる計算手法へ翻訳し、実行できるサンプルとともに解き方の違いをたどる連載。
-      en: A series that translates the same Sudoku puzzle into search, logic, mathematical optimization, and other computational methods, with runnable examples.
+      ja: 同じ数独を探索、論理、数理最適化など異なる計算手法へ翻訳し、解き方の違いをたどる連載。
+      en: "A series translating the same Sudoku puzzle into search, logic, and optimization with runnable code."
     tags:
       - Article
       - Algorithms
@@ -571,13 +611,14 @@ works:
   - href: ./a-tour-of-succinct-data-structure/
     homeButton: false
     featured: true
+    size: medium
     title:
       ja: A Tour of Succinct Data Structures
       en: A Tour of Succinct Data Structures
     year: 2026
     description_html:
-      ja: 情報理論的下限からrank・select、wavelet matrix、簡潔木までを、操作できる図で学ぶ簡潔データ構造の教材。
-      en: An interactive guide to succinct data structures, from information-theoretic lower bounds and rank/select to wavelet matrices and succinct trees.
+      ja: 情報理論的下限からrank/select、wavelet matrix、簡潔木までを図で学ぶ簡潔データ構造教材。
+      en: "An interactive guide to succinct data structures: rank/select, wavelet matrices, and succinct trees."
     tags:
       - Data Structure
       - Visualization
@@ -587,6 +628,7 @@ works:
       emoji: "01"
   - href: ./colorange/
     featured: false
+    size: medium
     homeButton:
       position: bottom-left
     title:
@@ -595,7 +637,7 @@ works:
     year: 2026
     description_html:
       ja: 画像から主要色と使用率を抽出し、それぞれの色が使われている場所まで確認できるカラー分析ツール。
-      en: A color analysis tool for extracting an image’s dominant colors and usage ratios, and seeing where each color appears.
+      en: "Extract an image’s dominant colors and usage ratios, and see where each color appears."
     tags:
       - Image
       - Analysis
@@ -607,13 +649,14 @@ works:
         en: Colorange analyzing an image’s dominant colors and usage ratios
   - href: ./bandit-arena/
     featured: false
+    size: small
     title:
       ja: 多腕バンディット・デモ
       en: Multi-Armed Bandit Demo
     year: 2026
     description_html:
-      ja: 多腕バンディットの6手法と報酬モデルを、1ラウンドのステップ解説と学習推移で比較できるインタラクティブデモ。
-      en: An interactive demo for comparing six multi-armed bandit algorithms and reward models through step-by-step rounds and learning curves.
+      ja: 多腕バンディット6手法をステップ解説と学習推移で比較するデモ。
+      en: Compare six multi-armed bandit algorithms with charts.
     tags:
       - AI
       - Visualization
@@ -623,13 +666,14 @@ works:
       emoji: 🎰
   - href: ./har-tools/
     featured: false
+    size: medium
     title:
       ja: HAR Tools
       en: HAR Tools
     year: 2026
     description_html:
-      ja: HARファイルに保存された画像、コード、その他のレスポンスをブラウザ内で抽出・確認できるツール。
-      en: A browser tool for extracting and inspecting images, code, and other responses stored in HAR files.
+      ja: HARファイル内の画像やコードなどのレスポンスを抽出・確認するツール。
+      en: Extract and inspect images and responses from HAR files.
     tags:
       - Web
       - Utility
@@ -640,6 +684,7 @@ works:
         en: HAR Tools displaying a list of resources from a HAR file
   - href: ./jelly/
     featured: true
+    size: large
     homeButton: false
     title:
       ja: JELLY
@@ -658,6 +703,7 @@ works:
         en: JELLY 3D simulation showing colorful jelly objects
   - href: ./geese/
     featured: false
+    size: medium
     title:
       ja: GEESE
       en: GEESE
@@ -675,6 +721,7 @@ works:
         en: GEESE puzzle game board
   - href: ./llm-token-map/
     featured: true
+    size: large
     title:
       ja: LLM Token Map
       en: LLM Token Map
@@ -692,6 +739,7 @@ works:
         en: LLM Token Map token embedding visualization
   - href: ./bagh-chal/
     featured: false
+    size: medium
     title:
       ja: Bagh-Chal
       en: Bagh-Chal
@@ -709,13 +757,14 @@ works:
         en: Bagh-Chal game introduction screen
   - href: ./serverless-pvp/
     featured: false
+    size: small
     title:
       ja: P2P PONG
       en: P2P PONG
     year: 2026
     description_html:
       ja: 接続コードを手動で交換して遊ぶ、サーバーレスな2人対戦PONG。
-      en: A serverless two-player PONG game where players exchange connection codes directly.
+      en: Serverless two-player PONG using connection codes.
     tags:
       - Game
       - WebRTC
@@ -724,6 +773,7 @@ works:
       alt: P2P PONG の対戦画面
   - href: ./scene-analyzer/
     featured: true
+    size: large
     title:
       ja: Scene Analyzer
       en: Scene Analyzer
@@ -739,13 +789,14 @@ works:
       alt: Scene Analyzer の動画シーン解析画面
   - href: ./markdown-cjk-fixer/
     featured: false
+    size: small
     title:
       ja: CJK Markdown Fixer
       en: CJK Markdown Fixer
     year: 2026
     description_html:
-      ja: 日本語Markdownで太字・強調が反映されない境界を、ブラウザ内で補正するツール。
-      en: A browser-based tool that fixes emphasis boundaries that fail to render in CJK Markdown text.
+      ja: 日本語Markdownで太字・強調が反映されない境界を補正するツール。
+      en: Fix emphasis boundaries in CJK Markdown text.
     tags:
       - Markdown
       - Editor
@@ -755,6 +806,7 @@ works:
       alt: CJK Markdown Fixer
   - href: ./carta/
     featured: true
+    size: large
     title:
       ja: Carta
       en: Carta
@@ -770,13 +822,14 @@ works:
       alt: Carta
   - href: ./size-estimator/
     featured: false
+    size: small
     title:
       ja: Image Measurement Tool
       en: Image Measurement Tool
     year: 2026
     description_html:
       ja: 写真や画像内のオブジェクトの長さを簡単に測定できるWebツール。
-      en: A web application that makes it easy to measure the length of objects on photos or images.
+      en: Measure object lengths inside photos and images.
     tags:
       - Image
       - Editor
@@ -785,13 +838,14 @@ works:
       alt: Image Measurement Tool
   - href: ./lecture-scheduler/
     featured: false
+    size: medium
     title:
       ja: Lecture Scheduler
       en: Lecture Scheduler
     year: 2026
     description_html:
       ja: 講義を期間内に自動配置し、手動調整・ファイル保存・カレンダー印刷ができるツール。
-      en: Automatically schedule lectures within a date range, adjust individual sessions, export files, and print a monthly calendar.
+      en: "Schedule lectures within a date range, adjust sessions, export files, and print a monthly calendar."
     tags:
       - Productivity
       - Editor
@@ -800,13 +854,14 @@ works:
       alt: Lecture Scheduler
   - href: ./articles/katex2svg.html
     featured: false
+    size: small
     title:
       ja: KaTeX から SVG に変換する
       en: Converting KaTeX to SVG
     year: 2026
     description_html:
-      ja: KaTeX の HTML 出力を foreignObject で SVG に埋め込み、DOM 解析と WOFF2 のグリフ単位サブセット化で小さなスタンドアロン SVG を作る実装メモ。
-      en: Notes on embedding KaTeX HTML output in SVG with foreignObject, DOM analysis, and WOFF2 glyph subsetting for compact standalone SVGs.
+      ja: KaTeX出力とWOFF2サブセット化で小さな単体SVGを作る実装メモ。
+      en: Build compact standalone SVGs from KaTeX with WOFF2.
     tags:
       - Article
       - Web Development
@@ -815,13 +870,14 @@ works:
       emoji: π
   - href: ./articles/intl.html
     featured: false
+    size: small
     title:
       ja: Intl API 比較ビューア
       en: Intl API Comparison Viewer
     year: 2026
     description_html:
-      ja: JavaScript の Intl API を一覧比較し、ロケール別に主要コンストラクターの出力差を確認する実験ページ。
-      en: An experimental viewer for comparing JavaScript Intl API output across locales and constructors.
+      ja: JSのIntl APIの出力差をロケール別に一覧比較する実験ページ。
+      en: Compare JavaScript Intl API output across locales.
     tags:
       - Article
       - Web Development
@@ -829,7 +885,8 @@ works:
       class: placeholder-article
       emoji: 🌐
   - href: ./pixelate/
-    featured: true
+    featured: false
+    size: medium
     title:
       ja: Pixel Grid Studio
       en: Pixel Grid Studio
@@ -846,13 +903,14 @@ works:
       alt: Pixel Grid Studio
   - href: ./articles/zustand.html
     featured: false
+    size: small
     title:
       ja: Zustand 実践メモ
       en: Practical Zustand Notes
     year: 2026
     description_html:
-      ja: React で Zustand を使うときの基本、セレクタ、型付け、ミドルウェア、SSR、設計上の注意点を整理した実践メモ。
-      en: Practical notes on Zustand basics, selectors, typing, middleware, SSR, and design trade-offs in React.
+      ja: ReactでのZustandの基本・型付け・SSRの実践メモ。
+      en: "Practical notes on Zustand, typing, and SSR in React."
     tags:
       - Article
       - Web Development
@@ -861,6 +919,7 @@ works:
       emoji: 🐻
   - href: ./stitch/
     featured: true
+    size: large
     title:
       ja: Stitch
       en: Stitch
@@ -876,12 +935,13 @@ works:
       alt: Stitch
   - href: ./vibe-design-gallery/
     featured: false
+    size: medium
     title:
       ja: Vibe Design Gallery
       en: Vibe Design Gallery
     year: 2026
     description_html:
-      ja: Tailwind CSSのユーティリティクラスを用いたデザインギャラリー。バイブコーディング向けとしてデザインプロンプトも用意。
+      ja: Tailwind CSSを用いたデザインギャラリー。バイブコーディング向けのデザインプロンプトも用意。
       en: A design gallery using Tailwind CSS utility classes, with design prompts for vibe coding.
     tags:
       - Design
@@ -891,6 +951,7 @@ works:
       alt: Vibe Design Gallery
   - href: ./lucide-shape-search/
     featured: true
+    size: large
     title:
       ja: Lucide Shape Search
       en: Lucide Shape Search
@@ -907,6 +968,7 @@ works:
       alt: Lucide Shape Search
   - href: ./lucide-icons-map/
     featured: false
+    size: medium
     title:
       ja: Lucide Icons Map
       en: Lucide Icons Map
@@ -922,13 +984,14 @@ works:
       alt: Lucide Icons Map
   - href: ./lucide-text-search/
     featured: false
+    size: medium
     title:
       ja: Lucide Text Search
       en: Lucide Text Search
     year: 2026
     description_html:
       ja: テキスト入力からLucideアイコンを意味検索できるツール。
-      en: A tool for semantically searching Lucide icons from text queries.
+      en: Semantically search Lucide icons from text queries.
     tags:
       - Icons
       - Search
@@ -937,6 +1000,7 @@ works:
       alt: Lucide Text Search
   - href: ./punct/
     featured: true
+    size: large
     title:
       ja: 句読点補完ツール
       en: Japanese Punctuation Completion Tool
@@ -954,6 +1018,7 @@ works:
       alt: 句読点補完ツール
   - href: ./crt/
     featured: true
+    size: medium
     title:
       ja: CRT Phosphor Simulator
       en: CRT Phosphor Simulator
@@ -970,6 +1035,7 @@ works:
       alt: CRT Phosphor Simulator
   - href: ./screencast-editor/
     featured: true
+    size: large
     homeButton: false
     title:
       ja: ScreenCast Editor
@@ -986,6 +1052,7 @@ works:
       alt: ScreenCastEditor
   - href: ./compression-leaderboard/
     featured: true
+    size: large
     title:
       ja: Compression Leaderboard
       en: Compression Leaderboard
@@ -1001,13 +1068,14 @@ works:
       alt: Compression Leaderboard
   - href: ./bkcrack-wasm/
     featured: false
+    size: small
     title:
       ja: bkcrack.wasm
       en: bkcrack.wasm
     year: 2026
     description_html:
-      ja: ZIPの既知平文攻撃で暗号を解析するbkcrackをWebAssemblyに移植したブラウザツール。
-      en: A browser port of bkcrack to WebAssembly for cracking ZIP encryption via known-plaintext attack.
+      ja: ZIPの既知平文攻撃ツールbkcrackをWASMに移植したブラウザ版。
+      en: WebAssembly port of bkcrack for ZIP plaintext attacks.
     tags:
       - Security
       - WebAssembly
@@ -1016,13 +1084,14 @@ works:
       emoji: 🔓
   - href: ./quickcalc/
     featured: false
+    size: small
     title:
       ja: QuickCalc
       en: QuickCalc
     year: 2026
     description_html:
-      ja: メモを書く感覚で式や変数を並べ、行ごとの計算結果を即時に更新するリアクティブな計算機。
-      en: A note-like reactive calculator where expressions and variables update line by line.
+      ja: メモ感覚で式や変数を並べ、行ごとに即時計算するリアクティブ計算機。
+      en: Reactive note calculator updating line by line.
     tags:
       - Productivity
     image:
@@ -1030,6 +1099,7 @@ works:
       alt: QuickCalc
   - href: ./stick-game/
     featured: false
+    size: medium
     title:
       ja: STICK GAME
       en: STICK GAME
@@ -1038,7 +1108,7 @@ works:
       ja: >-
         <a
         href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#.E6.95.B0.E5.AD.97.E3.82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">指を用いた遊び</a>をブラウザゲーム化したもの。CPUと対戦できる。
-      en: A browser game version of a small finger-counting game, with a CPU opponent and a compact state space.
+      en: A finger-counting browser game with a CPU opponent.
     tags:
       - Game
       - AI
@@ -1047,6 +1117,7 @@ works:
       alt: STICK GAME
   - href: ./mozaic-app/
     featured: true
+    size: large
     title:
       ja: mozaic-app
       en: mozaic-app
@@ -1063,16 +1134,15 @@ works:
       alt: mozaic-app
   - href: ./nanotation/
     featured: false
+    size: small
     homeButton: false
     title:
       ja: nanotation
       en: nanotation
     year: 2026
     description_html:
-      ja: 画像などに軽量な注釈を重ねる、ブラウザベースの実験的アノテーションエディタ。
-      en: >-
-        A lightweight browser annotation editor for layering notes over images or work targets, designed for
-        quick review and sharing.
+      ja: 画像に軽量な注釈を重ねるブラウザベースのアノテーションエディタ。
+      en: Lightweight browser editor for annotating images.
     tags:
       - Image
       - Editor
@@ -1081,13 +1151,14 @@ works:
       alt: nanotation
   - href: ./misc/online-video-converter.html
     featured: false
+    size: small
     title:
       ja: ブラウザ上で完結する動画変換ツール
       en: Browser-only Video Converter
     year: 2026
     description_html:
-      ja: WebCodecs と web-demuxer を用いてブラウザ上で動画変換を行うデモ。
-      en: A demo for converting video directly in the browser using WebCodecs and web-demuxer.
+      ja: WebCodecsを用いたブラウザ内の動画変換デモ。
+      en: Convert video in the browser using WebCodecs.
     tags:
       - Video
       - Converter
@@ -1096,13 +1167,14 @@ works:
       emoji: 🎞️
   - href: ./deaatable/
     featured: false
+    size: small
     title:
       ja: AsciiArt Table Parser
       en: AsciiArt Table Parser
     year: 2026
     description_html:
       ja: アスキーアート等のテーブルを解析してプレーンにするツール。
-      en: A tool that parses ASCII-art style tables and turns them into plain structured text.
+      en: Parse ASCII-art tables into plain structured text.
     tags:
       - Text
       - Converter
@@ -1111,13 +1183,14 @@ works:
       emoji: ▦
   - href: ./articles/zip.html
     featured: false
+    size: small
     title:
       ja: Compression APIを用いたJS単体でのZIP生成
       en: ZIP Generation in Plain JavaScript with Compression API
     year: 2026
     description_html:
-      ja: JavaScriptのCompression APIを用いてZIPファイルを生成する解説記事。
-      en: An article explaining how to generate ZIP files in JavaScript with the Compression API.
+      ja: JSのCompression APIを用いてZIPを生成する解説記事。
+      en: Generate ZIP files in JS with the Compression API.
     tags:
       - Article
       - Compression
@@ -1126,13 +1199,14 @@ works:
       emoji: 📦
   - href: ./articles/mp4.html
     featured: false
+    size: small
     title:
       ja: WebCodecs + MP4Box.js を用いたブラウザ単体での MP4 生成
       en: Browser-only MP4 Generation with WebCodecs and MP4Box.js
     year: 2026
     description_html:
-      ja: WebCodecs と MP4Box.js でブラウザ単体の MP4 生成を試す解説記事。
-      en: An article exploring MP4 generation in the browser with WebCodecs and MP4Box.js.
+      ja: WebCodecsとMP4Box.jsによる単体MP4生成記事。
+      en: "Browser-only MP4 generation with WebCodecs & MP4Box.js."
     tags:
       - Article
       - Video
@@ -1141,6 +1215,7 @@ works:
       emoji: 🎬
   - href: ./subleq-ide/
     featured: false
+    size: medium
     title:
       ja: Subleq Compiler
       en: Subleq Compiler
@@ -1157,6 +1232,7 @@ works:
       alt: Subleq Compiler
   - href: ./pdf2md/
     featured: false
+    size: medium
     title:
       ja: pdf2md
       en: pdf2md
@@ -1173,6 +1249,7 @@ works:
       alt: pdf2md
   - href: ./pdf-toc-tools/
     featured: true
+    size: large
     title:
       ja: pdf-toc-tool
       en: pdf-toc-tool
@@ -1188,6 +1265,7 @@ works:
       alt: pdf-toc-tool
   - href: ./misc/toritsu.html
     featured: false
+    size: medium
     homeButton:
       position: bottom-left
     title:
@@ -1195,8 +1273,8 @@ works:
       en: Inverted Pendulum Simulator
     year: 2026
     description_html:
-      ja: 台車型倒立振子の挙動をブラウザ上でリアルタイムに体感できるシミュレータ。古典制御（PID/PDカスケード）、現代制御（LQR）、非線形制御（スライディングモード制御）の3手法をダイナミックなビジュアライズとグラフで比較。
-      en: A browser-based real-time simulation of an inverted pendulum on a cart. Compare classical control (PID/PD cascade), modern control (LQR), and non-linear control (Sliding Mode Control) with dynamic visualizations and charts.
+      ja: 台車型倒立振子のリアルタイムシミュレータ。PID・LQR・スライディングモード制御をグラフで比較。
+      en: "Real-time cart-pendulum simulator comparing PID cascade, LQR, and Sliding Mode Control with charts."
     tags:
       - Simulation
       - Visualization
@@ -1207,15 +1285,14 @@ works:
       ja: ./hitchhikers-guide-to-agentic-ai-ja/
       en: ./hitchhikers-guide-to-agentic-ai-ja/en/
     featured: false
+    size: small
     title:
       ja: The Hitchhiker's Guide to Agentic AI 日本語版
       en: The Hitchhiker's Guide to Agentic AI (mdbook Edition)
     year: 2026
     description_html:
-      ja: >-
-        Haggai Roitman著『The Hitchhiker's Guide to Agentic AI: From Foundations to Systems』を日本語に翻訳・編集し、mdBook形式に変換した日本語版。
-      en: >-
-        A derivative of Haggai Roitman's <em>The Hitchhiker's Guide to Agentic AI: From Foundations to Systems</em>, converted to mdBook.
+      ja: Agentic AIの基礎からシステムまでを解説する書籍の日本語翻訳版。
+      en: "mdBook edition of <em>The Hitchhiker's Guide to Agentic AI</em>."
     tags:
       - Article
       - AI
@@ -1224,15 +1301,14 @@ works:
       emoji: 🤖
   - href: ./flowtimer/
     featured: false
+    size: medium
     title:
       ja: FlowTimer
       en: FlowTimer
     year: 2025
     description_html:
-      ja: 発表中に必要な残り時間と進行状態だけを見やすく保つ、登壇者向けの最小タイマー。
-      en: >-
-        A minimal presentation timer focused on the remaining time and progress state a speaker needs while
-        presenting.
+      ja: 発表中の残り時間と進行状態を見やすく保つ登壇者向け最小タイマー。
+      en: "Minimal presentation timer for remaining time & pace."
     tags:
       - Productivity
       - Presentation
@@ -1241,6 +1317,7 @@ works:
       alt: FlowTimer
   - href: ./pdf-unbinder/
     featured: false
+    size: medium
     title:
       ja: PDFUnbinder in Browser
       en: PDFUnbinder in Browser
@@ -1255,13 +1332,14 @@ works:
       alt: PDFUnbinder in Browser
   - href: ./misc/brownkan.html
     featured: false
+    size: small
     title:
       ja: ブラウン管テレビ風 画像エフェクター
       en: CRT-style Image Effector
     year: 2025
     description_html:
       ja: 画像をブラウン管テレビ風（CRT）に加工する WebGL エフェクト。
-      en: A WebGL image effect tool that processes images into a CRT television look.
+      en: WebGL effect that gives images a CRT television look.
     tags:
       - Image
       - Visualization
@@ -1270,13 +1348,14 @@ works:
       emoji: 📺
   - href: ./misc/gabigabi.html
     featured: false
+    size: small
     title:
       ja: JPEGガビガビ化ツール
       en: JPEG Artifact Generator
     year: 2025
     description_html:
       ja: JPEG圧縮を繰り返してガビガビ質感を作るツール。
-      en: A tool that repeatedly applies JPEG compression to create a crunchy artifact texture.
+      en: Repeatedly compress JPEGs for a crunchy artifact look.
     tags:
       - Image
       - Editor
@@ -1285,13 +1364,14 @@ works:
       emoji: 🖼️
   - href: ./misc/img2pdf.html
     featured: false
+    size: small
     title:
       ja: Images to PDF
       en: Images to PDF
     year: 2025
     description_html:
       ja: 画像をドラッグ&ドロップで並べ替えて PDF 化するツール。
-      en: A tool for dragging, dropping, reordering, and exporting images as a PDF.
+      en: "Drag, drop, reorder, and export images as a PDF."
     tags:
       - PDF
       - Image
@@ -1301,16 +1381,14 @@ works:
       emoji: 🧾
   - href: /mnist-viz
     featured: false
+    size: small
     title:
       ja: MNIST UMAP Visualization
       en: MNIST UMAP Visualization
     year: 2024
     description_html:
-      ja: >-
-        手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>で2次元にマッピングし、数字ごとのクラスタや混ざり方を探索する可視化ツール。
-      en: >-
-        A visualization that maps MNIST handwriting samples into 2D with UMAP, making digit clusters and
-        overlap easy to explore.
+      ja: 手書き文字を<a href="https://umap-learn.readthedocs.io/en/latest/">UMAP</a>で2次元配置し、数字の分布を探索する可視化。
+      en: Explore 2D UMAP clusters of MNIST handwritten digits.
     tags:
       - AI
       - Visualization
@@ -1319,6 +1397,7 @@ works:
       alt: MNIST UMAP Visualization
   - href: ./misc/nahuatl.html
     featured: false
+    size: small
     title:
       ja: ナワトルテキスト補助
       en: Nahuatl Text Helper
@@ -1334,6 +1413,7 @@ works:
       emoji: ✍️
   - href: ./misc/safetensors.html
     featured: false
+    size: small
     title:
       ja: Safetensors metadata viewer
       en: Safetensors Metadata Viewer
@@ -1349,12 +1429,13 @@ works:
       emoji: 🧬
   - href: ./misc/jinja2.html
     featured: false
+    size: small
     title:
       ja: Jinja2 Template Renderer
       en: Jinja2 Template Renderer
     year: 2022
     description_html:
-      ja: Pyodide 上で Jinja2 テンプレートをブラウザ実行するレンダラー。
+      ja: Pyodide上でJinja2テンプレートをブラウザ実行するレンダラー。
       en: A browser renderer that runs Jinja2 templates on Pyodide.
     tags:
       - Web Development
@@ -1364,15 +1445,14 @@ works:
       emoji: 🧩
   - href: /cedict
     featured: false
+    size: small
     title:
       ja: HoverDictCN
       en: HoverDictCN
     year: 2019
     description_html:
-      ja: 中国語の文章を読みながら、単語や漢字の英語訳をマウスオーバー/タップで確認する学習補助ツール。
-      en: >-
-        A Chinese reading aid using CEDICT. Hover or tap characters to quickly check word and character
-        meanings in English.
+      ja: 中国語テキストの単語・漢字の英訳をホバーで確認する読解補助ツール。
+      en: Chinese reading aid with hover/tap English lookup.
     tags:
       - Dictionary
       - Language
@@ -1381,13 +1461,14 @@ works:
       alt: HoverDictCN
   - href: https://github.com/45deg/PDFUnbinder
     featured: false
+    size: small
     title:
       ja: PDFUnbinder
       en: PDFUnbinder
     year: 2018
     description_html:
-      ja: PDFの目次をもとにファイルを章単位で分割するJavaFXデスクトップアプリ。
-      en: A JavaFX desktop app for splitting bookmarked PDFs by chapter.
+      ja: PDFの目次をもとに章単位で分割するJavaFXデスクトップアプリ。
+      en: JavaFX desktop app for splitting PDFs by chapter.
     tags:
       - PDF
     image:
@@ -1395,6 +1476,7 @@ works:
       alt: PDFUnbinder
   - href: ./RGBCloud
     featured: false
+    size: medium
     homeButton:
       position: bottom-left
     title:
@@ -1403,9 +1485,7 @@ works:
     year: 2017
     description_html:
       ja: 画像ピクセルをRGB/HSL色空間上の点群として描画し、色分布を3Dで眺めるビューア。
-      en: >-
-        A 3D viewer that plots image pixels in RGB or HSL color space so the color distribution can be
-        inspected directly.
+      en: A 3D viewer that plots image pixels in RGB or HSL color space to inspect color distributions.
     tags:
       - Image
       - Visualization
@@ -1414,14 +1494,14 @@ works:
       alt: RGBCloud
   - href: ./Kantele
     featured: false
+    size: small
     title:
       ja: Kantele
       en: Kantele
     year: 2016
     description_html:
-      ja: >-
-        研究室所属時の課題で作った、音を記述して再生するScheme風の言語（<a href="https://github.com/45deg/kantele/blob/master/presentation.md">スライド</a>）。<strong>音が出ます。</strong>
-      en: A Scheme-like sound programming language made as a lab assignment. It plays sound.
+      ja: "音を記述して再生するScheme風言語（<a href=\"https://github.com/45deg/kantele/blob/master/presentation.md\">スライド</a>）。<strong>音が出ます。</strong>"
+      en: A Scheme-like sound language. It plays sound.
     tags:
       - Audio
       - Programming
@@ -1430,16 +1510,14 @@ works:
       alt: Kantele
   - href: ./neural-network_v2
     featured: false
+    size: medium
     title:
       ja: ニューラルネットワークの可視化 (ConvnetJS版)
       en: Neural Network Visualization (ConvnetJS)
     year: 2016
     description_html:
-      ja: >-
-        <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvnetJS</a>で書き直したニューラルネットワーク可視化。層や素子の種類、学習器の設定を変えながら学習の進み方を観察できる。
-      en: >-
-        A ConvnetJS rewrite of the neural network visualization, with adjustable units and learners for
-        observing training behavior.
+      ja: "<a href=\"http://cs.stanford.edu/people/karpathy/convnetjs/\">ConvnetJS</a>で書き直したニューラルネット可視化。層や学習器の設定を変えて学習の進み方を観察できる。"
+      en: A ConvnetJS neural network visualization with adjustable layers and learners to observe training.
     tags:
       - AI
       - Visualization
@@ -1448,6 +1526,7 @@ works:
       alt: ニューラルネットワークの可視化 (ConvnetJS版)
   - href: ./rogyAdC2015
     featured: true
+    size: large
     title:
       ja: dynamorphism の紹介
       en: Introduction to Dynamorphism
@@ -1467,14 +1546,14 @@ works:
       alt: dynamorphism の紹介
   - href: ./neural-network
     featured: false
+    size: small
     title:
       ja: ニューラルネットワークの可視化
       en: Neural Network Visualization
     year: 2014
     description_html:
-      ja: >-
-        BPNNの重みやノード状態を描画し、学習プロセスを追う初期の可視化実験（<a href="http://www.slideshare.net/z_kro/html5-36655060">スライド</a>）。
-      en: An early browser visualization of BPNN weights, node states, and the learning process.
+      ja: "BPNNの重みと学習過程を描画する初期の可視化実験（<a href=\"http://www.slideshare.net/z_kro/html5-36655060\">スライド</a>）。"
+      en: Early browser visualization of BPNN training.
     tags:
       - AI
       - Visualization

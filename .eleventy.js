@@ -57,6 +57,14 @@ function shouldInjectHomeButton(work) {
   return work.homeButton !== false;
 }
 
+function normalizeWorkSize(work) {
+  const raw = typeof work?.size === "string" ? work.size.trim().toLowerCase() : "";
+  if (raw === "large" || raw === "lg") return "large";
+  if (raw === "small" || raw === "sm") return "small";
+  if (raw === "medium" || raw === "md") return "medium";
+  return work?.featured ? "large" : "medium";
+}
+
 function homeButtonSnippet(position) {
   return `<script src="/button-inject.js" data-position="${position}"></script>`;
 }
@@ -148,6 +156,7 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("localPath", localPath);
   eleventyConfig.addFilter("absoluteUrl", absoluteUrl);
   eleventyConfig.addFilter("json", (value) => JSON.stringify(value));
+  eleventyConfig.addFilter("workSize", normalizeWorkSize);
 
   eleventyConfig.addFilter("countByFilter", (works, filter) => {
     if (filter.key === "all") return works.length;
