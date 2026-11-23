@@ -105,8 +105,8 @@ works:
       en: HTML Packer
     year: 2026
     description_html:
-      ja: HTML・MHTML・フォルダを1つの自己展開HTMLに圧縮。処理はすべてブラウザ内で完結。
-      en: "Convert MHTML/MHT to HTML and pack websites or folders into one self-contained, offline-ready HTML file."
+      ja: HTML・MHTML・フォルダを1つの自己展開HTMLに圧縮。
+      en: "Compress HTML, MHTML, or folders into a single self-extracting HTML file."
     tags:
       - Utility
       - Converter
